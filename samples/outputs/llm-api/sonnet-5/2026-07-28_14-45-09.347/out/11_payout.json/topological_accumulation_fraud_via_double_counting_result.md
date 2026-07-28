@@ -1,0 +1,39 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 88.0
+
+## Anomaly Localization (If Detected)
+No double-counting or topological accumulation anomaly was found in this CPG.
+
+## Details
+
+**Structural review of the flagged reuse (`i_3`):**
+The only variable flagged by the mechanical reuse-detector is `i_3` (ETH/USDC spot rate, 4650), which is consumed as the `price` argument by all ten `payout` operations (`op_1`–`op_10`). This is a classic *shared reference parameter* pattern, not an accumulated financial entity: `i_3` itself is never summed, added, or otherwise rolled into `o_24`. It is used identically to how a `MathContext` is legitimately reused (and is explicitly excluded from the anomaly list for that reason) — it is a market-observation constant consumed as a multiplier/comparator inside ten independent, single-position payout computations. Its reuse does not increase the path multiplicity of any *financial value* into the terminal aggregate; each position's dollar contribution to `o_24` is still derived from exactly one payout calculation.
+
+**Path multiplicity from roots to terminal output (`o_24`):**
+Tracing each of the ten `OptionPosition` root inputs (`i_4`…`i_13`) forward:
+- Each position feeds exactly one `payout` operation (`op_1`…`op_10`).
+- Each `payout` operation produces exactly one distinct output variable (`o_14`…`o_23`).
+- `op_11` (`addBulk`) consumes arguments `a=o_14, b0=o_15, b1=o_16, b2=o_17, b3=o_18, b4=o_19, b5=o_20, b6=o_21, b7=o_22, b8=o_23` — ten distinct variable IDs, each appearing exactly once in the argument list, with no repeated `resultId` or repeated argument value anywhere in the aggregation.
+
+This gives $M(V_{in}, op\_11) = 1$ for every one of the ten position entities — the required invariant holds.
+
+**Entity-uniqueness / aliasing check:**
+Inspected all ten positions for near-duplicate identity masking (same strike+size re-entered under a different `track.id`, or identical `descriptor.name`s per the empty duplicate-name reference set). Two pairs share a strike price (`i_4`/`i_9` both CALL @4630; `i_7`/`i_13` both PUT @4550), but in both cases the `size.amount` differs materially (6.8639 vs 4.4213 ETH; 2.8299 vs 5.9155 ETH), consistent with genuinely distinct positions/tranches rather than a re-wrapped clone of the same underlying entity. No `track.id` appears as an argument or `resultId` more than once outside the legitimate `i_3` shared-price case.
+
+**Arithmetic reconciliation ($S_{dedup}$ vs $S_{reported}$):**
+Independently recomputing each payout using standard call/put payoff formulas against spot 4650:
+- i_4 CALL 4630 → 20×6.8639 = 137.278 ✅ matches o_14
+- i_5 PUT 4710 → 60×2.8431 = 170.586 ✅ matches o_15
+- i_6 CALL 4670 → 0 ✅ matches o_16
+- i_7 PUT 4550 → 0 ✅ matches o_17
+- i_8 PUT 4730 → 80×7.8507 = 628.056 ✅ matches o_18
+- i_9 CALL 4630 → 20×4.4213 = 88.426 ✅ matches o_19
+- i_10 CALL 4710 → 0 ✅ matches o_20
+- i_11 PUT 4690 → 40×5.9841 = 239.364 ✅ matches o_21
+- i_12 PUT 4590 → 0 ✅ matches o_22
+- i_13 PUT 4550 → 0 ✅ matches o_23
+
+Sum of the ten independent payouts = 1263.710, which matches `o_24` (`Total payout in USDC`) exactly. There is no discrepancy between the deduplicated per-entity sum and the reported consolidated total, and no evidence of any value being netted into a subtotal and then re-subtracted or re-added at a later aggregation stage (there is only one aggregation operation, `op_11`, and the terminal output is its direct, unmodified result).
+
+**Conclusion:** The reused variable (`i_3`) is a legitimate shared market-price input, not a duplicated financial entity; every position contributes to the terminal output through exactly one path; and the reported total reconciles exactly with an independent recomputation. No violation of the stated invariants was found.

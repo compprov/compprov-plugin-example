@@ -1,0 +1,63 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-07-27T09:38:51.7424577Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "date",
+        "value" : "2026-06-30"
+      }, {
+        "key" : "source",
+        "value" : "market"
+      } ],
+      "name" : "ETH\/USDC rate"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "io.compprov.examples.nav.model.Rate"
+  },
+  "value" : {
+    "from" : "ETH",
+    "to" : "USDC",
+    "rate" : "4650"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-07-27T09:38:51.7424577Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "date",
+        "value" : "2026-06-01"
+      }, {
+        "key" : "source",
+        "value" : "market"
+      } ],
+      "name" : "ETH\/USDC rate"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "io.compprov.examples.nav.model.Rate"
+  },
+  "value" : {
+    "from" : "ETH",
+    "to" : "USDC",
+    "rate" : "4480"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-07-27T09:38:51.7474804Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Gross yield in USDC"
+    },
+    "id" : "o_31",
+    "kind" : "OUTPUT",
+    "numericId" : 31,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "1738.305562",
+    "currency" : "USDC"
+  }
+} ]

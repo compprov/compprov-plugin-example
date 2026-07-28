@@ -1,0 +1,33 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-07-27T09:31:15.9381088Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-07-27T09:31:15.9446256Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Intrinsic scale"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 2,
+    "roundingMode" : "DOWN"
+  }
+} ]

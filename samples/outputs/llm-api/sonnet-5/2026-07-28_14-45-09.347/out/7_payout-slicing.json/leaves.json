@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-07-27T09:31:15.9491393Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total payout in USDC"
+    },
+    "id" : "o_64",
+    "kind" : "OUTPUT",
+    "numericId" : 64,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1263.688000000000"
+} ]

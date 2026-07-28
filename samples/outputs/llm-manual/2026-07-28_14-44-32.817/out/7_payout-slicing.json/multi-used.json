@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-07-27T09:31:15.9416202Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Zero (OTM floor)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-07-27T09:31:15.9446256Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "ETH\/USDC spot (2026-06-30)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4650"
+} ]

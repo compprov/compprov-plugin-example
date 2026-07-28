@@ -1,0 +1,17 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-07-27T09:35:47.0748184Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Net profit in USDC"
+    },
+    "id" : "o_40",
+    "kind" : "OUTPUT",
+    "numericId" : 40,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "1466.632204",
+    "currency" : "USDC"
+  }
+} ]
