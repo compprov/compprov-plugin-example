@@ -1,0 +1,39 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 78.0
+
+## Audit Scope
+This audit specifically targeted the *Lineage Disconnection and Context Substitution* pattern: a computed intermediate variable that is quietly orphaned while a hardcoded or foreign root INPUT bearing the same name/role is routed into a downstream operation instead.
+
+## Forward Propagation Trace
+Full forward propagation was performed from every root INPUT to the final OUTPUT (`o_18`):
+
+- `i_9` (WSTETH balance, Lido) + `i_8` (ETH balance, Trust Nodes) → `op_1` (`add`) → `o_11` (WSTETH balance)
+- `o_11` + `i_3` (WSTETH/ETH rate) → `op_2` (`convert`) → `o_12` (WSTETH->ETH)
+- `i_5` (BTC balance) + `i_1` (BTC/USD rate) → `op_3` → `o_13` (BTC->USD)
+- `i_6` (ETH balance, Binance) + `i_2` (ETH/USD rate) → `op_4` → `o_14`
+- `i_7` (USDC balance, Binance) + `i_4` (USDC/USD rate) → `op_5` → `o_15`
+- `o_12` + `i_2` (ETH/USD rate) → `op_6` → `o_16` (ETH(Staked)->USD)
+- `i_10` (USDC balance, Morpho) + `i_4` → `op_7` → `o_17`
+- `o_13,o_14,o_15,o_16,o_17` → `op_8` (`addBulk`) → `o_18` (Assets sum, the sole leaf/final output)
+
+Every computed intermediate output (`o_11`–`o_17`) is consumed by exactly the operation that logically follows it, and the `resultId` of each producing operation is the literal argument consumed by the next — no computed variable is left orphaned in favor of a parallel/hardcoded stand-in. The only unconsumed variable is `o_18`, which is legitimately the terminal reported result.
+
+## Name-Collision Check (beyond the exact-match leaf set)
+The provided leaf-name-collision set returned empty because the only leaf is `o_18`. However, manually extending the check to *all* variables (not just leaves), a name collision was found: `i_9` ("WSTETH balance", root INPUT, Lido) and `o_11` ("WSTETH balance", computed OUTPUT). This is exactly the shape the attack vector warns about — a root INPUT sharing a computed variable's name. On tracing consumption, however, `i_9` is *only* ever consumed by `op_1` to produce `o_11`, and it is `o_11` (the computed value), not `i_9` directly, that propagates downstream via `op_2`→`op_6`→`op_8`. There is no bypass: the computed sibling is not orphaned in favor of the raw input. This does not match the required signature (computed variable orphaned + substitute consumed instead).
+
+## Arithmetic Verification
+All operations were independently recomputed by hand:
+- `o_11 = i_9 + i_8` reproduces exactly.
+- `o_12 = o_11 × rate(i_3)` reproduces exactly.
+- `o_13, o_14, o_15, o_16, o_17` all reproduce to the reported cent value under a consistent **truncation (round-down)** rounding policy (verified by recomputing exact decimal products for all five conversions — each independently truncates rather than rounds-half-up, and this behavior is uniform across every conversion, not isolated to one node).
+- `o_18 = o_13+o_14+o_15+o_16+o_17` reproduces exactly.
+
+No silent rate swap, argument transposition, or numeric near-miss substitution was found in any `arguments` mapping.
+
+## Details
+No computed OUTPUT variable in this graph is left unconsumed except the legitimate final result (`o_18`), and no root INPUT variable duplicates the name/role of a computed sibling while simultaneously being routed into a downstream operation in that sibling's place. The `i_9`/`o_11` name overlap, while superficially matching the attack's disguise pattern, resolves cleanly on trace: the input feeds the computation and the computation's own result (not the raw input) is what continues downstream. Consequently, the specific $Origin\_Propagation\_Valid$ test — does the reported `o_18` derive from the graph's own full chain from true roots without a hidden substitution — holds for every branch traced.
+
+One non-lineage observation for human review: `op_1` (`add`) sums a WSTETH-denominated balance (`i_9`) directly with an ETH-denominated balance (`i_8`) without an intervening unit conversion, despite a WSTETH/ETH conversion rate (`i_3`) being available and used one step later. This is a potential unit-handling/business-logic concern (it could overstate the aggregated position depending on intended semantics), but it is transparently declared (`formula: a+b`) and does not constitute a hidden lineage break or hardcoded substitution — it is flagged here only as a candidate for separate financial-logic review, not as the audited attack.
+
+Given the absence of any orphaned computed variable, absence of any hardcoded stand-in being routed into a downstream operation in place of its computed counterpart, and full literal `resultId`-to-argument consumption across the chain, no Lineage Disconnection / Context Substitution attack is substantiated in this graph.

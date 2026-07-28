@@ -8,7 +8,6 @@ dependency-reduced-pom.xml
 *.iml
 *.iws
 *.ipr
-out/
 
 # Project-specific — not for public repo
 CLAUDE.md

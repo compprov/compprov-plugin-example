@@ -1,0 +1,17 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-06-30T07:36:23.1756595Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "computation precision"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 34,
+    "roundingMode" : "HALF_EVEN"
+  }
+} ]

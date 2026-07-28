@@ -1,0 +1,23 @@
+# Summary
+- **Verdict**: CALCULATION OMISSION DETECTED
+- **Confidence score**: 82.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `o_7`, `o_8`, `o_9` (Leg [0] CALL K=4630), `op_1`, `op_2`, `op_3`, and the final aggregation `op_40` → `o_64`. For contrast, the same computation for every other leg (`op_4`–`op_7`, `op_8`–`op_11`, `op_12`–`op_15`, `op_16`–`op_19`, `op_20`–`op_23`, `op_24`–`op_27`, `op_28`–`op_31`, `op_32`–`op_35`, `op_36`–`op_39`) is examined for comparison.
+
+The pipeline computes 10 option legs. Nine of them (legs [1] through [9]) follow an identical 4-step pattern:
+1. `subtract` (intrinsic difference vs spot),
+2. `max` (OTM floor against `i_2`=0),
+3. `multiply` (intrinsic × contract size) → raw payout,
+4. `setScale` against `i_4` ("Intrinsic scale", precision=2, rounding=DOWN) → a truncated/rounded payout that is what actually feeds `addBulk` (`op_40`).
+
+Example: leg [1] PUT K=4710 → raw payout `o_14 = 170.5860000000000`, then `op_7` truncates it to `o_15 = 170.58` (discarding the trailing `.006`), and `o_15` — not `o_14` — is the value summed in `op_40`. The same DOWN-truncation is applied consistently for legs [2]–[9] (`o_21`, `o_27`, `o_33`, `o_39`, `o_45`, `o_51`, `o_57`, `o_63`), each dropping the sub-cent remainder of the raw payout before being fed into the final sum.
+
+Leg [0] (CALL K=4630, `i_5`/`i_6`) breaks this pattern: it has only 3 operations (`op_1`, `op_2`, `op_3`), with **no corresponding `setScale` step**. Its raw, unrounded multiply result `o_9 = 137.2780000000000` is wired directly into `op_40` as the `a` argument, bypassing the truncation-to-2-decimals-DOWN adjustment that every sibling leg is forced through. Had leg [0] been treated consistently, `137.278` would have been truncated (DOWN, scale 2) to `137.27`, exactly mirroring how `170.586→170.58`, `628.056→628.05`, `88.426→88.42`, `239.364→239.36` were each truncated for the other legs.
+
+## Details
+
+The "Intrinsic scale" MathContext (`i_4`, precision 2 / DOWN) is clearly a mandatory normalization/rounding correction applied uniformly across the option book before the legs are aggregated — it appears as a required last step in every leg's sub-computation except one. Leg [0]'s omission of this step is not visible to a naive structural check: `o_9` is not a disconnected leaf (it *is* consumed, directly, by `op_40`), so it does not appear in the "leaf" or "unconsumed" reference sets. The omission instead manifests as a missing operation node (`setScale` never invoked for this leg) and a final-aggregation argument that silently references the pre-adjustment value instead of a post-adjustment counterpart that a consistent methodology would have produced (and that exists for every other leg).
+
+Effect on the reported result: because DOWN rounding on a positive value only ever reduces or preserves it, skipping the truncation for leg [0] inflates its contribution to the total by `0.008` (137.278 vs. the 137.27 a consistent pipeline would have produced), and correspondingly inflates the reported "Total payout in USDC" (`o_64 = 1263.688000000000`) by the same amount relative to what a uniformly-rounded computation would report. While the absolute magnitude (0.008 USDC) is small, the pattern is structurally identical to a targeted, surgical omission: a correction step enforced on 9/10 sibling computations is selectively dropped for exactly one, with no annotation, metadata, or documented rationale in the graph explaining the asymmetry. This is precisely the kind of disguised, low-magnitude bias a competent adversary would introduce to survive casual review while still altering the reported final figure.

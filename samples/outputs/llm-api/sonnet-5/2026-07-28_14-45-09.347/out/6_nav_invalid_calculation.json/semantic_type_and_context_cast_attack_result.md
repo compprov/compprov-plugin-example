@@ -1,0 +1,29 @@
+# Summary
+- **Verdict**: SEMANTIC CAST DETECTED
+- **Confidence score**: 86.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `o_9`, `o_10`, `o_11`, `o_12`, `o_13` (inputs to the aggregation), `op_6` (`addBulk`), `o_14` ("Assets sum", final NAV output).
+
+Tracing the declared computation for `op_6`:
+
+```
+o_14 = o_9 + o_10 + o_11 + o_12 + o_13
+     = 146948.10 + 48624.45 + 538.22 + 12312.36 + 223326.04
+     = 431749.17
+```
+
+The recorded value of `o_14` is **441749.17** — exactly **$10,000.00** higher than what `op_6`'s own declared formula (`a+b0+...+bn`) and its own listed arguments (`o_9`..`o_13`) produce. Every upstream `convert` operation (`op_1`-`op_5`) is internally consistent with its source rate/balance pairing (BTC rate used only with BTC balance, ETH rate only with ETH balances, USDC rate only with USDC balances) — no currency-mismatch cast exists at that layer. The anomaly is isolated to the final aggregation node.
+
+**Attack flow:** The five converted USD legs are computed correctly and individually reconcile against their source `Rate`/`Amount` inputs. They are then fed into `op_6`, whose `descriptor.meta.formula` explicitly claims `"a+b0+...+bn"` — i.e., the output is contractually defined as nothing more than the sum of exactly those five arguments. The stored `resultId` value (`o_14`) violates that explicit contract by a clean, round $10,000, with no corresponding operation, argument, input variable, or metadata entry anywhere in the graph that could account for the delta. The `valueClass` (`Amount`, currency `USD`) and wrapper (`WrappedAmount`) are identical to what a legitimate sum would carry, so type checking and casual mathematical "looks like a sum" review both pass — only a line-by-line recomputation against the declared formula exposes the divergence.
+
+## Details
+
+This is precisely the class of attack the audit target describes: technical type continuity is perfect (`Amount`/`USD` in, `Amount`/`USD` out), the operation (`addBulk`) is nominally legitimate and its formula metadata is even self-documenting, yet the *actual business content* of `o_14` — the semantic claim "this is the total of exactly these five reconciled asset positions" — is false. The node has been silently re-cast to represent a different quantity (total assets *plus* an undisclosed $10,000 of unexplained origin) while every structural and type-level signal continues to assert that it is a pure, auditable sum of its five listed inputs.
+
+Because `addBulk`'s arguments dictionary explicitly enumerates `a, b0, b1, b2, b3` mapping to `o_9`..`o_13`, and none of those upstream values were altered (each independently reconciles against its own `convert` inputs), the injected $10,000 cannot be attributed to any legitimate upstream re-conversion, rounding, or rate adjustment — rounding at this scale (five two-decimal legs) could plausibly explain cents, not $10,000.00 exactly. This is the signature of a covert value injection at the aggregation boundary: the provenance graph asserts an honest, fully-audited derivation for the reported NAV total, but the number actually reported to consumers of `o_14` ("Assets sum") is inflated beyond what that derivation supports — a direct violation of the invariant that "domain transitions ... must be backed by explicit, auditable transformation logic, not merely by an operation that happens to be type-safe."
+
+**Consequence:** Any downstream NAV, solvency, or reporting calculation consuming `o_14` will overstate total assets by $10,000 while the audit trail *appears* fully reconciled at the per-asset level, making this exactly the kind of tampering designed to survive casual review and even naive automated mathematical replay checks that only spot-check individual `convert` steps rather than re-deriving the final aggregate.
+
+*Secondary, lower-confidence observation:* `o_11` (538.22) and `o_13` (223326.04) are each $0.01 below the exact product of their stated `amount × rate` (538.229 and 223326.049 respectively), both rounding downward on USDC legs specifically. This could be an artifact of a particular `MathContext`/rounding mode not captured in the trace, but is noted for completeness; it is not the basis for the primary verdict.

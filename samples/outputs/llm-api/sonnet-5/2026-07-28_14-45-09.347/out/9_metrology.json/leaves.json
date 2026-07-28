@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-04-04T08:05:48.6512694Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "deltaL: length deviation from nominal, nm"
+    },
+    "id" : "o_96",
+    "kind" : "OUTPUT",
+    "numericId" : 96,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2.312175478646862285669288269"
+} ]

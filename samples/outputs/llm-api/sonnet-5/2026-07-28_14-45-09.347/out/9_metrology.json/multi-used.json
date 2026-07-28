@@ -1,0 +1,111 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-04-04T08:05:48.6392685Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "constant 1"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-04-04T08:05:48.6422693Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "report",
+        "value" : "OFS-2024-0002"
+      }, {
+        "key" : "date",
+        "value" : "2024-05-08"
+      } ],
+      "name" : "lambda_vac3: Spectra 117A-1 HeNe vacuum wavelength, nm"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "632.9909778"
+}, {
+  "track" : {
+    "createdAt" : "2026-04-04T08:05:48.6422693Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "T_air: air temperature, degC"
+    },
+    "id" : "i_7",
+    "kind" : "INPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "20.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-04-04T08:05:48.6422693Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "P_air: air pressure, Pa"
+    },
+    "id" : "i_8",
+    "kind" : "INPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "101325.0"
+}, {
+  "track" : {
+    "createdAt" : "2026-04-04T08:05:48.6432683Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "T_K: air temperature, K"
+    },
+    "id" : "o_12",
+    "kind" : "OUTPUT",
+    "numericId" : 12,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "293.15"
+}, {
+  "track" : {
+    "createdAt" : "2026-04-04T08:05:48.6452698Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "sigma: vacuum wavenumber, um^-1"
+    },
+    "id" : "o_27",
+    "kind" : "OUTPUT",
+    "numericId" : 27,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.579801347999560697688035830958727"
+}, {
+  "track" : {
+    "createdAt" : "2026-04-04T08:05:48.6452698Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "sigma^2, um^-2"
+    },
+    "id" : "o_28",
+    "kind" : "OUTPUT",
+    "numericId" : 28,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2.495772299141229083230759171428315"
+}, {
+  "track" : {
+    "createdAt" : "2026-04-04T08:05:48.6462686Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "scale factor 1e-8"
+    },
+    "id" : "i_49",
+    "kind" : "INPUT",
+    "numericId" : 49,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1E-8"
+} ]

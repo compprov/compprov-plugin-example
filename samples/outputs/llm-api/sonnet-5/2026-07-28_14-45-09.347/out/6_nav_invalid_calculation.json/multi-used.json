@@ -1,0 +1,41 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-04-27T17:45:16.2014948Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "origin",
+        "value" : "Binance"
+      } ],
+      "name" : "ETH\/USD rate"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "io.compprov.examples.nav.model.Rate"
+  },
+  "value" : {
+    "from" : "ETH",
+    "to" : "USD",
+    "rate" : "2083.31"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-04-27T17:45:16.2014948Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "origin",
+        "value" : "Binance"
+      } ],
+      "name" : "USDC\/USD rate"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "io.compprov.examples.nav.model.Rate"
+  },
+  "value" : {
+    "from" : "USDC",
+    "to" : "USD",
+    "rate" : "1.01"
+  }
+} ]

@@ -1,0 +1,22 @@
+# Summary
+- **Verdict**: SEMANTIC CAST DETECTED
+- **Confidence score**: 93.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_8` (ETH balance, source: Trust Nodes), `i_9` (WSTETH balance, source: Lido), `o_11` (mislabeled "WSTETH balance"), `i_3` (WSTETH/ETH rate), `o_12` ("WSTETH->ETH"), `i_2` (ETH/USD rate), `o_16` ("ETH(Staked)->USD"), `o_18` ("Assets sum").
+**Implicated operations:** `op_1` (add), `op_2` (convert), `op_6` (convert), `op_8` (addBulk).
+
+**Attack flow:**
+
+1. `op_1` (`add`) sums `i_9` (26.515133966086203543 **WSTETH**, source Lido) with `i_8` (95.602701057800416606 **ETH**, source Trust Nodes) — two different underlying assets with a non-1:1 exchange rate between them (`i_3` = 1.243492 WSTETH→ETH).
+2. The result `o_11` is stored with `descriptor.name = "WSTETH balance"` and, critically, `currency: "WSTETH"` — asserting that the entire 122.117835023886620149 quantity is WSTETH, when 95.6+ units of it are actually raw, unconverted ETH. This is a silent re-labeling of business context: technical type (`Amount`/numeric addition) is preserved and the arithmetic replays perfectly (26.515133966086203543 + 95.602701057800416606 = 122.117835023886620149), but the semantic meaning of the operand ("ETH balance") is discarded and replaced with a false one ("WSTETH balance") with no explicit conversion operation performed on `i_8` at all.
+3. `op_2` then converts `o_11` using the WSTETH→ETH rate (`i_3` = 1.243492), producing `o_12` = 151.852550909522821062 ETH. This conversion is mathematically self-consistent (122.117835023886620149 × 1.243492 = 151.852550909522821062), so a naive replay check passes — but it is semantically invalid: the WSTETH→ETH rate is being applied to a blended figure that includes an already-ETH-denominated balance (`i_8`), inflating that portion by the WSTETH/ETH premium (~24.35%) for no economic reason.
+4. `op_6` converts `o_12` to USD via the ETH/USD rate (`i_2`), yielding `o_16` ("ETH(Staked)->USD" = 316,355.93 USD), which is then folded into the final `Assets sum` (`o_18` = 1,112,940.13 USD) via `op_8`.
+5. Note that `i_6` (the *other* ETH balance, from Binance) is converted independently and correctly via `op_4` (direct ETH/USD conversion, no WSTETH rate applied) into `o_14`. There is no equivalent, correctly-labeled, direct ETH/USD conversion path for `i_8` — its only route into the final sum is through the fraudulent WSTETH relabeling in `op_1`/`op_2`.
+
+## Details
+
+The attack works because every individual step is technically valid: `add` and `convert` are legitimate operation types, the `valueClass` (`Amount`) is preserved end-to-end, and the numeric replay of every operation matches to the last decimal. A schema/type validator or a naive mathematical replay auditor would find nothing wrong. The violation is purely at the business-semantics layer: `op_1` combines a WSTETH balance and an ETH balance — two economically distinct assets connected only by a non-unity exchange rate — as if they were fungible units of the same currency, and stamps the blended result with the metadata of only one of the two source assets (`currency: "WSTETH"`). No explicit "convert ETH→WSTETH-equivalent" transformation node exists to justify folding `i_8` into a WSTETH-denominated quantity; the relabeling is implicit and undocumented, which directly violates the stated invariant that domain transitions must be backed by explicit, auditable transformation logic rather than an operation that merely happens to be type-safe.
+
+The consequence is a material, quantifiable overstatement of NAV: `i_8`'s 95.602701057800416606 ETH is effectively multiplied by the WSTETH→ETH rate (1.243492) before being converted to USD, instead of being converted directly at the ETH/USD rate as `i_6` correctly was. This inflates that balance's USD contribution by roughly 24.3%, and this inflated figure propagates unmodified through `op_6` into `o_16` and then into the headline `Assets sum` (`o_18`), silently overstating total NAV by tens of thousands of USD while every downstream number remains internally "consistent" and passes casual/mechanical replay checks. This is a textbook Semantic Type and Context Cast: type and math integrity preserved, business context (asset identity/currency) covertly swapped mid-pipeline.

@@ -1,0 +1,45 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 88.0
+
+## Audit Summary
+
+This audit targeted the *Lineage Disconnection and Context Substitution* attack vector: the possibility that a correctly-computed intermediate variable is left as an orphaned dead-end while a hardcoded or foreign value is quietly routed into a downstream calculation (most commonly the final aggregation step) instead.
+
+### Verification Performed
+
+**1. Recomputation of every per-position payout (op_1 – op_10):**
+Using spot i_3 = 4650 USDC and each position's strike/size, the CALL/PUT max(0, ...) payout formula was replayed by hand for every position:
+
+| Op | Position | Type | Strike | Size | Expected Payout | Reported (o_14..o_23) | Match |
+|----|----------|------|--------|------|------------------|------------------------|-------|
+| op_1 | i_4 | CALL | 4630 | 6.8639 | 137.278000 | o_14 = 137.278000 | ✅ |
+| op_2 | i_5 | PUT | 4710 | 2.8431 | 170.586000 | o_15 = 170.586000 | ✅ |
+| op_3 | i_6 | CALL | 4670 | 9.0434 | 0 (OTM) | o_16 = 0.000000 | ✅ |
+| op_4 | i_7 | PUT | 4550 | 2.8299 | 0 (OTM) | o_17 = 0.000000 | ✅ |
+| op_5 | i_8 | PUT | 4730 | 7.8507 | 628.056000 | o_18 = 628.056000 | ✅ |
+| op_6 | i_9 | CALL | 4630 | 4.4213 | 88.426000 | o_19 = 88.426000 | ✅ |
+| op_7 | i_10 | CALL | 4710 | 3.9270 | 0 (OTM) | o_20 = 0.000000 | ✅ |
+| op_8 | i_11 | PUT | 4690 | 5.9841 | 239.364000 | o_21 = 239.364000 | ✅ |
+| op_9 | i_12 | PUT | 4590 | 8.2771 | 0 (OTM) | o_22 = 0.000000 | ✅ |
+| op_10 | i_13 | PUT | 4550 | 5.9155 | 0 (OTM) | o_23 = 0.000000 | ✅ |
+
+All ten payout results derive exactly and traceably from the same shared root spot price (i_3) and their respective position inputs — no alternate spot-price or position variable exists anywhere in the graph that could have been silently swapped in.
+
+**2. Verification of the final aggregation (op_11, addBulk → o_24):**
+The arguments of op_11 (`a=o_14, b0=o_15, ..., b8=o_23`) enumerate all ten computed payout outputs exactly once, with no omissions, no duplicates, and no foreign/hardcoded operand mixed in. Summing the reported values:
+
+137.278 + 170.586 + 0 + 0 + 628.056 + 88.426 + 0 + 239.364 + 0 + 0 = 1263.710
+
+This matches o_24 = 1263.710000 exactly. The reported total is fully and correctly forward-propagated from the graph's own computation chain — $O_{derived} = O_{reported}$.
+
+**3. Structural reference cross-check:**
+- Leaf variables: `o_24` (expected terminal, correctly the sink of the full chain), `i_1` (MathContext), `i_2` (Zero/OTM floor constant). Neither i_1 nor i_2 has a computed sibling anywhere else in the graph representing the same quantity (no other "precision" or "zero-floor" variable exists) — they are genuine constants implicitly used inside the black-box `payout()` wrapper call, not disguised substitutes for a computed value. No exact or semantic name-collision candidates were found that would indicate a computed sibling being bypassed in favor of a hardcoded stand-in.
+- The only multiply-consumed non-MathContext variable, i_3 (spot price), is legitimately reused across all ten payout calls — this is expected shared context, not a substitution.
+- No computed OUTPUT variable (o_14–o_23) is left unconsumed; every single one flows into op_11, the final aggregation. There is no orphaned computed payout with a parallel hardcoded value taking its place in the sum.
+
+### Conclusion
+
+No instance of Lineage Disconnection or Context Substitution was found. Every reported OUTPUT is reachable, via the graph's own operations, back to genuine root inputs, and the final aggregate (o_24) is a correct, fully-traceable sum of exactly the ten computed payout legs with no hardcoded override or bypassed computed sibling detected. The two unconsumed root inputs (i_1, i_2) are legitimate constants with no computed counterpart, consistent with the invariant's carve-out for genuine constants.
+
+Given the density of manual verification performed (full formula replay across 10 legs plus the aggregation step) and the absence of any name/role collision suggesting a parallel hardcoded path, this graph is assessed as clean with high confidence — tempered slightly because full byte-level auditing of every nested DTO field metadata was not exhaustively cross-referenced beyond what is shown.

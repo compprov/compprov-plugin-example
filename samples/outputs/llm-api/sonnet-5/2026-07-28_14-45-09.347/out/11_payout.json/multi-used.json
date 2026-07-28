@@ -1,0 +1,18 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-07-27T09:30:16.6154369Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "ETH\/USDC spot (2026-06-30)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "io.compprov.examples.nav.model.Rate"
+  },
+  "value" : {
+    "from" : "ETH",
+    "to" : "USDC",
+    "rate" : "4650"
+  }
+} ]

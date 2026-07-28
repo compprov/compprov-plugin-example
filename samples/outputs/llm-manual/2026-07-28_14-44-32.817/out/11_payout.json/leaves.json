@@ -1,0 +1,46 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-07-27T09:30:16.6234682Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total payout in USDC"
+    },
+    "id" : "o_24",
+    "kind" : "OUTPUT",
+    "numericId" : 24,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "1263.710000",
+    "currency" : "USDC"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-07-27T09:30:16.6109223Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-07-27T09:30:16.6134359Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Zero (OTM floor)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+} ]
