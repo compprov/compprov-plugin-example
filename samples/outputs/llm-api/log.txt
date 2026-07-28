@@ -1,0 +1,79 @@
+\outputs\llm-api>java -jar  compprov-analytics-0.1.0.jar --plugin=\compprov-plugin-example\target\compprov-plugin-example-0.1.0.jar  --cpgpath=\snapshots\malicious\broken-chronology.json --cpgpath=\snapshots\malicious\ciddor-substitution-1-1.json --cpgpath=\snapshots\malicious\ciddor-substitution-similar.json --cpgpath=\snapshots\malicious\gas-costs-omission.json --cpgpath=\snapshots\malicious\gas-double-subtraction.json --cpgpath=\snapshots\malicious\nav_invalid_calculation.json --cpgpath=\snapshots\malicious\payout-slicing.json --cpgpath=\snapshots\malicious\semantic-tamper.json --cpgpath=\snapshots\normal\metrology.json --cpgpath=\snapshots\normal\net_asset_value.json --cpgpath=\snapshots\normal\payout.json --cpgpath=\snapshots\normal\profit.json --executePrompts=true
+2026-07-28T14:45:09.1577241+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processPlugin INFO: Applying customizer: io.compprov.plugin.example.nav.NavEnvironmentCustomizer
+SLF4J(W): No SLF4J providers were found.
+SLF4J(W): Defaulting to no-operation (NOP) logger implementation
+SLF4J(W): See https://www.slf4j.org/codes.html#noProviders for further details.
+2026-07-28T14:45:09.3472123+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processPlugin INFO: Using chat model
+2026-07-28T14:45:09.3487159+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main main INFO: Processing file 1 of 12: \snapshots\malicious\broken-chronology.json
+2026-07-28T14:45:09.5187038+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 1 of 5: Calculation omission
+2026-07-28T14:45:41.4785612+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 2 of 5: Lineage disconnection
+2026-07-28T14:46:25.4897854+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 3 of 5: Precision tampering
+2026-07-28T14:47:08.5204211+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 4 of 5: Semantic violation
+2026-07-28T14:48:26.6988715+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 5 of 5: Double counting
+2026-07-28T14:49:19.7161166+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main main INFO: Processing file 2 of 12: \snapshots\malicious\ciddor-substitution-1-1.json
+2026-07-28T14:49:19.7897778+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 1 of 5: Calculation omission
+2026-07-28T14:50:09.2721135+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 2 of 5: Lineage disconnection
+2026-07-28T14:50:44.1784673+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 3 of 5: Precision tampering
+2026-07-28T14:53:18.3361785+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 4 of 5: Semantic violation
+2026-07-28T14:54:16.8985553+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 5 of 5: Double counting
+2026-07-28T14:56:07.6143593+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main main INFO: Processing file 3 of 12: \snapshots\malicious\ciddor-substitution-similar.json
+2026-07-28T14:56:07.6865933+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 1 of 5: Calculation omission
+2026-07-28T14:57:19.3682843+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 2 of 5: Lineage disconnection
+2026-07-28T14:58:01.7414992+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 3 of 5: Precision tampering
+2026-07-28T15:00:21.454252+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 4 of 5: Semantic violation
+2026-07-28T15:01:59.8399395+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 5 of 5: Double counting
+2026-07-28T15:04:17.0186621+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main main INFO: Processing file 4 of 12: \snapshots\malicious\gas-costs-omission.json
+2026-07-28T15:04:17.0583261+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 1 of 5: Calculation omission
+2026-07-28T15:04:54.582072+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 2 of 5: Lineage disconnection
+2026-07-28T15:05:44.0527431+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 3 of 5: Precision tampering
+2026-07-28T15:08:23.7204943+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 4 of 5: Semantic violation
+2026-07-28T15:10:29.7303448+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 5 of 5: Double counting
+2026-07-28T15:12:09.0155103+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main main INFO: Processing file 5 of 12: \snapshots\malicious\gas-double-subtraction.json
+2026-07-28T15:12:09.0839229+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 1 of 5: Calculation omission
+2026-07-28T15:15:51.7227668+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 2 of 5: Lineage disconnection
+2026-07-28T15:19:35.3387088+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 3 of 5: Precision tampering
+2026-07-28T15:22:17.0384384+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 4 of 5: Semantic violation
+2026-07-28T15:23:57.3201611+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 5 of 5: Double counting
+2026-07-28T15:25:20.8197879+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main main INFO: Processing file 6 of 12: \snapshots\malicious\nav_invalid_calculation.json
+2026-07-28T15:25:20.8672927+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 1 of 5: Calculation omission
+2026-07-28T15:27:02.2754102+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 2 of 5: Lineage disconnection
+2026-07-28T15:28:15.5334101+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 3 of 5: Precision tampering
+2026-07-28T15:29:15.2719002+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 4 of 5: Semantic violation
+2026-07-28T15:30:34.3449265+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 5 of 5: Double counting
+2026-07-28T15:31:41.9825466+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main main INFO: Processing file 7 of 12: \snapshots\malicious\payout-slicing.json
+2026-07-28T15:31:42.0312629+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 1 of 5: Calculation omission
+2026-07-28T15:32:53.9391778+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 2 of 5: Lineage disconnection
+2026-07-28T15:35:30.3457312+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 3 of 5: Precision tampering
+2026-07-28T15:36:51.0082931+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 4 of 5: Semantic violation
+2026-07-28T15:37:50.6270822+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 5 of 5: Double counting
+2026-07-28T15:39:55.0951405+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main main INFO: Processing file 8 of 12: \snapshots\malicious\semantic-tamper.json
+2026-07-28T15:39:55.161052+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 1 of 5: Calculation omission
+2026-07-28T15:43:13.6732399+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 2 of 5: Lineage disconnection
+2026-07-28T15:45:37.3558044+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 3 of 5: Precision tampering
+2026-07-28T15:47:26.0225257+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 4 of 5: Semantic violation
+2026-07-28T15:48:25.0041076+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 5 of 5: Double counting
+2026-07-28T15:50:59.7690877+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main main INFO: Processing file 9 of 12: \snapshots\normal\metrology.json
+2026-07-28T15:50:59.7976141+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 1 of 5: Calculation omission
+2026-07-28T15:52:37.8613646+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 2 of 5: Lineage disconnection
+2026-07-28T15:55:22.8046162+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 3 of 5: Precision tampering
+2026-07-28T15:57:45.7574071+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 4 of 5: Semantic violation
+2026-07-28T16:01:33.6896903+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 5 of 5: Double counting
+2026-07-28T16:03:28.6071504+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main main INFO: Processing file 10 of 12: \snapshots\normal\net_asset_value.json
+2026-07-28T16:03:28.6766329+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 1 of 5: Calculation omission
+2026-07-28T16:03:57.3815459+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 2 of 5: Lineage disconnection
+2026-07-28T16:04:54.7220596+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 3 of 5: Precision tampering
+2026-07-28T16:06:22.4645685+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 4 of 5: Semantic violation
+2026-07-28T16:08:01.58652+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 5 of 5: Double counting
+2026-07-28T16:08:25.7623347+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main main INFO: Processing file 11 of 12: \snapshots\normal\payout.json
+2026-07-28T16:08:25.7916404+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 1 of 5: Calculation omission
+2026-07-28T16:08:57.3604194+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 2 of 5: Lineage disconnection
+2026-07-28T16:09:44.8835775+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 3 of 5: Precision tampering
+2026-07-28T16:10:19.1364825+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 4 of 5: Semantic violation
+2026-07-28T16:11:19.058772+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 5 of 5: Double counting
+2026-07-28T16:11:53.0324541+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main main INFO: Processing file 12 of 12: \snapshots\normal\profit.json
+2026-07-28T16:11:53.0724555+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 1 of 5: Calculation omission
+2026-07-28T16:14:19.8374087+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 2 of 5: Lineage disconnection
+2026-07-28T16:15:39.7351704+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 3 of 5: Precision tampering
+2026-07-28T16:17:33.3693083+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 4 of 5: Semantic violation
+2026-07-28T16:20:40.1820982+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main processFile INFO: Processing prompt 5 of 5: Double counting
+2026-07-28T16:23:42.4789247+05:00[Asia/Qyzylorda] io.compprov.analytics.cli.Main main INFO: Processing is done, the report is saved into 2026-07-28_14-45-09.347/out/summary.md

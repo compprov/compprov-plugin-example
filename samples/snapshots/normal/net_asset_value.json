@@ -1,0 +1,406 @@
+{
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "Nav calculation example"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8582078Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "origin",
+          "value" : "Binance"
+        } ],
+        "name" : "BTC\/USD rate"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "io.compprov.examples.nav.model.Rate"
+    },
+    "value" : {
+      "from" : "BTC",
+      "to" : "USD",
+      "rate" : "68989.72"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8622979Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "origin",
+          "value" : "Binance"
+        } ],
+        "name" : "ETH\/USD rate"
+      },
+      "id" : "i_2",
+      "kind" : "INPUT",
+      "numericId" : 2,
+      "valueClass" : "io.compprov.examples.nav.model.Rate"
+    },
+    "value" : {
+      "from" : "ETH",
+      "to" : "USD",
+      "rate" : "2083.31"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8622979Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "origin",
+          "value" : "Binance"
+        } ],
+        "name" : "USDC\/USD rate"
+      },
+      "id" : "i_3",
+      "kind" : "INPUT",
+      "numericId" : 3,
+      "valueClass" : "io.compprov.examples.nav.model.Rate"
+    },
+    "value" : {
+      "from" : "USDC",
+      "to" : "USD",
+      "rate" : "1.01"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8632981Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "source",
+          "value" : "Binance"
+        } ],
+        "name" : "BTC balance"
+      },
+      "id" : "i_4",
+      "kind" : "INPUT",
+      "numericId" : 4,
+      "valueClass" : "io.compprov.examples.nav.model.Amount"
+    },
+    "value" : {
+      "amount" : "1.24184892",
+      "currency" : "BTC"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8643003Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "source",
+          "value" : "Binance"
+        } ],
+        "name" : "ETH balance"
+      },
+      "id" : "i_5",
+      "kind" : "INPUT",
+      "numericId" : 5,
+      "valueClass" : "io.compprov.examples.nav.model.Amount"
+    },
+    "value" : {
+      "amount" : "92.520767008267654318",
+      "currency" : "ETH"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8643003Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "source",
+          "value" : "Binance"
+        } ],
+        "name" : "USDC balance"
+      },
+      "id" : "i_6",
+      "kind" : "INPUT",
+      "numericId" : 6,
+      "valueClass" : "io.compprov.examples.nav.model.Amount"
+    },
+    "value" : {
+      "amount" : "53344.459319",
+      "currency" : "USDC"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8643003Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "source",
+          "value" : "Stake"
+        } ],
+        "name" : "ETH balance"
+      },
+      "id" : "i_7",
+      "kind" : "INPUT",
+      "numericId" : 7,
+      "valueClass" : "io.compprov.examples.nav.model.Amount"
+    },
+    "value" : {
+      "amount" : "8.310133997912894088",
+      "currency" : "ETH"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8643003Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "source",
+          "value" : "Morpho"
+        } ],
+        "name" : "USDC balance"
+      },
+      "id" : "i_8",
+      "kind" : "INPUT",
+      "numericId" : 8,
+      "valueClass" : "io.compprov.examples.nav.model.Amount"
+    },
+    "value" : {
+      "amount" : "22284.229335",
+      "currency" : "USDC"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8648072Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "BTC->USD"
+      },
+      "id" : "o_9",
+      "kind" : "OUTPUT",
+      "numericId" : 9,
+      "valueClass" : "io.compprov.examples.nav.model.Amount"
+    },
+    "value" : {
+      "amount" : "85674.80",
+      "currency" : "USD"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8658117Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "ETH(Binance)->USD"
+      },
+      "id" : "o_10",
+      "kind" : "OUTPUT",
+      "numericId" : 10,
+      "valueClass" : "io.compprov.examples.nav.model.Amount"
+    },
+    "value" : {
+      "amount" : "192749.43",
+      "currency" : "USD"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8658117Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "USDC(Binance)->USD"
+      },
+      "id" : "o_11",
+      "kind" : "OUTPUT",
+      "numericId" : 11,
+      "valueClass" : "io.compprov.examples.nav.model.Amount"
+    },
+    "value" : {
+      "amount" : "53877.90",
+      "currency" : "USD"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8658117Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "ETH(Staked)->USD"
+      },
+      "id" : "o_12",
+      "kind" : "OUTPUT",
+      "numericId" : 12,
+      "valueClass" : "io.compprov.examples.nav.model.Amount"
+    },
+    "value" : {
+      "amount" : "17312.58",
+      "currency" : "USD"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8658117Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "USDC(Morpho)->USD"
+      },
+      "id" : "o_13",
+      "kind" : "OUTPUT",
+      "numericId" : 13,
+      "valueClass" : "io.compprov.examples.nav.model.Amount"
+    },
+    "value" : {
+      "amount" : "22507.07",
+      "currency" : "USD"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-07-27T09:29:05.8658117Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Assets sum"
+      },
+      "id" : "o_14",
+      "kind" : "OUTPUT",
+      "numericId" : 14,
+      "valueClass" : "io.compprov.examples.nav.model.Amount"
+    },
+    "value" : {
+      "amount" : "372121.78",
+      "currency" : "USD"
+    }
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "convert(a,r)"
+        } ],
+        "name" : "convert"
+      },
+      "finishedAt" : "2026-07-27T09:29:05.8648072Z",
+      "id" : "op_1",
+      "numericId" : 1,
+      "startedAt" : "2026-07-27T09:29:05.8648072Z",
+      "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_4"
+    }, {
+      "key" : "r",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_9"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "convert(a,r)"
+        } ],
+        "name" : "convert"
+      },
+      "finishedAt" : "2026-07-27T09:29:05.8658117Z",
+      "id" : "op_2",
+      "numericId" : 2,
+      "startedAt" : "2026-07-27T09:29:05.8658117Z",
+      "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_5"
+    }, {
+      "key" : "r",
+      "value" : "i_2"
+    } ],
+    "resultId" : "o_10"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "convert(a,r)"
+        } ],
+        "name" : "convert"
+      },
+      "finishedAt" : "2026-07-27T09:29:05.8658117Z",
+      "id" : "op_3",
+      "numericId" : 3,
+      "startedAt" : "2026-07-27T09:29:05.8658117Z",
+      "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_6"
+    }, {
+      "key" : "r",
+      "value" : "i_3"
+    } ],
+    "resultId" : "o_11"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "convert(a,r)"
+        } ],
+        "name" : "convert"
+      },
+      "finishedAt" : "2026-07-27T09:29:05.8658117Z",
+      "id" : "op_4",
+      "numericId" : 4,
+      "startedAt" : "2026-07-27T09:29:05.8658117Z",
+      "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_7"
+    }, {
+      "key" : "r",
+      "value" : "i_2"
+    } ],
+    "resultId" : "o_12"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "convert(a,r)"
+        } ],
+        "name" : "convert"
+      },
+      "finishedAt" : "2026-07-27T09:29:05.8658117Z",
+      "id" : "op_5",
+      "numericId" : 5,
+      "startedAt" : "2026-07-27T09:29:05.8658117Z",
+      "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_8"
+    }, {
+      "key" : "r",
+      "value" : "i_3"
+    } ],
+    "resultId" : "o_13"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "a+b0+...+bn"
+        } ],
+        "name" : "addBulk"
+      },
+      "finishedAt" : "2026-07-27T09:29:05.8658117Z",
+      "id" : "op_6",
+      "numericId" : 6,
+      "startedAt" : "2026-07-27T09:29:05.8658117Z",
+      "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_9"
+    }, {
+      "key" : "b0",
+      "value" : "o_10"
+    }, {
+      "key" : "b1",
+      "value" : "o_11"
+    }, {
+      "key" : "b2",
+      "value" : "o_12"
+    }, {
+      "key" : "b3",
+      "value" : "o_13"
+    } ],
+    "resultId" : "o_14"
+  } ]
+}
