@@ -1,7 +1,24 @@
 package io.compprov.plugin.example.nav;
 
+import dev.langchain4j.data.message.ChatMessage;
+import dev.langchain4j.model.ModelProvider;
+import dev.langchain4j.model.anthropic.AnthropicChatModel;
+import dev.langchain4j.model.chat.Capability;
 import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.chat.ChatRequestOptions;
+import dev.langchain4j.model.chat.listener.ChatModelListener;
+import dev.langchain4j.model.chat.request.ChatRequest;
+import dev.langchain4j.model.chat.request.ChatRequestParameters;
+import dev.langchain4j.model.chat.request.ResponseFormat;
+import dev.langchain4j.model.chat.request.ResponseFormatType;
+import dev.langchain4j.model.chat.request.json.JsonObjectSchema;
+import dev.langchain4j.model.chat.request.json.JsonSchema;
+import dev.langchain4j.model.chat.response.ChatResponse;
 import dev.langchain4j.model.openai.OpenAiChatModel;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.Set;
 
 /**
  * A langchain4j {@link ChatModel} backed by env vars config, accessed through its
@@ -42,17 +59,91 @@ public class EnvVarConfiguredChatModel implements ChatModel {
      * ({@code CHATMODEL_URL}, {@code CHATMODEL_API_KEY}, {@code CHATMODEL_NAME}).
      */
     public EnvVarConfiguredChatModel() {
-        chatModel = OpenAiChatModel.builder()
-                .baseUrl(System.getenv("CHATMODEL_URL"))
-                .apiKey(System.getenv("CHATMODEL_API_KEY"))
-                .modelName(System.getenv("CHATMODEL_NAME"))
-                .responseFormat("json_schema")
-                .strictJsonSchema(true)
-                .build();
+        final var url = System.getenv("CHATMODEL_URL");
+        if (url == null) {
+            throw new RuntimeException("Env var CHATMODEL_URL is not set");
+        }
+        if (url.toLowerCase().contains("anthropic")) {
+            chatModel = new AnthropicChatModel.AnthropicChatModelBuilder()
+                    .baseUrl(System.getenv("CHATMODEL_URL"))
+                    .apiKey(System.getenv("CHATMODEL_API_KEY"))
+                    .modelName(System.getenv("CHATMODEL_NAME"))
+                    .maxTokens(100_000)
+                    .timeout(Duration.ofMinutes(5))
+                    .cacheSystemMessages(true)
+                    .responseFormat(ResponseFormat.builder()
+                            .type(ResponseFormatType.JSON)
+                            .jsonSchema(JsonSchema.builder()
+                                    .name("PromptProcessingResult")
+                                    .rootElement(JsonObjectSchema.builder()
+                                            .addStringProperty("verdict")
+                                            .addNumberProperty("confidence_score")
+                                            .addStringProperty("markdown_report")
+                                            .required("verdict", "confidence_score", "markdown_report")
+                                            .build())
+                                    .build())
+                            .build())
+                    .build();
+        } else {
+            chatModel = OpenAiChatModel.builder()
+                    .baseUrl(url)
+                    .apiKey(System.getenv("CHATMODEL_API_KEY"))
+                    .modelName(System.getenv("CHATMODEL_NAME"))
+                    .responseFormat("json_object")
+                    .maxTokens(100_000)
+                    .timeout(Duration.ofMinutes(5))
+                    .strictJsonSchema(true)
+                    .build();
+        }
+    }
+
+    @Override
+    public ChatResponse doChat(ChatRequest chatRequest) {
+        return chatModel.doChat(chatRequest);
+    }
+
+    @Override
+    public ChatResponse chat(ChatMessage... messages) {
+        return chatModel.chat(messages);
+    }
+
+    @Override
+    public ChatResponse chat(List<ChatMessage> messages) {
+        return chatModel.chat(messages);
+    }
+
+    @Override
+    public ChatResponse chat(ChatRequest chatRequest) {
+        return chatModel.chat(chatRequest);
+    }
+
+    @Override
+    public ChatResponse chat(ChatRequest chatRequest, ChatRequestOptions options) {
+        return chatModel.chat(chatRequest, options);
+    }
+
+    @Override
+    public List<ChatModelListener> listeners() {
+        return chatModel.listeners();
+    }
+
+    @Override
+    public ChatRequestParameters defaultRequestParameters() {
+        return chatModel.defaultRequestParameters();
+    }
+
+    @Override
+    public ModelProvider provider() {
+        return chatModel.provider();
     }
 
     @Override
     public String chat(String userMessage) {
         return chatModel.chat(userMessage);
+    }
+
+    @Override
+    public Set<Capability> supportedCapabilities() {
+        return chatModel.supportedCapabilities();
     }
 }

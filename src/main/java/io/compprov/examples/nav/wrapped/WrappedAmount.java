@@ -84,7 +84,8 @@ public class WrappedAmount extends AbstractWrappedVariable<Amount> {
     }
 
     /**
-     * @param operationDescriptor one of {@code OP_ADD}, {@code OP_ADD_BULK}, or {@code OP_CONVERT}
+     * @param operationDescriptor one of {@code OP_ADD}, {@code OP_SUBTRACT}, {@code OP_SCALE},
+     *                            {@code OP_ADD_BULK}, or {@code OP_CONVERT}
      * @return the lambda that performs the given operation, or {@code null} if unrecognized
      */
     @Override
@@ -92,6 +93,14 @@ public class WrappedAmount extends AbstractWrappedVariable<Amount> {
         return functionsMap.get(operationDescriptor);
     }
 
+    /**
+     * Records an {@code add} operation in the CPG and returns the tracked sum, per
+     * {@link Amount#add(Amount)} — including that method's currency-match caveat.
+     *
+     * @param val              the amount to add
+     * @param resultDescriptor descriptor for the result variable, or {@code null} to auto-name it
+     * @return a new {@code WrappedAmount} tracking the sum
+     */
     public WrappedAmount add(WrappedAmount val, Descriptor resultDescriptor) {
         Objects.requireNonNull(val, "val");
         return (WrappedAmount) execute(
@@ -101,6 +110,14 @@ public class WrappedAmount extends AbstractWrappedVariable<Amount> {
                 resultDescriptor);
     }
 
+    /**
+     * Records a {@code subtract} operation in the CPG and returns the tracked difference, per
+     * {@link Amount#subtract(Amount)} — including that method's currency-match caveat.
+     *
+     * @param val              the amount to subtract
+     * @param resultDescriptor descriptor for the result variable, or {@code null} to auto-name it
+     * @return a new {@code WrappedAmount} tracking the difference
+     */
     public WrappedAmount subtract(WrappedAmount val, Descriptor resultDescriptor) {
         Objects.requireNonNull(val, "val");
         return (WrappedAmount) execute(
@@ -110,6 +127,14 @@ public class WrappedAmount extends AbstractWrappedVariable<Amount> {
                 resultDescriptor);
     }
 
+    /**
+     * Records a {@code scale} operation in the CPG and returns the tracked product, per
+     * {@link Amount#scale(java.math.BigDecimal)}.
+     *
+     * @param factor           the multiplier to apply
+     * @param resultDescriptor descriptor for the result variable, or {@code null} to auto-name it
+     * @return a new {@code WrappedAmount} tracking the scaled value
+     */
     public WrappedAmount scale(WrappedBigDecimal factor, Descriptor resultDescriptor) {
         Objects.requireNonNull(factor, "factor");
         return (WrappedAmount) execute(

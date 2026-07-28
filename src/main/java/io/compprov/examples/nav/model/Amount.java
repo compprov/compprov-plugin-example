@@ -11,6 +11,12 @@ import static java.util.Objects.requireNonNull;
  * scaled to that currency's {@link Currency#getDecimals() decimal precision} and truncated
  * (never rounded up) on construction and on every operation.
  * <p>
+ * Truncation is a deliberate, system-wide rounding policy, not an oversight: when paying out of
+ * a fixed balance (e.g. a portfolio, a fee pool), rounding a debit up instead of down could
+ * subtract more than is actually available and drive the balance negative. Always rounding down
+ * guarantees a debit never exceeds the precise amount it was computed from, at the cost of
+ * leaving a sub-unit residue behind on each operation.
+ * <p>
  * This is a plain domain type with no dependency on compprov-core; {@code io.compprov.examples.nav.wrapped}
  * wraps it for provenance tracking without modifying it, per the
  * {@link io.compprov.core.variable.VariableWrapper}/{@link io.compprov.core.variable.AbstractWrappedVariable}
@@ -34,17 +40,35 @@ public class Amount {
      *
      * @param amount the amount to add; must be in the same {@link Currency} as this amount
      * @return a new {@code Amount} holding the sum
+     * @apiNote The currency match is intentionally <b>not</b> validated here. This lets a caller
+     * add amounts of different currencies without either being converted first — a semantic
+     * type/context violation that passes technical type-checking and mathematical replay, used
+     * deliberately by some test scenarios in this project to exercise that failure mode. Do not
+     * rely on this method to reject mismatched currencies.
      */
     public Amount add(Amount amount) {
-        //The currency match check is intentionally skipped to create the possibility of semantic violation (test purpose).
         return new Amount(currency, this.amount.add(amount.amount));
     }
 
+    /**
+     * Subtracts another amount in the same currency.
+     *
+     * @param amount the amount to subtract; must be in the same {@link Currency} as this amount
+     * @return a new {@code Amount} holding the difference
+     * @apiNote The currency match is intentionally <b>not</b> validated here, for the same reason
+     * as {@link #add(Amount)} — do not rely on this method to reject mismatched currencies.
+     */
     public Amount subtract(Amount amount) {
-        //The currency match check is intentionally skipped to create the possibility of semantic violation (test purpose).
         return new Amount(currency, this.amount.subtract(amount.amount));
     }
 
+    /**
+     * Multiplies this amount by a dimensionless factor (e.g. a fee rate), keeping the same
+     * currency.
+     *
+     * @param factor the multiplier to apply
+     * @return a new {@code Amount} holding the product, in the same currency as this amount
+     */
     public Amount scale(BigDecimal factor) {
         return new Amount(currency, this.amount.multiply(factor));
     }
