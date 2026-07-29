@@ -188,8 +188,7 @@ immaterial quirk in this example codebase:
   evaluated at IEEE-754 `double` precision, unlike every neighboring operation in the same
   34-digit `BigDecimal` chain. A genuine, isolated precision gap — but per the report's own
   materiality check, the resulting error is many orders of magnitude below what the final result
-  needs. This fixture predates this repo (see [Test snapshots](#test-snapshots)), so there's no
-  local source to fix.
+  needs.
 - **`net_asset_value.json`** — Precision tampering: `SUSPICIOUS LOGIC (74.0)`. Every
   `WrappedAmount.convert` call truncates instead of rounding to the nearest cent — exactly
   [`Amount`](src/main/java/io/compprov/examples/nav/model/Amount.java)'s documented
