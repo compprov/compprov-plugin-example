@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 88.0
+
+## Anomaly Localization (If Detected)
+No instances of Lineage Disconnection or Context Substitution were identified in this graph.
+
+Full forward-propagation trace performed:
+
+- `i_2` (G) × `i_3` (M) → `op_1` → `o_7` (GM) — value 398571280000000.0, matches direct multiplication of roots.
+- `i_6` (2) × `o_7` → `op_2` → `o_8` (2GM) — value 797142560000000.0, correctly consumes the actual `resultId` of `op_1`, not a substitute.
+- `o_8` ÷ `i_4` (r) → `op_3` → `o_9` (2GM/r at surface) — manual long division reproduces 125120477.16214... matching the recorded value to the graph's MathContext precision (16, HALF_EVEN).
+- `sqrt(o_9)` → `op_4` → `o_10` (escape velocity at surface) — 11185.726... matches manual square-root interpolation and known real-world Earth surface escape velocity (~11.2 km/s).
+- `i_4` + `i_5` (altitude) → `op_5` → `o_11` (r + altitude) — 6771000, exact arithmetic on the actual root inputs.
+- `o_8` ÷ `o_11` → `op_6` → `o_12` (2GM/r at altitude) — 117728926.303... reproduced by manual division, consuming the true `resultId`s of `op_2` and `op_5`.
+- `sqrt(o_12)` → `op_7` → `o_13` (escape velocity at altitude) — 10850.296... consistent with known physics (escape velocity ~400 km above Earth's surface).
+
+Both leaf variables (`o_10`, `o_13`) are the graph's two intended final OUTPUTs (escape velocity at surface vs. at altitude) — they are legitimately terminal because they represent the final reported quantities themselves, not orphaned intermediates with a computed twin bypassed elsewhere. No other variable in the graph shares their name, role, units, or an approximate value that could serve as a disguised stand-in.
+
+## Details
+Per the structural reference data, the name-collision set is empty, and independent re-derivation confirms every non-terminal computed OUTPUT (`o_7`, `o_8`, `o_9`, `o_11`, `o_12`) is consumed downstream by the exact operation that should logically consume it, using its true `resultId` — not a re-declared root INPUT of the same name/value. The two multiply-consumed variables flagged in the structural data (`i_4`, `o_8`) reflect legitimate, expected reuse: `i_4` (planet radius) is needed both to compute surface-level `2GM/r` and to compute `r + altitude`; `o_8` (2GM) is needed for both the surface and altitude escape-velocity branches. Neither reuse pattern hides a substitution — both consumers trace back through the graph's own computation chain to the same root inputs (`i_2`, `i_3`, `i_4`, `i_5`, `i_6`), and no parallel hardcoded literal exists anywhere in the `variables` array that duplicates the role, units, or approximate value of any computed intermediate (GM, 2GM, 2GM/r, r+altitude) that could have been quietly substituted in.
+
+Given the absence of (a) any exact or near-duplicate name collision between a leaf/computed OUTPUT and a root INPUT, (b) any orphaned computed variable with a same-role hardcoded twin consumed in its place, and (c) any deviation between manually re-derived values and the recorded values at each step, I find no evidence that a substituted, foreign, or unmonitored value was routed into the final escape-velocity calculations in place of the properly computed intermediate results. The computation chain from roots (`i_1`-`i_6`) to both final outputs (`o_10`, `o_13`) is unbroken and consistent.
+
+Confidence is not maximal only because a sufficiently disguised semantic substitution (e.g., a role-identical variable with subtly different domain metadata not captured in this trace) can never be fully excluded by inspection alone, but no such candidate was found in this graph.

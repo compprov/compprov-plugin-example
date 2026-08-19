@@ -1,0 +1,40 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-11T04:16:58.4917218Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Collateral amount"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "1000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-11T04:16:58.4927218Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Pool reserve (quote token)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "1050000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-11T04:16:58.4927218Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Pool reserve (base token)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "500"
+} ]

@@ -1,0 +1,31 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 91.0
+
+## Anomaly Localization (If Detected)
+No instance of Lineage Disconnection / Context Substitution was identified in this graph.
+
+Full forward-propagation trace performed:
+
+- op_1: multiply(i_2=14.50, i_3=1, mc=i_1) → o_4 = 14.50 ✔ (matches stored value)
+- op_2: multiply(i_5=6.25, i_6=1, mc=i_1) → o_7 = 6.25 ✔
+- op_3: multiply(i_8=0.85, i_9=4, mc=i_1) → o_10 = 3.40 ✔
+- op_4: multiply(i_11=0.05, i_12=12, mc=i_1) → o_13 = 0.60 ✔
+- op_5: multiply(i_14=2.10, i_15=2, mc=i_1) → o_16 = 4.20 ✔
+- op_6: addBulk(a=o_4, b0=o_7, b1=o_10, b2=o_13, b3=o_16, mc=i_1) → o_17 = 28.95 ✔ (14.50+6.25+3.40+0.60+4.20=28.95)
+- op_7: addBulk(a=o_17, b0=i_18=8.00, b1=i_19=3.50, mc=i_1) → o_20 = 40.45 ✔
+- op_8: multiply(a=o_20, b=i_21=5000, mc=i_1) → o_22 = 202250.00 ✔
+
+Every computed intermediate OUTPUT (o_4, o_7, o_10, o_13, o_16, o_17, o_20) is consumed by exactly the next logical operation in the chain, and the argument passed at each step is literally the `resultId` produced by the prior step — not a substituted or hardcoded stand-in. The only unconsumed (leaf) variable is `o_22`, which is the graph's final reported output and terminates the chain legitimately (it is not bypassed in favor of a parallel hardcoded value, and no other variable in the graph shares its name, unit role, or numeric profile).
+
+## Details
+Applying the attack-vector checklist explicitly:
+
+1. **Root-to-output reachability**: `o_22` traces back cleanly through op_8 → op_7 → op_6 → {op_1..op_5} → to true root inputs (i_2, i_3, i_5, i_6, i_8, i_9, i_11, i_12, i_14, i_15, i_18, i_19, i_21, with i_1 as the shared MathContext). No step skips a computed predecessor in favor of an alternate-named or hardcoded input.
+2. **Name-collision / role-substitution scan**: The structural reference data reports zero leaf name collisions. I additionally manually scanned every OUTPUT variable name ("Circuit board cost per assembly", "Enclosure cost per assembly", "Connector cost per assembly", "Fastener cost per assembly", "Cable cost per assembly", "Material cost per unit", "Total unit cost", "Total run cost") against every INPUT variable's name, metadata, and value for a semantically-similar stand-in (rounded value, translated/abbreviated label, same units) that might be quietly routed into a downstream operation instead of the legitimate computed sibling. No such candidate exists — each cost-per-assembly component has exactly one producing operation and exactly one consumer (the `addBulk` rollup at op_6), and no duplicate-purpose INPUT variable carrying a similar hardcoded value sits alongside it.
+3. **Duplicate consumption check**: The reference data confirms no variable (other than the shared MathContext `i_1`, which is legitimately reused) is consumed by more than one operation — ruling out a hidden second branch quietly redirecting a computed value's twin into the final calculation.
+4. **Terminal legitimacy of o_22**: Per the invariants, an unconsumed computed OUTPUT is only a legitimate terminus if nothing else was substituted in its place downstream. Since o_22 is the sole and final reported output of the entire pipeline (Total run cost), and no further operation exists that could have substituted an alternate value in its place, this is a legitimate terminal, not a masked orphan.
+
+Given the graph's modest size and full manual per-node/per-operation verification (versus reliance on the mechanical exact-match sets alone), no rupture in provenance, no hardcoded literal masquerading as a computed result, and no orphaned computed sibling bypassed in favor of a foreign value were found. The pipeline is internally consistent end-to-end, from root cost/quantity inputs through BOM rollup, unit cost totaling, to final production run cost.
+
+Residual uncertainty is retained only because domain-level metadata (e.g., true external provenance of the root INPUT unit costs like i_2, i_5, i_8, i_11, i_14, i_18, i_19) cannot be verified beyond the graph itself — a determined adversary could in principle fabricate an entire root input as a first-order lineage break rather than a mid-chain substitution, which this class of check cannot fully rule out from the graph alone.

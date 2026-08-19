@@ -1,0 +1,34 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 90.0
+
+#### Anomaly Localization (If Detected)
+No Lineage Disconnection or Context Substitution pattern was found. A full forward-propagation trace from the eleven root INPUT nodes (i_1–i_8, i_18, i_19, i_22) through every operation to the single leaf/terminal output (o_24) was performed and the entire chain is intact and internally consistent:
+
+- op_1: min(i_3=620, i_4=100) → o_9 = 100 ✓
+- op_2: min(i_3=620, i_5=500) → o_10 = 500 ✓
+- op_3: subtract(o_10=500, o_9=100) → o_11 = 400 ✓
+- op_4: subtract(i_3=620, o_10=500) → o_12 = 120 ✓
+- op_5: max(o_12=120, i_2=0) → o_13 = 120 ✓
+- op_6: multiply(o_9=100, i_6=0.85) → o_14 = 85.00 ✓
+- op_7: multiply(o_11=400, i_7=0.60) → o_15 = 240.00 ✓
+- op_8: multiply(o_13=120, i_8=0.40) → o_16 = 48.00 ✓
+- op_9: addBulk(o_14, o_15, o_16) → o_17 = 373.00 ✓
+- op_10: multiply(i_18=450, i_19=0.15) → o_20 = 67.50 ✓
+- op_11: add(o_17=373.00, o_20=67.50) → o_21 = 440.50 ✓
+- op_12: multiply(o_21=440.50, i_22=0.09) → o_23 = 39.6450 ✓
+- op_13: add(o_21=440.50, o_23=39.6450) → o_24 = 480.1450 ✓
+
+Every intermediate computed OUTPUT (o_9 through o_23) is consumed exactly by the operation that the pipeline's own topology dictates it should feed (verified against the resultId → argument linkage of the subsequent op), and no computed OUTPUT is left as an unconsumed 'orphan' that could indicate it was bypassed in favor of a substituted value. The only leaf node, o_24 (Total freight cost), is the legitimate, intended terminal result — this matches the structural reference data exactly (leaf set = [o_24]).
+
+#### Details
+The audit specifically searched for the signature of Lineage Disconnection / Context Substitution: a computed OUTPUT variable that (a) is correctly derived from upstream root inputs, (b) is never consumed downstream (orphaned), while (c) a differently-sourced variable — a hardcoded INPUT, near-duplicate name, or role-equivalent stand-in — is substituted into the same downstream operation instead, reproducing a numerically close or identical value.
+
+No such pattern exists in this graph:
+- The name-collision structural check returned an empty set, and manual review of all 24 variable descriptor names confirms no duplicate or near-duplicate names exist for any leaf or intermediate variable that could mask a substitution (each name — e.g., "Weight through tier 1", "Tier 2 weight portion", "Pre-fuel subtotal", "Fuel surcharge" — is unique and semantically distinct from all others).
+- Every multiply/add/subtract/min/max operation consumes the actual `resultId` of its logical predecessor (verified argument-by-argument against `resultId` bindings), not a re-declared or hardcoded stand-in variable of the same apparent value.
+- The variables flagged as "consumed by more than one operation" (i_3, o_9, o_10, o_21) are all legitimate branching reuses required by the tiered-rate formula structure (e.g., o_10 is needed both to compute the tier-2 portion via subtraction and the tier-3 portion via subtraction from total weight) — not evidence of parallel/competing injection paths.
+- No computed OUTPUT is stranded as a dead-end while a same-named or same-role root INPUT reaches the final result in its place — the single unconsumed variable (o_24) is the graph's genuine, intended final output, consistent with its role as "Total freight cost."
+- The MathContext (i_1, precision=16, HALF_EVEN) is reused consistently across all decimal operations and is a genuine shared precision constant with no computed sibling for the same quantity, so its multi-consumption is expected and exempted per the invariant definition.
+
+Given the complete, unbroken, and mathematically verified forward-propagation chain from every root input to the single reported final output, with no orphaned computed siblings and no semantic or exact name collisions indicating a hidden substitution, this graph does not exhibit the Lineage Disconnection / Context Substitution attack pattern under audit. Confidence is high but not absolute, since exhaustive semantic-equivalence scanning (e.g., for disguised units or externally-sourced but plausible-looking constants) can never fully rule out extremely subtle substitution outside the scope of the provided data.

@@ -1,0 +1,23 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 93.0
+
+#### Anomaly Localization (If Detected)
+None identified. Full walk-through of the computation confirms every intermediate quantity is both correctly computed and consumed downstream, terminating in the final reported output `o_26` (Sample standard deviation).
+
+#### Details
+This CPG implements a standard sample variance / standard deviation pipeline over six titration replicate measurements (i_2..i_7):
+
+1. **Sum** (`op_1`, addBulk over i_2..i_7) → `o_8` = 80.1. Manually verified: 12.5+15.2+11.8+14.1+13.6+12.9 = 80.1. ✓
+2. **Mean** (`op_2`, divide o_8/i_9) → `o_10` = 13.35 = 80.1/6. ✓
+3. **Per-sample deviations** (`op_3, op_5, op_7, op_9, op_11, op_13`, subtract sample - mean) → o_11=-0.85, o_13=1.85, o_15=-1.55, o_17=0.75, o_19=0.25, o_21=-0.45. All arithmetically correct against the mean of 13.35. ✓
+4. **Squared deviations** (`op_4, op_6, op_8, op_10, op_12, op_14`, multiply dev*dev) → o_12=0.7225, o_14=3.4225, o_16=2.4025, o_18=0.5625, o_20=0.0625, o_22=0.2025. All correct. ✓
+5. **Sum of squared deviations** (`op_15`, addBulk over o_12,o_14,o_16,o_18,o_20,o_22) → `o_23` = 7.3750. Manually verified: 0.7225+3.4225+2.4025+0.5625+0.0625+0.2025 = 7.375. ✓ — critically, this aggregation consumes *all six* squared-deviation terms; none are dropped.
+6. **Sample variance** (`op_16`, divide o_23/i_24 where i_24 = n-1 = 5) → `o_25` = 1.4750 = 7.375/5. ✓ (uses Bessel's correction correctly, consistent with the variable's own descriptor "Degrees of freedom, n - 1")
+7. **Standard deviation** (`op_17`, sqrt(o_25)) → `o_26` = 1.214495780149112 ≈ sqrt(1.475). ✓
+
+Cross-checking the structural reference data: the only leaf variable is `o_26`, which is precisely the intended final reported output of this pipeline (Sample standard deviation) — not a computed-but-discarded adjustment, cost, credit, or cross-check variable. There is no orphaned correction term, no secondary cost/credit/tax-like quantity computed in an isolated subgraph and then excluded from the final aggregation. The `addBulk` operation that forms the sum-of-squares (`op_15`) faithfully incorporates every one of the six squared-deviation terms produced upstream — a prime location where a Calculation-Omission attack could hide (e.g., silently dropping one of the six terms to bias variance downward), but inspection confirms all six arguments (`a, b0, b1, b2, b3, b4`) map to the correct six squared-deviation result IDs with no substitution or omission.
+
+No variable in the graph carries semantics of a mandatory adjustment, deduction, correction, or cross-check that is excluded from its natural downstream consumer. The multiply-reuse list (`i_2..i_7`, `o_10`, `o_11`, `o_13`, `o_15`, `o_17`, `o_19`, `o_21`) reflects expected fan-out (each sample value feeds both the initial sum and its own deviation calc; each deviation feeds both the squaring operation and is itself a legitimate intermediate) rather than any suspicious duplication or substitution pattern.
+
+**Conclusion:** The pipeline is a complete and internally consistent sample standard deviation calculation with no evidence of a severed cost/credit/correction term. No Calculation Omission attack pattern is present.

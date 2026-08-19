@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-12T09:09:23.8956086Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Federal tax withheld (computed, unused)"
+    },
+    "id" : "o_16",
+    "kind" : "OUTPUT",
+    "numericId" : 16,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "563.0000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-12T09:09:23.8966085Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Net pay"
+    },
+    "id" : "o_21",
+    "kind" : "OUTPUT",
+    "numericId" : 21,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2904.5000"
+} ]

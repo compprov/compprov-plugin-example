@@ -1,0 +1,22 @@
+# Summary
+- **Verdict**: LINEAGE BREAK DETECTED
+- **Confidence score**: 87.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_2, i_3, i_5, i_6, o_7, o_8, o_9` (Option [0] CALL K=4630 branch) vs. the parallel, structurally identical branches for Options [1]-[9]: `o_12/13/14/15`, `o_18/19/20/21`, `o_24/25/26/27`, `o_30/31/32/33`, `o_36/37/38/39`, `o_42/43/44/45`, `o_48/49/50/51`, `o_54/55/56/57`, `o_60/61/62/63`. Final aggregation: `op_40` (`addBulk`) → `o_64`.
+
+**Attack flow:**
+1. Every option leg in this book (indices 1 through 9) follows an identical 4-step chain: `subtract`/`max` → intrinsic value → `multiply` by size → **`setScale` (mc=`i_4`, precision=2, DOWN)** producing a truncated "Payout [n]" output (`o_15, o_21, o_27, o_33, o_39, o_45, o_51, o_57, o_63`), which is what feeds `op_40`.
+2. Option [0] (CALL K=4630, the *first* leg processed, `op_1`→`op_2`→`op_3`) is terminated after only 3 steps. **No `setScale`/truncation operation is ever created for it** — there is no fourth, currency-precision-truncated "Payout [0]" variable anywhere in the graph (contrast with every sibling leg, which produces one, typically with an empty display name).
+3. `op_40` (`addBulk`) consumes the *untruncated* 16-significant-digit product `o_9` = `137.2780000000000` directly as argument `a`, instead of a truncated counterpart analogous to `o_15/o_21/.../o_63`.
+4. Because `o_9` was never routed through the `i_4` (precision=2, DOWN) truncation context that governs every other leg, the value injected into the final sum is systematically larger than what full, consistent forward-propagation of the graph's own documented rule would produce: truncating `137.278...` DOWN to 2 decimals yields `137.27`, not `137.278`.
+5. Recomputing `o_64` with the same truncation rule applied uniformly (as every other leg receives) gives `137.27 + 170.58 + 0.00 + 0.00 + 628.05 + 88.42 + 0.00 + 239.36 + 0.00 + 0.00 = 1263.68`, whereas the graph reports `o_64 = 1263.688000000000` — an inflation of `0.008` that originates solely from the one leg whose truncation step was silently skipped.
+
+## Details
+
+Local replay of `op_40` passes cleanly: given its declared arguments, the sum `137.278 + 170.58 + 0 + 0 + 628.05 + 88.42 + 0 + 239.36 + 0 + 0 = 1263.688` is arithmetically correct, and each individual upstream operation (subtract/max/multiply/setScale) is itself internally consistent and replays correctly for the legs where it exists. This is precisely the disguise the attack vector describes: no single operation node is mathematically wrong, so casual/automated per-node validation finds nothing.
+
+The rupture is structural rather than a single swapped identifier: the pipeline's own descriptor metadata explicitly states the governing invariant — *"rounding: DOWN (Amount always truncates to the currency's decimal precision; balance-safety invariant)"* — and the graph enacts this invariant uniformly via a dedicated `setScale` operation for 9 of the 10 option legs. Option [0]'s branch is the sole exception: its raw, high-precision (`DECIMAL64`/`HALF_EVEN`) intermediate result is fed straight into the bulk aggregation, bypassing the currency-truncation step entirely. No orphaned "properly rounded Option [0] payout" variable exists to compare against — the sibling variable was simply never generated — which is an even more evasive form of the same lineage-disconnection pattern the audit is designed to catch: the reported final output `o_64` does not derive from a uniformly forward-propagated computation chain; one term silently short-circuits the domain-mandated truncation/normalization step that all its peers undergo.
+
+**Consequence:** the reported "Total payout in USDC" (`o_64 = 1263.688`) systematically overstates the value that full, consistent forward propagation of the graph's own truncation rule would produce (`1263.68`), in violation of the pipeline's own documented balance-safety invariant. In a settlement/payout context this is a material discrepancy hidden inside a 64-variable, 40-operation graph where the missing step for exactly one of ten symmetric legs is easy to miss under casual review but produces a deterministic, directional (over-payment) bias every time this leg is in-the-money.

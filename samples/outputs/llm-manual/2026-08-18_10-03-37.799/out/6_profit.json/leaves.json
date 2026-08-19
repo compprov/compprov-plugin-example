@@ -1,0 +1,33 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1223804Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Net profit in USDC"
+    },
+    "id" : "o_35",
+    "kind" : "OUTPUT",
+    "numericId" : 35,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "1686.156396",
+    "currency" : "USDC"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1223804Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total gas fees in USDC"
+    },
+    "id" : "o_27",
+    "kind" : "OUTPUT",
+    "numericId" : 27,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "111.433600",
+    "currency" : "USDC"
+  }
+} ]

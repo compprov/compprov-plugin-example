@@ -1,0 +1,22 @@
+# Summary
+- **Verdict**: LINEAGE BREAK DETECTED
+- **Confidence score**: 90.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_3` (Bonus, root INPUT, value `500.00`), `o_4` (Gross pay), `o_8` (Taxable income), `o_16` (Federal tax withheld), `o_18` (State tax withheld), `o_19` (After federal withholding), `o_20` (After state withholding), `op_1`, `op_3`, `op_9`, `op_10`, `op_11`, `op_12`, `o_21` (Net pay, the reported final OUTPUT / graph leaf).
+
+**Flow of the tamper:**
+
+1. `i_3` (Bonus, `500.00`) is legitimately consumed once in `op_1` (`add`) to compute `o_4` Gross pay = `i_2 + i_3` = `4000.00`.
+2. Gross pay correctly propagates forward through the entire tax-computation chain: `o_4 → o_8` (Taxable income, via `op_3`, subtracting pretax deductions) `→ o_12/o_13` (bracket splits) `→ o_14/o_15` (bracket taxes) `→ o_16` (Federal tax) and `→ o_18` (State tax), which are then subtracted from `o_8` via `op_10` and `op_11` to produce `o_20` ("After state withholding" = `2904.50`). At this point, `o_20` is the fully and correctly derived net-of-tax figure — it already incorporates the Bonus, since the Bonus was folded into Gross pay before any tax was computed.
+3. Instead of `o_20` being emitted as the final "Net pay" (or passed through unchanged), `op_12` performs `o_20 + i_3` — reaching back past the entire computed tax-chain and re-pulling the **raw root input `i_3`** a second time, directly into the terminal calculation. This produces `o_21` = `3404.50`, exactly `500.00` (the Bonus amount) higher than the properly derived `2904.50`.
+4. `i_3` is flagged in the structural reference data as consumed by more than one operation (`op_1` and `op_12`) — this is the multi-consumption signature of a root input being reintroduced downstream of its own already-completed lineage, rather than the computed chain being allowed to terminate on its own merits.
+
+## Details
+
+Local replay of every individual operation passes: `op_1` through `op_12` are all internally consistent, each result matches its stated formula and rounding context (`i_1`, DECIMAL64/16-digit HALF_EVEN). This is precisely why the tamper survives casual/mechanical review — no operation is individually wrong.
+
+The violation is at the level of **end-to-end origin propagation**. `o_20` ("After state withholding") represents the fully-taxed, fully-derived net compensation figure — the natural terminal result of the payroll computation chain, since Gross pay already contains the Bonus and all subsequent operations (deductions, bracket tax, federal/state withholding) operate on that combined base. There is no legitimate domain justification in the graph's own metadata for adding the Bonus a second time post-tax: no `descriptor.meta` entry marks `i_3` as a "non-taxable" or "post-tax" bonus component, and no separate/second bonus variable exists to justify a distinct addend. The same literal root input that already flowed through the entire tax pipeline is pulled back in raw, unmonitored, and combined with the correctly-derived result at the final step — which is exactly the "parallel, injected value quietly routed into the final calculation" pattern described by the attack vector, even though here the injected value is a pre-existing root ID rather than a freshly-declared lookalike constant. The disguise mechanism is identical in spirit: a value that already has legitimate provenance (`i_3` was properly used in `op_1`) is illegitimately re-used at a second, unrelated downstream junction to alter the final compliance output, while the true terminal computed value (`o_20`) is consumed only as a stepping-stone toward the inflated figure rather than being reported as-is.
+
+**Consequence:** The reported "Net pay" (`o_21` = `3404.50`) is materially and systematically overstated by exactly the Bonus amount (`500.00`) relative to the value the graph's own computation chain actually derives (`o_20` = `2904.50`). In a payroll/compliance context this is a direct financial-integrity breach — an employee (or the payroll ledger) would be shown as receiving $500 more than the tax-correct calculation supports, achieved by re-injecting an already-consumed root input at the final step rather than allowing the properly derived value to stand as the terminal output.

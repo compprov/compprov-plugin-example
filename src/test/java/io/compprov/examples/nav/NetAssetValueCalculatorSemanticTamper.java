@@ -1,12 +1,10 @@
 package io.compprov.examples.nav;
 
 import io.compprov.core.meta.Meta;
-import io.compprov.examples.nav.model.Amount;
-import io.compprov.examples.nav.model.Currency;
+import io.compprov.examples.TestComputationContext;
 import io.compprov.examples.nav.model.NetAssetValueDataProvider;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static io.compprov.core.meta.Descriptor.descriptor;
@@ -17,7 +15,7 @@ public class NetAssetValueCalculatorSemanticTamper {
     @Test
     public void calculate() {
 
-        final var ctx = new NavComputationContext("Nav calculation example");
+        final var ctx = new TestComputationContext("Nav calculation example");
         NetAssetValueDataProvider dataProvider = new NetAssetValueDataProvider();
 
         //get rates

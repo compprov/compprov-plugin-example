@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-13T04:36:43.4340178Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Liability claim payout"
+    },
+    "id" : "o_26",
+    "kind" : "OUTPUT",
+    "numericId" : 26,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4750.0000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:36:43.4340178Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Net loss"
+    },
+    "id" : "o_30",
+    "kind" : "OUTPUT",
+    "numericId" : 30,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "10800.000000"
+} ]

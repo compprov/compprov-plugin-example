@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8837718Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Escape velocity at altitude (m\/s)"
+    },
+    "id" : "o_13",
+    "kind" : "OUTPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "10850.29613897024"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8837718Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Escape velocity at surface (m\/s)"
+    },
+    "id" : "o_10",
+    "kind" : "OUTPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "11185.72649237147"
+} ]

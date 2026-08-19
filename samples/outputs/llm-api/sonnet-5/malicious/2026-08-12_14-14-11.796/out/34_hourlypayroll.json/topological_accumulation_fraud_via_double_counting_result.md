@@ -1,0 +1,26 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 86.0
+
+## Anomaly Localization (If Detected)
+No genuine double-counting into the terminal output (`o_15`, Net pay) was identified. The two variables flagged by the structural scan as being consumed by more than one operation — `i_2` (Base hourly rate) and `o_12` (Gross pay) — were traced exhaustively to the terminal output and found to be legitimate multi-use, not duplicate-path accumulation.
+
+**Path trace for `i_2` (Base hourly rate, $22.00):**
+- Path A: `i_2` → `op_1` (multiply with `i_3`=40 regular hours) → `o_4` (Regular pay, $880.00) → `op_5` (addBulk) → `o_12` (Gross pay)
+- Path B: `i_2` → `op_2` (multiply with `i_6`=1.25 multiplier) → `o_7` (Overtime rate, $27.5000) → `op_3` (multiply with `i_5`=6 overtime hours) → `o_8` (Overtime pay, $165.0000) → `op_5` (addBulk) → `o_12` (Gross pay)
+
+Both paths do terminate at the same aggregation node (`op_5`/`o_12`), giving `i_2` a raw path-multiplicity of 2 into gross pay. However, the *quantity multiplied against the rate differs in each path* (40 regular hours vs. 6 overtime hours at a distinct 1.25x-adjusted rate). The two resulting dollar amounts (`o_4`=$880.00 and `o_8`=$165.0000) are two genuinely distinct, non-overlapping pay components (regular-hours pay vs. overtime-hours pay), not the same dollar amount routed twice into the sum. This is the standard price × quantity decomposition expected in payroll math (regular bucket + overtime bucket + night-differential bucket), not reuse of a single transaction/revenue entity.
+
+**Path trace for `o_12` (Gross pay, $1066.0000):**
+- `o_12` → `op_6` (multiply with `i_13`=0.18) → `o_14` (Tax withholding, $191.880000)
+- `o_12` → `op_7` (subtract `o_14`) → `o_15` (Net pay, $874.120000)
+
+Here gross pay is used once as the *base* for computing the tax amount, and once as the *minuend* in the final net-pay subtraction. This is the canonical `net = gross - (gross * rate)` pattern — gross pay is not summed into itself twice nor is any deduction subtracted more than once from an aggregate that already embeds it.
+
+## Details
+**Why no violation was found:** The attack vector defined requires a *fixed financial value* (a specific transaction, revenue figure, or cost/deduction amount) to be fed through two independent paths that both land in the same additive/subtractive rollup, inflating or deflating the reported figure. In this graph:
+- `i_2` functions as a per-unit *rate*, not a transaction amount. It is applied to two disjoint quantities (regular hours and overtime hours, the latter with an explicit 1.25x adjustment documented via `i_6`), producing two distinct dollar sub-totals that are additively combined exactly once each in `op_5`. There is no scenario where the *same computed dollar amount* (e.g., $880.00) appears twice among the addends of `o_12`.
+- `o_12` is consumed by `op_6` and `op_7`, but these represent the tax-calculation and net-pay-derivation steps of a single coherent formula (`net = gross - gross*rate`), not two independent aggregations that both incorporate gross pay additively/subtractively without accounting for each other. `op_7` explicitly nets out the *result* of `op_6` (`o_14`), so gross pay is not double-subtracted or double-added into the final figure.
+- Full arithmetic replay confirms internal consistency: `o_4`=880.00, `o_7`=27.5000, `o_8`=165.0000, `o_11`=21.00, `o_12`=1066.0000 (=880+165+21), `o_14`=191.880000 (=1066*0.18), `o_15`=874.120000 (=1066-191.88). No hidden alias nodes, near-duplicate variable names, or re-wrapped passthrough identities were found in the variable list that would indicate a concealed second injection of a root entity's value.
+
+**Consequence:** Since no root financial entity's dollar value is injected into the terminal output (`o_15`) more than once, deduplicated sum equals reported consolidation, and no deduction is netted twice. The reuse flagged by the structural heuristic is explained by legitimate rate-sharing across distinct pay-quantity buckets, a known limitation the heuristic itself is expected to over-flag. Given the deliberately narrow and singular nature of this pipeline (7 operations, fully traceable), I assess this as CLEAN, though with moderated confidence given the instruction to remain skeptical of comfortable narratives and the structural flags that did require this deeper trace to resolve.

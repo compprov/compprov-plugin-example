@@ -1,0 +1,24 @@
+# Summary
+- **Verdict**: CONTEXT MISMATCH
+- **Confidence score**: 78.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `o_9`, `o_10`, `o_11`, `o_12`, `o_13` (arguments), `op_6` (addBulk operation), `o_14` (resultId, "Assets sum").
+
+Tracing the value flow into the final NAV figure:
+
+- `op_1..op_5` convert each currency balance (`i_4..i_8`) into USD using the currency-matched rate (`i_1/i_2/i_3`), producing `o_9=146948.10`, `o_10=48624.45`, `o_11=538.22`, `o_12=12312.36`, `o_13=223326.04`.
+- `op_6` (`addBulk`, formula `a+b0+...+bn`) consumes exactly these five `Amount` (USD) variables and writes its result to `o_14`, labeled "Assets sum".
+- Recomputing the declared formula: 146948.10 + 48624.45 + 538.22 + 12312.36 + 223326.04 = **431749.17**.
+- The recorded value of `o_14` is **441749.17** — exactly **$10,000.00** higher than the sum of its own declared arguments.
+
+This is not a rounding artifact: the individual `convert` steps (`op_1`–`op_5`) are internally consistent with a truncating (`RoundingMode.DOWN`) conversion policy (e.g. `23.34 * 2083.31 = 48624.4554` truncates to `48624.45`; `532.90 * 1.01 = 538.229` truncates to `538.22`; `221114.90 * 1.01 = 223326.049` truncates to `223326.04`) — all individually explainable by a one-cent-biased truncation convention, not tampering. But no rounding policy, MathContext, or documented adjustment can account for a flat, perfectly round $10,000.00 gap between the `addBulk` operation's own declared formula and its recorded output.
+
+## Details
+
+The `descriptor.name` of `o_14` ("Assets sum") and the operation's own metadata (`formula: a+b0+...+bn`) assert a specific, auditable business meaning: this variable *is* the arithmetic total of the five listed, currency-converted asset lines — nothing more. Technical type continuity is perfectly preserved (`Amount` → `Amount`, currency `USD` throughout, wrapper class consistent), so a schema/type validator or naive mathematical replay of each individual `convert` step would pass without complaint. The forgery is invisible unless the final aggregation step is independently re-derived and compared to its own operands — which is exactly the kind of check a competent adversary designs around.
+
+The practical effect is a silent semantic inflation of the reported NAV: `o_14` is consumed downstream (and reported) as "the sum of BTC/ETH/USDC exposures across Binance/Stake/Morpho", but it actually encodes that sum *plus* an unexplained $10,000 that has no corresponding root input, no conversion step, and no domain-justified transformation node. This directly violates the invariant that "no operation may consume/produce a variable under a business definition that conflicts with its originating metadata" and that "domain transitions must be backed by explicit, auditable transformation logic, not merely an operation that happens to be type-safe" — here the operation *looks* type-safe (a plain `addBulk`) but its output does not actually correspond to the declared, auditable formula over its own arguments. Any consumer trusting `o_14` as ground-truth NAV would be misled by exactly $10,000 without any visible causal path justifying the discrepancy.
+
+Secondary, lower-severity observation: the ETH(Staked) and USDC(Morpho) balances are valued using the plain Binance spot ETH/USD and USDC/USD rates (`i_2`, `i_3`) rather than any staking/protocol-specific valuation basis. Given the `Amount.currency` fields explicitly state `ETH`/`USDC` (not a derivative token symbol), this reuse appears legitimate and is not flagged as a cast, but it is noted as an area meriting confirmation that staked/deployed positions are truly 1:1 redeemable in the underlying asset.

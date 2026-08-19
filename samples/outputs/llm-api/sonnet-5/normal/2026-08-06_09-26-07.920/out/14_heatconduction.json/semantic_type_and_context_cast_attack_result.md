@@ -1,0 +1,22 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 86.0
+
+## Anomaly Localization (If Detected)
+No variable ID or operation ID was found to exhibit a genuine C_source != C_target semantic cast. Every domain label declared in `descriptor.name` for each variable is consistent with (a) the operation that produced it, (b) the physical formula implied by its name, and (c) every downstream operation that consumes it.
+
+## Details
+
+**Methodology.** Since every `descriptor.meta` array in this graph is empty (`"meta":[]`), the sole carrier of business/domain semantics is the `descriptor.name` field on each variable, plus the physical unit conventions embedded in it (°C, m, W/(m·K), m²·K/W, W, W/m²). I therefore traced, for every operation, whether the *named* physical quantity of each argument matches the *named* physical quantity that the consuming operation's formula assumes, and cross-checked the numeric values for internal physical consistency (a much stronger test than mere BigDecimal type-continuity, since a semantic cast that swaps two same-typed but differently-meant values would very likely break at least one of several redundant physical cross-checks present in this graph).
+
+Key traces performed:
+- `R = d/k` for both layers: op_2 (i_6/i_5 = d1/k1 → o_10 "layer 1") and op_3 (i_8/i_7 = d2/k2 → o_11 "layer 2") — argument order and layer identity (brick=layer1, insulation=layer2) are preserved consistently everywhere they are reused (op_9, op_11 [heat-flow denominator], op_12, op_14).
+- `q = ΔT_total/R_total` (op_5), `ΔT1 = q·R1` (op_6), interface temp = `T_int − ΔT1` (op_7), `ΔT2 = T_interface − T_ext` (op_8) — these correctly propagate "interior", "interface", and "exterior" temperature semantics without any relabeling node.
+- Two independently-derived heat-flow paths: `Q1 = k1·A·ΔT1/d1` (o_19, via op_9→op_10→op_11) and `Q2 = k2·A·ΔT2/d2` (o_22, via op_12→op_13→op_14). Both evaluate to 122.4 W and both equal `q·A` (12.24 × 10). This cross-agreement is a strong structural indicator that no argument (k, d, ΔT, A) was silently substituted with a same-typed but differently-meant value anywhere in either derivation chain — a swap would almost certainly have broken this agreement.
+- Root inputs `i_5/i_6` (brick k/d) and `i_7/i_8` (insulation k/d) are never cross-consumed between layers; each appears only within its own layer's resistance and heat-flow computation, exactly as their names declare.
+
+No operation performs an identity/wrapper pass-through that could be used to quietly re-tag a variable's domain type (e.g., no node takes a "raw/gross" value and re-emits it under a "net/adjusted" label without an explicit, matching transformation). Every `subtract`/`divide`/`multiply`/`add` node's formula and argument mapping is exactly what its resulting variable's name claims it to be, and this is corroborated by independent numeric cross-checks (dual heat-flow paths agreeing).
+
+**Caveat.** The complete absence of populated `descriptor.meta` (units/domainType/taxStatus fields) across all 22 variables removes an entire layer of the metadata-suppression signature this attack vector specifically targets — the graph gives an auditor nothing beyond free-text names to validate against. This is a documentation/governance weakness (it would make a *future*, more careful semantic cast harder to catch), but on its own, absent any name↔formula↔cross-check mismatch, it is not sufficient evidence of an executed cast in *this* trace. I flag it as a residual concern rather than a confirmed violation, which is reflected in the confidence score below.
+
+Overall: technical type continuity, mathematical replay, and — critically for this specific audit — declared business/domain semantics all remain aligned throughout the graph. No C_source != C_target transition was found.

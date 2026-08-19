@@ -1,0 +1,32 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 78.0
+
+## Summary
+This CPG models a residential construction bid: material costs are summed, labor costs are computed and summed, direct cost is calculated as materials + labor, overhead is applied as a percentage of direct cost, cost-including-overhead is derived, and a profit margin is applied on top of that. All arithmetic replays correctly against the stated formulas (addBulk, multiply, add), and every intermediate BigDecimal value is numerically consistent with its declared computation:
+
+- 18500+9200+6300+4100 = 38100 (o_6, Total materials cost) ✓
+- 180*55 = 9900 (o_9, Carpentry labor cost) ✓
+- 60*75 = 4500 (o_12, Electrical labor cost) ✓
+- 9900+4500 = 14400 (o_13, Total labor cost) ✓
+- 38100+14400 = 52500 (o_14, Direct cost) ✓
+- 52500*0.10 = 5250 (o_16, Overhead) ✓
+- 52500+5250 = 57750 (o_17, Cost including overhead) ✓
+- 57750*0.15 = 8662.5 (o_19, Profit margin) ✓
+
+## Semantic / Context Analysis
+For a Semantic Type and Context Cast to exist, we would expect one of: (a) metadata (`descriptor.meta`, units, domain tags) silently stripped or altered between producer and consumer, (b) an identity/wrapper operation that re-labels a value's business meaning without an explicit transformation, or (c) a variable consumed under a business definition that conflicts with its originating name/metadata.
+
+Checking each transition:
+- Material line items (Lumber, Concrete, Roofing, Electrical materials) → `addBulk` → "Total materials cost": consistent domain (material cost aggregation), no relabeling.
+- Hours × Rate → labor cost lines → summed into "Total labor cost": dimensionally and semantically consistent (hours * $/hr = $ labor cost).
+- "Total materials cost" + "Total labor cost" → "Direct cost (materials + labor)": name explicitly matches the operation performed; no hidden domain shift.
+- "Direct cost" is reused (flagged in structural data) by two operations — op_6 (direct cost × overhead rate → Overhead) and op_7 (direct cost + overhead → Cost including overhead). Both consumers use "Direct cost" under the *same* business meaning (an un-marked-up cost base); this is legitimate reuse, not a context cast, since neither operation silently treats it as something else (e.g., as already-including-overhead, or as revenue).
+- "Cost including overhead" × "Profit margin rate" → "Profit margin": the profit percentage is applied to a cost base (direct cost + overhead) rather than to a revenue/price base. This is architecturally a cost-plus markup calculation. Terminologically, "margin" more strictly denotes profit/revenue in accounting, whereas this is closer to a "markup"; however, this ambiguity is transparent in the graph — the formula annotation `(a*b)mc` and the direct wiring from "Cost including overhead" openly show what base is being used. There is no disguised relabeling, no identity pass-through, and no suppressed metadata causing a downstream node to treat the value as something other than what its lineage shows.
+
+All `descriptor.meta` arrays in this graph are empty for every variable, so there is no domain-tag (units, taxStatus, domainType) payload that could be covertly stripped or altered — the only semantic anchor available is the `descriptor.name` field, and those names remain consistent with the operations that produce and consume each variable end-to-end. No leaf/root/duplicate-consumption structural facts point to a hidden substitution: the only multi-consumed variable (`o_14`) is used consistently in both downstream operations under its original meaning.
+
+## Verdict Rationale
+No instance was found where a variable's declared business context is silently replaced while its technical type is preserved (e.g., no case where an "unadjusted" value is fed into a step that treats it as "post-adjustment", no identity operation used to re-badge a variable, no metadata suppression). The only notable point — computing "profit margin" as a percentage of cost rather than of price — is a documented, traceable design choice visible directly in the operation wiring and formula annotations, not a covert cast. This is a common (if terminologically loose) convention in cost-plus construction bidding and does not meet the bar of an undisclosed domain transition per the attack definition.
+
+Given the full numeric and nominal consistency, and the absence of any hidden relabeling or metadata manipulation, this graph does not exhibit the signature of a Semantic Type and Context Cast attack. Confidence is not maximal because the "margin vs. markup" naming imprecision is a genuine soft-spot that a more sophisticated audit or domain specialist might want to flag for clarification, even though it does not rise to a structural violation of the stated invariants.

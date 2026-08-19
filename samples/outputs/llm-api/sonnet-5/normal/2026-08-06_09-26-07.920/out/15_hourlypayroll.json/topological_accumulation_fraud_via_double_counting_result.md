@@ -1,0 +1,20 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 88.0
+
+## Audit Summary
+This audit specifically targeted **Topological Accumulation Fraud via Double Counting**, tracing every root financial input all the way to the terminal output `o_15` (Net pay), with particular focus on the two variables flagged as consumed by more than one operation: `i_2` (Base hourly rate) and `o_12` (Gross pay).
+
+### Path Multiplicity Analysis
+
+**`i_2` (Base hourly rate, 22.00):**
+- Path A: `i_2` → `op_1` (multiply with `i_3`=40 regular hours) → `o_4` (Regular pay = 880.00) → `op_5` (addBulk) → `o_12`.
+- Path B: `i_2` → `op_2` (multiply with `i_6`=1.5 multiplier) → `o_7` (Overtime rate = 33.000) → `op_3` (multiply with `i_5`=6 overtime hours) → `o_8` (Overtime pay = 198.000) → `op_5` (addBulk) → `o_12`.
+
+Both paths terminate in `o_12`, so `i_2` does structurally appear on two distinct paths into the same aggregation node. However, tracing the arithmetic: Path A contributes `22*40=880` and Path B contributes `22*1.5*6=198`. These are not the *same* monetary value re-entered twice — the base rate is used once to price *regular* hours and once, via a derived overtime rate, to price a disjoint block of *overtime* hours (`i_5`, a separate root entity, distinct from `i_3`). This is the standard, auditable payroll decomposition (regular pay + overtime pay), not duplication of a single transaction/asset value into the same rollup. No re-wrapping/passthrough aliasing of `i_2` itself was found feeding `o_12` a second time with the *same* multiplicand.
+
+**`o_12` (Gross pay, 1099.000):**
+- Consumed by `op_6` (multiply by `i_13`=0.18 tax rate) → `o_14` (withholding = 197.82000).
+- Consumed by `op_7` (subtract `o_14` from `o_12`) → `o_15` (Net pay = 901.18000).
+
+This is the canonical `net = gross - tax` pattern: `o_12` is read once to compute the deduction and once as the base from which that deduction is subtracted. The deduction (`o_14`) is subtracted from `o_12` exactly once (`op_7`), not netted into an intermediate subtotal and then subtracted again from a later aggregate. No evidence of the 

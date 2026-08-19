@@ -1,0 +1,26 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 90.0
+
+## Anomaly Localization (If Detected)
+No double-counting or topological accumulation fraud was found. The three variables flagged by structural traversal (`i_3`, `o_9`, `o_10`) as consumed by more than one operation were traced end-to-end to the terminal output `o_17`, and in every case the reuse is consistent with a standard progressive/tiered-bracket allocation pattern rather than duplicate accumulation.
+
+**Trace of reused nodes:**
+- `i_3` (Monthly revenue = 135000.00) feeds `op_1` (`min(i_3,i_4)` → `o_9` = 50000, tier-1 capped revenue), `op_2` (`min(i_3,i_5)` → `o_10` = 100000, cumulative revenue through tier 2), and `op_4` (`i_3 - o_10` → `o_12` = 35000, revenue above the tier-2 ceiling). These three uses compute three *disjoint* tier segments of the same revenue figure — they do not each independently re-add the full 135000 to the final total.
+- `o_9` (50000) feeds `op_3` (`o_10 - o_9` → `o_11` = 50000, tier-2 portion) and `op_6` (`o_9 * i_6` → `o_14` = 2500, tier-1 commission). One use computes a boundary difference (to isolate the tier-2 slice), the other computes the tier-1 commission amount — these are two distinct downstream artifacts, not the same value being added twice into `o_17`.
+- `o_10` (100000) feeds `op_3` (boundary for tier-2 portion) and `op_4` (boundary for tier-3 portion) — again, used only to *delimit* adjacent, non-overlapping tiers, never independently summed into the total.
+
+**Terminal aggregation check (`op_9`, `addBulk` → `o_17`):**
+`o_17 = o_14 (2500) + o_15 (4000) + o_16 (4200) = 10700`, where:
+- `o_14 = o_9 * i_6 = 50000 * 0.05 = 2500` (tier-1 slice, 0–50000)
+- `o_15 = o_11 * i_7 = (o_10 - o_9) * 0.08 = 50000 * 0.08 = 4000` (tier-2 slice, 50000–100000)
+- `o_16 = o_13 * i_8 = max(i_3 - o_10, 0) * 0.12 = 35000 * 0.12 = 4200` (tier-3 slice, >100000)
+
+The underlying revenue slices sum to `50000 + 50000 + 35000 = 135000`, exactly matching the root revenue input `i_3` with zero overlap and zero gap. Each dollar of revenue contributes to the commission total via exactly one tier-rate multiplication, satisfying `M(V_in, op_9) = 1` for the revenue entity when measured in terms of unique dollars contributed (the path multiplicity of the *variable IDs* `i_3`, `o_9`, `o_10` is >1, but their multiplicity as *disjoint financial sub-entities* feeding the aggregate is exactly 1 each).
+
+## Details
+The pattern here is the textbook implementation of tiered/bracket commission calculation: cumulative capped revenue is computed at each tier boundary (`min` operations), then successive boundaries are subtracted from one another (`subtract` operations) to isolate the marginal revenue that falls within each bracket, a `max` floor prevents negative slices, and only the resulting non-overlapping slices are multiplied by their respective tier rates and summed once via `addBulk`. This is precisely the "explicit, auditable proportional splitting logic" the invariant set explicitly carves out as legitimate reuse — the variable naming (`Revenue through tier 1`, `Revenue through tier 2`, `Tier 2 portion`, `Tier 3 portion (uncapped/floored)`) documents this decomposition transparently, and the arithmetic independently verifies: 50000+50000+35000=135000 (revenue reconciles) and 2500+4000+4200=10700 (commission reconciles, matching the reported `o_17` value exactly).
+
+No alias/passthrough nodes were found that re-wrap a consumed root under a new `track.id` to mask reuse, no cost/deduction is netted into an intermediate subtotal and then subtracted again downstream, and no leaf/root shares a suspicious near-duplicate name suggesting a look-alike shadow path. The reuse flagged by the structural pass is fully explained by the legitimate bracket-boundary subtraction technique rather than by feeding a single financial entity twice into the same additive/subtractive rollup. Consequently, `S_dedup` (135000 partitioned into 50000/50000/35000) equals the effective base of `S_reported` (10700), and I find no violation of the stated invariants.
+
+Confidence is not maximal only because verifying "no disguised duplication" in a small graph like this cannot be asserted with absolute certainty from a single static review, but the arithmetic and topology are fully self-consistent with the documented tiered-commission design.

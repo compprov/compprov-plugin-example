@@ -1,0 +1,105 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Annual contribution"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Annual growth rate (7%)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.07"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Balance (start)"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Balance after contribution [Year 1]"
+    },
+    "id" : "o_7",
+    "kind" : "OUTPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Balance after contribution [Year 2]"
+    },
+    "id" : "o_10",
+    "kind" : "OUTPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "12420.0000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Balance after contribution [Year 3]"
+    },
+    "id" : "o_13",
+    "kind" : "OUTPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "19289.400000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Balance after contribution [Year 4]"
+    },
+    "id" : "o_16",
+    "kind" : "OUTPUT",
+    "numericId" : 16,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "26639.65800000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Balance after contribution [Year 5]"
+    },
+    "id" : "o_19",
+    "kind" : "OUTPUT",
+    "numericId" : 19,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "34504.4340600000"
+} ]

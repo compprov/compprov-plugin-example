@@ -1,0 +1,172 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0846683Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "source",
+        "value" : "Stake"
+      } ],
+      "name" : "ETH balance"
+    },
+    "id" : "i_7",
+    "kind" : "INPUT",
+    "numericId" : 7,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "47.391394629733937904",
+    "currency" : "ETH"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0846683Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "source",
+        "value" : "Binance"
+      } ],
+      "name" : "USDC balance"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "81687.779657",
+    "currency" : "USDC"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0846683Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "source",
+        "value" : "Morpho"
+      } ],
+      "name" : "USDC balance"
+    },
+    "id" : "i_8",
+    "kind" : "INPUT",
+    "numericId" : 8,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "50479.493441",
+    "currency" : "USDC"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0846683Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "origin",
+        "value" : "Binance"
+      } ],
+      "name" : "BTC\/USD rate"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "io.compprov.examples.nav.model.Rate"
+  },
+  "value" : {
+    "from" : "BTC",
+    "to" : "USD",
+    "rate" : "68989.72"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0846683Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Assets sum"
+    },
+    "id" : "i_15",
+    "kind" : "INPUT",
+    "numericId" : 15,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "185000.00",
+    "currency" : "USD"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0846683Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "origin",
+        "value" : "Binance"
+      } ],
+      "name" : "USDC\/USD rate"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "io.compprov.examples.nav.model.Rate"
+  },
+  "value" : {
+    "from" : "USDC",
+    "to" : "USD",
+    "rate" : "1.01"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0846683Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "origin",
+        "value" : "Binance"
+      } ],
+      "name" : "ETH\/USD rate"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "io.compprov.examples.nav.model.Rate"
+  },
+  "value" : {
+    "from" : "ETH",
+    "to" : "USD",
+    "rate" : "2083.31"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0846683Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "source",
+        "value" : "Binance"
+      } ],
+      "name" : "ETH balance"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "68.517360062379509599",
+    "currency" : "ETH"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0846683Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "source",
+        "value" : "Binance"
+      } ],
+      "name" : "BTC balance"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "9.25359173",
+    "currency" : "BTC"
+  }
+} ]

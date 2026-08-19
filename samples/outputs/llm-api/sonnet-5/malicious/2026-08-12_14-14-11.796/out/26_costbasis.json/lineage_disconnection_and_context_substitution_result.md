@@ -1,0 +1,19 @@
+# Summary
+- **Verdict**: SUSPICIOUS SUBSTITUTION
+- **Confidence score**: 83.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_1` (root INPUT, MathContext, precision=16, HALF_EVEN — used as `mc` in op_1, op_2, op_3, op_4, op_5, op_7, op_8, op_9), `i_2` (root INPUT, MathContext, precision=4, DOWN, explicitly named **"Computation precision (tampered)"** — used as `mc` in exactly one place: `op_6`), `o_12` (Total shares held), `o_13` (Total cost), `o_14` (Weighted-average cost per share), `op_6` (divide).
+
+**Flow of the substitution:**
+1. `op_1`–`op_5` faithfully build the weighted-average numerator/denominator (`o_13`=13812.50, `o_12`=325) using the graph's established computation context `i_1` (16-digit precision, HALF_EVEN) — consistent with every other arithmetic step in the pipeline.
+2. At `op_6` — the single divide that produces the **Weighted-average cost per share** (`o_14`), the figure that feeds directly into the reported **Cost basis of shares sold** (`o_18`) and ultimately the **Realized gain/loss** (`o_19`) — the `mc` argument is silently swapped from `i_1` to `i_2`.
+3. `i_2` is a root `INPUT` with no producing operation, carrying a materially different rounding contract (4 significant digits, `DOWN`/truncating) than the context used everywhere else in the graph, and its own descriptor literally self-identifies as `"Computation precision (tampered)"`.
+4. `op_8` and `op_9` then correctly consume `o_14` (not a hardcoded stand-in), so the value-level lineage from `o_14` onward to the final output `o_19` is intact — but the *context* under which the single most consequential ratio in a cost-basis pipeline (weighted-average cost/share) was computed has been covertly overridden.
+
+## Details
+
+This is a textbook instance of the "Context Substitution" half of the attack vector: rather than swapping a *value*, the adversary swaps the *computation context* (`MathContext`) feeding a critical downstream operation. Because `MathContext` objects are legitimately reused across many operations in this format (and the structural reference data explicitly excludes them from multi-consumer flagging), a naive traversal or exact-duplicate checker sees nothing wrong — `i_2` is a properly declared root `INPUT`, `op_6`'s `mc` argument resolves to a valid `track.id`, and the arithmetic replays deterministically under whichever context is supplied. This is precisely why the attack vector warns that "being declared as an INPUT is not a defense — it is the mechanism": a hardcoded, mismatched rounding/precision context is exactly what an unmonitored override looks like inside a CPG, and it sits in the file with full transparency specifically because that is how the format allows literals to be injected undetected by casual review.
+
+In this particular run, the substitution is numerically inert: 13812.50 / 325 divides exactly to 42.50, which fits within 4 significant digits even under the truncating `DOWN` mode, so `O_derived == O_reported` for this specific input set. That is exactly the disguise a competent adversary would engineer — a substitution that survives local replay and produces no visible discrepancy under the tested inputs, while establishing a live mechanism that would silently truncate/misround the weighted-average cost basis (and cascade into cost-basis-of-sale and realized-gain/loss) the moment the lot quantities or prices produce a non-terminating quotient. The consistent use of `i_1` everywhere else in the graph, contrasted with the sole, deliberate substitution of a differently-configured, self-labeled "tampered" context at the single most sensitive divide in the pipeline, is a material violation of the expected invariant that computation contexts (and by extension, computational fidelity) must remain consistent and undisguised at critical calculation junctures — regardless of whether this specific input happened to mask the effect.

@@ -1,0 +1,159 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1176975Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "date",
+        "value" : "2026-06-30"
+      }, {
+        "key" : "source",
+        "value" : "market"
+      } ],
+      "name" : "ETH\/USDC rate"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "io.compprov.examples.nav.model.Rate"
+  },
+  "value" : {
+    "from" : "ETH",
+    "to" : "USDC",
+    "rate" : "4650"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1176975Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "date",
+        "value" : "2026-06-01"
+      }, {
+        "key" : "source",
+        "value" : "market"
+      } ],
+      "name" : "ETH\/USDC rate"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "io.compprov.examples.nav.model.Rate"
+  },
+  "value" : {
+    "from" : "ETH",
+    "to" : "USDC",
+    "rate" : "4480"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1176975Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Gas (wBTC\/AAVE) in USDC"
+    },
+    "id" : "o_21",
+    "kind" : "OUTPUT",
+    "numericId" : 21,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "22.400000",
+    "currency" : "USDC"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1176975Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Gas (ETH\/AAVE) in USDC"
+    },
+    "id" : "o_22",
+    "kind" : "OUTPUT",
+    "numericId" : 22,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "17.384400",
+    "currency" : "USDC"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1176975Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Gas (USDC\/AAVE) in USDC"
+    },
+    "id" : "o_23",
+    "kind" : "OUTPUT",
+    "numericId" : 23,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "12.930000",
+    "currency" : "USDC"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1186995Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Gas (USDT\/Morpho) in USDC"
+    },
+    "id" : "o_24",
+    "kind" : "OUTPUT",
+    "numericId" : 24,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "17.503200",
+    "currency" : "USDC"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1186995Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Gas (ETH\/Lido) in USDC"
+    },
+    "id" : "o_25",
+    "kind" : "OUTPUT",
+    "numericId" : 25,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "17.920000",
+    "currency" : "USDC"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1186995Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Gas (stETH\/EtherFi) in USDC"
+    },
+    "id" : "o_26",
+    "kind" : "OUTPUT",
+    "numericId" : 26,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "23.296000",
+    "currency" : "USDC"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1186995Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Gross yield in USDC"
+    },
+    "id" : "o_39",
+    "kind" : "OUTPUT",
+    "numericId" : 39,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "1626.871962",
+    "currency" : "USDC"
+  }
+} ]

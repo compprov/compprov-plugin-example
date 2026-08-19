@@ -1,0 +1,27 @@
+# Summary
+- **Verdict**: TOPOLOGICAL ANOMALY
+- **Confidence score**: 68.0
+
+## Anomaly Localization
+
+**Implicated nodes:**
+- `o_10` (Collision claim payout), `o_18` (Comprehensive claim payout), `o_26` (Liability claim payout)
+- `op_13` (addBulk) → `o_27` — *"Total payout (computed, unused)"* = 22750.0000
+- `i_28` — *"Total payout"* (INPUT, root, value 22750.00)
+- `op_14` (multiply) → `o_30` *Reinsurance recovery* = i_28 × i_29
+- `op_15` (subtract) → `o_31` *Net loss* = i_28 − o_30
+
+**Flow of the anomaly:**
+
+1. Three independent claim branches (Collision, Comprehensive, Liability) are each correctly computed: `claim − deductible → floor at 0 → × coinsurance rate → min with policy limit`, producing `o_10`, `o_18`, `o_26`.
+2. These three payouts are correctly, and only once, aggregated via `op_13` (addBulk) into `o_27` = 22750.0000. Per the structural leaf-set, `o_27` is a leaf — it is **never consumed by any downstream operation**. Its own name explicitly flags this: *"Total payout (computed, unused)"*.
+3. Immediately following, a **new root INPUT** node `i_28` ("Total payout") is introduced with the identical value 22750.00, but with **no producing operation** — it is not wired to `o_27` by any edge; per the structural root-set, `i_28` is a root, not a derived variable.
+4. `i_28` — not `o_27` — is what actually feeds the two remaining downstream calculations that produce the graph's true terminal outputs: `o_30` (Reinsurance recovery) and `o_31` (Net loss, the ultimate reported liability figure).
+
+## Details
+
+This is a textbook instance of **Origin ID / Hash Aliasing**: the same underlying financial entity (the aggregate claims payout, value 22750.00/22750.0000) is represented twice under two different `track.id`s — once as the genuinely computed rollup (`o_27`), and once as an independently entered root value (`i_28`) with no lineage back to the claims computation. Because `i_28` is a root INPUT rather than an operation result, **no mathematical constraint in the graph enforces that `i_28` must equal `o_27`**. Local replay of every individual operation (op_1 through op_15) passes perfectly — each node's arithmetic is internally consistent — which is precisely why this would survive a naive, per-operation replay audit. Only a global lineage trace reveals that the terminal outputs (`o_30`, `o_31` — the reinsurance recovery and net loss figures actually reported to stakeholders) **do not structurally derive from the underlying per-claim data** (`i_3`, `i_4`, `i_5`, `i_6`, `i_11`–`i_14`, `i_19`–`i_22`). The true computed aggregate (`o_27`) is silently orphaned.
+
+While the values currently coincide (22750.00 = 22750.0000), this is exactly the situation an adversary would engineer to pass a casual review: the pipeline *appears* to fully compute the total payout from claim-level detail, but the number that actually drives the reported reinsurance recovery and net loss is a freestanding, independently-suppliable value with no enforced tie to that computation. Any future (or undetected historical) discrepancy between the true claim-derived total and the manually-supplied `i_28` — e.g., to understate net loss or overstate reinsurance recovery — would be invisible to anyone validating the graph node-by-node, since `o_27` is explicitly marked "unused" and no equality check exists between the two.
+
+No evidence of classic multiplicative double-counting (the same entity value literally summed twice into one rollup) was found: `o_10`, `o_18`, `o_26` each flow into `op_13` exactly once, and the two consumptions of `i_28` (`op_14`, `op_15`) reflect a coherent, standard reinsurance-split formula (`recovery = total × rate`, `net = total − recovery`), not duplicate accumulation. The reused `i_2` (zero floor constant) across three branches is likewise a legitimate shared constant, not a financial entity being double-counted. The material finding here is the **broken/aliased lineage between `o_27` and `i_28`**, which undermines the auditability and integrity of the terminal financial outputs even though it is not, in this precise instance, additive double-counting into a single rollup — hence classification as a topological/provenance anomaly rather than a confirmed double-counting inflation event. Given the explicit "(computed, unused)" annotation, a benign explanation (e.g., `i_28` sourced from an authoritative external ledger) is plausible, but the graph itself provides no corroborating metadata proving that link, so the risk should be treated as a genuine finding requiring human resolution rather than dismissed.

@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.2344882Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total energy cost"
+    },
+    "id" : "o_17",
+    "kind" : "OUTPUT",
+    "numericId" : 17,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "152.40"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.2344882Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Monthly service charge"
+    },
+    "id" : "i_18",
+    "kind" : "INPUT",
+    "numericId" : 18,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "12.50"
+} ]

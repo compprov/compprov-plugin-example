@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.7617124Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Direct cost (materials + labor)"
+    },
+    "id" : "o_14",
+    "kind" : "OUTPUT",
+    "numericId" : 14,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "52500.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.7617124Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Cost including overhead"
+    },
+    "id" : "o_17",
+    "kind" : "OUTPUT",
+    "numericId" : 17,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "57750.0000"
+} ]

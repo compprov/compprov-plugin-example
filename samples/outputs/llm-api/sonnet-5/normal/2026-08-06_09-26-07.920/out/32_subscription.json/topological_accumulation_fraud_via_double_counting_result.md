@@ -1,0 +1,28 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 88.0
+
+#### Anomaly Localization (If Detected)
+No double-counting of a financial entity into the terminal output (`o_10`) was found.
+
+The structural reference data flags `i_2` ("Days in billing cycle", value 30) and `i_3` ("Days remaining in cycle", value 12) as being consumed by more than one operation:
+- `i_2` → `op_1` (divide, produces `o_5` = old daily rate) and `op_3` (divide, produces `o_8` = new daily rate)
+- `i_3` → `op_2` (multiply, produces `o_6` = old refund) and `op_4` (multiply, produces `o_9` = new prorated charge)
+
+Tracing forward to the true terminal output `o_10`:
+- `i_4` (old plan price, 29.00) → `op_1` → `o_5` → `op_2` → `o_6` → `op_5` (subtract, as the subtrahend) → `o_10`
+- `i_7` (new plan price, 79.00) → `op_3` → `o_8` → `op_4` → `o_9` → `op_5` (subtract, as the minuend) → `o_10`
+
+Each root financial value (`i_4`, `i_7`) reaches `o_10` via exactly one path (M=1). `i_2` and `i_3` are non-financial time-basis constants (days-in-cycle, days-remaining) that are legitimately reused as shared parameters to compute two *distinct* entities' daily rates and prorated amounts (old plan vs. new plan) — they are not themselves the financial entity being aggregated, and neither of them is independently added/subtracted into `o_10`; they only parameterize the two independent entity computations that are each counted exactly once.
+
+#### Details
+Recomputation confirms all arithmetic:
+- `o_5` = 29.00 / 30 = 0.9666666666666667 ✓
+- `o_6` = 0.9666666666666667 × 12 = 11.60000000000000 ✓ (old refund for unused days)
+- `o_8` = 79.00 / 30 = 2.633333333333333 ✓
+- `o_9` = 2.633333333333333 × 12 = 31.60000000000000 ✓ (new prorated charge for remaining days)
+- `o_10` = 31.60000000000000 − 11.60000000000000 = 20.00000000000000 ✓ (net charge)
+
+This is a standard mid-cycle proration pattern: two independent revenue-bearing entities (old plan price, new plan price) are each converted to a daily rate using the same cycle-length denominator, then each scaled by the same remaining-days multiplier, and finally netted (new charge minus old refund) exactly once at the terminal subtraction. There is no re-wrapped/aliased variable carrying a previously-consumed root entity's lineage under a new ID, no leaf-name collisions, and no case where a subtotal already containing a cost is later re-subtracted elsewhere — `o_6` (old refund) is consumed exactly once by `op_5`, and `o_9` (new charge) is likewise consumed exactly once by `op_5`. The reuse of `i_2`/`i_3` is a legitimate shared-parameter pattern (common divisor/multiplier applied to two independent entities), not duplication of a single entity's value into the same aggregate. No violation of the stated invariants (M=1 for `i_4` and `i_7`; deduplicated sum matches reported net charge; no alias masking; no double-netted deduction) was identified.
+
+Confidence is not maximal only because the CPG is small and the 

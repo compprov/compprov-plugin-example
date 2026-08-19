@@ -1,0 +1,23 @@
+# Summary
+- **Verdict**: SEMANTIC CAST DETECTED
+- **Confidence score**: 83.0
+
+## Anomaly Localization (If Detected)
+
+**Implicated nodes:** `o_21`, `o_22`, `i_23`, `o_25`, `o_26`, `i_24`, and operations `op_17`, `op_18`, `op_19`, `op_20`.
+
+**Attack flow:**
+
+1. The 6-year compounding loop (`op_1`…`op_17`) is internally consistent and fully replays: Year 6 ends with `o_21` = *Balance after interest [Year 6]* = `36919.74444420000`.
+2. `op_18` (`add`) computes `o_22 = o_21 + i_2` = `42919.74444420000`, and its own `descriptor.name` is explicitly labeled **"Ending balance (computed, unused)"** — the pipeline's own metadata flags that this legitimately-derived, fully-traceable compounding result is *not* the value that feeds the rest of the report.
+3. Instead, a completely separate node, `i_23`, named **"Ending balance"**, is declared as a root `INPUT` (no producing operation, no lineage to the annuity loop) carrying the value `44399.53`.
+4. `i_23` — not `o_22` — is the value actually consumed downstream: `op_20` (`subtract`) computes `o_26 = i_23 - o_25` = `44399.53 - 36000.00` = `8399.53`, reported as **"Total growth (interest earned)"**.
+5. The true, fully-derived compounding growth (`o_22 - o_25`) would be `42919.744444 - 36000.00 = 6919.744444`. The externally injected `i_23` inflates the reported growth figure by **$1,479.79** relative to what the graph's own arithmetic actually produced.
+
+## Details
+
+Both `o_22` and `i_23` are `java.math.BigDecimal` and both are semantically labeled "Ending balance" — so technical type-checking and even a naive name-matching audit see nothing wrong: type continuity is perfect (`BigDecimal → BigDecimal`), and the two nodes don't share an *identical* duplicate name pattern that would trip the mechanical duplicate-name heuristic (`o_22`'s name has the suffix "(computed, unused)"). This is exactly the gap the Semantic Type and Context Cast vector exploits: the declared business context — "the ending balance of this annuity, after 6 years of contribution/growth" — is silently re-mapped from a mathematically-verified, lineage-complete value (`o_22`) to an unrelated, externally-supplied constant (`i_23`) that has **no transformation node, no documented adjustment rationale, and no auditable link back to the compounding computation**. The invariant "changing the semantic interpretation of a value requires an explicit domain transformation node" is violated: there is no operation, adjustment, or annotation explaining why the authoritative "Ending balance" used for the growth calculation differs from the one the pipeline itself computed and labeled as the correct compounding result.
+
+The practical impact: the pipeline computes the true compounding chain correctly (verifiable year-by-year), builds the correct final balance (`o_22`), then explicitly discards it ("unused") in favor of an unverified, disconnected input that happens to satisfy the same type and same display name. All downstream reporting (`o_25` Total contributions, `o_26` Total growth) is derived from this substituted value, materially overstating investment growth by ~$1,480 versus the number the graph's own arithmetic proves is correct. This is a textbook case of C_source (computed, fully-traced compounding balance) != C_target (arbitrary externally-asserted "ending balance") despite identical `valueClass` and identical display label — the substitution would pass any type-safety or mathematical-replay check focused purely on `op_18`–`op_20`, because those operations are individually well-formed; the fraud lies in which node was chosen as input to `op_20`, not in the arithmetic of `op_20` itself.
+
+Because `descriptor.meta` is empty across all variables in this graph, `descriptor.name` is the only available carrier of declared business context — and even by that weaker signal, the mismatch is stark: an operation-produced, fully-audited "Ending balance" is deliberately marked unused and swapped for a same-named but lineage-free root input immediately before the headline "growth" figure is computed.

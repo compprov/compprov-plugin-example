@@ -1,0 +1,22 @@
+# Summary
+- **Verdict**: SEMANTIC CAST DETECTED
+- **Confidence score**: 66.0
+
+## Anomaly Localization
+
+Implicated nodes: `i_1` (First deposit amount), `i_2` (Minimum liquidity constant), `i_3` (Total share supply before deposit), `op_1` (min), `o_4` (Minimum liquidity floor — never locked), `op_2` (add), `o_5` (First depositor shares).
+
+Flow of values:
+1. `op_1 = min(i_1, i_2) = min(1,000,000, 1,000) = 1,000` → stored in `o_4`, explicitly named **"Minimum liquidity floor (never locked)"**.
+2. `op_2 = add(i_3, i_1) = 0 + 1,000,000 = 1,000,000` → stored in `o_5`, named **"First depositor shares"**.
+3. Per the structural reference data, both `o_4` and `o_5` are **leaf nodes** — `o_4` is never consumed by any downstream operation. The value computed as the "minimum liquidity floor" plays no role whatsoever in the calculation of the depositor's shares.
+
+The attack signature sits precisely at the boundary between `i_2`/`op_1`/`o_4` and `op_2`/`o_5`: a canonical DeFi safety construct (a `MINIMUM_LIQUIDITY`-style constant, per `i_2`'s own descriptor) is computed via `min(a,b)` and given a business label that pre-emptively asserts it is **"never locked"** — directly contradicting the semantic convention embedded in its own name ("minimum liquidity floor") and in the very presence of a dedicated minimum-liquidity constant in the graph. That relabeled, disconnected value is never wired into the share-minting arithmetic in `op_2`, which instead computes `o_5` as the raw sum of prior total supply (a *shares*-denominated quantity, `i_3`) and the *raw, unadjusted* deposit amount (an *asset*-denominated quantity, `i_1`) — with no explicit exchange-rate/conversion node bridging the asset→share domain transition, and no subtraction of the computed floor.
+
+## Details
+
+**Mechanism.** All types replay perfectly: `BigInteger` in, `BigInteger` out, and the arithmetic (`min`, `add`) is mathematically correct for the numbers given. A purely technical/mathematical replay check passes with zero deviation. But the *business* meaning has been quietly re-mapped in two coordinated ways:
+
+1. **Metadata relabeling without a transformation node.** The value produced by `op_1` is exactly the kind of quantity that, in standard vault/AMM design, exists to be withheld or burned to prevent first-depositor share-inflation attacks (this is the textbook role of Uniswap V2's `MINIMUM_LIQUIDITY` constant, which `i_2`'s own descriptor name evokes). Here, its computed result is annotated "(never locked)" directly in the metadata — an implicit re-labeling of its domain role, not backed by any explicit, auditable transformation operation that changes it from "protective floor" to "informational, non-binding value." Per the stated invariants, such a domain-role change requires explicit transformation logic, not a metadata annotation riding on top of an otherwise-unused output.
+
+2. **Unconverted asset-to-share cast.** `op_2` computes `o_5` ("First depositor shares") by adding `i_3` (a shares-domain quantity) directly to `i_1` (an assets-domain, raw deposit quantity), with no intermediate exchange-rate or share-minting conversion step. Because `i_3 = 0` in this trace, the numeric result happens to equal the deposit amount, which conveniently obscures the fact that an asset-denominated value is being injected directly into a shares-denominated register without any declared conversion logic — exactly the 

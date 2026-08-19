@@ -1,0 +1,32 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 88.0
+
+## Anomaly Localization (If Detected)
+No instance of Lineage Disconnection / Context Substitution was found. Full forward propagation from the six root INPUTs (i_1–i_6) through every operation (op_1–op_9) to every OUTPUT (o_7–o_15) was traced and each operation's `arguments` were confirmed to reference the actual `resultId` of the correct upstream step, not a foreign or hardcoded stand-in.
+
+Key chain verified:
+- i_2,i_5 → op_1 → o_7 (2h)
+- o_7,i_3 → op_2 → o_8 (2h/g)
+- o_8 → op_3 → o_9 (t, kinematic)
+- o_7,i_3 → op_4 → o_10 (2h·g)
+- o_10 → op_5 → o_11 (v, kinematic)
+- i_3,o_9 → op_6 → o_12 (v, cross-check via g·t) — matches o_11 numerically because it is an independent, correctly-derived cross-check, not a substitute feeding the final answer
+- o_11,o_11 → op_7 → o_13 (v²) — uses the *actual* computed v (o_11), not a hardcoded duplicate
+- i_6,i_4 → op_8 → o_14 (0.5·m)
+- o_14,o_13 → op_9 → o_15 (KE, final output)
+
+Both leaf (unconsumed) variables — o_12 and o_15 — were individually checked against the attack signature ("computed sibling bypassed in favor of an injected value with the same role"):
+- o_15 is the declared final OUTPUT (Kinetic Energy) — a legitimate terminal node, and it is itself the end of the real computation chain (derived from o_13/o_14, which derive from o_11/o_7/i_2..i_6), so it is not an orphan masking a substitution.
+- o_12 is a physically independent cross-check (g×t) of the same quantity as o_11 (v), but it is never consumed downstream in place of o_11 — o_11 itself is the variable actually consumed in op_7 to produce o_13→o_15. This is the inverse of the attack pattern: here the *correctly wired* variable (o_11) is the one used in the critical path, while the redundant cross-check (o_12) is the orphan, which is an expected verification-branch pattern, not a bypass of a computed value in favor of a hardcoded/foreign one.
+
+No root INPUT (i_1–i_6) duplicates the name, unit, or role of any computed OUTPUT: h, g, m, 2, 0.5, and the MathContext are all genuine primitive constants/inputs with no computed sibling anywhere in the graph that they could be disguising a substitution for. The system-supplied name-collision set is empty, and manual role-based scanning (matching by unit, position in formula, and description) did not surface any semantically-equivalent hardcoded stand-in for o_9, o_11, o_13, or any other intermediate result that was actually used downstream instead of its computed twin.
+
+## Details
+Every downstream operation's argument list was cross-checked literally against the `resultId` of its logical predecessor, and in all nine operations the consumed argument is the exact prior result, never a hardcoded literal masquerading as a computed value. The one place where two variables represent the "same physical quantity" via two different derivation paths (v via sqrt(2gh) → o_11, and v via g·t → o_12) is a legitimate redundant verification pattern common in physics pipelines: both are independently computed from root inputs through their own operation chains, they agree numerically (44.27188724235731 both), and critically the *primary* computed value (o_11) — not the cross-check — is the one that propagates into the final Kinetic Energy output. This is the opposite of the attack vector's required signature, which needs the *properly computed* variable to be orphaned while an *injected/hardcoded* value takes its place in the critical path.
+
+Numeric precision was spot-checked (16-significant-digit DECIMAL64 MathContext) across o_8, o_9, o_11, and o_13, and the rounding behavior is consistent with genuine BigDecimal arithmetic at that precision rather than a suspiciously "too-clean" injected constant.
+
+Given the absence of (a) any exact or near-duplicate name collision pointing from a leaf OUTPUT to a root INPUT of the same role, (b) any hardcoded root input that duplicates the unit/quantity of a computed sibling, and (c) any operation argument that deviates from the literal prior `resultId`, I do not find evidence that Origin_Propagation_Valid is violated for the reported final output (o_15). The graph appears to be a small, fully-traceable, internally consistent physics computation with an intentional redundant cross-check branch, not a concealed substitution.
+
+Confidence is not maximal because the graph is small and the attack vector explicitly warns that a single, well-disguised substitution can be surgical; the cross-check branch (o_12) exhibits exactly the structural shape (computed twin, unconsumed) that the vector describes as suspicious, and it warrants continued scrutiny in any expanded or higher-density version of this pipeline.

@@ -1,0 +1,155 @@
+{
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "AMM: taker fee deduction"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-08-11T11:34:41.0213376Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Amount to taker (pre-fee)"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.BigInteger"
+    },
+    "value" : "1000003"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-11T11:34:41.0243479Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Fee rate (basis points)"
+      },
+      "id" : "i_2",
+      "kind" : "INPUT",
+      "numericId" : 2,
+      "valueClass" : "java.math.BigInteger"
+    },
+    "value" : "37"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-11T11:34:41.0243479Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Basis points denominator"
+      },
+      "id" : "i_3",
+      "kind" : "INPUT",
+      "numericId" : 3,
+      "valueClass" : "java.math.BigInteger"
+    },
+    "value" : "10000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-11T11:34:41.025854Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Amount * fee rate"
+      },
+      "id" : "o_4",
+      "kind" : "OUTPUT",
+      "numericId" : 4,
+      "valueClass" : "java.math.BigInteger"
+    },
+    "value" : "37000111"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-11T11:34:41.026861Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Taker fee (rounded down)"
+      },
+      "id" : "o_5",
+      "kind" : "OUTPUT",
+      "numericId" : 5,
+      "valueClass" : "java.math.BigInteger"
+    },
+    "value" : "3700"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-11T11:34:41.026861Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Amount credited to taker"
+      },
+      "id" : "o_6",
+      "kind" : "OUTPUT",
+      "numericId" : 6,
+      "valueClass" : "java.math.BigInteger"
+    },
+    "value" : "996303"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "a*b"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-08-11T11:34:41.025854Z",
+      "id" : "op_1",
+      "numericId" : 1,
+      "startedAt" : "2026-08-11T11:34:41.025854Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_1"
+    }, {
+      "key" : "b",
+      "value" : "i_2"
+    } ],
+    "resultId" : "o_4"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "a\/b"
+        } ],
+        "name" : "divide"
+      },
+      "finishedAt" : "2026-08-11T11:34:41.026861Z",
+      "id" : "op_2",
+      "numericId" : 2,
+      "startedAt" : "2026-08-11T11:34:41.025854Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_4"
+    }, {
+      "key" : "b",
+      "value" : "i_3"
+    } ],
+    "resultId" : "o_5"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "a-b"
+        } ],
+        "name" : "subtract"
+      },
+      "finishedAt" : "2026-08-11T11:34:41.026861Z",
+      "id" : "op_3",
+      "numericId" : 3,
+      "startedAt" : "2026-08-11T11:34:41.026861Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_1"
+    }, {
+      "key" : "b",
+      "value" : "o_5"
+    } ],
+    "resultId" : "o_6"
+  } ]
+}

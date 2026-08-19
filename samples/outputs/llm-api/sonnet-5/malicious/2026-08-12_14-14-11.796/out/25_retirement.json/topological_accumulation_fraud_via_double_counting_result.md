@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: TOPOLOGICAL ANOMALY
+- **Confidence score**: 91.0
+
+## Anomaly Localization (If Detected)
+
+**Implicated nodes:** `o_21`, `o_22`, `i_23`, `o_25`, `o_26`, `op_18`, `op_19`, `op_20`, and upstream chain `i_4, i_2, i_3, o_5\u2013o_20` (the full 6-year compounding sequence).
+
+**Flow of the anomaly:**
+
+1. The graph faithfully simulates a 6-year annuity: `i_4`(start balance=0) is compounded year-over-year via alternating `multiply`(interest) / `add`(interest-to-balance) / `add`(contribution) operations (`op_1`\u2013`op_18`), terminating at `o_21` = 36919.7444442 (balance after Year 6 interest) and `o_22` = `o_21 + i_2` = **42919.7444442** (balance after Year 6 contribution). Independent replay of every single operation in this chain confirms it is arithmetically perfect \u2014 each node passes local verification.
+2. `o_22` is explicitly labeled *"Ending balance (computed, unused)"* and is a graph leaf: it is never consumed by any downstream operation. This is a rare and conspicuous self-admission in the metadata that the actual simulated result is deliberately discarded.
+3. In its place, a brand-new **root INPUT** `i_23` ("Ending balance") is injected with value **44399.53** \u2014 a value with no producing operation, no lineage tying it back to `i_4`, `i_2`, `i_3`, or any node in the compounding chain that computed the *real* ending balance.
+4. `op_19` independently computes `o_25` = `i_2 * i_24` = 6000.00 * 6 = 36000.00 ("Total contributions") \u2014 this correctly cross-checks against the six contribution-additions actually present in the chain, and is not itself anomalous.
+5. `op_20` computes the terminal reported metric `o_26` = `i_23 - o_25` = 44399.53 - 36000.00 = **8399.53** ("Total growth (interest earned)").
+
+**The break:** The true, fully-verified computed growth implied by the simulation chain is `o_22 - o_25` = 42919.7444442 - 36000.00 = **6919.7444442**. The reported terminal figure `o_26` = 8399.53 instead relies on the disconnected, fabricated root `i_23`, producing a growth figure inflated by **~$1,479.79** relative to what the graph's own verified computation supports.
+
+## Details
+
+This is a variant of topological accumulation manipulation that a naive replay check cannot catch: every individual operation (`op_1` through `op_18`) is locally correct, so cell-by-cell recomputation of the annuity chain "passes." The fraud is not injected via a bad arithmetic step, nor via classic reuse of one variable across two summation paths feeding the *same* aggregator \u2014 instead, the entire correctly-computed subtotal (`o_22`) is severed from the lineage at the last moment and swapped for an un-audited, freestanding INPUT (`i_23`) claiming to represent the same real-world quantity ("Ending balance"). Because `i_23` is declared as an INPUT (kind=INPUT, a root node) rather than derived, it bypasses every consistency check that would apply to an intermediate/output node, and its numeric mismatch against `o_22` is never reconciled anywhere in the graph.
+
+The consequence is that the reported "Total growth (interest earned)" (`o_26` = 8399.53), which is a terminal, non-consumed leaf output presented to downstream consumers, materially overstates the true simulated interest growth (6919.7444442) by roughly 21%. This is precisely the invariant the audit brief flags: "Deduplicated sum S_dedup ... must match the reported consolidation S_reported" \u2014 here, the value that should have flowed forward (`o_22`, the deduplicated/legitimately-derived ending balance) does **not** match the value actually used in the reported consolidation (`i_23`). The explicit "(computed, unused)" annotation on `o_22` is itself strong circumstantial evidence that this substitution is a deliberate design choice to make the discarded, correct computation visible/auditable-looking while quietly feeding a different, inflated number into the metric that actually gets reported \u2014 a classic disguise pattern for this class of fraud.
+
+While the specific mechanism here is root-value substitution rather than textbook "the same node consumed twice by one aggregator," it produces the same practical harm the double-counting invariant is designed to prevent: a downstream financial rollup (`o_26`) that does not equal the value obtainable from the deduplicated, verifiable lineage of root entities (`i_4`, `i_2`, `i_3`) that the rest of the graph so carefully documents. This should be treated as a reportable structural/provenance violation pending human resolution of intent.

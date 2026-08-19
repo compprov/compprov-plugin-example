@@ -1,0 +1,32 @@
+# Summary
+- **Verdict**: TOPOLOGICAL ANOMALY
+- **Confidence score**: 88.0
+
+## Scope of This Audit
+This audit specifically targeted **Topological Accumulation Fraud via Double Counting** — i.e., a legitimate root financial entity (revenue line, discount, fee) being fed into the terminal aggregation (`o_27`, "Order total") through more than one causal path, whether as a duplicated addend or a duplicated deduction.
+
+## Double-Counting Analysis (Per Flagged Reuse Set)
+
+The structural reference data flagged two variables consumed by more than one operation: `i_3` and `o_24`.
+
+- **`i_3` ("1.0")**: consumed by `op_6` (`1 - i_17` → `o_18`, SAVE10 complement) and `op_8` (`1 - i_20` → `o_21`, LOYALTY5 complement). This is a numeric constant used to compute two *independent* discount complements, not a financial entity being double-booked. **Legitimate.**
+- **`o_24` ("Taxable amount", 202.50)**: consumed by `op_11` (`o_24 * i_25` → `o_26`, sales tax) and `op_12` (`o_24 + o_26` → `o_27`, order total). This is the standard `total = base + (base * rate)` tax pattern — the base amount contributes once as itself and once as the multiplicand used to *derive* a distinct downstream quantity (tax), which is then added exactly once. This is not multiplicity into the same aggregation via two parallel paths of the *same* value; it is the expected single-use-as-basis pattern for tax computation. **Legitimate.**
+
+Tracing every root revenue line (`i_4`/`i_5` → `o_6`; `i_7`/`i_8` → `o_9`; `i_10`/`i_11` → `o_12`; `i_13`/`i_14` → `o_15`) forward: each line total is consumed by `op_5` (`addBulk` → `o_16`, Subtotal) **exactly once**, and none of `o_6`, `o_9`, `o_12`, `o_15` reappear anywhere downstream. Discounts (`i_17` SAVE10, `i_20` LOYALTY5), shipping (`i_23`), and tax rate (`i_25`) are each consumed exactly once in the terminal path. **No entity — revenue or deduction — has path multiplicity > 1 into `o_27`.** The specific attack vector this audit was commissioned to find is **not present**.
+
+## Anomaly Found Outside the Double-Counting Vector
+
+While tracing the full path to the terminal output, a distinct and material anomaly was identified in the *edge routing* of the graph rather than in entity duplication:
+
+- **`i_1`** ("Computation precision (DECIMAL64)", precision=16, HALF_EVEN) is the `MathContext` used consistently as the `mc` argument in **every** operation (`op_1`–`op_8`, `op_10`–`op_12`) — 11 of 12 operations.
+- **`i_2`** ("Computation precision (tampered)", precision=2, DOWN) is defined but used in **exactly one** operation: `op_9` (`multiply(o_19, o_21) → o_22`), the LOYALTY5 discount application.
+- Recomputing `op_9` with the graph's own dominant context `i_1`: `205.128 * 0.95 = 194.8716`, which at precision 16/HALF_EVEN stays `194.8716`.
+- The graph instead reports `o_22 = "1.9E+2"` (190), consistent only with truncating to 2 significant digits under `i_2`'s DOWN rounding — silently dropping ~$4.87 at that single node.
+- This single-node substitution cascades through every downstream aggregate that was engineered to appear internally consistent with the (wrong) `o_22`: `o_24 = o_22 + i_23 = 202.50` (locally correct given the tampered `o_22`), `o_26 = o_24 * i_25 = 16.20`, `o_27 = o_24 + o_26 = 218.70`.
+- Had the pipeline's own declared/consistent precision (`i_1`) been used at `op_9` as everywhere else, the correct chain would be: `o_22 = 194.8716` → `o_24 = 207.3716` → `o_26 = 16.589728` → `o_27 ≈ 223.961328`. The reported terminal output (`218.7000`) understates the true order total by roughly **$5.26**.
+
+## Details
+
+This is not classic double counting (no entity is summed/subtracted twice across parallel paths), so it does not satisfy the specific `DOUBLE COUNTING DETECTED` criteria this audit targeted. However, it is a genuine, verifiable topological anomaly: an isolated operation (`op_9`) is wired to a different, look-alike execution-parameter node (`i_2`, itself candidly labeled "tampered" in its own descriptor) instead of the context node used uniformly across the rest of the DAG. Local replay of `op_9` in isolation passes — the arithmetic is internally consistent with the (wrong) context it was given — which is exactly why casual per-node review misses it; only end-to-end consistency checking of the `mc` argument across all operations surfaces the deviation. The practical impact is a silent, material deflation of the reported "Order total," achieved by rounding-context substitution at a single strategic node rather than by duplicating an entity. Given the explicit self-labeling of `i_2` and the magnitude of the resulting discrepancy, this should be escalated for human review even though it falls outside the strict double-counting shape this audit was scoped to detect.
+
+**Implicated nodes:** `i_1`, `i_2`, `o_19`, `o_21`, `op_9`, `o_22`, and every downstream node that consumes `o_22` (`o_24`, `o_26`, `o_27`, via `op_10`, `op_11`, `op_12`).

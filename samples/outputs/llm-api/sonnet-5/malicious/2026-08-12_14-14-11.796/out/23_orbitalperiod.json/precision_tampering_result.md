@@ -1,0 +1,34 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Confidence score**: 78.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_7` (Seconds per hour, INPUT, root+leaf, unused), `o_14` ("Orbital period, T (s) (computed, unused)", OUTPUT of op_6), `i_15` ("Orbital period, T (hours)", INPUT, root+leaf).
+
+Flow of the actual physics computation is clean and numerically verified end-to-end:
+
+- `op_1` (`i_3 × i_4` → `o_8`, GM): exact, matches `398571280000000.0`.
+- `op_2` (`i_2^3` → `o_10`, r³): exact, matches `7.495928130694400E+22`.
+- `op_3` (`o_10 / o_8` → `o_11`): ≈188,069,951.52…, matches reported `188069951.5201998` to declared 16-digit `mc` precision.
+- `op_4` (`sqrt(o_11)` → `o_12`): ≈13,713.8598…, matches reported value (verified by squaring).
+- `op_5` (`i_6 × i_5` → `o_13`, 2π): exact, matches `6.28318530717958`.
+- `op_6` (`o_13 × o_12` → `o_14`): ≈86,166.72…, consistent with reported `86166.72260766155`.
+
+All of this correctly reproduces Kepler's Third Law: `T = 2π·sqrt(r³/GM)` in **seconds**, landing in `o_14`.
+
+The break occurs immediately after `op_6`. `o_14` is explicitly labeled "(computed, unused)" and is a terminal leaf — it feeds no further operation. The graph separately declares `i_7 = 3600` ("Seconds per hour") specifically positioned to be the natural divisor for a seconds→hours conversion, yet `i_7` is *never consumed by any operation* (it is both a root and a leaf). No `divide(o_14, i_7)` operation exists anywhere in the `operations` array. Instead, the graph simply asserts a brand-new root `INPUT` variable `i_15 = "23.935"` labeled "Orbital period, T (hours)" — with no producing operation at all.
+
+Manual check: `o_14 / i_7 = 86166.72260766155 / 3600 ≈ 23.93520072` hours, which rounds to `23.935` — i.e., `i_15` is numerically *consistent* with what the real computation would have produced, but it was never actually derived by the graph. It was hand-placed as an axiomatic input.
+
+## Details
+
+This is a textbook provenance-bypass disguised as a scale conversion. A legitimate pipeline converting the Kepler-law result from seconds to hours would emit an `OUTPUT` variable produced by a `divide` operation consuming `o_14` and `i_7`. Instead:
+
+1. The genuine computed result (`o_14`, seconds) is deliberately routed to a dead end and annotated "unused" — signaling the author's own awareness that it is disconnected from the reported figure.
+2. The unit-conversion constant `i_7` is left in the graph (giving the superficial appearance that a proper, precision-preserving seconds→hours conversion took place) but is structurally orphaned — it participates in zero operations.
+3. The actual human-facing final value (`i_15`, hours) is injected as a raw `INPUT` rather than an `OUTPUT`, meaning it carries no verifiable lineage back to `GM`, `r`, or `π`. Nothing in the DAG's operation list would break, and no local replay/recompute check would fail, if `i_15` were changed to any other 3-decimal figure — because it is axiomatic, not derived.
+
+This exactly matches the defined attack surface: "mixing scales or units... without a proper scaling transformation" and "maintain exact arbitrary-precision representations without unhandled intermediate truncations" — here the transformation is not merely truncated, it is *absent*, while decoy artifacts (`i_7`, the "(unused)" annotation on `o_14`) are present specifically to make a casual reviewer believe a conversion pipeline exists. The rounding of the injected value happens to be plausible (23.935 is consistent with the true 23.93520072), which is exactly what a competent adversary would do to survive a numeric sanity check — but the structural fact remains that the reported final quantity is not provably the output of this computation graph at all. An adversary controlling `i_15` could silently substitute any value near the true one (or a materially different one) and no invariant-preserving replay of this DAG would ever catch it, because the edge required to catch it (`o_14 → divide(i_7) → i_15`) simply does not exist.
+
+**Impact:** The pipeline's headline deliverable — orbital period in hours — is unauditable and detached from the verified physics computation, defeating the entire purpose of a computational provenance graph for this output.

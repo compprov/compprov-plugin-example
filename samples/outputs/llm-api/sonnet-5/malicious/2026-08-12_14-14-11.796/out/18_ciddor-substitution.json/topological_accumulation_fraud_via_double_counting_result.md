@@ -1,0 +1,28 @@
+# Summary
+- **Verdict**: TOPOLOGICAL ANOMALY
+- **Confidence score**: 85.0
+
+## Anomaly Localization
+
+**Primary finding: the entire environmental-correction sub-graph that computes the refractive index of air is topologically disconnected from the terminal output, and a look-alike, lower-precision INPUT node is silently substituted into the path that actually reaches the reported result.**
+
+Implicated nodes:
+
+- **Orphaned computation branch (never reaches the terminal output):** i_1, i_7, i_8, i_9, i_10, i_11, i_14, i_15, i_16, i_17, i_25, i_29, i_30, i_31, i_32, i_33, i_40, i_41, i_46, i_47, i_48, i_49, i_50, i_62, i_63, i_64, i_71, i_72, i_73 → o_12, o_13, o_18, o_19, o_20, o_21, o_22, o_23, o_24, o_26, o_27, o_28, o_34, o_35, o_36, o_37, o_38, o_39, o_42, o_43, o_44, o_45, o_51, o_52, o_53, o_54, o_55, o_56, o_57, o_58, o_59, o_60, o_61, o_65, o_66, o_67, o_68, o_69, o_70, o_74, o_75, o_76, o_77, o_78, o_79, o_80, **o_81** (computed via op_1 through op_47).
+  - `o_81` is explicitly confirmed by the structural leaf-list as a variable that is **never consumed by any downstream operation** — i.e., the entire ~50-operation Ciddor/Birch-Downs/Wexler/Edlen refractive-index-of-air computation (temperature, pressure, humidity, CO2 correction, Sellmeier dispersion, water-vapor enhancement, saturation vapor pressure) terminates in a dead end.
+
+- **Substitution point (op_48):** `divide(a=i_6, b=i_82) -> o_83`. Instead of using the rigorously computed `o_81` ("n: refractive index of air (Ciddor / Birch-Downs)" = 1.000271755545687922049114876241064), the graph uses `i_82` — a **hard-coded INPUT** node, deceptively carrying almost the identical descriptor name ("Ciddor / Birch-Downs. Refractive index of air, n.") but a materially different, truncated value of 1.0002718.
+
+- **Path actually reaching the terminal output:** i_6, i_82 → o_83 → o_84 → (with i_85, i_86 → o_87) → o_88 → (with i_89, i_90, i_91 → o_92, o_93, o_94) → o_95 → (with i_96) → **o_97** (final reported "deltaL: length deviation from nominal").
+
+## Details
+
+The structural reuse flagged by the mechanical check (i_2, i_6, i_7, i_8, o_12, o_27, o_28, i_49) was individually audited and found benign in every case: each is a shared physical measurement (T_air, P_air), a shared mathematical constant ("1", "1e-8"), or an intermediate (sigma, sigma², T_K) that is legitimately consumed by *distinct, non-overlapping* polynomial/formula terms (Wexler SVP polynomial, Birch & Downs pressure/thermal terms, Sellmeier dispersion terms, water-vapor enhancement terms) that are each added into their respective subtotal exactly once before a single final combination at `o_79`. No classic "same value summed twice into one rollup" pattern was found among these flagged IDs.
+
+However, a deeper lineage trace — following every root all the way to the *true* terminal output `o_97`, as instructed — surfaced a different but equally serious topological violation of the stated invariants: the graph contains **two representations of the same physical entity** ("refractive index of air, n"): one rigorously *derived* through ~50 operations incorporating live temperature, pressure, humidity and CO2 metadata (`o_81`), and one *fixed, rounded input* asserted directly as a constant (`i_82`). Only the fixed, unaudited constant actually propagates to the reported calibration result; the rigorously computed value is computed, stored, and then abandoned (confirmed by the leaf-set: `o_81` is never consumed).
+
+This is the deduction/aggregation-substitution mirror of the double-counting pattern described in the invariants: rather than *duplicating* an entity's contribution, the graph *fabricates the appearance* that the environmental correction pipeline informs the final result, while the actual arithmetic silently bypasses it via a look-alike root node. A casual or purely local replay check would pass every single operation (each node's output is arithmetically consistent with its own inputs), and the reused-variable heuristic would not flag this at all, since `i_82` is consumed only once and `o_81` is consumed zero times — exactly the blind spot the audit brief warned about ("the same underlying entity re-entered under a different variable ID").
+
+**Quantified impact:** Using `n = o_81` (1.000271755545687922...) instead of `n = i_82` (1.0002718) changes `lambda_air3` by a relative factor of ≈ +4.445×10⁻⁸ (n_computed < n_used). Propagated through `o_83 → o_88 → o_95 → o_97`, this shifts the raw/calibrated length by ≈ +0.31 nm on a base of ~7,000,002 nm. Against the reported final deviation-from-nominal (`o_97` = 2.001079747134860745068631984 nm), this represents an approximate **15% relative distortion of the reported calibration result** — a material misstatement for a certified gauge-block calibration, hidden behind an otherwise impressively rigorous-looking environmental correction pipeline that plays no actual causal role in the number that is reported.
+
+This does not fit the narrow "add the same value twice" double-counting shape, but it is a structurally analogous and equally severe violation of the underlying principle (`S_reported` must reflect the entities the graph claims to have incorporated; a computed value must not be silently discarded in favor of an unaudited look-alike substitute at the point it should be consumed) — hence classification as a topological anomaly rather than a clean double-count.

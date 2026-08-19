@@ -1,0 +1,23 @@
+# Summary
+- **Verdict**: SEMANTIC CAST DETECTED
+- **Confidence score**: 88.0
+
+## Anomaly Localization
+
+**Implicated variables:** i_9–i_19 (raw yields & gas), o_21–o_26 (per-tx gas converted to USDC), o_27 (Total gas fees), o_28–o_38 (per-asset yield conversions and per-asset gas subtractions), **o_39 ("Gross yield in USDC")**, o_40 ("Platform fee in USDC"), **o_41 ("After gas deduction")**, o_42 ("Net profit in USDC").
+
+**Implicated operations:** op_10, op_12, op_13, op_15, op_17, op_18 (per-asset `subtract(yield, gas)` → o_30, o_32, o_33, o_35, o_37, o_38), op_19 (`addBulk` → o_39), op_20 (`scale` → o_40), **op_21** (`subtract(o_39, o_27)` → o_41), op_22 (`subtract(o_41, o_40)` → o_42).
+
+**Attack flow:**
+1. Each asset's yield is converted to USDC and then *immediately reduced by its own transaction gas cost* via subtract nodes: o_30 = o_29(wBTC yield)−o_21(gas), o_32 = o_31(ETH/AAVE yield)−o_22(gas), o_33 = i_11(USDC yield)−o_23(gas), o_35 = o_34(USDT yield)−o_24(gas), o_38 = o_36(ETH/Lido+EtherFi yield)−o_25(gas)−o_26(gas). Every one of these intermediate results is *already net of its gas cost*, and — tellingly — each of these six intermediate nodes is stripped of a descriptive name (`descriptor.name = ""`), obscuring that gas has already been deducted at this stage.
+2. op_19 sums these already-gas-net values (o_30+o_32+o_33+o_35+o_38) into **o_39, explicitly labeled "Gross yield in USDC"**. Verification: raw (pre-gas) yield sum = 1738.305562 USDC; 1738.305562 − o_27(111.4336, total gas) = 1626.871962 = o_39 exactly. So o_39 is mathematically and factually a *net-of-gas* figure, not a gross figure — a direct contradiction between its declared business label and its actual computed content, while its `valueClass` (`Amount`/USDC) remains technically unchanged.
+3. Downstream, op_21 computes o_41 = o_39 − o_27, **explicitly labeled "After gas deduction"** — semantically asserting this is the *first* gas deduction applied to a true gross figure. But o_39 already had every one of the same six gas amounts (o_21…o_26, whose sum is o_27) subtracted in step 1. This subtracts the entire gas total a second time: o_41 = 1626.871962 − 111.4336 = 1515.438362, i.e. raw_yield − 2×gas_fees (1738.305562 − 222.8672 = 1515.438362).
+4. op_22 then subtracts the platform fee (o_40, computed as 3% of the mislabeled "gross" o_39) from this double-gas-deducted figure to produce o_42 = 1466.632204, presented as "Net profit in USDC."
+
+## Details
+
+This is a textbook Semantic Type and Context Cast: technical type continuity is perfect (every node is `Amount`/`BigDecimal` in USDC, every arithmetic step replays correctly given its inputs), so a naive schema/replay check passes cleanly. What breaks is the *business meaning* attached to o_39. Its `descriptor.name` ("Gross yield in USDC") asserts a domain context — pre-gas, pre-fee revenue — that its actual lineage (a sum of six already gas-net sub-yields, each concealed by an empty name) contradicts. Operation op_21 then consumes o_39 under the *documented* assumption implied by its own label ("After gas deduction") that gas has not yet been removed, silently re-applying a full gas deduction that was already baked into the upstream computation.
+
+Why this passes casual/mechanical review: (a) every subtract/add/convert/scale operation is dimensionally and numerically self-consistent — nothing fails type checking or local replay; (b) the six per-asset "yield minus gas" intermediates that reveal the double counting are all left unnamed (`""`), so a name-based or metadata-based scan finds nothing suspicious at the point of concealment; (c) the mislabel appears only at the aggregation node (o_39), one hop removed from where the actual gas subtraction happened, making the contradiction invisible without full lineage tracing back through op_10/op_12/op_13/op_15/op_17/op_18.
+
+**Consequence:** the reported "Net profit in USDC" (o_42 = 1466.632204) understates the true net profit by essentially the full total gas amount (o_27 = 111.4336 USDC), because gas is deducted twice — once silently inside the mislabeled "Gross yield" aggregate, and once again explicitly in the step branded "After gas deduction." A correct computation (single gas deduction from a true gross figure, i.e. o_39 itself, followed by fee and true single gas subtraction) would yield materially different — and higher — net profit. This is precisely the invariant violation flagged by the spec: an implicit re-labeling ("Gross yield" applied to an already-net figure) without an explicit, auditable domain-transformation node, causing a downstream consumer (op_21) to operate under a business assumption that conflicts with the variable's true originating computation.

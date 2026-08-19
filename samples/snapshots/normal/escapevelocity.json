@@ -1,0 +1,356 @@
+{
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "Orbital mechanics: escape velocity"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8797721Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Computation precision (DECIMAL64)"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 16,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8797721Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Gravitational constant, G (N·m²\/kg²)"
+      },
+      "id" : "i_2",
+      "kind" : "INPUT",
+      "numericId" : 2,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "6.674E-11"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8797721Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Planet mass, M (kg)"
+      },
+      "id" : "i_3",
+      "kind" : "INPUT",
+      "numericId" : 3,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "5972000000000000000000000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8797721Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Planet radius, r (m)"
+      },
+      "id" : "i_4",
+      "kind" : "INPUT",
+      "numericId" : 4,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "6371000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8797721Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Altitude above surface (m)"
+      },
+      "id" : "i_5",
+      "kind" : "INPUT",
+      "numericId" : 5,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "400000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8797721Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Constant 2"
+      },
+      "id" : "i_6",
+      "kind" : "INPUT",
+      "numericId" : 6,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "2"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8827725Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "G × M, standard gravitational parameter (m³\/s²)"
+      },
+      "id" : "o_7",
+      "kind" : "OUTPUT",
+      "numericId" : 7,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "398571280000000.0"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8827725Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "2 × G × M"
+      },
+      "id" : "o_8",
+      "kind" : "OUTPUT",
+      "numericId" : 8,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "797142560000000.0"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8827725Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "2GM \/ r at surface (m²\/s²)"
+      },
+      "id" : "o_9",
+      "kind" : "OUTPUT",
+      "numericId" : 9,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "125120477.1621410"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8837718Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Escape velocity at surface (m\/s)"
+      },
+      "id" : "o_10",
+      "kind" : "OUTPUT",
+      "numericId" : 10,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "11185.72649237147"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8837718Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Radius at altitude, r + altitude (m)"
+      },
+      "id" : "o_11",
+      "kind" : "OUTPUT",
+      "numericId" : 11,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "6771000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8837718Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "2GM \/ r at altitude (m²\/s²)"
+      },
+      "id" : "o_12",
+      "kind" : "OUTPUT",
+      "numericId" : 12,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "117728926.3033525"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8837718Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Escape velocity at altitude (m\/s)"
+      },
+      "id" : "o_13",
+      "kind" : "OUTPUT",
+      "numericId" : 13,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "10850.29613897024"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.8827725Z",
+      "id" : "op_1",
+      "numericId" : 1,
+      "startedAt" : "2026-08-05T08:19:32.8797721Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_2"
+    }, {
+      "key" : "b",
+      "value" : "i_3"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_7"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.8827725Z",
+      "id" : "op_2",
+      "numericId" : 2,
+      "startedAt" : "2026-08-05T08:19:32.8827725Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_6"
+    }, {
+      "key" : "b",
+      "value" : "o_7"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_8"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a\/b)mc"
+        } ],
+        "name" : "divide"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.8827725Z",
+      "id" : "op_3",
+      "numericId" : 3,
+      "startedAt" : "2026-08-05T08:19:32.8827725Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_8"
+    }, {
+      "key" : "b",
+      "value" : "i_4"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_9"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "sqrt(a)mc"
+        } ],
+        "name" : "sqrt"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.8837718Z",
+      "id" : "op_4",
+      "numericId" : 4,
+      "startedAt" : "2026-08-05T08:19:32.8827725Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_9"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_10"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a+b)mc"
+        } ],
+        "name" : "add"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.8837718Z",
+      "id" : "op_5",
+      "numericId" : 5,
+      "startedAt" : "2026-08-05T08:19:32.8837718Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_4"
+    }, {
+      "key" : "b",
+      "value" : "i_5"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_11"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a\/b)mc"
+        } ],
+        "name" : "divide"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.8837718Z",
+      "id" : "op_6",
+      "numericId" : 6,
+      "startedAt" : "2026-08-05T08:19:32.8837718Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_8"
+    }, {
+      "key" : "b",
+      "value" : "o_11"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_12"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "sqrt(a)mc"
+        } ],
+        "name" : "sqrt"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.8837718Z",
+      "id" : "op_7",
+      "numericId" : 7,
+      "startedAt" : "2026-08-05T08:19:32.8837718Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_12"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_13"
+  } ]
+}

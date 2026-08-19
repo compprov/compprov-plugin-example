@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-11T11:34:41.1495433Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Fixed-point scale constant (BONE)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "1000000000000000000"
+} ]

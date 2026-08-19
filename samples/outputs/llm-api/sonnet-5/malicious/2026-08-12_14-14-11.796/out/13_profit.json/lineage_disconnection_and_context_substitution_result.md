@@ -1,0 +1,28 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 70.0
+
+## Scope
+This audit specifically targets **Lineage Disconnection and Context Substitution**: a computed OUTPUT being quietly bypassed by a foreign/hardcoded root INPUT (often disguised via name collision or role-matching) at a critical downstream junction, while the true computed sibling is left as an orphaned dead-end.
+
+## Structural Reference Cross-Check
+- **Leaf variables**: only `o_42` (Net profit in USDC) is unconsumed — and it is genuinely the terminal reported result of the pipeline, not a mid-chain output that should feed something further.
+- **Name-collision set**: empty. No computed `OUTPUT` shares an exact display name with a root `INPUT` anywhere in the graph.
+- **Multi-consumed variables** (`i_2`, `i_5`, `o_21`\u2013`o_26`, `o_39`): all of these are consumed by *more than one* legitimate downstream operation, and in every case I traced, **both** consumers use the *actual* `resultId` of the correct producing operation — never a hardcoded stand-in.
+
+## Full Forward-Propagation Trace
+I independently recomputed every operation from root inputs to `o_42`, including all currency conversions, subtractions, and the `addBulk`/`scale` steps (respecting the DOWN-truncation and per-currency precision rules in `descriptor.meta`):
+
+- Gas legs (`op_1`\u2013`op_6`) → `o_21..o_26`: each `convert(gasAmount, dateMatchedRate)` reproduces the stored value exactly (e.g., `0.005*4480=22.400000`≈`o_21`; `0.00396*4390=17.384400`≈`o_22`; etc.). Rate selection correctly matches the transaction date's own historical rate input (`i_5`\u2013`i_8`), not a mismatched or hardcoded rate.
+- Total gas (`op_7`→`o_27`) sums exactly the six gas legs: `111.433600`. ✅
+- Yield conversions (`op_8/op_9`→`o_28/o_29`, `op_11`→`o_31`, `op_14`→`o_34`, `op_16`→`o_36`) all correctly consume the *actual* upstream `resultId`s (e.g., `o_28` feeds `op_9`, not a substituted BTC value) and the *current*-dated market rates (`i_1`, `i_2`, `i_3`) — a distinct but internally consistent design choice (yields marked at current market, gas marked at cost-basis-date rate), applied uniformly across every yield leg with no exception.
+- Per-position net-of-entry-gas subtractions (`op_10`, `op_12`, `op_13`, `op_15`, `op_17`, `op_18`) all consume the correct producing `resultId`s (`o_29`→`o_30` via `o_21`; `o_31`→`o_32` via `o_22`; etc.) — no orphaned computed value is bypassed in favor of a foreign literal anywhere in this chain.
+- `addBulk` (`op_19`) into `o_39`, `scale` (`op_20`) into `o_40`, and the final subtractions (`op_21`, `op_22`) into `o_41`/`o_42` all reproduce the stored values exactly when replayed from the graph's own upstream results.
+
+Every numeric value in the graph reproduces exactly under independent forward propagation, using only the `resultId`s the operations claim to consume — I found **no instance** of a downstream operation silently substituting a root `INPUT` for a computed sibling that shares its role, name, unit, or metadata. There is also no orphaned computed `OUTPUT` anywhere except the legitimate final leaf `o_42`.
+
+## Secondary Observation (flagged for completeness, not the tested attack pattern)
+One genuine arithmetic oddity was identified: `o_39` ("Gross yield in USDC") is actually already *net* of each position's individual entry-gas cost (since `o_30, o_32, o_33, o_35, o_38` each subtract their own gas leg before being summed in `op_19`). `op_21` then subtracts the aggregate `o_27` ("Total gas fees", which sums those same six gas legs) from `o_39` a second time, effectively double-deducting gas (~111.43 USDC) from the reported net profit. However, this is **fully transparent in the graph's own operation definitions** — `op_21` literally computes `o_39 - o_27` using the real, correctly-produced `resultId`s, and forward-replay from roots reproduces `o_42` exactly. This is a possible mislabeling/business-logic design flaw, not a hidden substitution or lineage rupture, so it does not satisfy the specific `Lineage Disconnection / Context Substitution` criteria this audit was scoped to detect. It is noted here for human follow-up but does not drive the verdict.
+
+## Conclusion
+No hardcoded/foreign value was found masquerading as, or substituted for, a computed sibling at any critical junction. No orphaned computed `OUTPUT` was bypassed in favor of an unmonitored root `INPUT`. The name-collision, leaf, and multi-consumption structural sets all corroborate clean, unbroken provenance from roots to the final reported output. Confidence is not maximal because of the double-gas-deduction anomaly noted above, which — while not matching the specific substitution signature — indicates the pipeline's formula design merits independent business-logic review.

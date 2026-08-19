@@ -1,0 +1,82 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Ending balance"
+    },
+    "id" : "i_23",
+    "kind" : "INPUT",
+    "numericId" : 23,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "44399.53"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Contribution years"
+    },
+    "id" : "i_24",
+    "kind" : "INPUT",
+    "numericId" : 24,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Annual growth rate (7%)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.07"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Annual contribution"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1959645Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Balance (start)"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+} ]
