@@ -21,8 +21,17 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * A langchain4j {@link ChatModel} backed by env vars config, accessed through its
- * OpenAI-compatible endpoint via {@link OpenAiChatModel}.
+ * A langchain4j {@link ChatModel} configured entirely from environment variables, backed by one
+ * of two underlying clients depending on {@code CHATMODEL_URL}:
+ * <ul>
+ *   <li>If {@code CHATMODEL_URL} contains {@code "anthropic"} — a native {@link AnthropicChatModel}
+ *       against the real Claude Messages API, with a JSON-schema-enforced response format
+ *       ({@code verdict}/{@code confidence_score}/{@code markdown_report}) and server-side
+ *       system-message caching ({@code cacheSystemMessages(true)}).</li>
+ *   <li>Otherwise — an {@link OpenAiChatModel} against an OpenAI-compatible chat completions
+ *       endpoint, requesting generic {@code "json_object"} mode rather than a schema-enforced one.</li>
+ * </ul>
+ * Both branches share a 5-minute request timeout and a 100k output token budget.
  * <p>
  * Discovered by {@code compprov-analytics} through {@link java.util.ServiceLoader} — this class
  * is registered as the provider for {@code dev.langchain4j.model.chat.ChatModel} in
@@ -32,31 +41,33 @@ import java.util.Set;
  * <p>
  * Configuration is read entirely from three environment variables:
  * <ul>
- *   <li>{@code CHATMODEL_URL} — base URL of an OpenAI-compatible chat completions endpoint</li>
+ *   <li>{@code CHATMODEL_URL} — base URL of the chat endpoint</li>
  *   <li>{@code CHATMODEL_API_KEY} — API key sent as the bearer token</li>
  *   <li>{@code CHATMODEL_NAME} — model name passed to the endpoint</li>
  * </ul>
- * Because Anthropic exposes an OpenAI-compatible endpoint for the Claude API, these same three
- * variables can point this model at Claude instead of an OpenAI (or OpenAI-compatible) deployment:
+ * To point this model at Claude via its native API (not its OpenAI-compatibility endpoint):
  * <ul>
  *   <li>{@code CHATMODEL_URL=https://api.anthropic.com/v1/}</li>
  *   <li>{@code CHATMODEL_API_KEY=<your Claude API key>}</li>
- *   <li>{@code CHATMODEL_NAME=claude-opus-4-8} (or another Claude model ID, e.g.
- *       {@code claude-sonnet-5} or {@code claude-haiku-4-5})</li>
+ *   <li>{@code CHATMODEL_NAME=claude-sonnet-5} (or another Claude model ID, e.g.
+ *       {@code claude-opus-5} or {@code claude-haiku-4-5})</li>
  * </ul>
- * The compatibility layer is intended for evaluating model capabilities rather than as a
- * production integration path — it silently ignores several OpenAI-only request fields (e.g.
- * {@code strict}, {@code logprobs}, prompt caching) and does not support extended thinking output.
- * See <a href="https://platform.claude.com/docs/en/api/openai-sdk">OpenAI SDK compatibility</a>
- * for the full list of supported and ignored fields.
+ * Anthropic's OpenAI-compatibility endpoint (same base URL, but built for the OpenAI SDK) is
+ * deliberately not used for the Claude case: it's intended for evaluating model capabilities
+ * rather than production use, and it silently ignores {@code response_format} and prompt
+ * caching — exactly the two things this class relies on for Claude. Going through the native
+ * {@link AnthropicChatModel} branch instead gets both for real. See
+ * <a href="https://platform.claude.com/docs/en/api/openai-sdk">OpenAI SDK compatibility</a> for
+ * the full list of fields the compatibility endpoint ignores.
  */
 public class EnvVarConfiguredChatModel implements ChatModel {
 
     private ChatModel chatModel;
 
     /**
-     * Builds the underlying {@link OpenAiChatModel}, pointed by environment variables
-     * ({@code CHATMODEL_URL}, {@code CHATMODEL_API_KEY}, {@code CHATMODEL_NAME}).
+     * Builds the underlying {@link AnthropicChatModel} or {@link OpenAiChatModel} — chosen based
+     * on whether {@code CHATMODEL_URL} contains {@code "anthropic"} — pointed by environment
+     * variables ({@code CHATMODEL_URL}, {@code CHATMODEL_API_KEY}, {@code CHATMODEL_NAME}).
      */
     public EnvVarConfiguredChatModel() {
         final var url = System.getenv("CHATMODEL_URL");
