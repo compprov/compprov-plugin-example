@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-13T07:55:12.621856Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "New vote tally"
+    },
+    "id" : "o_3",
+    "kind" : "OUTPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "1250000"
+} ]

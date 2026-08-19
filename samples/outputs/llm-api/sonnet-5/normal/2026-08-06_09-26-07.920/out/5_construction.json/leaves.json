@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.7617124Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total bid price"
+    },
+    "id" : "o_20",
+    "kind" : "OUTPUT",
+    "numericId" : 20,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "66412.500000"
+} ]

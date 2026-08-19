@@ -1,0 +1,357 @@
+{
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "Chemistry: serial dilution of NaCl stock"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.817251Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Computation precision (DECIMAL64)"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 16,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.817251Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "step",
+          "value" : "1"
+        } ],
+        "name" : "Stock concentration, C1 (mol\/L)"
+      },
+      "id" : "i_2",
+      "kind" : "INPUT",
+      "numericId" : 2,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "2.00"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.817251Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "step",
+          "value" : "1"
+        } ],
+        "name" : "Stock aliquot volume, V1 (L)"
+      },
+      "id" : "i_3",
+      "kind" : "INPUT",
+      "numericId" : 3,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.050"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.817251Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "step",
+          "value" : "1"
+        } ],
+        "name" : "Step 1 final volume, V2 (L)"
+      },
+      "id" : "i_4",
+      "kind" : "INPUT",
+      "numericId" : 4,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.500"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.817251Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "C1 × V1 (step 1)"
+      },
+      "id" : "o_5",
+      "kind" : "OUTPUT",
+      "numericId" : 5,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.10000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.817251Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "step",
+          "value" : "1"
+        } ],
+        "name" : "Intermediate concentration (mol\/L)"
+      },
+      "id" : "o_6",
+      "kind" : "OUTPUT",
+      "numericId" : 6,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.20"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.817251Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "step",
+          "value" : "2"
+        } ],
+        "name" : "Intermediate aliquot volume, V1 (L)"
+      },
+      "id" : "i_7",
+      "kind" : "INPUT",
+      "numericId" : 7,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.100"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.817251Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "step",
+          "value" : "2"
+        } ],
+        "name" : "Step 2 final volume, V2 (L)"
+      },
+      "id" : "i_8",
+      "kind" : "INPUT",
+      "numericId" : 8,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1.000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.817251Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "C1 × V1 (step 2)"
+      },
+      "id" : "o_9",
+      "kind" : "OUTPUT",
+      "numericId" : 9,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.02000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.817251Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "step",
+          "value" : "2"
+        } ],
+        "name" : "Working (final) concentration (mol\/L)"
+      },
+      "id" : "o_10",
+      "kind" : "OUTPUT",
+      "numericId" : 10,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.02"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.817251Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Molar mass of NaCl (g\/mol)"
+      },
+      "id" : "i_11",
+      "kind" : "INPUT",
+      "numericId" : 11,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "58.44"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.81825Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Moles of solute in final volume (mol)"
+      },
+      "id" : "o_12",
+      "kind" : "OUTPUT",
+      "numericId" : 12,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.02000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.81825Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Mass of solute in final volume (g)"
+      },
+      "id" : "o_13",
+      "kind" : "OUTPUT",
+      "numericId" : 13,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1.1688000"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.817251Z",
+      "id" : "op_1",
+      "numericId" : 1,
+      "startedAt" : "2026-08-05T08:19:32.817251Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_2"
+    }, {
+      "key" : "b",
+      "value" : "i_3"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_5"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a\/b)mc"
+        } ],
+        "name" : "divide"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.817251Z",
+      "id" : "op_2",
+      "numericId" : 2,
+      "startedAt" : "2026-08-05T08:19:32.817251Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_5"
+    }, {
+      "key" : "b",
+      "value" : "i_4"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_6"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.817251Z",
+      "id" : "op_3",
+      "numericId" : 3,
+      "startedAt" : "2026-08-05T08:19:32.817251Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_6"
+    }, {
+      "key" : "b",
+      "value" : "i_7"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_9"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a\/b)mc"
+        } ],
+        "name" : "divide"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.817251Z",
+      "id" : "op_4",
+      "numericId" : 4,
+      "startedAt" : "2026-08-05T08:19:32.817251Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_9"
+    }, {
+      "key" : "b",
+      "value" : "i_8"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_10"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.81825Z",
+      "id" : "op_5",
+      "numericId" : 5,
+      "startedAt" : "2026-08-05T08:19:32.817251Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_10"
+    }, {
+      "key" : "b",
+      "value" : "i_8"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_12"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.81825Z",
+      "id" : "op_6",
+      "numericId" : 6,
+      "startedAt" : "2026-08-05T08:19:32.81825Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_12"
+    }, {
+      "key" : "b",
+      "value" : "i_11"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_13"
+  } ]
+}

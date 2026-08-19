@@ -1,11 +1,25 @@
 {
   "descriptor" : {
-    "meta" : [ ],
+    "meta" : [ {
+      "key" : "rounding",
+      "value" : "DOWN (Amount always truncates to the currency's decimal precision; balance-safety invariant)"
+    }, {
+      "key" : "currencyPrecisions",
+      "value" : {
+        "BTC" : 8,
+        "WBTC" : 8,
+        "ETH" : 18,
+        "USDC" : 6,
+        "USDT" : 6,
+        "USD" : 2,
+        "WSTETH" : 18
+      }
+    } ],
     "name" : "Nav calculation example"
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8582078Z",
+      "createdAt" : "2026-08-05T08:19:33.072663Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "origin",
@@ -25,7 +39,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8622979Z",
+      "createdAt" : "2026-08-05T08:19:33.073664Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "origin",
@@ -45,7 +59,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8622979Z",
+      "createdAt" : "2026-08-05T08:19:33.073664Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "origin",
@@ -65,7 +79,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8632981Z",
+      "createdAt" : "2026-08-05T08:19:33.073664Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "source",
@@ -79,12 +93,12 @@
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
-      "amount" : "1.24184892",
+      "amount" : "4.51940883",
       "currency" : "BTC"
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8643003Z",
+      "createdAt" : "2026-08-05T08:19:33.0756688Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "source",
@@ -98,12 +112,12 @@
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
-      "amount" : "92.520767008267654318",
+      "amount" : "85.055420066812246204",
       "currency" : "ETH"
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8643003Z",
+      "createdAt" : "2026-08-05T08:19:33.0756688Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "source",
@@ -117,12 +131,12 @@
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
-      "amount" : "53344.459319",
+      "amount" : "67961.000332",
       "currency" : "USDC"
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8643003Z",
+      "createdAt" : "2026-08-05T08:19:33.0756688Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "source",
@@ -136,12 +150,12 @@
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
-      "amount" : "8.310133997912894088",
+      "amount" : "23.045084786735014148",
       "currency" : "ETH"
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8643003Z",
+      "createdAt" : "2026-08-05T08:19:33.0756688Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "source",
@@ -155,12 +169,12 @@
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
-      "amount" : "22284.229335",
+      "amount" : "75363.302734",
       "currency" : "USDC"
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8648072Z",
+      "createdAt" : "2026-08-05T08:19:33.0756688Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "BTC->USD"
@@ -171,12 +185,12 @@
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
-      "amount" : "85674.80",
+      "amount" : "311792.74",
       "currency" : "USD"
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8658117Z",
+      "createdAt" : "2026-08-05T08:19:33.0756688Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "ETH(Binance)->USD"
@@ -187,12 +201,12 @@
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
-      "amount" : "192749.43",
+      "amount" : "177196.80",
       "currency" : "USD"
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8658117Z",
+      "createdAt" : "2026-08-05T08:19:33.0756688Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "USDC(Binance)->USD"
@@ -203,12 +217,12 @@
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
-      "amount" : "53877.90",
+      "amount" : "68640.61",
       "currency" : "USD"
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8658117Z",
+      "createdAt" : "2026-08-05T08:19:33.0756688Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "ETH(Staked)->USD"
@@ -219,12 +233,12 @@
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
-      "amount" : "17312.58",
+      "amount" : "48010.05",
       "currency" : "USD"
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8658117Z",
+      "createdAt" : "2026-08-05T08:19:33.0756688Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "USDC(Morpho)->USD"
@@ -235,12 +249,12 @@
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
-      "amount" : "22507.07",
+      "amount" : "76116.93",
       "currency" : "USD"
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:29:05.8658117Z",
+      "createdAt" : "2026-08-05T08:19:33.0756688Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Assets sum"
@@ -251,7 +265,7 @@
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
-      "amount" : "372121.78",
+      "amount" : "681757.13",
       "currency" : "USD"
     }
   } ],
@@ -264,10 +278,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-07-27T09:29:05.8648072Z",
+      "finishedAt" : "2026-08-05T08:19:33.0756688Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-07-27T09:29:05.8648072Z",
+      "startedAt" : "2026-08-05T08:19:33.0756688Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -287,10 +301,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-07-27T09:29:05.8658117Z",
+      "finishedAt" : "2026-08-05T08:19:33.0756688Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-07-27T09:29:05.8658117Z",
+      "startedAt" : "2026-08-05T08:19:33.0756688Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -310,10 +324,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-07-27T09:29:05.8658117Z",
+      "finishedAt" : "2026-08-05T08:19:33.0756688Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-07-27T09:29:05.8658117Z",
+      "startedAt" : "2026-08-05T08:19:33.0756688Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -333,10 +347,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-07-27T09:29:05.8658117Z",
+      "finishedAt" : "2026-08-05T08:19:33.0756688Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-07-27T09:29:05.8658117Z",
+      "startedAt" : "2026-08-05T08:19:33.0756688Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -356,10 +370,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-07-27T09:29:05.8658117Z",
+      "finishedAt" : "2026-08-05T08:19:33.0756688Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-07-27T09:29:05.8658117Z",
+      "startedAt" : "2026-08-05T08:19:33.0756688Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -379,10 +393,10 @@
         } ],
         "name" : "addBulk"
       },
-      "finishedAt" : "2026-07-27T09:29:05.8658117Z",
+      "finishedAt" : "2026-08-05T08:19:33.0756688Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-07-27T09:29:05.8658117Z",
+      "startedAt" : "2026-08-05T08:19:33.0756688Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {

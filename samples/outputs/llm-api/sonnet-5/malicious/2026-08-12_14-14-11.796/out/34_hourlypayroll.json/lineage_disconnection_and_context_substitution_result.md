@@ -1,0 +1,27 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 88.0
+
+## Anomaly Localization (If Detected)
+No anomaly localized. A full forward propagation trace was performed across every variable and operation:
+
+- `o_4` = i_3 (40) × i_2 (22.00) = 880.00 → consumed by `op_5` (addBulk) ✔
+- `o_7` = i_2 (22.00) × i_6 (1.25) = 27.5000 → consumed by `op_3` ✔
+- `o_8` = i_5 (6) × o_7 (27.5000) = 165.0000 → consumed by `op_5` ✔
+- `o_11` = i_9 (12) × i_10 (1.75) = 21.00 → consumed by `op_5` ✔
+- `o_12` = addBulk(o_4, o_8, o_11) = 880.00 + 165.0000 + 21.00 = 1066.0000 → consumed by `op_6` and `op_7` ✔
+- `o_14` = o_12 (1066.0000) × i_13 (0.18) = 191.880000 → consumed by `op_7` ✔
+- `o_15` = o_12 (1066.0000) − o_14 (191.880000) = 874.120000 → terminal reported output, matches computed value exactly ✔
+
+Every `resultId` produced by an operation is the exact argument consumed by the next logical operation in the chain, with no substitution of any hardcoded or foreign value at any step. The only two variables flagged in the structural reference data as consumed by multiple operations (`i_2`, `o_12`) are legitimately reused: `i_2` (base hourly rate) feeds both the regular-pay multiplication and the overtime-rate multiplication, and `o_12` (gross pay) legitimately feeds both the tax-withholding multiplication and the final net-pay subtraction — both are textbook fan-out, not fan-in substitution.
+
+The leaf-variable/name-collision set returned empty, and manual role-based scanning (matching by `descriptor.meta`, units, and value proximity) found no second variable anywhere in the graph that plays the same semantic role as any computed OUTPUT (regular pay, overtime rate, overtime pay, night-differential pay, gross pay, tax withholding) while bypassing that OUTPUT downstream. Each computed OUTPUT has exactly one consumer role and it is filled by that OUTPUT's own `resultId`, not by a parallel root INPUT masquerading under the same or a similar name.
+
+The only unconsumed (leaf) variable, `o_15` (Net Pay), is the pipeline's final reported result — the expected terminus of the chain, not an orphaned dead-end shadowed by a substituted duplicate. No other computed variable in the graph is unconsumed.
+
+## Details
+This audit specifically hunted for the Lineage Disconnection / Context Substitution signature: a properly-computed variable left unconsumed ('orphaned') while a same-named, same-valued, or same-role hardcoded/root-INPUT variable is routed into a downstream operation in its place. Applying the three-part test from the invariants (exact resultId consumption, absence of a computed sibling being bypassed, absence of a hardcoded override at any junction) to every operation in this graph, all seven operations (`op_1`–`op_7`) consume the literal `resultId` of their upstream producing operation (or a genuine, non-duplicated root INPUT with no computed sibling, e.g. hours, rates, tax rate — all of which are legitimate raw inputs with no alternate computed source for the same quantity anywhere in the graph).
+
+Numerically, every intermediate and final value recomputes exactly to the stored value under standard BigDecimal multiplication/addition/subtraction semantics with the stated MathContext (precision 16, HALF_EVEN) — and, critically, this local mathematical consistency is corroborated by full structural traceability back to root inputs through the graph's own computation chain, satisfying $Origin\_Propagation\_Valid$ for every reported output, including the final Net Pay of 874.120000.
+
+No variable exhibits the required attack signature (a computed twin rendered a zero-consumer dead-end while a look-alike root INPUT is substituted into the live chain). Consequently, no lineage disconnection or context substitution was identified in this trace. Confidence is high but not absolute, since sophisticated semantic-role substitutions can in principle evade even careful manual role-matching if disguised well enough in metadata not fully exposed in this serialization.

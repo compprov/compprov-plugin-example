@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.7977389Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Realized gain\/loss"
+    },
+    "id" : "o_19",
+    "kind" : "OUTPUT",
+    "numericId" : 19,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "630.00"
+} ]

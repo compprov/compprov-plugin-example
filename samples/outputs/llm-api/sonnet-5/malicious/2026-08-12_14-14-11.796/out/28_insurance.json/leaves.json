@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0046284Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Net loss"
+    },
+    "id" : "o_31",
+    "kind" : "OUTPUT",
+    "numericId" : 31,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "13650.000000"
+} ]

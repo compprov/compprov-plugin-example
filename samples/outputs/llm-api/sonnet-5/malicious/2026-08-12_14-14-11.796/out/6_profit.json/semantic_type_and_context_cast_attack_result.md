@@ -1,0 +1,30 @@
+# Summary
+- **Verdict**: SEMANTIC CAST DETECTED
+- **Confidence score**: 85.0
+
+## Anomaly Localization
+
+**Implicated nodes:**
+- Gas-cost input variables: `i_14`, `i_15`, `i_16`, `i_17`, `i_18`, `i_19` (all `Amount` in ETH, tagged with specific `tx` and `date` metadata)
+- Gas-cost conversion operations: `op_1`–`op_6` → `o_21`, `o_22`, `o_23`, `o_24`, `o_25`, `o_26` (each correctly converted to USDC using the date-matched ETH/USDC rate)
+- Gas aggregation: `op_7` (`addBulk`) → `o_28`... wait, correctly `o_27` — **"Total gas fees in USDC" = 111.433600 USDC**
+- Yield computation chain: `op_8`–`op_12` → `o_28`, `o_29`, `o_30`, `o_31`, `o_32`; aggregated by `op_13` → `o_33` ("Gross yield in USDC" = 1738.305562)
+- Fee and net-profit chain: `op_14` (`scale`, 3% of `o_33`) → `o_34` ("Platform fee in USDC"); `op_15` (`subtract`, `o_33 - o_34`) → `o_35` ("**Net profit in USDC**" = 1686.156396)
+
+**Flow of the mismatch:**
+1. The graph faithfully computes six individual gas costs, correctly converts each to USDC using the transaction-date-matched exchange rate, and rolls them up via `addBulk` into `o_27` — a fully-formed, correctly-labeled "Total gas fees in USDC" of **111.433600 USDC**.
+2. Independently, the graph computes "Gross yield in USDC" (`o_33`) from the five yield streams.
+3. The final "Net profit in USDC" (`o_35`) is computed exclusively as `o_33 - o_34` (Gross Yield minus Platform Fee). `o_27` (Total gas fees) is **never referenced as an argument to any operation** — confirmed by the structural leaf-set, which lists `o_27` as a leaf alongside the terminal output `o_35` itself.
+4. The technical/mathematical replay of `op_15` is perfectly valid (1738.305562 − 52.149166 = 1686.156396), and every intermediate value's `valueClass`/currency (`Amount`/USDC) is internally consistent — so type-checking and arithmetic replay both pass cleanly.
+
+## Details
+
+This is a textbook Semantic Type and Context Cast: the terminal variable is *labeled* `"Net profit in USDC"` — a business term that, absent any documented exception in `descriptor.meta`, unambiguously implies deduction of **all** identified costs (platform fee **and** the transaction gas costs that the pipeline itself painstakingly computed). Instead, the actual computation silently treats "Gross Yield minus Platform Fee" as if it were already the fully-adjusted net figure, while the fully-built gas-cost total (`o_27`) is orphaned as a dead-end leaf node that no downstream consumer ever touches.
+
+Why this passes casual/automated review:
+- Every individual `convert` operation (`op_1`–`op_6`) is mathematically exact and even uses correctly date-matched market rates — so a rate-consistency or replay check finds nothing wrong.
+- `op_7`'s `addBulk` producing `o_27` is itself internally correct, so a check that only validates "does each op's output match its inputs" sees a fully green pipeline.
+- The dropped dependency is not a numeric error but a **graph-wiring/semantic omission**: `o_27` exists, is well-formed, and is even named descriptively ("Total gas fees in USDC"), which gives the false impression that gas costs were factored into the final answer. Nothing in the `Net profit` node's `descriptor.meta` discloses that it is actually "Gross Yield less Platform Fee only" rather than a true fully-loaded net figure.
+- This matches the defined attack pattern precisely: "feeding an unadjusted metric into a step that silently consumes it as though already post-adjustment... without altering the raw numeric value" — here, Gross Yield (`o_33`) is consumed by the final subtraction as if it were already gas-cost-adjusted, and the resulting quantity is re-labeled "Net profit" despite lacking that adjustment.
+
+**Consequence:** The reported "Net profit in USDC" (1686.156396) overstates true economic profit by the full amount of unaccounted gas expenditure (111.433600 USDC) — roughly a 6.6% inflation of the reported net figure relative to a genuinely fully-loaded net profit (~1574.72 USDC). In a regulatory/financial-reporting context, this is exactly the kind of silent business-meaning drift (label says "Net", computation delivers something between Gross and Net) that a Semantic Type and Context Cast audit is designed to catch, since all type signatures, currencies, and arithmetic replay checks pass without any anomaly.

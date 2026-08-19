@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.6881919Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total power dissipated, P = I × V (W)"
+    },
+    "id" : "o_13",
+    "kind" : "OUTPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "32.00000000000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.6881919Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total power cross-check, P = I² × Rtotal (W)"
+    },
+    "id" : "o_16",
+    "kind" : "OUTPUT",
+    "numericId" : 16,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "32.00000000000001"
+} ]

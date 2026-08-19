@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Confidence score**: 82.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_1`, `i_2`, `i_14`, `o_16`, `o_17`, `o_18`, `o_19`, `op_6`, `op_7`, `op_8`
+
+The graph defines two `MathContext` inputs:
+- `i_1` — precision 16, `HALF_EVEN` — used as the `mc` argument in **every** subtract/multiply/addBulk operation across all three claim-type sub-pipelines (Collision: `op_1`,`op_3`; Liability: `op_9`,`op_11`; and the aggregation ops `op_13`,`op_14`,`op_15`).
+- `i_2` — precision 3, rounding `DOWN` — whose own `descriptor.name` is literally **"Computation precision (tampered)"**.
+
+`i_2` is consumed exactly once, as the `mc` argument of `op_7` (`multiply`, formula `(a*b)mc`), which computes the **Comprehensive coinsurance amount** (`o_18`) from `o_17` (net-of-deductible, floored) and `i_14` (coinsurance rate 0.90). This is the structurally identical operation to `op_3` (Collision coinsurance) and `op_11` (Liability coinsurance), both of which correctly use `i_1`. Only the Comprehensive branch has its multiply silently rewired to the degraded, truncating context.
+
+Flow: `i_12,i_13 → op_5 → o_16 → op_6 → o_17 → op_7(mc=i_2) → o_18 → op_8 → o_19 → op_13 → o_28 → op_14/op_15 → o_30/o_31`.
+
+## Details
+
+**Mechanism:** `op_7` computes `19000.00 × 0.90 = 17100.0000` under the global context (`i_1`, precision 16, `HALF_EVEN`) this would remain `17100.0000`; instead the graph explicitly binds `mc=i_2` (precision 3, `DOWN`), yielding `1.71E+4` (i.e. 17100 expressed with only 3 significant digits). Numerically the two results happen to coincide in this instance because the digit being discarded by the precision-3 rounding was exactly zero, and the subsequent `min(o_18, i_15)` (`op_8`) caps the value to the policy limit (`12000.00`) regardless of which context was used — so no discrepancy propagates to `o_19`, `o_28`, `o_30`, or `o_31` in *this particular run*.
+
+This is precisely why the substitution would survive a naive replay/delta check: Δ=0 at every downstream node for these specific input values. But the substitution is real, structural, and self-admitted (the variable's own metadata calls it "tampered"), and it breaks the invariant that rounding context should default to a single consistent, non-truncating convention (`HALF_EVEN`) unless explicitly and legitimately bounded — here there is no business/domain metadata (unlike the `claimType` tags attached to other inputs) justifying why the Comprehensive-branch coinsurance multiply should use a 3-significant-digit, round-down context while the structurally identical Collision and Liability coinsurance multiplies use the 16-digit, round-to-even context.
+
+**Consequence / risk:** Because this multiply recurs once per Comprehensive claim processed by this pipeline template (a scalable, per-claim operation, not a one-off bounded conversion), any future Comprehensive claim where (a) the discarded digit under precision-3 truncation is non-zero, or (b) the truncated-down coinsurance amount remains below the policy limit (so the `min()` cap does not mask it), will be **systematically underpaid** relative to the declared global precision policy — a classic ROUND_DOWN salami-slicing bias that consistently favors the payer (insurer) over the claimant. In this specific trace the masking coincidence (zero discarded digit + policy-limit cap) makes the net effect on `o_19`/`o_28`/`o_31` nil, which tempers materiality for *this instance* but does not eliminate the structural vulnerability or its provenance-level self-declaration as tampered.
+
+**Verdict rationale:** The invariant "a result consistent with its declared `mc` is not a violation" is technically satisfied for `op_7` in isolation — but the *choice* of `mc=i_2` itself, on only one of three structurally parallel operations, with the substituted context explicitly named "tampered," and no supporting domain rationale in metadata, is the anomaly. This is exactly the surgical, single-operation substitution pattern that a determined adversary would use, and it is reported as such rather than dismissed on the strength of this run's coincidental lack of downstream impact.

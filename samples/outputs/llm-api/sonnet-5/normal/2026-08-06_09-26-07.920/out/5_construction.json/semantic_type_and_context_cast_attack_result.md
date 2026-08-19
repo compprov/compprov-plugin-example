@@ -1,0 +1,26 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 76.0
+
+## Anomaly Localization (If Detected)
+No variable was found where a technically type-valid `BigDecimal` value is silently re-mapped to a different business context via an identity/wrapper node, and no `descriptor.meta` field was found to have been stripped, altered, or reused in a way that hides a domain re-labeling.
+
+Traced context chains:
+- `i_2` (Lumber) → `i_3` (Concrete) → `i_4` (Roofing materials) → `i_5` (Electrical materials) → `op_1 addBulk` → `o_6` "Total materials cost" (38100.00 = 18500+9200+6300+4100, correct, consistent "materials" context).
+- `i_7` (Carpentry hours) × `i_8` (Carpentry rate) → `op_2` → `o_9` "Carpentry labor cost" (9900.00, correct).
+- `i_10` (Electrical hours) × `i_11` (Electrical rate) → `op_3` → `o_12` "Electrical labor cost" (4500.00, correct).
+- `o_9` + `o_12` → `op_4` → `o_13` "Total labor cost" (14400.00, consistent "labor" context).
+- `o_6` + `o_13` → `op_5` → `o_14` "Direct cost (materials + labor)" (52500.00, consistent aggregation of the two prior sub-contexts).
+- `o_14` × `i_15` (Overhead rate 10%) → `op_6` → `o_16` "Overhead" (5250.0000, correct percentage of direct cost, consistent "overhead-on-cost" semantics).
+- `o_14` + `o_16` → `op_7` → `o_17` "Cost including overhead" (57750.0000, correct, consistent cumulative-cost context).
+- `o_17` × `i_18` (Profit margin rate 15%) → `op_8` → `o_19` "Profit margin" (8662.500000, correct arithmetic).
+- `o_17` + `o_19` → `op_9` → `o_20` "Total bid price" (66412.500000, correct final aggregation).
+
+Both multiply-consumed variables flagged structurally (`o_14`, `o_17`) are used twice each, but in both cases the two consuming operations are semantically coherent with the originating label: `o_14` ("Direct cost") feeds both the overhead-percentage calculation and the overhead-inclusive cost sum; `o_17` ("Cost including overhead") feeds both the margin-percentage calculation and the final bid-price sum. No consumer treats either variable under a conflicting business definition.
+
+## Details
+Every `descriptor.meta` array in this graph is empty, so there is no domain-tag/unit/tax-status metadata that could be silently stripped or substituted — the sole carriers of business context here are the human-readable `descriptor.name` fields and the arithmetic relationships between them. Walking the full dependency chain, each `descriptor.name` is internally consistent with its computed value and with how it is subsequently consumed: material costs are only ever summed with other material costs, labor costs only with other labor costs, and the cost/overhead/margin cascade follows a standard, auditable cost-plus pricing structure (Direct Cost → + Overhead → + Margin → Total Bid) with no unexplained detours, no identity/no-op wrapper operations, and no operation whose argument's declared name contradicts the operation's implied business assumption.
+
+One point worth flagging for human judgment rather than as a confirmed attack: "Profit margin rate (15%)" is applied to "Cost including overhead" (a cost base) rather than to a revenue/price base. In strict financial terminology this computes a *markup* rather than a *margin* (margin is conventionally expressed as a percentage of selling price, not cost). This is a naming/definitional ambiguity, but it is applied transparently and consistently — there is no hidden re-interpretation of a variable's origin, no metadata suppression, and no operation performing an undisclosed domain transformation. It is a documentation/terminology concern rather than a demonstrated C_source != C_target semantic cast.
+
+No evidence was found of a root variable being fed into a downstream operation that treats it as a different domain entity than its originating label, no leaf-name collisions, and no reused variable inconsistently interpreted across its multiple consumers. Based on the available structural and semantic evidence, this graph does not exhibit the signature of a Semantic Type and Context Cast attack, though the margin/markup terminology ambiguity keeps confidence short of maximal certainty.

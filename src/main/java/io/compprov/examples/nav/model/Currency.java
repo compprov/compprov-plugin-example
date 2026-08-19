@@ -7,6 +7,11 @@ package io.compprov.examples.nav.model;
 public enum Currency {
 
     BTC(8),
+    /** Wrapped BTC — a third-party-collateralized synthetic representation of BTC, tracked
+     * separately from native {@link #BTC} since it trades on its own market and carries
+     * depeg/counterparty risk. Convert to {@link #BTC} via an explicit peg {@link Rate}, never
+     * by treating a {@code WBTC} amount as if it were already {@code BTC}. */
+    WBTC(8),
 
     ETH(18),
 
@@ -14,6 +19,7 @@ public enum Currency {
     USDT(6),
 
     USD(2),
+    EUR(2),
     WSTETH(18);
 
     private final int decimals;

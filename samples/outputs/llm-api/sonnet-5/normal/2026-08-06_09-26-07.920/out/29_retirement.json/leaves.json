@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1904551Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total growth (interest earned)"
+    },
+    "id" : "o_25",
+    "kind" : "OUTPUT",
+    "numericId" : 25,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6919.74444420000"
+} ]

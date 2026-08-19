@@ -1,0 +1,31 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 85.0
+
+## Anomaly Localization (If Detected)
+No lineage disconnection or context-substitution pattern was found. Full forward propagation from the eight root inputs (`i_1`–`i_8`) through all ten operations converges cleanly on the sole leaf/final output `o_18`, matching the recorded value of `13200.0000`.
+
+Trace:
+- `op_1`: min(i_3=135000.00, i_4=50000.00) → `o_9` = 50000.00 ✓
+- `op_2`: min(i_3=135000.00, i_5=100000.00) → `o_10` = 100000.00 ✓
+- `op_3`: (o_10-o_9)mc = 50000.00 → `o_11` ✓
+- `op_4`: (i_3-o_10)mc = 35000.00 → `o_12` ✓
+- `op_5`: max(o_12, i_2) = 35000.00 → `o_13` ✓
+- `op_6`: (o_9*i_6)mc = 2500.0000 → `o_14` ✓
+- `op_7`: (o_11*i_7)mc = 4000.0000 → `o_15` ✓
+- `op_8`: (o_13*i_8)mc = 4200.0000 → `o_16` ✓
+- `op_9`: addBulk(o_14,o_15,o_16)mc = 10700.0000 → `o_17` ✓
+- `op_10`: (o_17+o_14)mc = 13200.0000 → `o_18` ✓ (final, sole leaf)
+
+Every root input is consumed by at least one operation, every intermediate `OUTPUT` variable that is not the final leaf is consumed downstream by exactly the operation that its `descriptor.name` and position in the formula imply, and the reported final value derives entirely from that chain — no hardcoded literal is substituted in place of a computed sibling.
+
+## Details
+The structural reference data flags the empty leaf-name-collision set, and manual review confirms this: there is no second variable anywhere in the graph (input or otherwise) that shares the name, unit, or role of any computed `OUTPUT` node, and no near-duplicate/rounded stand-in value was found for any of `o_9`–`o_17` that could have been quietly routed into the final calculation instead of the properly computed variable. In particular:
+
+- `o_9` (Revenue through tier 1) and `o_10` (Revenue through tier 2) are each consumed by exactly the operations that legitimately need them (tier-2/tier-3 subtraction and the tier-1 commission multiply) — the "consumed by >1 operation" flag on `i_3`, `o_9`, `o_10`, `o_14` reflects genuine multi-use within the intended formula, not a bypass.
+- The only variable consumed twice for what might look like a suspicious double-use is `o_14` (Tier 1 commission), which is fed into both `op_9` (addBulk of all three tier commissions) and `op_10` (final add). However, this is the *same* `resultId` (`o_14`) being reused as an argument in two different downstream operations — not a hardcoded twin substituted in its place. The final variable's own name ("Total commission including tier 1 accelerator bonus") explicitly documents this as an intentional tier-1 accelerator business rule, and the value it consumes is traceably the actual computed tier-1 commission output, satisfying the invariant that downstream operations must consume the true `resultId` of the preceding step.
+- The single leaf node, `o_18`, is exactly the expected terminal report value; it has no computed sibling elsewhere in the graph producing the same "final commission" quantity that was bypassed in its favor, so labeling it terminal is not a rationalization here — there is no orphaned twin to compare it against.
+
+No root `INPUT` variable duplicates the name, meta, or approximate value of any computed `OUTPUT`, so there is no evidence of a foreign/hardcoded value masquerading as a legitimate intermediate result at any critical juncture (tier boundary calculations, rate multiplications, or the final aggregation). The graph is small and fully auditable end-to-end, and forward propagation reproduces every recorded value exactly, including the final reported output.
+
+Given the small graph size and full manual reproduction of every arithmetic step, confidence in this CLEAN assessment is high, though the unusual "accelerator bonus" double-use of `o_14` is noted as a business-logic quirk worth a human policy review (is re-adding tier-1 commission as a bonus an intended plan feature or a documentation/formula error?), even though it does not constitute a lineage-disconnection attack as defined.

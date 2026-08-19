@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9845981Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Zero (claim floor)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9845981Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total payout"
+    },
+    "id" : "i_28",
+    "kind" : "INPUT",
+    "numericId" : 28,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "22750.00"
+} ]

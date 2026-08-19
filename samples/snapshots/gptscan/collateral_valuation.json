@@ -1,0 +1,119 @@
+{
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "Lending: collateral valuation"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-08-11T04:16:58.4917218Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Collateral amount"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.BigInteger"
+    },
+    "value" : "1000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-11T04:16:58.4927218Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Pool reserve (base token)"
+      },
+      "id" : "i_2",
+      "kind" : "INPUT",
+      "numericId" : 2,
+      "valueClass" : "java.math.BigInteger"
+    },
+    "value" : "500"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-11T04:16:58.4927218Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Pool reserve (quote token)"
+      },
+      "id" : "i_3",
+      "kind" : "INPUT",
+      "numericId" : 3,
+      "valueClass" : "java.math.BigInteger"
+    },
+    "value" : "1050000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-11T04:16:58.4927218Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Price (raw pool reserves, spot)"
+      },
+      "id" : "o_4",
+      "kind" : "OUTPUT",
+      "numericId" : 4,
+      "valueClass" : "java.math.BigInteger"
+    },
+    "value" : "2100"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-11T04:16:58.4927218Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Collateral value (USD)"
+      },
+      "id" : "o_5",
+      "kind" : "OUTPUT",
+      "numericId" : 5,
+      "valueClass" : "java.math.BigInteger"
+    },
+    "value" : "2100000"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "a\/b"
+        } ],
+        "name" : "divide"
+      },
+      "finishedAt" : "2026-08-11T04:16:58.4927218Z",
+      "id" : "op_1",
+      "numericId" : 1,
+      "startedAt" : "2026-08-11T04:16:58.4927218Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_3"
+    }, {
+      "key" : "b",
+      "value" : "i_2"
+    } ],
+    "resultId" : "o_4"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "a*b"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-08-11T04:16:58.4927218Z",
+      "id" : "op_2",
+      "numericId" : 2,
+      "startedAt" : "2026-08-11T04:16:58.4927218Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_1"
+    }, {
+      "key" : "b",
+      "value" : "o_4"
+    } ],
+    "resultId" : "o_5"
+  } ]
+}

@@ -1,0 +1,160 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0341473Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Escrow collected [Month 1]"
+    },
+    "id" : "i_9",
+    "kind" : "INPUT",
+    "numericId" : 9,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "400.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0341473Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Escrow collected [Month 6]"
+    },
+    "id" : "i_30",
+    "kind" : "INPUT",
+    "numericId" : 30,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "400.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0341473Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Ending balance"
+    },
+    "id" : "i_31",
+    "kind" : "INPUT",
+    "numericId" : 31,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "228657.19"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0341473Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Escrow collected [Month 4]"
+    },
+    "id" : "i_22",
+    "kind" : "INPUT",
+    "numericId" : 22,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "400.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0341473Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Escrow collected [Month 2]"
+    },
+    "id" : "i_13",
+    "kind" : "INPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "400.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0341473Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0341473Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Escrow collected [Month 5]"
+    },
+    "id" : "i_26",
+    "kind" : "INPUT",
+    "numericId" : 26,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "400.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0341473Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Monthly period rate (0.4%)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.004"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0341473Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Monthly payment"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0341473Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Escrow collected [Month 3]"
+    },
+    "id" : "i_17",
+    "kind" : "INPUT",
+    "numericId" : 17,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "400.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0341473Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Starting principal"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "240000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0341473Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Extra principal prepayment (month 4)"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "5000.00"
+} ]

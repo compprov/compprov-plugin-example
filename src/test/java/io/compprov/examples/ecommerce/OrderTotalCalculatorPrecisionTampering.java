@@ -1,0 +1,66 @@
+package io.compprov.examples.ecommerce;
+
+import io.compprov.core.DataContext;
+import io.compprov.core.DefaultComputationContext;
+import io.compprov.core.DefaultComputationEnvironment;
+import io.compprov.core.wrappers.WrappedBigDecimal;
+import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
+
+import static io.compprov.core.meta.Descriptor.descriptor;
+
+/**
+ * Precision and Scale Tampering attack: every operation in this graph uses DECIMAL64 except the
+ * second (LOYALTY5) discount's multiply, which is silently evaluated at 2 significant digits
+ * with DOWN rounding — a precision gap sandwiched between the first discount and the tax step,
+ * both of which use the standard precision.
+ */
+public class OrderTotalCalculatorPrecisionTampering {
+
+    @Test
+    public void calculate() {
+
+        final var ctx = new DefaultComputationContext(
+                DefaultComputationEnvironment.create(), new DataContext(descriptor("E-commerce: order total")));
+        OrderDataProvider dp = new OrderDataProvider();
+
+        final var mc = ctx.wrapMathContext(MathContext.DECIMAL64, descriptor("Computation precision (DECIMAL64)"));
+        final var lowPrecisionMc = ctx.wrapMathContext(
+                new MathContext(2, RoundingMode.DOWN), descriptor("Computation precision (tampered)"));
+        final var one = ctx.wrapBigDecimal(BigDecimal.ONE, descriptor("1.0"));
+
+        final List<WrappedBigDecimal> lineTotals = new ArrayList<>();
+        for (var line : dp.fetchOrderLines()) {
+            var unitPrice = ctx.wrapBigDecimal(line.unitPrice(), descriptor("Unit price [%s]".formatted(line.sku())));
+            var quantity = ctx.wrapBigDecimal(line.quantity(), descriptor("Quantity [%s]".formatted(line.sku())));
+            lineTotals.add(unitPrice.multiply(quantity, mc, descriptor("Line total [%s]".formatted(line.sku()))));
+        }
+        final var subtotal = lineTotals.get(0).addBulk(lineTotals.subList(1, lineTotals.size()), mc, descriptor("Subtotal"));
+
+        final var discount1Rate = ctx.wrapBigDecimal(dp.fetchDiscount1Rate(), descriptor("Discount rate (SAVE10)"));
+        final var discount1Multiplier = one.subtract(discount1Rate, mc, descriptor("Discount multiplier (SAVE10)"));
+        final var afterDiscount1 = subtotal.multiply(discount1Multiplier, mc, descriptor("Subtotal after SAVE10"));
+
+        final var discount2Rate = ctx.wrapBigDecimal(dp.fetchDiscount2Rate(), descriptor("Discount rate (LOYALTY5)"));
+        final var discount2Multiplier = one.subtract(discount2Rate, mc, descriptor("Discount multiplier (LOYALTY5)"));
+        // tampered: evaluated at 2 significant digits instead of DECIMAL64
+        final var discountedSubtotal = afterDiscount1.multiply(discount2Multiplier, lowPrecisionMc, descriptor("Subtotal after LOYALTY5"));
+
+        final var shipping = ctx.wrapBigDecimal(dp.fetchShippingFee(), descriptor("Shipping fee"));
+        final var taxableAmount = discountedSubtotal.add(shipping, mc, descriptor("Taxable amount"));
+
+        final var taxRate = ctx.wrapBigDecimal(dp.fetchTaxRate(), descriptor("Tax rate (8%, California)"));
+        final var tax = taxableAmount.multiply(taxRate, mc, descriptor("Sales tax"));
+
+        final var orderTotal = taxableAmount.add(tax, mc, descriptor("Order total"));
+
+        final var snapshot = ctx.snapshot();
+        final var provenanceGraph = ctx.getEnvironment().toJson(snapshot);
+        System.out.println(provenanceGraph);
+    }
+}

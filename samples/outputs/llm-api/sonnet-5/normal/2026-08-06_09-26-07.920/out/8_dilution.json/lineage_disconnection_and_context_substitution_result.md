@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 88.0
+
+## Anomaly Localization (If Detected)
+No instance of Lineage Disconnection or Context Substitution was found. Full forward propagation was performed from all seven root INPUTs (i_1–i_4, i_7, i_8, i_11) through all six operations to the terminal OUTPUT o_13, and every consumed argument was verified to be the literal `resultId` of its immediate predecessor operation (not a hardcoded or near-duplicate stand-in).
+
+Trace of the chain:
+- op_1: i_2 (C1=2.00) × i_3 (V1=0.050) → o_5 = 0.10000
+- op_2: o_5 ÷ i_4 (V2=0.500) → o_6 = 0.20 (Intermediate concentration)
+- op_3: o_6 × i_7 (V1=0.100) → o_9 = 0.02000
+- op_4: o_9 ÷ i_8 (V2=1.000) → o_10 = 0.02 (Working final concentration)
+- op_5: o_10 × i_8 → o_12 = 0.02000 (Moles of solute)
+- op_6: o_12 × i_11 (molar mass=58.44) → o_13 = 1.1688000 (Mass, final reported output)
+
+Each downstream operation consumes the exact upstream `resultId` (o_5→o_6, o_6→o_9, o_9→o_10, o_10→o_12, o_12→o_13); no computed variable is left orphaned in favor of a same-named or semantically-equivalent hardcoded substitute.
+
+## Details
+The structural reference data reports zero name collisions between the single leaf (`o_13`) and any other variable, and manual review found no semantically-equivalent near-duplicate names, meta overlaps, or suspicious rounded/truncated stand-ins masquerading as any of the computed intermediates (o_5, o_6, o_9, o_10, o_12).
+
+The one flagged multi-consumer variable, `i_8` ("Step 2 final volume, V2"), is consumed twice — once as the divisor in op_4 (computing working concentration) and once as the multiplicand in op_5 (computing moles). This is not a substitution: `i_8` is a genuine root INPUT (a physical measurement, not a computed quantity), and there is no computed sibling elsewhere in the graph representing "final volume" that was bypassed in its favor. Chemically this reuse is expected and correct — moles = C2 × V2 uses the same V2 that defined C2 = (C1·V1)/V2, and algebraically o_12 (0.02000 mol) correctly reduces back to o_9 (0.02000 mol), confirming the round-trip is mathematically sound and internally consistent rather than a disguised external injection.
+
+All six operations were independently re-derived by hand from the declared BigDecimal values and MathContext (precision 16, HALF_EVEN), and every result matches the recorded output value exactly, including scale/precision behavior consistent with BigDecimal multiply/divide semantics. No root input is orphaned, no computed OUTPUT is silently replaced by a parallel hardcoded value, and the single leaf (o_13) is the legitimate, fully-derived terminal result of the entire chain.
+
+Given the clean exact-match structural data and the absence of any semantic near-duplicate stand-ins uncovered during manual re-derivation, this graph does not exhibit the Lineage Disconnection / Context Substitution signature. Confidence is high but not absolute, since exhaustive semantic-similarity search over metadata/units for disguised near-duplicates cannot be fully guaranteed exhaustive by manual review alone.

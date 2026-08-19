@@ -1,0 +1,35 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 91.0
+
+## Audit Summary
+
+This audit specifically targeted the **Calculation Omission** attack vector: a mandatory adjustment (cost, credit, correction, or cross-check) computed correctly somewhere in the graph but silently excluded from the operation that produces the pipeline's reported final result(s).
+
+### Methodology
+I performed a full manual re-derivation of every operation in the amortization chain (op_1 through op_24), independently recomputing each `multiply`/`subtract`/`addBulk`/`add` result from its stated arguments and comparing against the stored `value` for every variable, then cross-checked the aggregate outputs against an independent accounting identity.
+
+### Findings
+
+**1. Amortization chain (Months 1–6) — verified exact.**
+Every interest/principal/balance triple (o_6/o_7/o_8 ... o_27/o_28/o_29) was recomputed by hand using the stated `mc` (precision 16, HALF_EVEN) and matches the stored values to the last digit, including the non-trivial 16-significant-figure rounding steps in later months (e.g., o_28 = 1081.047066932265, o_29 = 228657.1862000015 — both reproduced exactly).
+
+**2. Prepayment (i_4, "Extra principal prepayment (month 4)") — correctly threaded through.**
+i_4 is consumed twice: once in op_13 (o_21 = o_20 − i_4), correctly reducing principal before Month 5/6 interest is computed on the *post-prepayment* balance (o_21 feeds op_14/op_16 as the base for months 5–6); and again in op_24 (o_35 = o_34 + i_4), correctly adding the lump-sum cash outflow into the borrower's total paid. Both consumptions are causally required and both are present.
+
+**3. Escrow (i_9, i_13, i_17, i_22, i_26, i_30) — correctly aggregated.**
+addBulk in op_21 sums all six escrow inputs into o_32 = 2400.00, which flows into o_34 (op_23) and then o_35 (op_24). No escrow term is dropped.
+
+**4. Total interest paid (o_31) — correctly aggregated, and consistent with the final balance.**
+addBulk in op_20 sums all six monthly interest values (o_6, o_10, o_14, o_18, o_23, o_27) with full precision propagation; the manual re-sum reproduces 5657.186200001495 exactly — no interest term is skipped.
+
+**5. Cross-check identity confirms completeness of the final aggregate (o_35).**
+Independently: Starting principal (240000.00) − Ending balance (228657.1862000015) = Total principal repaid (11342.8137999985). Total principal repaid + Total interest paid (5657.186200001495) + Total escrow (2400.00) ≈ 19400.00, which equals o_35 exactly. This is the classic cross-check a Calculation-Omission attack would break (by leaving a term as a disconnected leaf) — here it holds, meaning no term (interest, principal reduction, prepayment, escrow) was excluded from the final reported "Total amount paid by borrower."
+
+**6. Leaf variables (o_29, o_31, o_35) reviewed individually.**
+All three leaves are legitimate terminal reporting outputs of an amortization schedule (ending balance, total interest, total amount paid) rather than intermediate adjustments that should have fed a further aggregation step. None of them match the profile of "a correctly computed mandatory adjustment left stranded" — each is consumed nowhere further because each *is* a final deliverable of the pipeline, and each is independently verified above to be internally consistent with the others.
+
+### Conclusion
+No qualifying mandatory adjustment, cost, credit, or cross-check variable was found to be computed and then excluded from its corresponding downstream aggregation. The prepayment and escrow — the two variables most likely to be targets of a disguised omission in a loan-amortization pipeline — are both traced with active causal paths into the relevant final outputs (balance chain and total-paid chain respectively), and the resulting figures satisfy an independent accounting identity to the reported precision.
+
+Given the depth of arithmetic reproduction performed (all 24 operations recomputed independently) and the successful closing of the accounting identity, I assess this graph as clean with high confidence. Residual uncertainty (reflected in the confidence score) stems only from the theoretical possibility of an omission relating to a domain concept not represented by any variable in the graph at all (which by definition cannot be verified from the graph's contents).

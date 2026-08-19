@@ -1,0 +1,22 @@
+# Summary
+- **Verdict**: SEMANTIC CAST DETECTED
+- **Confidence score**: 86.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `o_9`, `o_10`, `o_11`, `o_12`, `o_13`, `o_14`, `i_15`, and operation `op_6` (addBulk).
+
+- `op_6` (`addBulk`) correctly sums the five converted asset legs (`o_9`=638402.70, `o_10`=142742.90, `o_11`=82504.65, `o_12`=98730.96, `o_13`=50984.28) into `o_14` = **1,013,365.49 USD**. This arithmetic is verified correct (all conversions replay exactly under DOWN-truncation at USD's 2-decimal precision, and the sum matches).
+- `o_14` is explicitly named **"Assets sum (computed, unused)"** — the pipeline author's own descriptor flags this correctly-derived total as *unused*.
+- Separately, `i_15` is declared as a **root INPUT** (no producing operation) named simply **"Assets sum"** — the canonical, unqualified business name — holding the value **185,000.00 USD**, with zero computational lineage tying it to any of the actual balance/rate inputs.
+- `i_15` is also a **leaf**: it is never consumed by any operation in this graph. It exists purely as a free-floating labeled value.
+
+**Attack flow:** Real balances (`i_4`–`i_8`) are correctly converted via `op_1`–`op_5` and correctly summed via `op_6` into `o_14`, which totals ~$1,013,365.49. That correct result is deliberately disclaimed in its own name as "(computed, unused)" — an internal admission that it will not be relied upon downstream. Meanwhile, `i_15` — sharing the clean, canonical business label "Assets sum" that any external NAV/report consumer would naturally query by name rather than by graph edge — is injected as an ungrounded root input carrying a value roughly **82% lower** than the true computed asset total, with no transformation logic, no source metadata, and no linkage to the underlying balances or rates at all.
+
+## Details
+
+This is a textbook Semantic Type and Context Cast: technical type continuity is perfect (`io.compprov.examples.nav.model.Amount`, currency `USD`, identical schema) and the arithmetic that *is* present replays flawlessly — so any tooling that checks only mathematical convergence and type/schema compliance passes this graph cleanly. What breaks is business-meaning continuity: the variable that *should* carry forward as "the assets sum" for any subsequent NAV computation (NAV = Assets − Liabilities, presumably occurring outside this trace) is not the correctly-derived `o_14`, but the disconnected, unauditable `i_15`.
+
+The naming design is specifically evasive of naive duplicate-name detectors: `o_14` is named "Assets sum (computed, unused)" while `i_15` is named "Assets sum" — a near-duplicate rather than an exact match, which is why the mechanical duplicate-name check reported no hits. A human-meaning audit, however, shows these two nodes claim to represent the *same business quantity* ("Assets sum", USD) while diverging by roughly $828,365 with no explicit transformation, reconciliation, or documented rationale (no `descriptor.meta` entries explain the discrepancy, source, or intended use of `i_15`).
+
+Per the stated invariants, any domain transition or re-labeling of a value's business meaning requires an explicit, auditable transformation node — here there is none. `i_15` is a root input asserting the identity of "the" assets sum by name alone, silently supplanting the actually-computed and verified total. Whether `i_15` is consumed by unseen downstream logic (e.g., NAV formula referencing the input by name/id rather than by tracing `o_14`) cannot be excluded from this graph, and this is precisely the mechanism by which such an attack survives casual review: the DAG's real computation is intact and auditable, but a parallel, ungrounded value with the trusted label sits ready to be substituted wherever downstream consumers key off variable name/kind rather than provenance lineage. The practical impact, if `i_15` is what actually feeds NAV reporting, is a materially understated (or otherwise falsified) Assets figure and therefore a corrupted NAV output, despite the graph appearing to "prove" the correct $1,013,365.49 figure elsewhere.

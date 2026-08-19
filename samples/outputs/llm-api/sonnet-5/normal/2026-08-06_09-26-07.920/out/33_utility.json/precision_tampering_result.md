@@ -1,0 +1,30 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 93.0
+
+## Anomaly Localization (If Detected)
+No precision/scale tampering, salami-slicing pattern, or unit-mixing was found. Full recomputation of every operation against exact rational arithmetic matches the reported values exactly, with zero delta at every step.
+
+## Details
+Recomputation trace (exact arithmetic):
+
+- `op_1` min(1180, 500) = 500 → matches `o_9` (500) ✓
+- `op_2` min(1180, 1000) = 1000 → matches `o_10` (1000) ✓
+- `op_3` (o_10 - o_9) = 1000 - 500 = 500 → matches `o_11` (500) ✓
+- `op_4` (i_3 - o_10) = 1180 - 1000 = 180 → matches `o_12` (180) ✓
+- `op_5` max(o_12, i_2) = max(180, 0) = 180 → matches `o_13` (180) ✓
+- `op_6` (o_9 * i_6) = 500 * 0.10 = 50.00 → matches `o_14` (50.00) ✓
+- `op_7` (o_11 * i_7) = 500 * 0.14 = 70.00 → matches `o_15` (70.00) ✓
+- `op_8` (o_13 * i_8) = 180 * 0.18 = 32.40 → matches `o_16` (32.40) ✓
+- `op_9` addBulk(o_14, o_15, o_16) = 50.00 + 70.00 + 32.40 = 152.40 → matches `o_17` (152.40) ✓
+- `op_10` (o_17 + i_18) = 152.40 + 12.50 = 164.90 → matches `o_19` (164.90) ✓
+
+All arithmetic operations that carry an explicit `MathContext` argument (`i_1`, precision 16, HALF_EVEN) are exact multiplications/additions of terminating decimals — no rounding boundary is ever actually exercised (e.g., 500×0.10, 500×0.14, 180×0.18 all terminate cleanly at ≤2 decimal places, well within 16 significant digits), so the declared rounding mode has no observable effect and cannot be used to hide a skim.
+
+Tier boundaries (500, 1000) and rates (0.10/0.14/0.18) are applied consistently: tier1 usage = min(usage, 500) = 500; tier2 usage = min(usage,1000) − tier1 = 500; tier3 usage = max(usage − 1000, 0) = 180. This correctly partitions the 1180 kWh into 500 + 500 + 180 = 1180 with no leakage, gap, or double-count at the tier boundaries.
+
+Variables flagged in the structural reference data as "consumed by more than one operation" (`i_3`, `o_9`, `o_10`) are all legitimate reuse: `i_3` (total usage) feeds both min() calculations and the tier-3 subtraction, while `o_9`/`o_10` (cumulative tier thresholds) are reused to compute both the tier-2 delta and tier-3 delta — this is expected fan-out in a tiered-rate calculation, not duplicated/conflicting logic, and no scale or unit mismatch is introduced by the reuse.
+
+No mixed units, no float/double downcasting, no non-standard rounding mode substitution, and no scalable population of skimmable operations exist in this graph (it is a single, bounded 3-tier billing computation). The final aggregation (`op_9`, `op_10`) sums the tier costs and the flat service charge without any premature truncation. Asset conservation (usage kWh, and cost accumulation) holds exactly at every step.
+
+Conclusion: the graph is internally consistent, the declared MathContext is honored everywhere it is invoked, and every reported intermediate/final value equals its exact-arithmetic recomputation. No evidence of Precision and Scale Tampering.

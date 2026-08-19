@@ -1,0 +1,41 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 83.0
+
+## Scope
+This audit specifically targets **Topological Accumulation Fraud via Double Counting**: reuse of a single root financial entity across multiple paths that both land, additively or subtractively, in the same terminal aggregation.
+
+## Path-Multiplicity Analysis
+
+The structural reference data flags `i_3`, `i_6`, `i_9`, and `i_15` as consumed by more than one operation. Each was traced end-to-end to the terminal output `o_19`.
+
+**i_3 (Lot 1 shares = 100):**
+- Path A: `i_3 → op_1(multiply w/ i_4) → o_5 → op_5(addBulk) → o_13 → op_6(divide, numerator) → o_14 → op_8(multiply) → o_18 → op_9(subtract) → o_19`
+- Path B: `i_3 → op_4(addBulk) → o_12 → op_6(divide, denominator) → o_14 → op_8 → o_18 → op_9 → o_19`
+
+Both paths converge at `op_6`, but as **numerator (weighted sum contribution)** and **denominator (share-count weight)** respectively — this is the intrinsic, textbook structure of a weighted-average formula `Σ(qty·price)/Σ(qty)`, not duplicate accumulation of a single value into the same additive rollup. The same pattern holds symmetrically for `i_6` and `i_9`.
+
+**i_15 (Shares sold = 120):**
+- Path A: `i_15 → op_7(multiply w/ i_16) → o_17` (sale proceeds)
+- Path B: `i_15 → op_8(multiply w/ o_14) → o_18` (cost basis of shares sold)
+
+Both values feed `op_9` (`o_17 − o_18`), but as one positive and one subtracted term representing two genuinely distinct financial facts (proceeds vs. cost basis) computed from the same share count — this is required by the realized gain/loss formula, not double counting of a single cost or revenue figure.
+
+## Verification of Arithmetic Integrity
+- `o_5 = 100×42.50 = 4250.00` ✓
+- `o_8 = 150×38.25 = 5737.50` ✓
+- `o_11 = 75×51.00 = 3825.00` ✓
+- `o_12 = 100+150+75 = 325` ✓
+- `o_13 = 4250.00+5737.50+3825.00 = 13812.50` ✓
+- `o_14 = 13812.50/325 = 42.50` ✓ (exact terminating division; result unaffected by the choice of `mc`)
+- `o_17 = 120×47.75 = 5730.00` ✓
+- `o_18 = 120×42.50 = 5100.00` ✓
+- `o_19 = 5730.00−5100.00 = 630.00` ✓
+
+No intermediate subtotal (`o_5`, `o_8`, `o_11`, `o_12`, `o_13`, `o_14`, `o_17`, `o_18`) is consumed more than once by a downstream operation, and no cost already netted into `o_13` (total cost) reappears as a second deduction later in the graph. `S_dedup` for both total shares and total cost matches the reported consolidations (`o_12`, `o_13`) exactly.
+
+## Observation (Out of Scope for This Verdict)
+Operation `op_6` (`divide` producing `o_14`) uses MathContext `i_2`, explicitly labeled in its own descriptor as *"Computation precision (tampered)"* (precision 4, `DOWN`), while every other operation uses `i_1` (precision 16, `HALF_EVEN`). This substitution does not alter the numeric result here because `13812.50/325` divides exactly to `42.50`, well within both precisions — so it produces no detectable arithmetic deviation and does not constitute double counting. However, the naming and the isolated, single-operation substitution of a lower-fidelity rounding context is anomalous and worth flagging separately as a distinct latent-precision-manipulation risk pattern, even though it falls outside the double-counting vector this audit was scoped to evaluate.
+
+## Conclusion
+No instance of the same root entity (revenue, share quantity, or cost/deduction) contributing more than once to the same additive or subtractive rollup was found. The observed multi-consumption of `i_3`, `i_6`, `i_9`, and `i_15` is structurally required by, and consistent with, the documented weighted-average and realized-gain/loss formulas (visible via the `formula` metadata on each operation), and all aggregation arithmetic reconciles exactly. No Topological Accumulation Fraud via Double Counting is present.

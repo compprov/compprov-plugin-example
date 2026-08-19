@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-12T05:17:52.5203742Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Taxable income"
+    },
+    "id" : "o_8",
+    "kind" : "OUTPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3650.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-12T05:17:52.5203742Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Bracket 1 portion"
+    },
+    "id" : "o_12",
+    "kind" : "OUTPUT",
+    "numericId" : 12,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2000.00"
+} ]

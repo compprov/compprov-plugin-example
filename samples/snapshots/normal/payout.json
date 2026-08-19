@@ -1,11 +1,25 @@
 {
   "descriptor" : {
-    "meta" : [ ],
+    "meta" : [ {
+      "key" : "rounding",
+      "value" : "DOWN (Amount always truncates to the currency's decimal precision; balance-safety invariant)"
+    }, {
+      "key" : "currencyPrecisions",
+      "value" : {
+        "BTC" : 8,
+        "WBTC" : 8,
+        "ETH" : 18,
+        "USDC" : 6,
+        "USDT" : 6,
+        "USD" : 2,
+        "WSTETH" : 18
+      }
+    } ],
     "name" : "ETH\/USDC daily options payout"
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6109223Z",
+      "createdAt" : "2026-08-05T08:19:33.0946869Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Computation precision (DECIMAL64)"
@@ -21,7 +35,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6134359Z",
+      "createdAt" : "2026-08-05T08:19:33.0946869Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Zero (OTM floor)"
@@ -34,7 +48,7 @@
     "value" : "0"
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6154369Z",
+      "createdAt" : "2026-08-05T08:19:33.0946869Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "ETH\/USDC spot (2026-06-30)"
@@ -51,7 +65,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6194675Z",
+      "createdAt" : "2026-08-05T08:19:33.0966928Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Position [0]"
@@ -75,7 +89,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.620467Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Position [1]"
@@ -99,7 +113,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.620467Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Position [2]"
@@ -123,7 +137,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.620467Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Position [3]"
@@ -147,7 +161,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.620467Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Position [4]"
@@ -171,7 +185,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.620467Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Position [5]"
@@ -195,7 +209,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.620467Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Position [6]"
@@ -219,7 +233,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.620467Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Position [7]"
@@ -243,7 +257,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.620467Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Position [8]"
@@ -267,7 +281,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.620467Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Position [9]"
@@ -291,7 +305,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.620467Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Payout [0]"
@@ -307,7 +321,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6224672Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Payout [1]"
@@ -323,7 +337,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6224672Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Payout [2]"
@@ -339,7 +353,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6234682Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Payout [3]"
@@ -355,7 +369,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6234682Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Payout [4]"
@@ -371,7 +385,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6234682Z",
+      "createdAt" : "2026-08-05T08:19:33.0986964Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Payout [5]"
@@ -387,7 +401,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6234682Z",
+      "createdAt" : "2026-08-05T08:19:33.0996947Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Payout [6]"
@@ -403,7 +417,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6234682Z",
+      "createdAt" : "2026-08-05T08:19:33.0996947Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Payout [7]"
@@ -419,7 +433,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6234682Z",
+      "createdAt" : "2026-08-05T08:19:33.0996947Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Payout [8]"
@@ -435,7 +449,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6234682Z",
+      "createdAt" : "2026-08-05T08:19:33.0996947Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Payout [9]"
@@ -451,7 +465,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-07-27T09:30:16.6234682Z",
+      "createdAt" : "2026-08-05T08:19:33.0996947Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Total payout in USDC"
@@ -475,10 +489,10 @@
         } ],
         "name" : "payout"
       },
-      "finishedAt" : "2026-07-27T09:30:16.620467Z",
+      "finishedAt" : "2026-08-05T08:19:33.0986964Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-07-27T09:30:16.620467Z",
+      "startedAt" : "2026-08-05T08:19:33.0986964Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -498,10 +512,10 @@
         } ],
         "name" : "payout"
       },
-      "finishedAt" : "2026-07-27T09:30:16.6224672Z",
+      "finishedAt" : "2026-08-05T08:19:33.0986964Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-07-27T09:30:16.6224672Z",
+      "startedAt" : "2026-08-05T08:19:33.0986964Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -521,10 +535,10 @@
         } ],
         "name" : "payout"
       },
-      "finishedAt" : "2026-07-27T09:30:16.6224672Z",
+      "finishedAt" : "2026-08-05T08:19:33.0986964Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-07-27T09:30:16.6224672Z",
+      "startedAt" : "2026-08-05T08:19:33.0986964Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -544,10 +558,10 @@
         } ],
         "name" : "payout"
       },
-      "finishedAt" : "2026-07-27T09:30:16.6234682Z",
+      "finishedAt" : "2026-08-05T08:19:33.0986964Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-07-27T09:30:16.6234682Z",
+      "startedAt" : "2026-08-05T08:19:33.0986964Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -567,10 +581,10 @@
         } ],
         "name" : "payout"
       },
-      "finishedAt" : "2026-07-27T09:30:16.6234682Z",
+      "finishedAt" : "2026-08-05T08:19:33.0986964Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-07-27T09:30:16.6234682Z",
+      "startedAt" : "2026-08-05T08:19:33.0986964Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -590,10 +604,10 @@
         } ],
         "name" : "payout"
       },
-      "finishedAt" : "2026-07-27T09:30:16.6234682Z",
+      "finishedAt" : "2026-08-05T08:19:33.0986964Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-07-27T09:30:16.6234682Z",
+      "startedAt" : "2026-08-05T08:19:33.0986964Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -613,10 +627,10 @@
         } ],
         "name" : "payout"
       },
-      "finishedAt" : "2026-07-27T09:30:16.6234682Z",
+      "finishedAt" : "2026-08-05T08:19:33.0996947Z",
       "id" : "op_7",
       "numericId" : 7,
-      "startedAt" : "2026-07-27T09:30:16.6234682Z",
+      "startedAt" : "2026-08-05T08:19:33.0996947Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -636,10 +650,10 @@
         } ],
         "name" : "payout"
       },
-      "finishedAt" : "2026-07-27T09:30:16.6234682Z",
+      "finishedAt" : "2026-08-05T08:19:33.0996947Z",
       "id" : "op_8",
       "numericId" : 8,
-      "startedAt" : "2026-07-27T09:30:16.6234682Z",
+      "startedAt" : "2026-08-05T08:19:33.0996947Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -659,10 +673,10 @@
         } ],
         "name" : "payout"
       },
-      "finishedAt" : "2026-07-27T09:30:16.6234682Z",
+      "finishedAt" : "2026-08-05T08:19:33.0996947Z",
       "id" : "op_9",
       "numericId" : 9,
-      "startedAt" : "2026-07-27T09:30:16.6234682Z",
+      "startedAt" : "2026-08-05T08:19:33.0996947Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -682,10 +696,10 @@
         } ],
         "name" : "payout"
       },
-      "finishedAt" : "2026-07-27T09:30:16.6234682Z",
+      "finishedAt" : "2026-08-05T08:19:33.0996947Z",
       "id" : "op_10",
       "numericId" : 10,
-      "startedAt" : "2026-07-27T09:30:16.6234682Z",
+      "startedAt" : "2026-08-05T08:19:33.0996947Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -705,10 +719,10 @@
         } ],
         "name" : "addBulk"
       },
-      "finishedAt" : "2026-07-27T09:30:16.6234682Z",
+      "finishedAt" : "2026-08-05T08:19:33.0996947Z",
       "id" : "op_11",
       "numericId" : 11,
-      "startedAt" : "2026-07-27T09:30:16.6234682Z",
+      "startedAt" : "2026-08-05T08:19:33.0996947Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {

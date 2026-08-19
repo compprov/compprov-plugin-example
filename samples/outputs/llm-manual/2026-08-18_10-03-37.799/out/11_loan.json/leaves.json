@@ -1,0 +1,40 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0281482Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total amount paid by borrower"
+    },
+    "id" : "o_36",
+    "kind" : "OUTPUT",
+    "numericId" : 36,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "19400.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0281482Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Ending balance"
+    },
+    "id" : "o_29",
+    "kind" : "OUTPUT",
+    "numericId" : 29,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "228657.1862000015"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0281482Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Year-end interest true-up"
+    },
+    "id" : "o_32",
+    "kind" : "OUTPUT",
+    "numericId" : 32,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6576.139133069230"
+} ]

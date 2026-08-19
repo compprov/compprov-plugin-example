@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1343784Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Seconds per hour"
+    },
+    "id" : "i_7",
+    "kind" : "INPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3600"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1343784Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Orbital period, T (hours)"
+    },
+    "id" : "i_15",
+    "kind" : "INPUT",
+    "numericId" : 15,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "23.935"
+} ]

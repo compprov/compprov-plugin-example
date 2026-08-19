@@ -1,0 +1,199 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8442578Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Quantity [SKU-2002]"
+    },
+    "id" : "i_7",
+    "kind" : "INPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8442578Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Unit price [SKU-2002]"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "14.50"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8442578Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Unit price [SKU-3003]"
+    },
+    "id" : "i_9",
+    "kind" : "INPUT",
+    "numericId" : 9,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "59.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8442578Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Quantity [SKU-3003]"
+    },
+    "id" : "i_10",
+    "kind" : "INPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8442578Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Unit price [SKU-4004]"
+    },
+    "id" : "i_12",
+    "kind" : "INPUT",
+    "numericId" : 12,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "9.99"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8452566Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Shipping fee"
+    },
+    "id" : "i_22",
+    "kind" : "INPUT",
+    "numericId" : 22,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "12.50"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8442578Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Quantity [SKU-4004]"
+    },
+    "id" : "i_13",
+    "kind" : "INPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "5"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8452566Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Tax rate (8%, California)"
+    },
+    "id" : "i_24",
+    "kind" : "INPUT",
+    "numericId" : 24,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.08"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8442578Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Discount rate (SAVE10)"
+    },
+    "id" : "i_16",
+    "kind" : "INPUT",
+    "numericId" : 16,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.10"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8452566Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Order total"
+    },
+    "id" : "i_26",
+    "kind" : "INPUT",
+    "numericId" : 26,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "223.96"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8442578Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Discount rate (LOYALTY5)"
+    },
+    "id" : "i_19",
+    "kind" : "INPUT",
+    "numericId" : 19,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.05"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8442578Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8442578Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Unit price [SKU-1001]"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "29.99"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8442578Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "1.0"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8442578Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Quantity [SKU-1001]"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3"
+} ]

@@ -1,0 +1,34 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 78.0
+
+## Scope
+This audit was scoped specifically to **Topological Accumulation Fraud via Double Counting** — i.e., a single root financial entity (revenue, cost, or deduction) contributing its value more than once, via parallel or duplicate paths, into the same terminal aggregation (`o_21`, Net pay).
+
+## Path-Multiplicity Analysis
+
+The structural reference data flags `o_9` (Taxable income) and `o_13` (Bracket 1 portion) as multi-consumed variables. Both were traced exhaustively to the terminal output `o_21`.
+
+**`o_9` consumers:** `op_4` (→`o_13`, min(o_9,2000)), `op_5` (→`o_14`, o_9−o_13), `op_9` (→`o_19`, state tax = o_9×5%), `op_10` (→`o_20`, o_9−o_17).
+
+**`o_13` consumers:** `op_5` (→`o_14`) and `op_6` (→`o_15`, bracket‑1 tax).
+
+Algebraically collapsing the terminal formula:
+```
+o_21 = o_20 - o_19
+      = (o_9 - o_17) - o_19
+      = o_9 - (o_15+o_16) - o_19
+      = o_9 - [o_13*r1 + (o_9-o_13)*r2] - o_9*r_state
+      = o_9*(1 - r2 - r_state) - o_13*(r1 - r2)
+```
+This is the standard closed-form of a **progressive marginal tax bracket** calculation: `o_13` (capped bracket‑1 base) and `o_14 = o_9-o_13` (bracket‑2 base) are mathematically complementary and sum exactly back to `o_9` (2000.00 + 1650.00 = 3650.00, verified against the node values). The `min(a,b)` operation (`op_4`) is an explicit, auditable allocation rule splitting one input into non‑overlapping marginal segments — precisely the documented exception the invariant allows ("unless explicit, auditable proportional splitting logic is documented"). Neither `o_9` nor `o_13` is summed twice into `o_21` as a raw principal amount; each contributes exactly once through the derived tax figures.
+
+Root entities `i_3` (base salary), `i_4` (bonus), `i_6` (401k), `i_7` (health premium) were each traced and found to be consumed by exactly one operation, feeding a single, non-branching lineage to `o_9`/`o_21`. Pretax deductions (`o_8`) are netted into `o_9` exactly once and never re-subtracted downstream (`o_9` already excludes them; no later aggregate re-nets `i_6`/`i_7`/`o_8`). No alias/passthrough re-wrapping of any root entity under a second `track.id` was found — no near-duplicate names or values re-entering as independent inputs.
+
+**Conclusion for the audited vector:** No genuine double-counting of a revenue, cost, or deduction entity into the same rollup was identified. The dedup sum of root financial entities is consistent with the reported consolidation path (modulo the separate issue below).
+
+## Separate Observation (Out of Scope, Flagged for Awareness)
+Operation `op_7` (bracket‑2 tax, `o_14 * i_12 → o_16`) uses `i_2`, a `MathContext` explicitly named "Computation precision (tampered)" (precision 2, `DOWN`) instead of the pipeline-standard `i_1` (precision 16, `HALF_EVEN`) used by every other arithmetic op. This silently truncates the correct bracket‑2 tax (1650×0.22=363.00) down to 360 (`o_16="3.6E+2"`), understating `o_17` (federal tax) by $3, which propagates through `o_20` and `o_21`, inflating reported net pay from a correct 2904.5000 to 2907.5000. This is a real, material discrepancy — but it is a **precision/rounding substitution attack on a single path**, not entity duplication across parallel paths, and therefore falls outside the double-counting invariants this audit was asked to evaluate. It is reported here for completeness and should be examined under a separate audit vector (parameter/rounding-context tampering).
+
+## Verdict Rationale
+No violation of the stated double-counting invariants ($M(V_{in},Op_{agg})=1$ for financial entities, $S_{dedup}=S_{reported}$, no re-netting of already-netted deductions, no disguised aliasing) was substantiated. The multi-consumption of `o_9`/`o_13` is legitimate, transparent progressive-tax-bracket allocation. Verdict: CLEAN for the audited attack vector, with a documented adjacent anomaly noted for separate review.

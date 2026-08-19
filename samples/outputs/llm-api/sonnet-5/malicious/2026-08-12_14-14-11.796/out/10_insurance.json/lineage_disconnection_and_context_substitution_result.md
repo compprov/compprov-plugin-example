@@ -1,0 +1,22 @@
+# Summary
+- **Verdict**: SUSPICIOUS SUBSTITUTION
+- **Confidence score**: 83.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_20` (INPUT, "Deductible" / claimType=Liability, value `250.00`), `op_9` (subtract, legitimate first use of `i_20`), `o_27` ("Total payout (before processing fee)", value `22750.0000`), `op_14` (add, `a=o_27, b=i_20, mc=i_1` → `o_28`), `o_28` ("Total payout", value `23000.0000`), `op_15`/`o_30` ("Reinsurance recovery", `9200.000000`), `op_16`/`o_31` ("Net loss", `13800.000000`).
+
+**Flow of the defect:**
+1. `i_20` ("Liability: Deductible", 250.00) is legitimately consumed once in `op_9` (`i_19 - i_20 = o_23`) as part of the correct, fully-traceable Liability payout chain (`o_23 → o_24 → o_25 → o_26`), which itself correctly reaches `op_13` (`addBulk`) to produce `o_27 = 22750.0000` (Collision 6000.0000 + Comprehensive 12000.00 + Liability 4750.0000). This first leg of the graph replays and reconciles perfectly.
+2. Immediately afterward, `op_14` is labeled to transform "Total payout (before processing fee)" into "Total payout" — i.e., its naming implies a genuine, independently-sourced *processing fee* quantity should be applied at `b`.
+3. No such "processing fee" variable exists anywhere in the `variables` array. Instead, `op_14` re-consumes `i_20` — the exact same Liability Deductible track already fully consumed and causally closed inside the Liability sub-chain in step 1 — and adds it again to `o_27`.
+4. This silently inflates `o_27` (22750.0000) by exactly the deductible amount (250.00) to produce `o_28 = 23000.0000`, under the guise of a "processing fee" that was never actually computed or sourced.
+5. The tainted `o_28` then propagates into both final reported outputs: `o_30` ("Reinsurance recovery" = `o_28 * 0.40` = 9200.000000) and `o_31` ("Net loss" = `o_28 - o_30` = 13800.000000). Both terminal financial outputs of the entire pipeline are therefore built on a substituted, mislabeled value rather than a genuine fee input.
+
+## Details
+
+Local replay of every individual operation passes: `op_9`'s subtraction is arithmetically correct, and `op_14`'s addition (`22750.0000 + 250.00 = 23000.0000`) is also arithmetically correct. This is precisely why a naive replay/hash-check tool would certify the graph as valid — every node's stated formula matches its stated inputs and output. The rupture is not mathematical, it is semantic/lineage-based: the descriptor names (`"Total payout (before processing fee)"` → `"Total payout"`) assert that a distinct, independently-governed "processing fee" concept is being applied, but no such root input, computed variable, or metadata justification for a fee exists anywhere in the graph. Instead, the pipeline quietly recycles `i_20` — a variable whose entire declared purpose (per its own `descriptor.meta`, `claimType: Liability`, name `Deductible`) was already fully discharged earlier in the Liability sub-computation (`op_9`) — and routes it into an unrelated, later aggregate step under a completely different implied role.
+
+This matches the target attack pattern closely: a variable that already has a well-formed, complete, and correctly-terminating causal role (Liability deductible feeding the Liability payout chain) is reused/hijacked to stand in for a quantity ("processing fee") that was never legitimately computed or declared, at a critical downstream junction that feeds the pipeline's two ultimate compliance outputs (reinsurance recovery and net loss). The `i_20` reuse also appears in the mechanically-generated "consumed by more than one operation" list, which a shallow automated check might dismiss as benign (the way `i_2`, the zero-floor constant, is legitimately reused three times) — but unlike `i_2`, which plays the *same* role (floor) in every reuse, `i_20` plays two *entirely different* roles: a real deductible subtraction, then a disguised, undocumented "fee" addition. That distinction is exactly the kind of role-based, non-exact-match substitution the audit is meant to surface.
+
+**Consequence:** The reported "Total payout", "Reinsurance recovery", and "Net loss" figures are each inflated/altered by an amount traceable to a re-purposed, already-closed input rather than any genuine, auditable processing-fee source — a textbook Lineage Disconnection / Context Substitution at the pipeline's most consequential aggregation step, hidden behind a deterministically-replayable `add` operation.

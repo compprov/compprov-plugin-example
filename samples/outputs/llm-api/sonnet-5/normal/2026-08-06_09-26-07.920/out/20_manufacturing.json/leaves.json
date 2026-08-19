@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0571529Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total run cost"
+    },
+    "id" : "o_22",
+    "kind" : "OUTPUT",
+    "numericId" : 22,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "202250.00"
+} ]

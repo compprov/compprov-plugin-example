@@ -1,18 +1,11 @@
 package io.compprov.examples.nav;
 
 import io.compprov.core.meta.Meta;
-import io.compprov.core.variable.ValueWithDescriptor;
-import io.compprov.examples.nav.model.Amount;
-import io.compprov.examples.nav.model.Currency;
+import io.compprov.examples.TestComputationContext;
 import io.compprov.examples.nav.model.NetAssetValueDataProvider;
-import io.compprov.examples.nav.model.Rate;
-import io.compprov.examples.nav.wrapped.WrappedAmount;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 import static io.compprov.core.meta.Descriptor.descriptor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -22,7 +15,7 @@ public class NetAssetValueCalculator {
     @Test
     public void calculate() {
 
-        NavComputationContext ctx = new NavComputationContext("Nav calculation example");
+        TestComputationContext ctx = new TestComputationContext("Nav calculation example");
         NetAssetValueDataProvider dataProvider = new NetAssetValueDataProvider();
 
         //get rates

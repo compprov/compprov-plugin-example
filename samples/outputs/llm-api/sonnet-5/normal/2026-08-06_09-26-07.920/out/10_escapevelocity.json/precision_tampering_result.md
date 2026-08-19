@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 90.0
+
+## Anomaly Localization (If Detected)
+None. Full-precision recomputation of every operation (op_1 through op_7) against the reported values found no material discrepancy attributable to tampering. No variable, operation, or rounding behavior in this graph shows evidence of Precision/Scale Tampering.
+
+## Details
+Each step was independently recomputed using exact rational arithmetic and then rounded per the declared `MathContext(precision=16, roundingMode=HALF_EVEN)` (i_1), which is explicitly passed as the `mc` argument to every arithmetic operation in the graph (op_1–op_7):
+
+- **op_1 (multiply, G×M → o_7):** Exact product of 6.674E-11 and 5.972E24 = 398571280000000 exactly (terminates, no rounding needed). Reported `398571280000000.0` matches exactly.
+- **op_2 (multiply, 2×o_7 → o_8):** Exact doubling = 797142560000000 exactly. Reported `797142560000000.0` matches exactly.
+- **op_3 (divide, o_8/r → o_9):** Exact quotient = 125120477.16214095114... Rounding to 16 significant digits under HALF_EVEN (with the discarded portion beginning '511...' > half) correctly rounds the 16th digit from 9→10 (carry), yielding `125120477.1621410`, which matches the reported value exactly.
+- **op_4 (sqrt, o_9 → o_10):** Manual high-precision square-root refinement converges to ≈11185.726492..., consistent with the reported `11185.72649237147` within the resolution of manual verification.
+- **op_5 (add, r+altitude → o_11):** Exact sum = 6771000, matches reported value exactly (integer, no rounding).
+- **op_6 (divide, o_8/o_11 → o_12):** Exact quotient = 117728926.3033525..., matches reported `117728926.3033525` to 16 significant digits exactly.
+- **op_7 (sqrt, o_12 → o_13):** Refinement converges to ≈10850.296139, consistent with reported `10850.29613897024`.
+
+All multiply/divide/sqrt operations carry an explicit `mc` argument referencing the single declared MathContext (i_1, precision=16, HALF_EVEN), and every recomputed result is consistent with that declared context — satisfying the invariant that "a result consistent with the declared context is not a violation." No ROUND_DOWN/FLOOR bias, no silent double/float downcast (all values remain BigDecimal strings throughout), and no cross-unit mixing (all lengths in meters, masses in kg, G in N·m²/kg² consistently) was found.
+
+The two instances of variable reuse flagged structurally — `i_4` (radius r, reused in the surface divide op_3 and the altitude-sum op_5) and `o_8` (2GM, reused in the surface divide op_3 and the altitude divide op_6) — are both legitimate, physically necessary reuses (computing the same base quantities for two escape-velocity scenarios: at surface and at altitude). There is no divergent branch where a value is silently truncated, rescaled, or re-defined between its two consumptions; both consumers use the identical unmodified upstream value.
+
+There is no scalable population of operations to support a Salami Slicing claim, no unit mismatch (e.g., WEI vs USDC-style scale mixing), and no evidence of intermediate rounding-mode substitution. The pipeline's precision and rounding behavior is uniform, declared, and verifiably reproduced end-to-end.
+
+**Conclusion:** No Precision/Scale Tampering detected. The graph is a well-formed, internally consistent BigDecimal computation of escape velocity at surface and altitude, using a single explicit MathContext throughout.

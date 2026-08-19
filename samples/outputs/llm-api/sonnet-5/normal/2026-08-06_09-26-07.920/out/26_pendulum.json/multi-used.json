@@ -1,0 +1,53 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1729322Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Pendulum length, L (m)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2.0"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1729322Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Gravitational acceleration, g (m\/s²)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "9.8"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1729322Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "2π"
+    },
+    "id" : "o_9",
+    "kind" : "OUTPUT",
+    "numericId" : 9,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6.28318530717958"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1729322Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Period, T (s)"
+    },
+    "id" : "o_10",
+    "kind" : "OUTPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2.838453790227454"
+} ]

@@ -1,0 +1,30 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 82.0
+
+## Anomaly Localization (If Detected)
+No confirmed EXPECTED_INVARIANTS violation was found. All five currency-conversion operations (`op_1`–`op_5`, producing `o_9`–`o_13`) and the aggregation (`op_6`, producing `o_14`) were independently recomputed at full rational precision and compared against the reported values.
+
+| Op | Inputs | Exact Value | Reported | Rounding Applied |
+|---|---|---|---|---|
+| op_1 | i_4 (4.51940883 BTC) × i_1 (68989.72) | 311792.7497472276 | 311792.74 | Truncate (DOWN) |
+| op_2 | i_5 (85.055420066812246204 ETH) × i_2 (2083.31) | 177196.80717899062... | 177196.80 | Truncate (DOWN) |
+| op_3 | i_6 (67961.000332 USDC) × i_3 (1.01) | 68640.61033532 | 68640.61 | Truncate (DOWN) |
+| op_4 | i_7 (23.045084786735014148 ETH) × i_2 (2083.31) | 48010.05558705292... | 48010.05 | Truncate (DOWN) |
+| op_5 | i_8 (75363.302734 USDC) × i_3 (1.01) | 76116.93576134 | 76116.93 | Truncate (DOWN) |
+| op_6 | Sum of o_9..o_13 | 681757.13 (sum of truncated legs, exact) | 681757.13 | Exact sum of already-truncated inputs |
+
+Every individual conversion is truncated exactly to the USD 2-decimal precision, consistent in every single case with the DOWN rounding mode. The final `addBulk` operation sums the already-truncated legs exactly — no additional rounding error is introduced at the aggregation step.
+
+## Details
+An aggregate discrepancy exists between the sum of the *exact* (untruncated) conversion values (≈681757.15860993) and the sum of the truncated legs (681757.13) — a cumulative "leakage" of ≈0.0286 USD, larger than the 1-unit-at-target-scale ceiling that a single truncate-vs-round difference could produce on an isolated operation. This is the textbook signature the audit was asked to look for: truncating before aggregating rather than aggregating before rounding.
+
+However, three facts prevent this from qualifying as a confirmed Precision/Scale Tampering violation under the stated invariants:
+
+1. **Explicit, declared policy.** The graph's own `descriptor.meta` states: `"rounding": "DOWN (Amount always truncates to the currency's decimal precision; balance-safety invariant)"`. Every operation observed is perfectly consistent with this declared convention — there is no operation that silently deviates from DOWN into a different, undisclosed mode. Per the invariant text, a result consistent with an explicitly declared context is not itself a violation.
+2. **Structurally bounded, non-scalable population.** The five truncating conversions correspond one-to-one with five discrete asset holdings in a fixed NAV composition (BTC, ETH-Binance, USDC-Binance, ETH-Staked, USDC-Morpho). This population is capped by portfolio composition, not by transaction/user volume — it cannot be "run more times" to extract more value, which the invariants explicitly exclude from qualifying as genuine Salami Slicing.
+3. **No identified beneficiary/sink.** The truncated residuals (~0.03 USD total) are simply dropped from the reported NAV; they do not flow to any other output, sub-account, or fee variable in the graph. There is no accumulation toward an attacker-controlled destination — the residual is lost, not redirected.
+
+**Consequences:** The reported `Assets sum` (o_14 = 681757.13) understates the mathematically exact portfolio value by ~$0.0286 solely due to legitimate per-leg truncation before aggregation — a conservative (safety-biased) bias explicitly sanctioned by the pipeline's documented rounding policy, not a covert redirection of value. No unit-mixing errors, no MathContext misuse, no downcasting to float/double, and no mismatched rate-to-asset pairing were found; all currency precisions (BTC=8, ETH=18, USDC=6, USD=2) were respected in the input values, and rates were correctly matched to their corresponding asset balances (i_1↔i_4, i_2↔i_5/i_7, i_3↔i_6/i_8).
+
+Given the explicit documentation of the rounding convention and the bounded, non-scalable nature of the affected operation population, this does not rise to a confirmed tampering finding, though the cumulative truncation drift is worth flagging for design review if materiality thresholds tighten in the future.

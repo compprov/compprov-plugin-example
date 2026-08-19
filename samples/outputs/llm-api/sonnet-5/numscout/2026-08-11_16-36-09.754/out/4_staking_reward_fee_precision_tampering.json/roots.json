@@ -1,0 +1,40 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-11T11:34:41.1655761Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Accumulated staking reward"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "199"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-11T11:34:41.1655761Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Percent denominator (100)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "100"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-11T11:34:41.1655761Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Developer fee percent"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "10"
+} ]

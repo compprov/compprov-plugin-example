@@ -1,0 +1,196 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0271479Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Monthly payment"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0271479Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Monthly period rate (0.4%)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.004"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0271479Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Extra principal prepayment (month 4)"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "5000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0271479Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Starting principal"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "240000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0271479Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Interest accrued [Month 1]"
+    },
+    "id" : "o_6",
+    "kind" : "OUTPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "960.00000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0281482Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Balance after payment [Month 1]"
+    },
+    "id" : "o_8",
+    "kind" : "OUTPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "238960.00000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0281482Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Interest accrued [Month 2]"
+    },
+    "id" : "o_10",
+    "kind" : "OUTPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "955.84000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0281482Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Balance after payment [Month 2]"
+    },
+    "id" : "o_12",
+    "kind" : "OUTPUT",
+    "numericId" : 12,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "237915.84000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0281482Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Interest accrued [Month 3]"
+    },
+    "id" : "o_14",
+    "kind" : "OUTPUT",
+    "numericId" : 14,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "951.66336000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0281482Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Balance after payment [Month 3]"
+    },
+    "id" : "o_16",
+    "kind" : "OUTPUT",
+    "numericId" : 16,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "236867.5033600000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0281482Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Interest accrued [Month 4]"
+    },
+    "id" : "o_18",
+    "kind" : "OUTPUT",
+    "numericId" : 18,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "947.4700134400000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0281482Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Balance after prepayment [Month 4]"
+    },
+    "id" : "o_21",
+    "kind" : "OUTPUT",
+    "numericId" : 21,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "230814.9733734400"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0281482Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Interest accrued [Month 5]"
+    },
+    "id" : "o_23",
+    "kind" : "OUTPUT",
+    "numericId" : 23,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "923.2598934937600"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0281482Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Balance after payment [Month 5]"
+    },
+    "id" : "o_25",
+    "kind" : "OUTPUT",
+    "numericId" : 25,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "229738.2332669338"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.0281482Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Interest accrued [Month 6]"
+    },
+    "id" : "o_27",
+    "kind" : "OUTPUT",
+    "numericId" : 27,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "918.9529330677352"
+} ]

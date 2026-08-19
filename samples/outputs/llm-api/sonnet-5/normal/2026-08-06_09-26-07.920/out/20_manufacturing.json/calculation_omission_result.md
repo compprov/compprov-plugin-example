@@ -1,0 +1,27 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 92.0
+
+#### Anomaly Localization (If Detected)
+No qualifying variable was found to be computed and then silently excluded from the final aggregation. Full trace of the pipeline:
+
+- `o_4` = i_2(14.50) * i_3(1) = 14.50 → consumed by op_6
+- `o_7` = i_5(6.25) * i_6(1) = 6.25 → consumed by op_6
+- `o_10` = i_8(0.85) * i_9(4) = 3.40 → consumed by op_6
+- `o_13` = i_11(0.05) * i_12(12) = 0.60 → consumed by op_6
+- `o_16` = i_14(2.10) * i_15(2) = 4.20 → consumed by op_6
+- `o_17` (Material cost/unit) = addBulk(o_4,o_7,o_10,o_13,o_16) = 28.95 → matches stated value exactly, consumed by op_7
+- `o_20` (Total unit cost) = addBulk(o_17, i_18=8.00, i_19=3.50) = 40.45 → matches stated value exactly, consumed by op_8
+- `o_22` (Total run cost) = o_20 * i_21(5000) = 202250.00 → matches stated value exactly, and is the sole terminal leaf (expected, as it is the final reported result)
+
+Every BOM sub-cost (circuit board, enclosure, connector, fastener, cable), plus labor and overhead, is correctly computed and demonstrably flows into the final `o_22` result via an unbroken causal chain (op_1→op_6, op_2→op_6, op_3→op_6, op_4→op_6, op_5→op_6, op_6→op_7, op_7→op_8). No variable that plausibly represents a mandatory adjustment, deduction, credit, correction, or cross-check (e.g., scrap/yield loss, tax, discount, subsidy) appears anywhere in the `variables` array as an unconsumed dead-end or as a computed-but-ignored quantity. The single leaf (`o_22`) is the pipeline's intended final output, not an orphaned intermediate.
+
+#### Details
+This audit specifically targets the pattern where a component is *computed within the graph* but then excluded from the operation that produces the reported result. Applying the invariant checklist:
+
+1. **Root/leaf structure**: All 14 root INPUT variables are consumed by at least one operation. The only leaf variable is `o_22`, which is the terminal reported output — exactly what is expected of a complete, non-omitting pipeline.
+2. **Reconstruction of the aggregation formula**: `o_17` (Material cost per unit) sums all five component costs computed in the graph (`o_4, o_7, o_10, o_13, o_16`) — none of the five multiply outputs are missing from the `addBulk` argument list for op_6. `o_20` (Total unit cost) sums `o_17` with labor (`i_18`) and overhead (`i_19`) — both present as arguments to op_7. `o_22` (Total run cost) multiplies `o_20` by the production run quantity (`i_21`) — correctly reflecting a full per-unit-cost × quantity rollup.
+3. **Numeric replay**: Every intermediate and final value stored in the graph reproduces exactly under the stated `MathContext` (precision 16, HALF_EVEN) from its declared operands — no silent value substitution or short-circuited argument was found.
+4. **No unaccounted-for adjustment variable**: There is no variable in the `variables` array (by name, role, or metadata) suggesting an additional required adjustment — such as scrap/rework cost, tax, or a cross-check quantity — that was computed but left unconsumed. The structural reference data confirms no leaf variables besides the final output and no name collisions suggesting a duplicated/rerouted variable.
+
+Given that (a) every computed sub-component is causally linked all the way to the final result, (b) the arithmetic is internally consistent and reproducible under the stated precision/rounding, and (c) no candidate "omitted adjustment" variable exists anywhere in the graph, the specific Calculation Omission / Unlinked Deduction pattern this audit targets is not present in this trace. This does not certify completeness of the underlying business model (e.g., absence of a scrap-rate or tax variable that a real BOM rollup might arguably need) — only that within the graph as given, nothing computed was excluded from the final result.

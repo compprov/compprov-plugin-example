@@ -1,0 +1,27 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 72.0
+
+## Audit Scope
+This audit specifically targets **Calculation Omission**: a mandatory adjustment, deduction, credit, or correction that is computed correctly somewhere in the graph but silently excluded from the operation that produces the pipeline's final reported result (o_18, 'Total commission (including tier 1 accelerator bonus)').
+
+## Trace Reconstruction
+- o_9 = min(i_3, i_4) = min(135000, 50000) = 50000.00 — revenue through tier 1
+- o_10 = min(i_3, i_5) = min(135000, 100000) = 100000.00 — revenue through tier 2
+- o_11 = o_10 - o_9 = 50000.00 — tier 2 portion
+- o_12 = i_3 - o_10 = 35000.00 — tier 3 portion (uncapped)
+- o_13 = max(o_12, i_2) = 35000.00 — tier 3 portion (floored at zero)
+- o_14 = o_9 * i_6 = 2500.0000 — tier 1 commission
+- o_15 = o_11 * i_7 = 4000.0000 — tier 2 commission
+- o_16 = o_13 * i_8 = 4200.0000 — tier 3 commission
+- o_17 = addBulk(o_14, o_15, o_16) = 10700.0000 — total commission before accelerator
+- o_18 = o_17 + o_14 = 13200.0000 — final reported total, explicitly including a 'tier 1 accelerator bonus' equal to a second addition of o_14
+
+## Coverage Check Against Invariants
+Every INPUT variable (i_1–i_8) has an active causal path forward into o_18 via o_9–o_17. Every intermediate OUTPUT (o_9–o_17) is consumed downstream and ultimately reaches o_18. There is no variable in the graph whose name/role/metadata marks it as a mandatory deduction, correction, tax, clawback, or cross-check that is left as an unconsumed dead-end — the only leaf is o_18 itself, which is the expected terminal result. The structural 'consumed by >1 operation' list (i_3, o_9, o_10, o_14) reflects legitimate reuse of tier-boundary and tier-1 values across the tier computations and the final aggregation step, not a hidden exclusion.
+
+## Point of Interest (Not an Omission)
+The final step (op_10) adds o_14 (tier 1 commission) a second time into o_17 to produce o_18, labeled as a 'tier 1 accelerator bonus.' This is a double-counting/inflation pattern rather than an exclusion — it biases the result *upward*, not toward hiding a cost, and it is fully transparent: the formula, argument wiring, and variable naming all make the reuse of o_14 explicit and traceable. This does not match the Calculation Omission signature (a correctly computed adjustment silently dropped from the final aggregation); no computed value here is missing from o_18's lineage. It is flagged for human review as an unusual compensation-plan design choice (effectively doubling tier-1 credit as an 'accelerator'), but it does not, by itself, constitute the specific omission attack vector under audit.
+
+## Conclusion
+No variable meeting the definition of a mandatory adjustment/deduction/credit/correction is found unconsumed or excluded from the final result's causal lineage. All tier commissions (1, 2, 3) and the stated accelerator term are present in the final aggregation. The graph does not exhibit the Calculation Omission pattern as defined, though the accelerator bonus's double-use of o_14 is an atypical design element worth independent business-logic confirmation.

@@ -1,0 +1,33 @@
+# Summary
+- **Verdict**: CLEAN
+- **Confidence score**: 92.0
+
+## Audit Summary
+
+This CPG implements a standard three-tier progressive commission calculation on monthly revenue of $135,000.00, with tier boundaries at $50,000 and $100,000, and marginal rates of 5%/8%/12%.
+
+### Reconstruction of the Full Computation
+
+1. `o_9` = min(revenue, tier1_ceiling) = min(135000, 50000) = 50000.00 — revenue falling in tier 1.
+2. `o_10` = min(revenue, tier2_ceiling) = min(135000, 100000) = 100000.00 — revenue falling within tiers 1+2.
+3. `o_11` = o_10 - o_9 = 100000 - 50000 = 50000.00 — portion of revenue in tier 2 only.
+4. `o_12` = revenue - o_10 = 135000 - 100000 = 35000.00 — uncapped tier 3 portion.
+5. `o_13` = max(o_12, 0) = 35000.00 — floored tier 3 portion (guards against negative revenue).
+6. `o_14` = o_9 * tier1_rate = 50000 * 0.05 = 2500.0000 — tier 1 commission.
+7. `o_15` = o_11 * tier2_rate = 50000 * 0.08 = 4000.0000 — tier 2 commission.
+8. `o_16` = o_13 * tier3_rate = 35000 * 0.12 = 4200.0000 — tier 3 commission.
+9. `o_17` = addBulk(o_14, o_15, o_16) = 2500 + 4000 + 4200 = 10700.0000 — total commission.
+
+### Omission Check
+
+- The only leaf variable (unconsumed by any operation) is `o_17`, which is the pipeline's final reported result itself — not a dangling intermediate adjustment.
+- Every intermediate variable that represents a tier commission (`o_14`, `o_15`, `o_16`) is consumed by the final `addBulk` operation (`op_9`) that produces `o_17`. No tier commission is silently dropped from the summation.
+- Every value that logically contributes to the final total (tier splits, floors, rates) participates in an active causal chain terminating at `o_17`.
+- No variable's name, role, or metadata (e.g., "tax," "deduction," "correction," "cross-check," "cap adjustment") suggests a mandatory adjustment that was computed elsewhere and then excluded from the sum. The `max(a,0)` floor on tier 3 is itself correctly wired into the tier-3 commission and thus into the total, rather than bypassed.
+- The reused variables (`i_3`, `o_9`, `o_10`) are legitimate multi-consumption reuses inherent to a tiered-bracket calculation (each threshold naturally feeds two downstream computations), not signs of a bypassed adjustment channel.
+
+### Conclusion
+
+Reconstructing the full three-tier formula from its documented components (`Tier 1 rate`, `Tier 2 rate`, `Tier 3 rate`, tier ceilings, and the zero floor) and comparing it against what `addBulk` (`op_9`) actually consumes shows an exact match: all three tier commissions are included, and no computed component is left as an orphaned, unconsumed dead-end while still being descriptively promised by the graph. I do not find a mandatory adjustment, credit, or correction that was computed and then silently excluded from the final aggregation.
+
+Given the graph's small size and single-purpose design, I am reasonably but not absolutely confident no disguised omission exists (e.g., via a very subtly mislabeled variable), hence a high but not maximal confidence score.

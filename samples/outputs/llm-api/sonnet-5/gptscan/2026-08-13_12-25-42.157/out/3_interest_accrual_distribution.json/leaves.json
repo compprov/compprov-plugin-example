@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-11T04:16:58.5659829Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Rate accumulator (after accrual)"
+    },
+    "id" : "o_5",
+    "kind" : "OUTPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "537"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-11T04:16:58.5659829Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Distributed reward"
+    },
+    "id" : "o_7",
+    "kind" : "OUTPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "5000"
+} ]
