@@ -117,9 +117,15 @@ gets both for real.
 
 ## Building
 
-Requires Java 17+ and Maven. `compprov-core` must be available in your local Maven repository
-(build it from [compprov-core](https://github.com/compprov/compprov-core) first, or depend on a
-published version):
+You don't have to build this yourself — every [GitHub release](../../releases) has the built jar
+(`compprov-plugin-example-<version>.jar`) attached, produced by the
+[`Release` workflow](.github/workflows/release.yml). Download it and skip straight to
+[Using the plugin](#using-the-plugin).
+
+To build from source instead, you'll need Java 17+ and Maven. `compprov-core` must be available
+in your local Maven repository (build it from
+[compprov-core](https://github.com/compprov/compprov-core) first, or depend on a published
+version):
 
 ```bash
 mvn package
