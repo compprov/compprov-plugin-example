@@ -5,7 +5,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-13T07:55:12.6158589Z",
+      "createdAt" : "2026-09-08T13:16:46.5837186Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Existing votes for proposal"
@@ -18,27 +18,46 @@
     "value" : "250000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-13T07:55:12.6208569Z",
+      "createdAt" : "2026-09-08T13:16:46.5887213Z",
       "descriptor" : {
-        "meta" : [ ],
-        "name" : "Voter balance (current)"
+        "meta" : [ {
+          "key" : "blockNumber",
+          "value" : "19000000"
+        } ],
+        "name" : "Voter balance (at proposal snapshot block)"
       },
       "id" : "i_2",
       "kind" : "INPUT",
       "numericId" : 2,
       "valueClass" : "java.math.BigInteger"
     },
+    "value" : "10000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-08T13:16:46.5887213Z",
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "blockNumber",
+          "value" : "19000050"
+        } ],
+        "name" : "Voter balance (current block)"
+      },
+      "id" : "i_3",
+      "kind" : "INPUT",
+      "numericId" : 3,
+      "valueClass" : "java.math.BigInteger"
+    },
     "value" : "1000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-13T07:55:12.621856Z",
+      "createdAt" : "2026-09-08T13:16:46.5897209Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "New vote tally"
       },
-      "id" : "o_3",
+      "id" : "o_4",
       "kind" : "OUTPUT",
-      "numericId" : 3,
+      "numericId" : 4,
       "valueClass" : "java.math.BigInteger"
     },
     "value" : "1250000"
@@ -52,10 +71,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-13T07:55:12.621856Z",
+      "finishedAt" : "2026-09-08T13:16:46.5897209Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-13T07:55:12.621856Z",
+      "startedAt" : "2026-09-08T13:16:46.5897209Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -63,8 +82,8 @@
       "value" : "i_1"
     }, {
       "key" : "b",
-      "value" : "i_2"
+      "value" : "i_3"
     } ],
-    "resultId" : "o_3"
+    "resultId" : "o_4"
   } ]
 }

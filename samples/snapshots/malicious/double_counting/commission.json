@@ -5,7 +5,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3467729Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Computation precision (DECIMAL64)"
@@ -21,7 +21,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3497698Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Zero (tier floor)"
@@ -34,7 +34,7 @@
     "value" : "0"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3507702Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Monthly revenue"
@@ -47,7 +47,7 @@
     "value" : "135000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3507702Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 1 ceiling ($50,000)"
@@ -60,7 +60,7 @@
     "value" : "50000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3507702Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 2 ceiling ($100,000)"
@@ -73,7 +73,7 @@
     "value" : "100000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3507702Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 1 rate (5%)"
@@ -86,7 +86,7 @@
     "value" : "0.05"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3507702Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 2 rate (8%)"
@@ -99,7 +99,7 @@
     "value" : "0.08"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3507702Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 3 rate (12%)"
@@ -112,7 +112,7 @@
     "value" : "0.12"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3517709Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Revenue through tier 1"
@@ -125,7 +125,7 @@
     "value" : "50000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3517709Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Revenue through tier 2"
@@ -138,7 +138,7 @@
     "value" : "100000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3517709Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 2 portion"
@@ -151,7 +151,7 @@
     "value" : "50000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3517709Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 3 portion (uncapped)"
@@ -164,7 +164,7 @@
     "value" : "35000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3517709Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 3 portion (floored)"
@@ -177,7 +177,7 @@
     "value" : "35000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3527706Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 1 commission"
@@ -190,7 +190,7 @@
     "value" : "2500.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3527706Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 2 commission"
@@ -203,7 +203,7 @@
     "value" : "4000.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3527706Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 3 commission"
@@ -216,27 +216,14 @@
     "value" : "4200.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
+      "createdAt" : "2026-09-03T04:42:26.3527706Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Total commission (before accelerator)"
+        "name" : "Total commission"
       },
       "id" : "o_17",
       "kind" : "OUTPUT",
       "numericId" : 17,
-      "valueClass" : "java.math.BigDecimal"
-    },
-    "value" : "10700.0000"
-  }, {
-    "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7501993Z",
-      "descriptor" : {
-        "meta" : [ ],
-        "name" : "Total commission (including tier 1 accelerator bonus)"
-      },
-      "id" : "o_18",
-      "kind" : "OUTPUT",
-      "numericId" : 18,
       "valueClass" : "java.math.BigDecimal"
     },
     "value" : "13200.0000"
@@ -250,10 +237,10 @@
         } ],
         "name" : "min"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7501993Z",
+      "finishedAt" : "2026-09-03T04:42:26.3517709Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-05T08:19:32.7501993Z",
+      "startedAt" : "2026-09-03T04:42:26.3517709Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -273,10 +260,10 @@
         } ],
         "name" : "min"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7501993Z",
+      "finishedAt" : "2026-09-03T04:42:26.3517709Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-05T08:19:32.7501993Z",
+      "startedAt" : "2026-09-03T04:42:26.3517709Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -296,10 +283,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7501993Z",
+      "finishedAt" : "2026-09-03T04:42:26.3517709Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-08-05T08:19:32.7501993Z",
+      "startedAt" : "2026-09-03T04:42:26.3517709Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -322,10 +309,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7501993Z",
+      "finishedAt" : "2026-09-03T04:42:26.3517709Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-08-05T08:19:32.7501993Z",
+      "startedAt" : "2026-09-03T04:42:26.3517709Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -348,10 +335,10 @@
         } ],
         "name" : "max"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7501993Z",
+      "finishedAt" : "2026-09-03T04:42:26.3517709Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-08-05T08:19:32.7501993Z",
+      "startedAt" : "2026-09-03T04:42:26.3517709Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -371,10 +358,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7501993Z",
+      "finishedAt" : "2026-09-03T04:42:26.3527706Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-08-05T08:19:32.7501993Z",
+      "startedAt" : "2026-09-03T04:42:26.3527706Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -397,10 +384,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7501993Z",
+      "finishedAt" : "2026-09-03T04:42:26.3527706Z",
       "id" : "op_7",
       "numericId" : 7,
-      "startedAt" : "2026-08-05T08:19:32.7501993Z",
+      "startedAt" : "2026-09-03T04:42:26.3527706Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -423,10 +410,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7501993Z",
+      "finishedAt" : "2026-09-03T04:42:26.3527706Z",
       "id" : "op_8",
       "numericId" : 8,
-      "startedAt" : "2026-08-05T08:19:32.7501993Z",
+      "startedAt" : "2026-09-03T04:42:26.3527706Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -449,10 +436,10 @@
         } ],
         "name" : "addBulk"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7501993Z",
+      "finishedAt" : "2026-09-03T04:42:26.3527706Z",
       "id" : "op_9",
       "numericId" : 9,
-      "startedAt" : "2026-08-05T08:19:32.7501993Z",
+      "startedAt" : "2026-09-03T04:42:26.3527706Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -460,40 +447,17 @@
       "value" : "o_14"
     }, {
       "key" : "b0",
-      "value" : "o_15"
+      "value" : "o_14"
     }, {
       "key" : "b1",
+      "value" : "o_15"
+    }, {
+      "key" : "b2",
       "value" : "o_16"
     }, {
       "key" : "mc",
       "value" : "i_1"
     } ],
     "resultId" : "o_17"
-  }, {
-    "track" : {
-      "descriptor" : {
-        "meta" : [ {
-          "key" : "formula",
-          "value" : "(a+b)mc"
-        } ],
-        "name" : "add"
-      },
-      "finishedAt" : "2026-08-05T08:19:32.7501993Z",
-      "id" : "op_10",
-      "numericId" : 10,
-      "startedAt" : "2026-08-05T08:19:32.7501993Z",
-      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
-    },
-    "arguments" : [ {
-      "key" : "a",
-      "value" : "o_17"
-    }, {
-      "key" : "b",
-      "value" : "o_14"
-    }, {
-      "key" : "mc",
-      "value" : "i_1"
-    } ],
-    "resultId" : "o_18"
   } ]
 }

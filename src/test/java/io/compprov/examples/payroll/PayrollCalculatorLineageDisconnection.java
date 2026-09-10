@@ -50,7 +50,7 @@ public class PayrollCalculatorLineageDisconnection {
         final var bracket2Portion = taxableIncome.subtract(bracket1Portion, mc, descriptor("Bracket 2 portion"));
         final var bracket1Tax = bracket1Portion.multiply(bracket1Rate, mc, descriptor("Bracket 1 tax"));
         final var bracket2Tax = bracket2Portion.multiply(bracket2Rate, mc, descriptor("Bracket 2 tax"));
-        final var federalTax = bracket1Tax.add(bracket2Tax, mc, descriptor("Federal tax withheld (computed, unused)"));
+        final var federalTax = bracket1Tax.add(bracket2Tax, mc, descriptor("Federal tax withheld"));
 
         // === Reported federal tax: a disconnected literal standing in for the real derivation ===
         final var federalTaxReported = ctx.wrapBigDecimal(

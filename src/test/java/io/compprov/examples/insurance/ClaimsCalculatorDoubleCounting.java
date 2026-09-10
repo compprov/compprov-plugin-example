@@ -65,7 +65,7 @@ public class ClaimsCalculatorDoubleCounting {
         final var liabilityPayout = liabilityCoinsuranceAmount.min(liabilityLimit, descriptor("Liability claim payout"));
 
         final var totalPayoutBeforeFee = collisionPayout.addBulk(
-                List.of(comprehensivePayout, liabilityPayout), mc, descriptor("Total payout (before processing fee)"));
+                List.of(comprehensivePayout, liabilityPayout), mc, descriptor("Payout"));
 
         // === Duplicate path: the liability deductible, already subtracted above, is subtracted
         // again as a mislabeled "processing fee" added on top of the total payout ===

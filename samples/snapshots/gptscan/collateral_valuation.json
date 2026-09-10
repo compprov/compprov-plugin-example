@@ -5,7 +5,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.4917218Z",
+      "createdAt" : "2026-09-08T13:16:20.7035622Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Collateral amount"
@@ -18,7 +18,7 @@
     "value" : "1000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.4927218Z",
+      "createdAt" : "2026-09-08T13:16:20.7106835Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Pool reserve (base token)"
@@ -31,7 +31,7 @@
     "value" : "500"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.4927218Z",
+      "createdAt" : "2026-09-08T13:16:20.7106835Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Pool reserve (quote token)"
@@ -44,27 +44,40 @@
     "value" : "1050000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.4927218Z",
+      "createdAt" : "2026-09-08T13:16:20.7106835Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Price (raw pool reserves, spot)"
+        "name" : "Oracle price (quote per base)"
       },
-      "id" : "o_4",
-      "kind" : "OUTPUT",
+      "id" : "i_4",
+      "kind" : "INPUT",
       "numericId" : 4,
+      "valueClass" : "java.math.BigInteger"
+    },
+    "value" : "2000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-08T13:16:20.7116841Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Pool spot price (quote per base)"
+      },
+      "id" : "o_5",
+      "kind" : "OUTPUT",
+      "numericId" : 5,
       "valueClass" : "java.math.BigInteger"
     },
     "value" : "2100"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.4927218Z",
+      "createdAt" : "2026-09-08T13:16:20.7121886Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Collateral value (USD)"
       },
-      "id" : "o_5",
+      "id" : "o_6",
       "kind" : "OUTPUT",
-      "numericId" : 5,
+      "numericId" : 6,
       "valueClass" : "java.math.BigInteger"
     },
     "value" : "2100000"
@@ -78,10 +91,10 @@
         } ],
         "name" : "divide"
       },
-      "finishedAt" : "2026-08-11T04:16:58.4927218Z",
+      "finishedAt" : "2026-09-08T13:16:20.7116841Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-11T04:16:58.4927218Z",
+      "startedAt" : "2026-09-08T13:16:20.7106835Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -91,7 +104,7 @@
       "key" : "b",
       "value" : "i_2"
     } ],
-    "resultId" : "o_4"
+    "resultId" : "o_5"
   }, {
     "track" : {
       "descriptor" : {
@@ -101,10 +114,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-11T04:16:58.4927218Z",
+      "finishedAt" : "2026-09-08T13:16:20.7121886Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-11T04:16:58.4927218Z",
+      "startedAt" : "2026-09-08T13:16:20.7121886Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -112,8 +125,8 @@
       "value" : "i_1"
     }, {
       "key" : "b",
-      "value" : "o_4"
+      "value" : "o_5"
     } ],
-    "resultId" : "o_5"
+    "resultId" : "o_6"
   } ]
 }

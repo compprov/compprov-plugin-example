@@ -5,7 +5,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7727119Z",
+      "createdAt" : "2026-09-03T10:58:34.8473066Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Computation precision (DECIMAL64)"
@@ -21,7 +21,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7727119Z",
+      "createdAt" : "2026-09-03T10:58:34.8503046Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Lumber"
@@ -34,7 +34,7 @@
     "value" : "18500.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7727119Z",
+      "createdAt" : "2026-09-03T10:58:34.853384Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Concrete"
@@ -47,7 +47,7 @@
     "value" : "9200.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7727119Z",
+      "createdAt" : "2026-09-03T10:58:34.853384Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Roofing materials"
@@ -60,7 +60,7 @@
     "value" : "6300.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7727119Z",
+      "createdAt" : "2026-09-03T10:58:34.853384Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Electrical materials"
@@ -73,7 +73,7 @@
     "value" : "4100.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.854389Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Total materials cost"
@@ -83,10 +83,10 @@
       "numericId" : 6,
       "valueClass" : "java.math.BigDecimal"
     },
-    "value" : "38100.00"
+    "value" : "31800.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Carpentry hours"
@@ -99,7 +99,7 @@
     "value" : "180"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Carpentry rate ($\/hr)"
@@ -112,7 +112,7 @@
     "value" : "55.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Carpentry labor cost"
@@ -125,7 +125,7 @@
     "value" : "9900.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Electrical hours"
@@ -138,7 +138,7 @@
     "value" : "60"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Electrical rate ($\/hr)"
@@ -151,7 +151,7 @@
     "value" : "75.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Electrical labor cost"
@@ -164,7 +164,7 @@
     "value" : "4500.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Total labor cost"
@@ -177,7 +177,7 @@
     "value" : "14400.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Direct cost (materials + labor)"
@@ -187,10 +187,10 @@
       "numericId" : 14,
       "valueClass" : "java.math.BigDecimal"
     },
-    "value" : "52500.00"
+    "value" : "46200.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Overhead rate (10%)"
@@ -203,7 +203,7 @@
     "value" : "0.10"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Overhead"
@@ -213,10 +213,10 @@
       "numericId" : 16,
       "valueClass" : "java.math.BigDecimal"
     },
-    "value" : "5250.0000"
+    "value" : "4620.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Cost including overhead"
@@ -226,10 +226,10 @@
       "numericId" : 17,
       "valueClass" : "java.math.BigDecimal"
     },
-    "value" : "57750.0000"
+    "value" : "50820.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Profit margin rate (15%)"
@@ -242,7 +242,7 @@
     "value" : "0.15"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.7737176Z",
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Profit margin"
@@ -252,7 +252,20 @@
       "numericId" : 19,
       "valueClass" : "java.math.BigDecimal"
     },
-    "value" : "8662.500000"
+    "value" : "7623.000000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Total bid price"
+      },
+      "id" : "o_20",
+      "kind" : "OUTPUT",
+      "numericId" : 20,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "58443.000000"
   } ],
   "operations" : [ {
     "track" : {
@@ -263,10 +276,10 @@
         } ],
         "name" : "addBulk"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7737176Z",
+      "finishedAt" : "2026-09-03T10:58:34.854389Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-05T08:19:32.7737176Z",
+      "startedAt" : "2026-09-03T10:58:34.854389Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -277,9 +290,6 @@
       "value" : "i_3"
     }, {
       "key" : "b1",
-      "value" : "i_4"
-    }, {
-      "key" : "b2",
       "value" : "i_5"
     }, {
       "key" : "mc",
@@ -295,10 +305,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7737176Z",
+      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-05T08:19:32.7737176Z",
+      "startedAt" : "2026-09-03T10:58:34.8553897Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -321,10 +331,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7737176Z",
+      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-08-05T08:19:32.7737176Z",
+      "startedAt" : "2026-09-03T10:58:34.8553897Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -347,10 +357,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7737176Z",
+      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-08-05T08:19:32.7737176Z",
+      "startedAt" : "2026-09-03T10:58:34.8553897Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -373,10 +383,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7737176Z",
+      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-08-05T08:19:32.7737176Z",
+      "startedAt" : "2026-09-03T10:58:34.8553897Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -399,10 +409,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7737176Z",
+      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-08-05T08:19:32.7737176Z",
+      "startedAt" : "2026-09-03T10:58:34.8553897Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -425,10 +435,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7737176Z",
+      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
       "id" : "op_7",
       "numericId" : 7,
-      "startedAt" : "2026-08-05T08:19:32.7737176Z",
+      "startedAt" : "2026-09-03T10:58:34.8553897Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -451,10 +461,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.7737176Z",
+      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
       "id" : "op_8",
       "numericId" : 8,
-      "startedAt" : "2026-08-05T08:19:32.7737176Z",
+      "startedAt" : "2026-09-03T10:58:34.8553897Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -468,5 +478,31 @@
       "value" : "i_1"
     } ],
     "resultId" : "o_19"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a+b)mc"
+        } ],
+        "name" : "add"
+      },
+      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
+      "id" : "op_9",
+      "numericId" : 9,
+      "startedAt" : "2026-09-03T10:58:34.8553897Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_17"
+    }, {
+      "key" : "b",
+      "value" : "o_19"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_20"
   } ]
 }

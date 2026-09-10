@@ -39,7 +39,7 @@ public class RetirementAnnuityCalculatorLineageDisconnection {
             balance = balance.add(interest, mc, descriptor("Balance after interest " + lbl));
 
             String balanceLabel = (year == RetirementAnnuityDataProvider.CONTRIBUTION_YEARS)
-                    ? "Ending balance (computed, unused)"
+                    ? "Ending balance"
                     : "Balance after contribution " + lbl;
             balance = balance.add(contribution, mc, descriptor(balanceLabel));
         }

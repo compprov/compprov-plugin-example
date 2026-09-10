@@ -53,7 +53,7 @@ public class OrderTotalCalculatorDoubleCounting {
         final var taxRate = ctx.wrapBigDecimal(dp.fetchTaxRate(), descriptor("Tax rate (8%, California)"));
         final var tax = taxableAmount.multiply(taxRate, mc, descriptor("Sales tax"));
 
-        final var orderTotalBeforeLoyaltyDiscount = taxableAmount.add(tax, mc, descriptor("Order total (before loyalty discount)"));
+        final var orderTotalBeforeLoyaltyDiscount = taxableAmount.add(tax, mc, descriptor("Order"));
 
         // === Duplicate path: LOYALTY5, already compounded into discountedSubtotal above, is
         // applied again as a flat discount on the order total ===

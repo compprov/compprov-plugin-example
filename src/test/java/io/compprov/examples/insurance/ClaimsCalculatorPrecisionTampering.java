@@ -13,13 +13,6 @@ import java.util.List;
 
 import static io.compprov.core.meta.Descriptor.descriptor;
 
-/**
- * Precision and Scale Tampering attack: every claim's coinsurance amount is computed at
- * DECIMAL64 precision except the comprehensive claim's — the one claim whose payout actually
- * gets capped by its policy limit — which is silently evaluated at 3 significant digits with
- * DOWN rounding, a scale mismatch hidden right before the clamp that's supposed to be the
- * interesting part of that claim.
- */
 public class ClaimsCalculatorPrecisionTampering {
 
     @Test
@@ -29,9 +22,9 @@ public class ClaimsCalculatorPrecisionTampering {
                 DefaultComputationEnvironment.create(), new DataContext(descriptor("Insurance: claims adjudication")));
         ClaimsDataProvider dp = new ClaimsDataProvider();
 
-        final var mc = ctx.wrapMathContext(MathContext.DECIMAL64, descriptor("Computation precision (DECIMAL64)"));
+        final var mc = ctx.wrapMathContext(MathContext.DECIMAL64, descriptor("Computation precision"));
         final var lowPrecisionMc = ctx.wrapMathContext(
-                new MathContext(3, RoundingMode.DOWN), descriptor("Computation precision (tampered)"));
+                new MathContext(3, RoundingMode.DOWN), descriptor("Computation precision"));
         final var zero = ctx.wrapBigDecimal(BigDecimal.ZERO, descriptor("Zero (claim floor)"));
 
         final var collisionClaim = ctx.wrapBigDecimal(

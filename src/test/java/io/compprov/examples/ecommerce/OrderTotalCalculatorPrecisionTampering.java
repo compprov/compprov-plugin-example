@@ -14,12 +14,6 @@ import java.util.List;
 
 import static io.compprov.core.meta.Descriptor.descriptor;
 
-/**
- * Precision and Scale Tampering attack: every operation in this graph uses DECIMAL64 except the
- * second (LOYALTY5) discount's multiply, which is silently evaluated at 2 significant digits
- * with DOWN rounding — a precision gap sandwiched between the first discount and the tax step,
- * both of which use the standard precision.
- */
 public class OrderTotalCalculatorPrecisionTampering {
 
     @Test
@@ -31,7 +25,7 @@ public class OrderTotalCalculatorPrecisionTampering {
 
         final var mc = ctx.wrapMathContext(MathContext.DECIMAL64, descriptor("Computation precision (DECIMAL64)"));
         final var lowPrecisionMc = ctx.wrapMathContext(
-                new MathContext(2, RoundingMode.DOWN), descriptor("Computation precision (tampered)"));
+                new MathContext(2, RoundingMode.DOWN), descriptor("Computation precision"));
         final var one = ctx.wrapBigDecimal(BigDecimal.ONE, descriptor("1.0"));
 
         final List<WrappedBigDecimal> lineTotals = new ArrayList<>();

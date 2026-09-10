@@ -5,7 +5,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4139787Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Computation precision (DECIMAL64)"
@@ -21,7 +21,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4174879Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "1.0"
@@ -34,7 +34,7 @@
     "value" : "1"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.420489Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Unit price [SKU-1001]"
@@ -47,7 +47,7 @@
     "value" : "29.99"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.420489Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Quantity [SKU-1001]"
@@ -60,7 +60,7 @@
     "value" : "3"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.420489Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Line total [SKU-1001]"
@@ -73,7 +73,7 @@
     "value" : "89.97"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Unit price [SKU-2002]"
@@ -86,7 +86,7 @@
     "value" : "14.50"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Quantity [SKU-2002]"
@@ -99,7 +99,7 @@
     "value" : "2"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Line total [SKU-2002]"
@@ -112,7 +112,7 @@
     "value" : "29.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Unit price [SKU-3003]"
@@ -125,7 +125,7 @@
     "value" : "59.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Quantity [SKU-3003]"
@@ -138,7 +138,7 @@
     "value" : "1"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Line total [SKU-3003]"
@@ -151,7 +151,7 @@
     "value" : "59.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Unit price [SKU-4004]"
@@ -164,7 +164,7 @@
     "value" : "9.99"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Quantity [SKU-4004]"
@@ -177,7 +177,7 @@
     "value" : "5"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Line total [SKU-4004]"
@@ -190,7 +190,7 @@
     "value" : "49.95"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Subtotal"
@@ -203,7 +203,7 @@
     "value" : "227.92"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Discount rate (SAVE10)"
@@ -216,7 +216,7 @@
     "value" : "0.10"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Discount multiplier (SAVE10)"
@@ -229,7 +229,7 @@
     "value" : "0.90"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Subtotal after SAVE10"
@@ -242,7 +242,7 @@
     "value" : "205.1280"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Discount rate (LOYALTY5)"
@@ -255,7 +255,7 @@
     "value" : "0.05"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Discount multiplier (LOYALTY5)"
@@ -268,7 +268,7 @@
     "value" : "0.95"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Subtotal after LOYALTY5"
@@ -281,7 +281,7 @@
     "value" : "194.871600"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Shipping fee"
@@ -294,7 +294,7 @@
     "value" : "12.50"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Taxable amount"
@@ -307,7 +307,7 @@
     "value" : "207.371600"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4214888Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tax rate (8%, California)"
@@ -320,7 +320,7 @@
     "value" : "0.08"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.83525Z",
+      "createdAt" : "2026-09-03T04:43:59.4224886Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Sales tax"
@@ -333,10 +333,10 @@
     "value" : "16.58972800"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.8362494Z",
+      "createdAt" : "2026-09-03T04:43:59.4224886Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Order total (before loyalty discount)"
+        "name" : "Order"
       },
       "id" : "o_26",
       "kind" : "OUTPUT",
@@ -346,7 +346,7 @@
     "value" : "223.96132800"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.8362494Z",
+      "createdAt" : "2026-09-03T04:43:59.4224886Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Loyalty discount"
@@ -359,7 +359,7 @@
     "value" : "10.256400"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:32.8362494Z",
+      "createdAt" : "2026-09-03T04:43:59.4224886Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Order total"
@@ -380,10 +380,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.83525Z",
+      "finishedAt" : "2026-09-03T04:43:59.420489Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-05T08:19:32.83525Z",
+      "startedAt" : "2026-09-03T04:43:59.420489Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -406,10 +406,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.83525Z",
+      "finishedAt" : "2026-09-03T04:43:59.4214888Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-05T08:19:32.83525Z",
+      "startedAt" : "2026-09-03T04:43:59.4214888Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -432,10 +432,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.83525Z",
+      "finishedAt" : "2026-09-03T04:43:59.4214888Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-08-05T08:19:32.83525Z",
+      "startedAt" : "2026-09-03T04:43:59.4214888Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -458,10 +458,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.83525Z",
+      "finishedAt" : "2026-09-03T04:43:59.4214888Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-08-05T08:19:32.83525Z",
+      "startedAt" : "2026-09-03T04:43:59.4214888Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -484,10 +484,10 @@
         } ],
         "name" : "addBulk"
       },
-      "finishedAt" : "2026-08-05T08:19:32.83525Z",
+      "finishedAt" : "2026-09-03T04:43:59.4214888Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-08-05T08:19:32.83525Z",
+      "startedAt" : "2026-09-03T04:43:59.4214888Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -516,10 +516,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:32.83525Z",
+      "finishedAt" : "2026-09-03T04:43:59.4214888Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-08-05T08:19:32.83525Z",
+      "startedAt" : "2026-09-03T04:43:59.4214888Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -542,10 +542,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.83525Z",
+      "finishedAt" : "2026-09-03T04:43:59.4214888Z",
       "id" : "op_7",
       "numericId" : 7,
-      "startedAt" : "2026-08-05T08:19:32.83525Z",
+      "startedAt" : "2026-09-03T04:43:59.4214888Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -568,10 +568,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:32.83525Z",
+      "finishedAt" : "2026-09-03T04:43:59.4214888Z",
       "id" : "op_8",
       "numericId" : 8,
-      "startedAt" : "2026-08-05T08:19:32.83525Z",
+      "startedAt" : "2026-09-03T04:43:59.4214888Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -594,10 +594,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.83525Z",
+      "finishedAt" : "2026-09-03T04:43:59.4214888Z",
       "id" : "op_9",
       "numericId" : 9,
-      "startedAt" : "2026-08-05T08:19:32.83525Z",
+      "startedAt" : "2026-09-03T04:43:59.4214888Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -620,10 +620,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-05T08:19:32.83525Z",
+      "finishedAt" : "2026-09-03T04:43:59.4214888Z",
       "id" : "op_10",
       "numericId" : 10,
-      "startedAt" : "2026-08-05T08:19:32.83525Z",
+      "startedAt" : "2026-09-03T04:43:59.4214888Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -646,10 +646,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.83525Z",
+      "finishedAt" : "2026-09-03T04:43:59.4224886Z",
       "id" : "op_11",
       "numericId" : 11,
-      "startedAt" : "2026-08-05T08:19:32.83525Z",
+      "startedAt" : "2026-09-03T04:43:59.4224886Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -672,10 +672,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-05T08:19:32.8362494Z",
+      "finishedAt" : "2026-09-03T04:43:59.4224886Z",
       "id" : "op_12",
       "numericId" : 12,
-      "startedAt" : "2026-08-05T08:19:32.8362494Z",
+      "startedAt" : "2026-09-03T04:43:59.4224886Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -698,10 +698,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:32.8362494Z",
+      "finishedAt" : "2026-09-03T04:43:59.4224886Z",
       "id" : "op_13",
       "numericId" : 13,
-      "startedAt" : "2026-08-05T08:19:32.8362494Z",
+      "startedAt" : "2026-09-03T04:43:59.4224886Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -724,10 +724,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:32.8362494Z",
+      "finishedAt" : "2026-09-03T04:43:59.4224886Z",
       "id" : "op_14",
       "numericId" : 14,
-      "startedAt" : "2026-08-05T08:19:32.8362494Z",
+      "startedAt" : "2026-09-03T04:43:59.4224886Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {

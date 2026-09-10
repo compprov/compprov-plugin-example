@@ -30,8 +30,8 @@ public class ConstructionEstimateCalculatorOmission {
         final var concrete = ctx.wrapBigDecimal(dp.fetchConcreteCost(), descriptor("Concrete"));
         final var roofing = ctx.wrapBigDecimal(dp.fetchRoofingMaterialsCost(), descriptor("Roofing materials"));
         final var electricalMaterials = ctx.wrapBigDecimal(dp.fetchElectricalMaterialsCost(), descriptor("Electrical materials"));
-        final var materialsCost = lumber.addBulk(
-                List.of(concrete, roofing, electricalMaterials), mc, descriptor("Total materials cost"));
+        final var materialsCost = lumber.addBulk( //tamper here
+                List.of(concrete, /*roofing,*/ electricalMaterials), mc, descriptor("Total materials cost"));
 
         final var carpentryHours = ctx.wrapBigDecimal(dp.fetchCarpentryHours(), descriptor("Carpentry hours"));
         final var carpentryRate = ctx.wrapBigDecimal(dp.fetchCarpentryRate(), descriptor("Carpentry rate ($/hr)"));
@@ -51,11 +51,9 @@ public class ConstructionEstimateCalculatorOmission {
         final var costWithOverhead = directCost.add(overhead, mc, descriptor("Cost including overhead"));
 
         final var profitMarginRate = ctx.wrapBigDecimal(dp.fetchProfitMarginRate(), descriptor("Profit margin rate (15%)"));
-        // Computed correctly, but never added into the total bid price below.
-        final var profitMargin = costWithOverhead.multiply(profitMarginRate, mc, descriptor("Profit margin"));
 
-        // === Total bid price — profitMargin never added here ===
-        final var totalBidPrice = costWithOverhead; // .add(profitMargin, mc, descriptor("Total bid price"))
+        final var profitMargin = costWithOverhead.multiply(profitMarginRate, mc, descriptor("Profit margin"));
+        final var totalBidPrice = costWithOverhead.add(profitMargin, mc, descriptor("Total bid price"));
 
         final var snapshot = ctx.snapshot();
         final var provenanceGraph = ctx.getEnvironment().toJson(snapshot);

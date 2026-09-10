@@ -46,7 +46,7 @@ public class OrbitalPeriodCalculatorLineageDisconnection {
         final var ratio = rCubed.divide(gm, mc, descriptor("r³ / (GM) (s²)"));
         final var sqrtRatio = ratio.sqrt(mc, descriptor("sqrt(r³/(GM)) (s)"));
         final var twoPi = two.multiply(pi, mc, descriptor("2π"));
-        final var period = twoPi.multiply(sqrtRatio, mc, descriptor("Orbital period, T (s) (computed, unused)"));
+        final var period = twoPi.multiply(sqrtRatio, mc, descriptor("Orbital period, T (s)"));
 
         // === Reported period: a disconnected literal standing in for period / secondsPerHour ===
         final var periodHours = ctx.wrapBigDecimal(new BigDecimal("23.935"), descriptor("Orbital period, T (hours)"));

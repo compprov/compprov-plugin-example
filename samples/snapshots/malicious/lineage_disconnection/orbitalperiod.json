@@ -5,7 +5,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7485657Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Computation precision (DECIMAL64)"
@@ -21,7 +21,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.751565Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Orbital radius, r (m)"
@@ -34,7 +34,7 @@
     "value" : "42164000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7535646Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Gravitational constant, G (N·m²\/kg²)"
@@ -47,7 +47,7 @@
     "value" : "6.674E-11"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7535646Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Central body mass, M (kg)"
@@ -60,7 +60,7 @@
     "value" : "5972000000000000000000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7535646Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Constant π"
@@ -73,7 +73,7 @@
     "value" : "3.14159265358979"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7535646Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Constant 2"
@@ -86,7 +86,7 @@
     "value" : "2"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7535646Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Seconds per hour"
@@ -99,7 +99,7 @@
     "value" : "3600"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7545656Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "G × M, standard gravitational parameter (m³\/s²)"
@@ -112,7 +112,7 @@
     "value" : "398571280000000.0"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7545656Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Exponent 3 (cubic)"
@@ -125,7 +125,7 @@
     "value" : 3
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7555657Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "r³ (m³)"
@@ -138,7 +138,7 @@
     "value" : "7.495928130694400E+22"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7555657Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "r³ \/ (GM) (s²)"
@@ -151,7 +151,7 @@
     "value" : "188069951.5201998"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7555657Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "sqrt(r³\/(GM)) (s)"
@@ -164,7 +164,7 @@
     "value" : "13713.85983303752"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7555657Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "2π"
@@ -177,10 +177,10 @@
     "value" : "6.28318530717958"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7555657Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Orbital period, T (s) (computed, unused)"
+        "name" : "Orbital period, T (s)"
       },
       "id" : "o_14",
       "kind" : "OUTPUT",
@@ -190,7 +190,7 @@
     "value" : "86166.72260766155"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1343784Z",
+      "createdAt" : "2026-09-03T04:49:38.7555657Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Orbital period, T (hours)"
@@ -211,10 +211,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1343784Z",
+      "finishedAt" : "2026-09-03T04:49:38.7545656Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-05T08:19:33.1343784Z",
+      "startedAt" : "2026-09-03T04:49:38.7535646Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -237,10 +237,10 @@
         } ],
         "name" : "pow"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1343784Z",
+      "finishedAt" : "2026-09-03T04:49:38.7555657Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-05T08:19:33.1343784Z",
+      "startedAt" : "2026-09-03T04:49:38.7555657Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -263,10 +263,10 @@
         } ],
         "name" : "divide"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1343784Z",
+      "finishedAt" : "2026-09-03T04:49:38.7555657Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-08-05T08:19:33.1343784Z",
+      "startedAt" : "2026-09-03T04:49:38.7555657Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -289,10 +289,10 @@
         } ],
         "name" : "sqrt"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1343784Z",
+      "finishedAt" : "2026-09-03T04:49:38.7555657Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-08-05T08:19:33.1343784Z",
+      "startedAt" : "2026-09-03T04:49:38.7555657Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -312,10 +312,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1343784Z",
+      "finishedAt" : "2026-09-03T04:49:38.7555657Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-08-05T08:19:33.1343784Z",
+      "startedAt" : "2026-09-03T04:49:38.7555657Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -338,10 +338,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1343784Z",
+      "finishedAt" : "2026-09-03T04:49:38.7555657Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-08-05T08:19:33.1343784Z",
+      "startedAt" : "2026-09-03T04:49:38.7555657Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {

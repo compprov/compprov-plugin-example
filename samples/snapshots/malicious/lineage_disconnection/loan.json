@@ -5,7 +5,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4076336Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Computation precision (DECIMAL64)"
@@ -21,7 +21,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4106337Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Monthly payment"
@@ -34,7 +34,7 @@
     "value" : "2000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4141475Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Monthly period rate (0.4%)"
@@ -47,7 +47,7 @@
     "value" : "0.004"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4141475Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Extra principal prepayment (month 4)"
@@ -60,7 +60,7 @@
     "value" : "5000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4141475Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Starting principal"
@@ -73,7 +73,7 @@
     "value" : "240000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4176972Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Interest accrued [Month 1]"
@@ -86,7 +86,7 @@
     "value" : "960.00000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Principal portion [Month 1]"
@@ -99,7 +99,7 @@
     "value" : "1040.00000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Balance after payment [Month 1]"
@@ -112,7 +112,7 @@
     "value" : "238960.00000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Escrow collected [Month 1]"
@@ -125,7 +125,7 @@
     "value" : "400.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Interest accrued [Month 2]"
@@ -138,7 +138,7 @@
     "value" : "955.84000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Principal portion [Month 2]"
@@ -151,7 +151,7 @@
     "value" : "1044.16000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Balance after payment [Month 2]"
@@ -164,7 +164,7 @@
     "value" : "237915.84000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Escrow collected [Month 2]"
@@ -177,7 +177,7 @@
     "value" : "400.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Interest accrued [Month 3]"
@@ -190,7 +190,7 @@
     "value" : "951.66336000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Principal portion [Month 3]"
@@ -203,7 +203,7 @@
     "value" : "1048.33664000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Balance after payment [Month 3]"
@@ -216,7 +216,7 @@
     "value" : "236867.5033600000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Escrow collected [Month 3]"
@@ -229,7 +229,7 @@
     "value" : "400.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Interest accrued [Month 4]"
@@ -242,7 +242,7 @@
     "value" : "947.4700134400000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Principal portion [Month 4]"
@@ -255,7 +255,7 @@
     "value" : "1052.529986560000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Balance after payment [Month 4]"
@@ -268,7 +268,7 @@
     "value" : "235814.9733734400"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Balance after prepayment [Month 4]"
@@ -281,7 +281,7 @@
     "value" : "230814.9733734400"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Escrow collected [Month 4]"
@@ -294,7 +294,7 @@
     "value" : "400.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Interest accrued [Month 5]"
@@ -307,7 +307,7 @@
     "value" : "923.2598934937600"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Principal portion [Month 5]"
@@ -320,7 +320,7 @@
     "value" : "1076.740106506240"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Balance after payment [Month 5]"
@@ -333,7 +333,7 @@
     "value" : "229738.2332669338"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Escrow collected [Month 5]"
@@ -346,7 +346,7 @@
     "value" : "400.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Interest accrued [Month 6]"
@@ -359,7 +359,7 @@
     "value" : "918.9529330677352"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Principal portion [Month 6]"
@@ -372,10 +372,10 @@
     "value" : "1081.047066932265"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Ending balance (computed, unused)"
+        "name" : "Ending balance"
       },
       "id" : "o_29",
       "kind" : "OUTPUT",
@@ -385,7 +385,7 @@
     "value" : "228657.1862000015"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4186959Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Escrow collected [Month 6]"
@@ -398,46 +398,46 @@
     "value" : "400.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
-      "descriptor" : {
-        "meta" : [ ],
-        "name" : "Ending balance"
-      },
-      "id" : "i_31",
-      "kind" : "INPUT",
-      "numericId" : 31,
-      "valueClass" : "java.math.BigDecimal"
-    },
-    "value" : "228657.19"
-  }, {
-    "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4196967Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Total interest paid"
+      },
+      "id" : "o_31",
+      "kind" : "OUTPUT",
+      "numericId" : 31,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "5657.186200001495"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T04:48:39.4196967Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Total escrow collected"
       },
       "id" : "o_32",
       "kind" : "OUTPUT",
       "numericId" : 32,
       "valueClass" : "java.math.BigDecimal"
     },
-    "value" : "5657.186200001495"
-  }, {
-    "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
-      "descriptor" : {
-        "meta" : [ ],
-        "name" : "Total escrow collected"
-      },
-      "id" : "o_33",
-      "kind" : "OUTPUT",
-      "numericId" : 33,
-      "valueClass" : "java.math.BigDecimal"
-    },
     "value" : "2400.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4196967Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Total escrow"
+      },
+      "id" : "i_33",
+      "kind" : "INPUT",
+      "numericId" : 33,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "2280.0000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T04:48:39.4196967Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Total scheduled payments (6 months)"
@@ -450,7 +450,7 @@
     "value" : "12000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4196967Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "After escrow"
@@ -460,10 +460,10 @@
       "numericId" : 35,
       "valueClass" : "java.math.BigDecimal"
     },
-    "value" : "14400.00"
+    "value" : "14280.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0341473Z",
+      "createdAt" : "2026-09-03T04:48:39.4196967Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Total amount paid by borrower"
@@ -473,7 +473,7 @@
       "numericId" : 36,
       "valueClass" : "java.math.BigDecimal"
     },
-    "value" : "19400.00"
+    "value" : "19280.0000"
   } ],
   "operations" : [ {
     "track" : {
@@ -484,10 +484,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4176972Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4176972Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -510,10 +510,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -536,10 +536,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -562,10 +562,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -588,10 +588,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -614,10 +614,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -640,10 +640,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_7",
       "numericId" : 7,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -666,10 +666,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_8",
       "numericId" : 8,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -692,10 +692,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_9",
       "numericId" : 9,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -718,10 +718,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_10",
       "numericId" : 10,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -744,10 +744,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_11",
       "numericId" : 11,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -770,10 +770,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_12",
       "numericId" : 12,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -796,10 +796,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_13",
       "numericId" : 13,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -822,10 +822,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_14",
       "numericId" : 14,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -848,10 +848,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_15",
       "numericId" : 15,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -874,10 +874,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_16",
       "numericId" : 16,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -900,10 +900,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_17",
       "numericId" : 17,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -926,10 +926,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_18",
       "numericId" : 18,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -952,10 +952,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4186959Z",
       "id" : "op_19",
       "numericId" : 19,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4186959Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -978,10 +978,10 @@
         } ],
         "name" : "addBulk"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4196967Z",
       "id" : "op_20",
       "numericId" : 20,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4196967Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -1006,7 +1006,7 @@
       "key" : "mc",
       "value" : "i_1"
     } ],
-    "resultId" : "o_32"
+    "resultId" : "o_31"
   }, {
     "track" : {
       "descriptor" : {
@@ -1016,10 +1016,10 @@
         } ],
         "name" : "addBulk"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4196967Z",
       "id" : "op_21",
       "numericId" : 21,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4196967Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -1044,7 +1044,7 @@
       "key" : "mc",
       "value" : "i_1"
     } ],
-    "resultId" : "o_33"
+    "resultId" : "o_32"
   }, {
     "track" : {
       "descriptor" : {
@@ -1054,10 +1054,10 @@
         } ],
         "name" : "addBulk"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4196967Z",
       "id" : "op_22",
       "numericId" : 22,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4196967Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -1092,10 +1092,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4196967Z",
       "id" : "op_23",
       "numericId" : 23,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4196967Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -1103,7 +1103,7 @@
       "value" : "o_34"
     }, {
       "key" : "b",
-      "value" : "o_33"
+      "value" : "i_33"
     }, {
       "key" : "mc",
       "value" : "i_1"
@@ -1118,10 +1118,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0341473Z",
+      "finishedAt" : "2026-09-03T04:48:39.4196967Z",
       "id" : "op_24",
       "numericId" : 24,
-      "startedAt" : "2026-08-05T08:19:33.0341473Z",
+      "startedAt" : "2026-09-03T04:48:39.4196967Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {

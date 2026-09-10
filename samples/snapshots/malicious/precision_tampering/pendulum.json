@@ -5,10 +5,10 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4329357Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Computation precision (DECIMAL64)"
+        "name" : "Computation precision"
       },
       "id" : "i_1",
       "kind" : "INPUT",
@@ -21,10 +21,10 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4360292Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Computation precision (tampered)"
+        "name" : "Computation precision"
       },
       "id" : "i_2",
       "kind" : "INPUT",
@@ -37,7 +37,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4360292Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Pendulum length, L (m)"
@@ -50,7 +50,7 @@
     "value" : "2.0"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4380286Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Gravitational acceleration, g (m\/s²)"
@@ -63,7 +63,7 @@
     "value" : "9.8"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4380286Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Constant π"
@@ -76,7 +76,7 @@
     "value" : "3.14159265358979"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4380286Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Constant 2"
@@ -89,7 +89,7 @@
     "value" : "2"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4380286Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Constant 1"
@@ -102,7 +102,7 @@
     "value" : "1"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4380286Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "L \/ g (s²)"
@@ -115,7 +115,7 @@
     "value" : "0.2040816326530612"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4400282Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "sqrt(L\/g) (s)"
@@ -128,7 +128,7 @@
     "value" : "0.451"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4400282Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "2π"
@@ -141,7 +141,7 @@
     "value" : "6.28318530717958"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4400282Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Period, T (s)"
@@ -154,7 +154,7 @@
     "value" : "2.833716573537991"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4400282Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Frequency, f (Hz)"
@@ -167,7 +167,7 @@
     "value" : "0.3528934436627394"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4400282Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Angular frequency, ω = 2π\/T (rad\/s)"
@@ -180,7 +180,7 @@
     "value" : "2.217294900221729"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4400282Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "g \/ L (1\/s²)"
@@ -193,7 +193,7 @@
     "value" : "4.9"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1779403Z",
+      "createdAt" : "2026-09-03T04:51:01.4400282Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Angular frequency cross-check, sqrt(g\/L) (rad\/s)"
@@ -214,10 +214,10 @@
         } ],
         "name" : "divide"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1779403Z",
+      "finishedAt" : "2026-09-03T04:51:01.4380286Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-05T08:19:33.1779403Z",
+      "startedAt" : "2026-09-03T04:51:01.4380286Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -240,10 +240,10 @@
         } ],
         "name" : "sqrt"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1779403Z",
+      "finishedAt" : "2026-09-03T04:51:01.4400282Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-05T08:19:33.1779403Z",
+      "startedAt" : "2026-09-03T04:51:01.439028Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -263,10 +263,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1779403Z",
+      "finishedAt" : "2026-09-03T04:51:01.4400282Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-08-05T08:19:33.1779403Z",
+      "startedAt" : "2026-09-03T04:51:01.4400282Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -289,10 +289,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1779403Z",
+      "finishedAt" : "2026-09-03T04:51:01.4400282Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-08-05T08:19:33.1779403Z",
+      "startedAt" : "2026-09-03T04:51:01.4400282Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -315,10 +315,10 @@
         } ],
         "name" : "divide"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1779403Z",
+      "finishedAt" : "2026-09-03T04:51:01.4400282Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-08-05T08:19:33.1779403Z",
+      "startedAt" : "2026-09-03T04:51:01.4400282Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -341,10 +341,10 @@
         } ],
         "name" : "divide"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1779403Z",
+      "finishedAt" : "2026-09-03T04:51:01.4400282Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-08-05T08:19:33.1779403Z",
+      "startedAt" : "2026-09-03T04:51:01.4400282Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -367,10 +367,10 @@
         } ],
         "name" : "divide"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1779403Z",
+      "finishedAt" : "2026-09-03T04:51:01.4400282Z",
       "id" : "op_7",
       "numericId" : 7,
-      "startedAt" : "2026-08-05T08:19:33.1779403Z",
+      "startedAt" : "2026-09-03T04:51:01.4400282Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -393,10 +393,10 @@
         } ],
         "name" : "sqrt"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1779403Z",
+      "finishedAt" : "2026-09-03T04:51:01.4400282Z",
       "id" : "op_8",
       "numericId" : 8,
-      "startedAt" : "2026-08-05T08:19:33.1779403Z",
+      "startedAt" : "2026-09-03T04:51:01.4400282Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {

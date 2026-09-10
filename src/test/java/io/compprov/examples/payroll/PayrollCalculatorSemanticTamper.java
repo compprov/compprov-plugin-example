@@ -39,10 +39,10 @@ public class PayrollCalculatorSemanticTamper {
 
         // === Non-taxable reimbursement — labeled as such, but folded into taxable income below ===
         final var reimbursement = ctx.wrapBigDecimal(
-                dp.fetchExpenseReimbursement(), descriptor("Expense reimbursement (non-taxable)"));
+                dp.fetchExpenseReimbursement(), descriptor("Expense reimbursement"));
 
         // === Taxable income (tampered: reimbursement added in despite its non-taxable label) ===
-        final var taxableIncomeBeforeReimbursement = grossPay.subtract(pretaxDeductions, mc, descriptor("Taxable income (before reimbursement)"));
+        final var taxableIncomeBeforeReimbursement = grossPay.subtract(pretaxDeductions, mc, descriptor("Income"));
         final var taxableIncome = taxableIncomeBeforeReimbursement.add(reimbursement, mc, descriptor("Taxable income"));
 
         // === Federal withholding: two-bracket progressive ===
