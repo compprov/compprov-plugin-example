@@ -5,7 +5,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2343723Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Computation precision (DECIMAL64)"
@@ -21,7 +21,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2376986Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Zero (tier floor)"
@@ -34,7 +34,7 @@
     "value" : "0"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2402077Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Monthly usage (kWh)"
@@ -47,7 +47,7 @@
     "value" : "1180"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2402077Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 1 ceiling (500 kWh)"
@@ -60,7 +60,7 @@
     "value" : "500"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2402077Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 2 ceiling (1000 kWh)"
@@ -73,7 +73,7 @@
     "value" : "1000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2402077Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 1 rate ($0.10\/kWh)"
@@ -86,7 +86,7 @@
     "value" : "0.10"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2402077Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 2 rate ($0.14\/kWh)"
@@ -99,7 +99,7 @@
     "value" : "0.14"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2402077Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 3 rate ($0.18\/kWh)"
@@ -112,7 +112,7 @@
     "value" : "0.18"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2412171Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Usage through tier 1"
@@ -125,7 +125,7 @@
     "value" : "500"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2412171Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Usage through tier 2"
@@ -138,7 +138,7 @@
     "value" : "1000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2422207Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 2 usage portion"
@@ -151,7 +151,7 @@
     "value" : "500"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2422207Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 3 usage portion (uncapped)"
@@ -164,7 +164,7 @@
     "value" : "180"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2422207Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 3 usage portion (floored)"
@@ -177,7 +177,7 @@
     "value" : "180"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2422207Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 1 cost"
@@ -190,7 +190,7 @@
     "value" : "50.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2422207Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 2 cost"
@@ -203,7 +203,7 @@
     "value" : "70.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2422207Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Tier 3 cost"
@@ -216,7 +216,7 @@
     "value" : "32.40"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2422207Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Total energy cost"
@@ -226,10 +226,10 @@
       "numericId" : 17,
       "valueClass" : "java.math.BigDecimal"
     },
-    "value" : "152.40"
+    "value" : "82.40"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.2344882Z",
+      "createdAt" : "2026-09-03T04:51:33.2422207Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Monthly service charge"
@@ -240,6 +240,19 @@
       "valueClass" : "java.math.BigDecimal"
     },
     "value" : "12.50"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T04:51:33.2422207Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Total bill"
+      },
+      "id" : "o_19",
+      "kind" : "OUTPUT",
+      "numericId" : 19,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "94.90"
   } ],
   "operations" : [ {
     "track" : {
@@ -250,10 +263,10 @@
         } ],
         "name" : "min"
       },
-      "finishedAt" : "2026-08-05T08:19:33.2344882Z",
+      "finishedAt" : "2026-09-03T04:51:33.2412171Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-05T08:19:33.2344882Z",
+      "startedAt" : "2026-09-03T04:51:33.2412171Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -273,10 +286,10 @@
         } ],
         "name" : "min"
       },
-      "finishedAt" : "2026-08-05T08:19:33.2344882Z",
+      "finishedAt" : "2026-09-03T04:51:33.2412171Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-05T08:19:33.2344882Z",
+      "startedAt" : "2026-09-03T04:51:33.2412171Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -296,10 +309,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.2344882Z",
+      "finishedAt" : "2026-09-03T04:51:33.2422207Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-08-05T08:19:33.2344882Z",
+      "startedAt" : "2026-09-03T04:51:33.2412171Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -322,10 +335,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.2344882Z",
+      "finishedAt" : "2026-09-03T04:51:33.2422207Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-08-05T08:19:33.2344882Z",
+      "startedAt" : "2026-09-03T04:51:33.2422207Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -348,10 +361,10 @@
         } ],
         "name" : "max"
       },
-      "finishedAt" : "2026-08-05T08:19:33.2344882Z",
+      "finishedAt" : "2026-09-03T04:51:33.2422207Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-08-05T08:19:33.2344882Z",
+      "startedAt" : "2026-09-03T04:51:33.2422207Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -371,10 +384,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.2344882Z",
+      "finishedAt" : "2026-09-03T04:51:33.2422207Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-08-05T08:19:33.2344882Z",
+      "startedAt" : "2026-09-03T04:51:33.2422207Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -397,10 +410,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.2344882Z",
+      "finishedAt" : "2026-09-03T04:51:33.2422207Z",
       "id" : "op_7",
       "numericId" : 7,
-      "startedAt" : "2026-08-05T08:19:33.2344882Z",
+      "startedAt" : "2026-09-03T04:51:33.2422207Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -423,10 +436,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.2344882Z",
+      "finishedAt" : "2026-09-03T04:51:33.2422207Z",
       "id" : "op_8",
       "numericId" : 8,
-      "startedAt" : "2026-08-05T08:19:33.2344882Z",
+      "startedAt" : "2026-09-03T04:51:33.2422207Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -449,10 +462,10 @@
         } ],
         "name" : "addBulk"
       },
-      "finishedAt" : "2026-08-05T08:19:33.2344882Z",
+      "finishedAt" : "2026-09-03T04:51:33.2422207Z",
       "id" : "op_9",
       "numericId" : 9,
-      "startedAt" : "2026-08-05T08:19:33.2344882Z",
+      "startedAt" : "2026-09-03T04:51:33.2422207Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -460,14 +473,37 @@
       "value" : "o_14"
     }, {
       "key" : "b0",
-      "value" : "o_15"
-    }, {
-      "key" : "b1",
       "value" : "o_16"
     }, {
       "key" : "mc",
       "value" : "i_1"
     } ],
     "resultId" : "o_17"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a+b)mc"
+        } ],
+        "name" : "add"
+      },
+      "finishedAt" : "2026-09-03T04:51:33.2422207Z",
+      "id" : "op_10",
+      "numericId" : 10,
+      "startedAt" : "2026-09-03T04:51:33.2422207Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_17"
+    }, {
+      "key" : "b",
+      "value" : "i_18"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_19"
   } ]
 }

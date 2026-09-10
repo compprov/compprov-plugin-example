@@ -20,4 +20,9 @@ public class AmmTakerFeeDataProvider {
     public BigInteger fetchBasisPointsDenominator() {
         return BigInteger.valueOf(10_000);
     }
+
+    /** {@code denominator - 1} — the paper's own ceiling-division adjustment (Fig. 6: {@code + 9999}). */
+    public BigInteger fetchRoundingUpAdjustment() {
+        return BigInteger.valueOf(9_999);
+    }
 }

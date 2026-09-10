@@ -46,12 +46,9 @@ public class SalesCommissionCalculatorDoubleCounting {
         final var tier2Commission = tier2Portion.multiply(tier2Rate, mc, descriptor("Tier 2 commission"));
         final var tier3Commission = tier3Portion.multiply(tier3Rate, mc, descriptor("Tier 3 commission"));
 
-        final var totalCommissionBeforeBonus = tier1Commission.addBulk(
-                List.of(tier2Commission, tier3Commission), mc, descriptor("Total commission (before accelerator)"));
-
-        // === Duplicate path: tier1Commission, already summed above, is added again ===
-        final var totalCommission = totalCommissionBeforeBonus
-                .add(tier1Commission, mc, descriptor("Total commission (including tier 1 accelerator bonus)"));
+        // === Total commission ===
+        final var totalCommission = tier1Commission.addBulk(
+                List.of(tier1Commission, tier2Commission, tier3Commission), mc, descriptor("Total commission"));
 
         final var snapshot = ctx.snapshot();
         final var provenanceGraph = ctx.getEnvironment().toJson(snapshot);

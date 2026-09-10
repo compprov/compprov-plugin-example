@@ -5,10 +5,10 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0036276Z",
+      "createdAt" : "2026-09-03T04:47:51.5886699Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Computation precision (DECIMAL64)"
+        "name" : "Computation precision"
       },
       "id" : "i_1",
       "kind" : "INPUT",
@@ -21,10 +21,10 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0036276Z",
+      "createdAt" : "2026-09-03T04:47:51.5916759Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Computation precision (tampered)"
+        "name" : "Computation precision"
       },
       "id" : "i_2",
       "kind" : "INPUT",
@@ -37,7 +37,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0036276Z",
+      "createdAt" : "2026-09-03T04:47:51.5916759Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Zero (claim floor)"
@@ -50,7 +50,7 @@
     "value" : "0"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0036276Z",
+      "createdAt" : "2026-09-03T04:47:51.594673Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "claimType",
@@ -66,7 +66,7 @@
     "value" : "8000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0036276Z",
+      "createdAt" : "2026-09-03T04:47:51.594673Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "claimType",
@@ -82,7 +82,7 @@
     "value" : "500.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0036276Z",
+      "createdAt" : "2026-09-03T04:47:51.594673Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "claimType",
@@ -98,7 +98,7 @@
     "value" : "0.80"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0036276Z",
+      "createdAt" : "2026-09-03T04:47:51.594673Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "claimType",
@@ -114,7 +114,7 @@
     "value" : "10000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0036276Z",
+      "createdAt" : "2026-09-03T04:47:51.594673Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Collision: net of deductible"
@@ -127,7 +127,7 @@
     "value" : "7500.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0036276Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Collision: net of deductible (floored)"
@@ -140,7 +140,7 @@
     "value" : "7500.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0036276Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Collision: coinsurance amount"
@@ -153,7 +153,7 @@
     "value" : "6000.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0036276Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Collision claim payout"
@@ -166,7 +166,7 @@
     "value" : "6000.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0036276Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "claimType",
@@ -182,7 +182,7 @@
     "value" : "20000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "claimType",
@@ -198,7 +198,7 @@
     "value" : "1000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "claimType",
@@ -214,7 +214,7 @@
     "value" : "0.90"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "claimType",
@@ -230,7 +230,7 @@
     "value" : "12000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Comprehensive: net of deductible"
@@ -243,7 +243,7 @@
     "value" : "19000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Comprehensive: net of deductible (floored)"
@@ -256,7 +256,7 @@
     "value" : "19000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Comprehensive: coinsurance amount"
@@ -269,7 +269,7 @@
     "value" : "1.71E+4"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Comprehensive claim payout"
@@ -282,7 +282,7 @@
     "value" : "12000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "claimType",
@@ -298,7 +298,7 @@
     "value" : "5000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "claimType",
@@ -314,7 +314,7 @@
     "value" : "250.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "claimType",
@@ -330,7 +330,7 @@
     "value" : "1.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "claimType",
@@ -346,7 +346,7 @@
     "value" : "6000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Liability: net of deductible"
@@ -359,7 +359,7 @@
     "value" : "4750.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Liability: net of deductible (floored)"
@@ -372,7 +372,7 @@
     "value" : "4750.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Liability: coinsurance amount"
@@ -385,7 +385,7 @@
     "value" : "4750.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Liability claim payout"
@@ -398,7 +398,7 @@
     "value" : "4750.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Total payout"
@@ -411,7 +411,7 @@
     "value" : "22750.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Reinsurance recovery rate (40%)"
@@ -424,7 +424,7 @@
     "value" : "0.40"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Reinsurance recovery"
@@ -437,7 +437,7 @@
     "value" : "9100.000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.0046284Z",
+      "createdAt" : "2026-09-03T04:47:51.5956748Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Net loss"
@@ -458,10 +458,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0036276Z",
+      "finishedAt" : "2026-09-03T04:47:51.594673Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-05T08:19:33.0036276Z",
+      "startedAt" : "2026-09-03T04:47:51.594673Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -484,10 +484,10 @@
         } ],
         "name" : "max"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0036276Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-05T08:19:33.0036276Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -507,10 +507,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0036276Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-08-05T08:19:33.0036276Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -533,10 +533,10 @@
         } ],
         "name" : "min"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0036276Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-08-05T08:19:33.0036276Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -556,10 +556,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0046284Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-08-05T08:19:33.0046284Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -582,10 +582,10 @@
         } ],
         "name" : "max"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0046284Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-08-05T08:19:33.0046284Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -605,10 +605,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0046284Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_7",
       "numericId" : 7,
-      "startedAt" : "2026-08-05T08:19:33.0046284Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -631,10 +631,10 @@
         } ],
         "name" : "min"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0046284Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_8",
       "numericId" : 8,
-      "startedAt" : "2026-08-05T08:19:33.0046284Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -654,10 +654,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0046284Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_9",
       "numericId" : 9,
-      "startedAt" : "2026-08-05T08:19:33.0046284Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -680,10 +680,10 @@
         } ],
         "name" : "max"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0046284Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_10",
       "numericId" : 10,
-      "startedAt" : "2026-08-05T08:19:33.0046284Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -703,10 +703,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0046284Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_11",
       "numericId" : 11,
-      "startedAt" : "2026-08-05T08:19:33.0046284Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -729,10 +729,10 @@
         } ],
         "name" : "min"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0046284Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_12",
       "numericId" : 12,
-      "startedAt" : "2026-08-05T08:19:33.0046284Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -752,10 +752,10 @@
         } ],
         "name" : "addBulk"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0046284Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_13",
       "numericId" : 13,
-      "startedAt" : "2026-08-05T08:19:33.0046284Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -781,10 +781,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0046284Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_14",
       "numericId" : 14,
-      "startedAt" : "2026-08-05T08:19:33.0046284Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -807,10 +807,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.0046284Z",
+      "finishedAt" : "2026-09-03T04:47:51.5956748Z",
       "id" : "op_15",
       "numericId" : 15,
-      "startedAt" : "2026-08-05T08:19:33.0046284Z",
+      "startedAt" : "2026-09-03T04:47:51.5956748Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {

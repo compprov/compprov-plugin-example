@@ -5,7 +5,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.5659829Z",
+      "createdAt" : "2026-09-08T13:21:47.8198016Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Staked principal"
@@ -18,10 +18,13 @@
     "value" : "100000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.5659829Z",
+      "createdAt" : "2026-09-08T13:21:47.8253125Z",
       "descriptor" : {
-        "meta" : [ ],
-        "name" : "Rate accumulator (before this period's accrual)"
+        "meta" : [ {
+          "key" : "period",
+          "value" : "41"
+        } ],
+        "name" : "Rate accumulator"
       },
       "id" : "i_2",
       "kind" : "INPUT",
@@ -31,10 +34,13 @@
     "value" : "500"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.5659829Z",
+      "createdAt" : "2026-09-08T13:21:47.8253125Z",
       "descriptor" : {
-        "meta" : [ ],
-        "name" : "Interest accrued this period (bps)"
+        "meta" : [ {
+          "key" : "period",
+          "value" : "42"
+        } ],
+        "name" : "Interest accrued (bps)"
       },
       "id" : "i_3",
       "kind" : "INPUT",
@@ -44,7 +50,7 @@
     "value" : "37"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.5659829Z",
+      "createdAt" : "2026-09-08T13:21:47.8253125Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Basis points denominator"
@@ -57,10 +63,13 @@
     "value" : "10000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.5659829Z",
+      "createdAt" : "2026-09-08T13:21:47.8253125Z",
       "descriptor" : {
-        "meta" : [ ],
-        "name" : "Rate accumulator (after accrual)"
+        "meta" : [ {
+          "key" : "period",
+          "value" : "42"
+        } ],
+        "name" : "Rate accumulator"
       },
       "id" : "o_5",
       "kind" : "OUTPUT",
@@ -70,10 +79,13 @@
     "value" : "537"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.5659829Z",
+      "createdAt" : "2026-09-08T13:21:47.8263123Z",
       "descriptor" : {
-        "meta" : [ ],
-        "name" : "Principal * accrued rate"
+        "meta" : [ {
+          "key" : "period",
+          "value" : "42"
+        } ],
+        "name" : "Reward numerator"
       },
       "id" : "o_6",
       "kind" : "OUTPUT",
@@ -83,9 +95,12 @@
     "value" : "50000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.5659829Z",
+      "createdAt" : "2026-09-08T13:21:47.8263123Z",
       "descriptor" : {
-        "meta" : [ ],
+        "meta" : [ {
+          "key" : "period",
+          "value" : "42"
+        } ],
         "name" : "Distributed reward"
       },
       "id" : "o_7",
@@ -104,10 +119,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-11T04:16:58.5659829Z",
+      "finishedAt" : "2026-09-08T13:21:47.8253125Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-11T04:16:58.5659829Z",
+      "startedAt" : "2026-09-08T13:21:47.8253125Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -127,10 +142,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-11T04:16:58.5659829Z",
+      "finishedAt" : "2026-09-08T13:21:47.8263123Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-11T04:16:58.5659829Z",
+      "startedAt" : "2026-09-08T13:21:47.8263123Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -150,10 +165,10 @@
         } ],
         "name" : "divide"
       },
-      "finishedAt" : "2026-08-11T04:16:58.5659829Z",
+      "finishedAt" : "2026-09-08T13:21:47.8263123Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-08-11T04:16:58.5659829Z",
+      "startedAt" : "2026-09-08T13:21:47.8263123Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {

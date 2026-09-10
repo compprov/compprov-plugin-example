@@ -11,11 +11,6 @@ import java.util.List;
 
 import static io.compprov.core.meta.Descriptor.descriptor;
 
-/**
- * Calculation Omission attack: the fixed monthly service charge is fetched and correctly
- * labeled, but it's silently dropped from the final total bill, understating what the customer
- * actually owes.
- */
 public class UtilityBillCalculatorOmission {
 
     @Test
@@ -44,13 +39,14 @@ public class UtilityBillCalculatorOmission {
         final var tier1Cost = usageThroughTier1.multiply(tier1Rate, mc, descriptor("Tier 1 cost"));
         final var tier2Cost = tier2Usage.multiply(tier2Rate, mc, descriptor("Tier 2 cost"));
         final var tier3Cost = tier3Usage.multiply(tier3Rate, mc, descriptor("Tier 3 cost"));
-        final var energyCost = tier1Cost.addBulk(List.of(tier2Cost, tier3Cost), mc, descriptor("Total energy cost"));
+        //Tamper: tier 2 is skipped here
+        final var energyCost = tier1Cost.addBulk(List.of(tier3Cost), mc, descriptor("Total energy cost"));
 
         // Computed correctly, but never added into the total bill below.
         final var serviceCharge = ctx.wrapBigDecimal(dp.fetchMonthlyServiceCharge(), descriptor("Monthly service charge"));
 
         // === Total bill — serviceCharge never added here ===
-        final var totalBill = energyCost; // .add(serviceCharge, mc, descriptor("Total bill"))
+        final var totalBill = energyCost.add(serviceCharge, mc, descriptor("Total bill"));
 
         final var snapshot = ctx.snapshot();
         final var provenanceGraph = ctx.getEnvironment().toJson(snapshot);

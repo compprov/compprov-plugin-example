@@ -26,9 +26,9 @@ public class PendulumPeriodCalculatorPrecisionTampering {
                 DefaultComputationEnvironment.create(), new DataContext(descriptor("Pendulum: small-angle period")));
         PendulumPeriodDataProvider dp = new PendulumPeriodDataProvider();
 
-        final var mc = ctx.wrapMathContext(MathContext.DECIMAL64, descriptor("Computation precision (DECIMAL64)"));
+        final var mc = ctx.wrapMathContext(MathContext.DECIMAL64, descriptor("Computation precision"));
         final var lowPrecisionMc = ctx.wrapMathContext(
-                new MathContext(3, RoundingMode.DOWN), descriptor("Computation precision (tampered)"));
+                new MathContext(3, RoundingMode.DOWN), descriptor("Computation precision"));
 
         // === Inputs ===
         final var length = ctx.wrapBigDecimal(dp.fetchLength(), descriptor("Pendulum length, L (m)"));

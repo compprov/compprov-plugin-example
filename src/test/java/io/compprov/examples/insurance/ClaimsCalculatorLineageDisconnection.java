@@ -12,12 +12,6 @@ import java.util.List;
 
 import static io.compprov.core.meta.Descriptor.descriptor;
 
-/**
- * Lineage Disconnection / Context Substitution attack: the three claims are adjudicated
- * correctly and summed into a real {@code totalPayout} subgraph that replays cleanly in
- * isolation — but the value actually used for reinsurance recovery and net loss is a
- * freshly-wrapped literal with no operation edge back to the individual claim adjudications.
- */
 public class ClaimsCalculatorLineageDisconnection {
 
     @Test
@@ -65,7 +59,7 @@ public class ClaimsCalculatorLineageDisconnection {
 
         // Computed correctly from the three claims, but never consumed below.
         final var totalPayoutComputed = collisionPayout.addBulk(
-                List.of(comprehensivePayout, liabilityPayout), mc, descriptor("Total payout (computed, unused)"));
+                List.of(comprehensivePayout, liabilityPayout), mc, descriptor("Payout sum"));
 
         // === Reported total payout: a disconnected literal standing in for the real sum ===
         final var totalPayout = ctx.wrapBigDecimal(new BigDecimal("22750.00"), descriptor("Total payout"));

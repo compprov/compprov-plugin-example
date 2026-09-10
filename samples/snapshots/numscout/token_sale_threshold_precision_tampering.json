@@ -5,7 +5,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.1766114Z",
+      "createdAt" : "2026-09-08T14:44:15.1786395Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Payment sent (wei)"
@@ -18,7 +18,7 @@
     "value" : "3500000000000000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.1766114Z",
+      "createdAt" : "2026-09-08T14:44:15.1846444Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "1 ether, in wei"
@@ -31,7 +31,7 @@
     "value" : "1000000000000000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.1766114Z",
+      "createdAt" : "2026-09-08T14:44:15.1846444Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Minimum purchase threshold (whole ether)"
@@ -44,7 +44,7 @@
     "value" : "1"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.1766114Z",
+      "createdAt" : "2026-09-08T14:44:15.1846444Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Zero (gate floor)"
@@ -57,7 +57,7 @@
     "value" : "0"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.1766114Z",
+      "createdAt" : "2026-09-08T14:44:15.1856444Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Payment"
@@ -70,7 +70,7 @@
     "value" : "3"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.1766114Z",
+      "createdAt" : "2026-09-08T14:44:15.1866441Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Purchase gate decision (payment vs. threshold)"
@@ -83,7 +83,7 @@
     "value" : "1"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.1766114Z",
+      "createdAt" : "2026-09-08T14:44:15.1866441Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Gate multiplier (1 if payment >= threshold, else 0)"
@@ -96,7 +96,7 @@
     "value" : "1"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.1766114Z",
+      "createdAt" : "2026-09-08T14:44:15.1866441Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Payment, rescaled to wei"
@@ -109,7 +109,7 @@
     "value" : "3000000000000000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.1766114Z",
+      "createdAt" : "2026-09-08T14:44:15.1866441Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Threshold scaled to wei"
@@ -122,7 +122,7 @@
     "value" : "1000000000000000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.1766114Z",
+      "createdAt" : "2026-09-08T14:44:15.1866441Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Raw excess payment above threshold (wei)"
@@ -135,7 +135,7 @@
     "value" : "2000000000000000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.1766114Z",
+      "createdAt" : "2026-09-08T14:44:15.1866441Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Excess payment above threshold (wei, bonus-eligible)"
@@ -156,10 +156,10 @@
         } ],
         "name" : "divide"
       },
-      "finishedAt" : "2026-08-11T11:34:41.1766114Z",
+      "finishedAt" : "2026-09-08T14:44:15.1856444Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-11T11:34:41.1766114Z",
+      "startedAt" : "2026-09-08T14:44:15.1846444Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -179,10 +179,10 @@
         } ],
         "name" : "compare"
       },
-      "finishedAt" : "2026-08-11T11:34:41.1766114Z",
+      "finishedAt" : "2026-09-08T14:44:15.1866441Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-11T11:34:41.1766114Z",
+      "startedAt" : "2026-09-08T14:44:15.1856444Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -202,10 +202,10 @@
         } ],
         "name" : "max"
       },
-      "finishedAt" : "2026-08-11T11:34:41.1766114Z",
+      "finishedAt" : "2026-09-08T14:44:15.1866441Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-08-11T11:34:41.1766114Z",
+      "startedAt" : "2026-09-08T14:44:15.1866441Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -225,10 +225,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-11T11:34:41.1766114Z",
+      "finishedAt" : "2026-09-08T14:44:15.1866441Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-08-11T11:34:41.1766114Z",
+      "startedAt" : "2026-09-08T14:44:15.1866441Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -248,10 +248,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-11T11:34:41.1766114Z",
+      "finishedAt" : "2026-09-08T14:44:15.1866441Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-08-11T11:34:41.1766114Z",
+      "startedAt" : "2026-09-08T14:44:15.1866441Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -271,10 +271,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-11T11:34:41.1766114Z",
+      "finishedAt" : "2026-09-08T14:44:15.1866441Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-08-11T11:34:41.1766114Z",
+      "startedAt" : "2026-09-08T14:44:15.1866441Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -294,10 +294,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-11T11:34:41.1766114Z",
+      "finishedAt" : "2026-09-08T14:44:15.1866441Z",
       "id" : "op_7",
       "numericId" : 7,
-      "startedAt" : "2026-08-11T11:34:41.1766114Z",
+      "startedAt" : "2026-09-08T14:44:15.1866441Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {

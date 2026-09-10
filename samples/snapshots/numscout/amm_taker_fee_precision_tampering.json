@@ -1,14 +1,14 @@
 {
   "descriptor" : {
     "meta" : [ ],
-    "name" : "AMM: taker fee deduction"
+    "name" : "AMM swap #48213: taker fee settlement"
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.0213376Z",
+      "createdAt" : "2026-09-08T14:42:57.6235991Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Amount to taker (pre-fee)"
+        "name" : "Gross amount to taker"
       },
       "id" : "i_1",
       "kind" : "INPUT",
@@ -18,7 +18,7 @@
     "value" : "1000003"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.0243479Z",
+      "createdAt" : "2026-09-08T14:42:57.6281088Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Fee rate (basis points)"
@@ -31,7 +31,7 @@
     "value" : "37"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.0243479Z",
+      "createdAt" : "2026-09-08T14:42:57.6281088Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Basis points denominator"
@@ -44,10 +44,10 @@
     "value" : "10000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.025854Z",
+      "createdAt" : "2026-09-08T14:42:57.6281088Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Amount * fee rate"
+        "name" : "Fee numerator"
       },
       "id" : "o_4",
       "kind" : "OUTPUT",
@@ -57,10 +57,10 @@
     "value" : "37000111"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.026861Z",
+      "createdAt" : "2026-09-08T14:42:57.6291088Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Taker fee (rounded down)"
+        "name" : "Taker fee"
       },
       "id" : "o_5",
       "kind" : "OUTPUT",
@@ -70,10 +70,10 @@
     "value" : "3700"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T11:34:41.026861Z",
+      "createdAt" : "2026-09-08T14:42:57.6291088Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Amount credited to taker"
+        "name" : "Net amount to taker"
       },
       "id" : "o_6",
       "kind" : "OUTPUT",
@@ -91,10 +91,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-11T11:34:41.025854Z",
+      "finishedAt" : "2026-09-08T14:42:57.6281088Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-11T11:34:41.025854Z",
+      "startedAt" : "2026-09-08T14:42:57.6281088Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -114,10 +114,10 @@
         } ],
         "name" : "divide"
       },
-      "finishedAt" : "2026-08-11T11:34:41.026861Z",
+      "finishedAt" : "2026-09-08T14:42:57.6291088Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-11T11:34:41.025854Z",
+      "startedAt" : "2026-09-08T14:42:57.6291088Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -137,10 +137,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-11T11:34:41.026861Z",
+      "finishedAt" : "2026-09-08T14:42:57.6291088Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-08-11T11:34:41.026861Z",
+      "startedAt" : "2026-09-08T14:42:57.6291088Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {

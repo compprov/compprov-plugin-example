@@ -27,4 +27,14 @@ public class InterestAccrualDistributionDataProvider {
     public BigInteger fetchBasisPointsDenominator() {
         return BigInteger.valueOf(10_000);
     }
+
+    /** Period index the carried-over rate accumulator was last refreshed at. */
+    public int fetchPriorPeriod() {
+        return 41;
+    }
+
+    /** Period index this accrual/distribution cycle belongs to. */
+    public int fetchCurrentPeriod() {
+        return 42;
+    }
 }

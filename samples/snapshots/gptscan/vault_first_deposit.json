@@ -5,7 +5,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.6085653Z",
+      "createdAt" : "2026-09-08T13:22:30.4031945Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "First deposit amount"
@@ -18,7 +18,7 @@
     "value" : "1000000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.6085653Z",
+      "createdAt" : "2026-09-08T13:22:30.4081937Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Minimum liquidity constant"
@@ -31,10 +31,10 @@
     "value" : "1000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.6085653Z",
+      "createdAt" : "2026-09-08T13:22:30.4081937Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Total share supply (before this deposit)"
+        "name" : "Total share supply (opening)"
       },
       "id" : "i_3",
       "kind" : "INPUT",
@@ -44,10 +44,10 @@
     "value" : "0"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.6085653Z",
+      "createdAt" : "2026-09-08T13:22:30.4091941Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Minimum liquidity floor (never locked)"
+        "name" : "Minimum liquidity floor"
       },
       "id" : "o_4",
       "kind" : "OUTPUT",
@@ -57,7 +57,7 @@
     "value" : "1000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-11T04:16:58.6085653Z",
+      "createdAt" : "2026-09-08T13:22:30.4091941Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "First depositor shares"
@@ -78,10 +78,10 @@
         } ],
         "name" : "min"
       },
-      "finishedAt" : "2026-08-11T04:16:58.6085653Z",
+      "finishedAt" : "2026-09-08T13:22:30.4091941Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-11T04:16:58.6085653Z",
+      "startedAt" : "2026-09-08T13:22:30.4091941Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {
@@ -101,10 +101,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-11T04:16:58.6085653Z",
+      "finishedAt" : "2026-09-08T13:22:30.4091941Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-11T04:16:58.6085653Z",
+      "startedAt" : "2026-09-08T13:22:30.4091941Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigInteger"
     },
     "arguments" : [ {

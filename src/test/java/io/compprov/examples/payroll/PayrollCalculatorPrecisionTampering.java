@@ -25,9 +25,9 @@ public class PayrollCalculatorPrecisionTampering {
                 DefaultComputationEnvironment.create(), new DataContext(descriptor("Payroll: biweekly net pay")));
         PayrollDataProvider dp = new PayrollDataProvider();
 
-        final var mc = ctx.wrapMathContext(MathContext.DECIMAL64, descriptor("Computation precision (DECIMAL64)"));
+        final var mc = ctx.wrapMathContext(MathContext.DECIMAL64, descriptor("Computation precision"));
         final var lowPrecisionMc = ctx.wrapMathContext(
-                new MathContext(2, RoundingMode.DOWN), descriptor("Computation precision (tampered)"));
+                new MathContext(2, RoundingMode.DOWN), descriptor("Computation precision"));
 
         // === Gross pay ===
         final var baseSalary = ctx.wrapBigDecimal(dp.fetchBaseSalary(), descriptor("Base salary"));

@@ -12,12 +12,6 @@ import java.util.List;
 
 import static io.compprov.core.meta.Descriptor.descriptor;
 
-/**
- * Lineage Disconnection / Context Substitution attack: every balance is converted to USD and
- * summed correctly into a real {@code assetsSum} subgraph that replays cleanly in isolation —
- * but the reported NAV is a freshly-wrapped {@link Amount} literal with no operation edge back
- * to any of the underlying balances or rates, which are left dangling in the graph, unused.
- */
 public class NetAssetValueCalculatorLineageDisconnection {
 
     @Test
@@ -55,17 +49,15 @@ public class NetAssetValueCalculatorLineageDisconnection {
                 descriptor("USDC balance", Meta.of("source", "Morpho")));
 
         //convert to usd and sum — computed correctly, but never consumed below
-        final var assetsSum = binanceBtcAmount.convert(btcUsdRate, descriptor("BTC->USD"))
+        var binanceBtcAmountInUsd = binanceBtcAmount.convert(btcUsdRate, descriptor("BTC->USD"));
+        binanceBtcAmountInUsd = ctx.wrap(binanceBtcAmountInUsd.getValue().scale(BigDecimal.valueOf(1.1)), descriptor("BTC amount in USD"));
+        final var assetsSum = binanceBtcAmountInUsd
                 .addBulk(List.of(
                                 binanceEthAmount.convert(ethUsdRate, descriptor("ETH(Binance)->USD")),
                                 binanceUsdcAmount.convert(usdcUsdRate, descriptor("USDC(Binance)->USD")),
                                 stakedEthAmount.convert(ethUsdRate, descriptor("ETH(Staked)->USD")),
                                 morphoUsdcAmount.convert(usdcUsdRate, descriptor("USDC(Morpho)->USD"))),
-                        descriptor("Assets sum (computed, unused)"));
-
-        // === Reported NAV: a disconnected literal standing in for the real sum ===
-        final var nav = ctx.wrap(
-                new Amount(Currency.USD, new BigDecimal("185000.00")), descriptor("Assets sum"));
+                        descriptor("Assets sum"));
 
         final var netAssetValueSnapshot = ctx.snapshot();
         final var provenanceGraph = ctx.getEnvironment().toJson(netAssetValueSnapshot);

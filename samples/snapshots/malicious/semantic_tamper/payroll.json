@@ -5,7 +5,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.0974616Z",
+      "createdAt" : "2026-09-03T04:50:40.8327214Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Computation precision (DECIMAL64)"
@@ -21,7 +21,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1029263Z",
+      "createdAt" : "2026-09-03T04:50:40.83572Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Base salary"
@@ -34,7 +34,7 @@
     "value" : "3500.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1064386Z",
+      "createdAt" : "2026-09-03T04:50:40.8387191Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Bonus"
@@ -47,7 +47,7 @@
     "value" : "500.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1074371Z",
+      "createdAt" : "2026-09-03T04:50:40.8387191Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Gross pay"
@@ -60,7 +60,7 @@
     "value" : "4000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1074371Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "401k contribution"
@@ -73,7 +73,7 @@
     "value" : "200.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1074371Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Health premium"
@@ -86,7 +86,7 @@
     "value" : "150.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1074371Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Pretax deductions"
@@ -99,10 +99,10 @@
     "value" : "350.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1074371Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Expense reimbursement (non-taxable)"
+        "name" : "Expense reimbursement"
       },
       "id" : "i_8",
       "kind" : "INPUT",
@@ -112,10 +112,10 @@
     "value" : "120.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Taxable income (before reimbursement)"
+        "name" : "Income"
       },
       "id" : "o_9",
       "kind" : "OUTPUT",
@@ -125,7 +125,7 @@
     "value" : "3650.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Taxable income"
@@ -138,7 +138,7 @@
     "value" : "3770.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Bracket 1 ceiling"
@@ -151,7 +151,7 @@
     "value" : "2000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Bracket 1 rate (10%)"
@@ -164,7 +164,7 @@
     "value" : "0.10"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Bracket 2 rate (22%)"
@@ -177,7 +177,7 @@
     "value" : "0.22"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Bracket 1 portion"
@@ -190,7 +190,7 @@
     "value" : "2000.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Bracket 2 portion"
@@ -203,7 +203,7 @@
     "value" : "1770.00"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Bracket 1 tax"
@@ -216,7 +216,7 @@
     "value" : "200.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Bracket 2 tax"
@@ -229,7 +229,7 @@
     "value" : "389.4000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Federal tax withheld"
@@ -242,7 +242,7 @@
     "value" : "589.4000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "State tax rate (5%)"
@@ -255,7 +255,7 @@
     "value" : "0.05"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "State tax withheld"
@@ -268,7 +268,7 @@
     "value" : "188.5000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "After federal withholding"
@@ -281,7 +281,7 @@
     "value" : "3180.6000"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T09:10:35.1084374Z",
+      "createdAt" : "2026-09-03T04:50:40.8397229Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Net pay"
@@ -302,10 +302,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-12T09:10:35.1074371Z",
+      "finishedAt" : "2026-09-03T04:50:40.8387191Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-12T09:10:35.1074371Z",
+      "startedAt" : "2026-09-03T04:50:40.8387191Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -328,10 +328,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-12T09:10:35.1074371Z",
+      "finishedAt" : "2026-09-03T04:50:40.8397229Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-12T09:10:35.1074371Z",
+      "startedAt" : "2026-09-03T04:50:40.8397229Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -354,10 +354,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-12T09:10:35.1084374Z",
+      "finishedAt" : "2026-09-03T04:50:40.8397229Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-08-12T09:10:35.1084374Z",
+      "startedAt" : "2026-09-03T04:50:40.8397229Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -380,10 +380,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-12T09:10:35.1084374Z",
+      "finishedAt" : "2026-09-03T04:50:40.8397229Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-08-12T09:10:35.1084374Z",
+      "startedAt" : "2026-09-03T04:50:40.8397229Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -406,10 +406,10 @@
         } ],
         "name" : "min"
       },
-      "finishedAt" : "2026-08-12T09:10:35.1084374Z",
+      "finishedAt" : "2026-09-03T04:50:40.8397229Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-08-12T09:10:35.1084374Z",
+      "startedAt" : "2026-09-03T04:50:40.8397229Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -429,10 +429,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-12T09:10:35.1084374Z",
+      "finishedAt" : "2026-09-03T04:50:40.8397229Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-08-12T09:10:35.1084374Z",
+      "startedAt" : "2026-09-03T04:50:40.8397229Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -455,10 +455,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-12T09:10:35.1084374Z",
+      "finishedAt" : "2026-09-03T04:50:40.8397229Z",
       "id" : "op_7",
       "numericId" : 7,
-      "startedAt" : "2026-08-12T09:10:35.1084374Z",
+      "startedAt" : "2026-09-03T04:50:40.8397229Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -481,10 +481,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-12T09:10:35.1084374Z",
+      "finishedAt" : "2026-09-03T04:50:40.8397229Z",
       "id" : "op_8",
       "numericId" : 8,
-      "startedAt" : "2026-08-12T09:10:35.1084374Z",
+      "startedAt" : "2026-09-03T04:50:40.8397229Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -507,10 +507,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-08-12T09:10:35.1084374Z",
+      "finishedAt" : "2026-09-03T04:50:40.8397229Z",
       "id" : "op_9",
       "numericId" : 9,
-      "startedAt" : "2026-08-12T09:10:35.1084374Z",
+      "startedAt" : "2026-09-03T04:50:40.8397229Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -533,10 +533,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-08-12T09:10:35.1084374Z",
+      "finishedAt" : "2026-09-03T04:50:40.8397229Z",
       "id" : "op_10",
       "numericId" : 10,
-      "startedAt" : "2026-08-12T09:10:35.1084374Z",
+      "startedAt" : "2026-09-03T04:50:40.8397229Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -559,10 +559,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-12T09:10:35.1084374Z",
+      "finishedAt" : "2026-09-03T04:50:40.8397229Z",
       "id" : "op_11",
       "numericId" : 11,
-      "startedAt" : "2026-08-12T09:10:35.1084374Z",
+      "startedAt" : "2026-09-03T04:50:40.8397229Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -585,10 +585,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-12T09:10:35.1084374Z",
+      "finishedAt" : "2026-09-03T04:50:40.8397229Z",
       "id" : "op_12",
       "numericId" : 12,
-      "startedAt" : "2026-08-12T09:10:35.1084374Z",
+      "startedAt" : "2026-09-03T04:50:40.8397229Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {

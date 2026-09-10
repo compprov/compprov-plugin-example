@@ -14,11 +14,6 @@ import java.util.List;
 
 import static io.compprov.core.meta.Descriptor.descriptor;
 
-/**
- * Precision and Scale Tampering attack: every month's interest accrual uses the standard
- * DECIMAL64 {@link MathContext} except month 3's, which is silently evaluated at 2 significant
- * digits with DOWN rounding — a precision gap sandwiched between otherwise-identical months.
- */
 public class LoanAmortizationCalculatorPrecisionTampering {
 
     private static final int TAMPERED_MONTH = 3;
@@ -30,9 +25,9 @@ public class LoanAmortizationCalculatorPrecisionTampering {
                 DefaultComputationEnvironment.create(), new DataContext(descriptor("Loan: 6-month amortization")));
         LoanDataProvider dp = new LoanDataProvider();
 
-        final var mc = ctx.wrapMathContext(MathContext.DECIMAL64, descriptor("Computation precision (DECIMAL64)"));
+        final var mc = ctx.wrapMathContext(MathContext.DECIMAL64, descriptor("Computation precision"));
         final var lowPrecisionMc = ctx.wrapMathContext(
-                new MathContext(2, RoundingMode.DOWN), descriptor("Computation precision (tampered)"));
+                new MathContext(2, RoundingMode.DOWN), descriptor("Computation precision"));
         final var payment = ctx.wrapBigDecimal(dp.fetchMonthlyPayment(), descriptor("Monthly payment"));
         final var periodRate = ctx.wrapBigDecimal(dp.fetchMonthlyPeriodRate(), descriptor("Monthly period rate (0.4%)"));
         final var prepayment = ctx.wrapBigDecimal(dp.fetchPrepaymentAmount(), descriptor("Extra principal prepayment (month 4)"));

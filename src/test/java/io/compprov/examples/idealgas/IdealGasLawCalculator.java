@@ -9,11 +9,6 @@ import java.math.MathContext;
 
 import static io.compprov.core.meta.Descriptor.descriptor;
 
-/**
- * Ideal gas law {@code PV = nRT}: solves for pressure at a fixed volume, then compresses the
- * same gas (constant moles and temperature) to a smaller volume and re-derives pressure via
- * Boyle's law {@code P1V1 = P2V2} as a cross-check that the two routes agree.
- */
 public class IdealGasLawCalculator {
 
     @Test
@@ -38,9 +33,11 @@ public class IdealGasLawCalculator {
         final var p1 = nRT.divide(v1, mc, descriptor("Pressure at initial volume, P1 (atm)"));
 
         // === Cross-check via Boyle's law: P1V1 = P2V2, so P2 = P1V1 / V2 ===
-        final var p1v1 = p1.multiply(v1, mc, descriptor("P1 × V1 (should equal nRT)"));
+        final var p1v1 = p1.multiply(v1, mc, descriptor("P1 × V1"));
         final var p2 = p1v1.divide(v2, mc, descriptor("Pressure at compressed volume, P2 (atm), via Boyle's law"));
-        final var p2v2 = p2.multiply(v2, mc, descriptor("P2 × V2 (should equal P1V1)"));
+        final var p2v2 = p2.multiply(v2, mc, descriptor("P2 × V2"));
+        final var pvCmpNrt = p1v1.compare(nRT, descriptor("PV cmp nRT (0 - equal)"));
+        final var p1v1CmpP2v2 = p1v1.compare(p2v2, descriptor("P1V1 cmp P2V2 (0 - equal)"));
 
         final var snapshot = ctx.snapshot();
         final var provenanceGraph = ctx.getEnvironment().toJson(snapshot);

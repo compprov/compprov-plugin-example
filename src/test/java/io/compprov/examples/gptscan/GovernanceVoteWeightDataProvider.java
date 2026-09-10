@@ -20,8 +20,18 @@ public class GovernanceVoteWeightDataProvider {
         return BigInteger.valueOf(10_000);
     }
 
+    /** Block number at which the proposal was created and voting power should be snapshotted. */
+    public long fetchProposalSnapshotBlock() {
+        return 19_000_000L;
+    }
+
     /** Real holding (10,000) plus a same-transaction flash loan of 990,000. */
     public BigInteger fetchFlashloanInflatedBalance() {
         return BigInteger.valueOf(1_000_000);
+    }
+
+    /** Block number at which this vote transaction executes — 50 blocks after proposal creation. */
+    public long fetchVoteCastBlock() {
+        return 19_000_050L;
     }
 }
