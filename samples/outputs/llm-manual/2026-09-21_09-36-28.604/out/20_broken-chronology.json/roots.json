@@ -1,0 +1,303 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1612797Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Size [9] PUT K=4550"
+    },
+    "id" : "i_50",
+    "kind" : "INPUT",
+    "numericId" : 50,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "5.9155"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1592823Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Strike [1] PUT K=4710"
+    },
+    "id" : "i_9",
+    "kind" : "INPUT",
+    "numericId" : 9,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4710"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1599854Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Size [5] CALL K=4630"
+    },
+    "id" : "i_30",
+    "kind" : "INPUT",
+    "numericId" : 30,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4.4213"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1599854Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Size [7] PUT K=4690"
+    },
+    "id" : "i_40",
+    "kind" : "INPUT",
+    "numericId" : 40,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "5.9841"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1592823Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Size [1] PUT K=4710"
+    },
+    "id" : "i_10",
+    "kind" : "INPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2.8431"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1592823Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Size [3] PUT K=4550"
+    },
+    "id" : "i_20",
+    "kind" : "INPUT",
+    "numericId" : 20,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2.8299"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1599854Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Strike [6] CALL K=4710"
+    },
+    "id" : "i_34",
+    "kind" : "INPUT",
+    "numericId" : 34,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4710"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1612797Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Size [8] PUT K=4590"
+    },
+    "id" : "i_45",
+    "kind" : "INPUT",
+    "numericId" : 45,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "8.2771"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1599854Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Strike [8] PUT K=4590"
+    },
+    "id" : "i_44",
+    "kind" : "INPUT",
+    "numericId" : 44,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4590"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1592823Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Strike [2] CALL K=4670"
+    },
+    "id" : "i_14",
+    "kind" : "INPUT",
+    "numericId" : 14,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4670"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1599854Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Size [4] PUT K=4730"
+    },
+    "id" : "i_25",
+    "kind" : "INPUT",
+    "numericId" : 25,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "7.8507"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1599854Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Strike [4] PUT K=4730"
+    },
+    "id" : "i_24",
+    "kind" : "INPUT",
+    "numericId" : 24,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4730"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1599854Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Size [6] CALL K=4710"
+    },
+    "id" : "i_35",
+    "kind" : "INPUT",
+    "numericId" : 35,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3.9270"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1612797Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Strike [9] PUT K=4550"
+    },
+    "id" : "i_49",
+    "kind" : "INPUT",
+    "numericId" : 49,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4550"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1592823Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Size [2] CALL K=4670"
+    },
+    "id" : "i_15",
+    "kind" : "INPUT",
+    "numericId" : 15,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "9.0434"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1599854Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Strike [5] CALL K=4630"
+    },
+    "id" : "i_29",
+    "kind" : "INPUT",
+    "numericId" : 29,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4630"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1599854Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Strike [7] PUT K=4690"
+    },
+    "id" : "i_39",
+    "kind" : "INPUT",
+    "numericId" : 39,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4690"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1592823Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Strike [3] PUT K=4550"
+    },
+    "id" : "i_19",
+    "kind" : "INPUT",
+    "numericId" : 19,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4550"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1497588Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:11:07.1537587Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "ETH\/USDC spot (2026-06-30)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4650"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1517591Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Zero (OTM floor)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1572008Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Size [0] CALL K=4630"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6.8639"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T08:09:07.1572008Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Strike [0] CALL K=4630"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4630"
+} ]

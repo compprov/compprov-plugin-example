@@ -1,0 +1,108 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9268758Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Overtime multiplier (1.5x)"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.5"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9268758Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Night-shift hours"
+    },
+    "id" : "i_9",
+    "kind" : "INPUT",
+    "numericId" : 9,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "12"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9268758Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Night-shift differential ($\/hr)"
+    },
+    "id" : "i_10",
+    "kind" : "INPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.75"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9268758Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Payroll tax withholding rate (18%)"
+    },
+    "id" : "i_13",
+    "kind" : "INPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.18"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9268758Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9268758Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Regular hours"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "40"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9268758Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Base hourly rate"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "22.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9268758Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Overtime hours"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6"
+} ]

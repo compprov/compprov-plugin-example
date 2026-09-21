@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: SUSPICIOUS LOGIC
+- **Risk score**: 32.0
+
+## Topological & Provenance Fraud Audit — Weekly Net Pay Pipeline
+
+### Methodology
+All five terminal-formula contributors were traced end-to-end: Regular Pay (o_4), Overtime Pay (o_8) via Overtime Rate (o_7), Night-Shift Differential Pay (o_11), Gross Pay (o_12), and Payroll Tax Withholding (o_14), converging on Net Pay (o_15).
+
+### Path Multiplicity Findings (M=0 / M>1 / Wrong Source)
+
+- **o_4 (Regular Pay)**: i_3, i_2 → op_1 → o_4 → op_5 (addBulk, arg `a`) → o_12 → op_7 (`a`) → o_15. M=1. Clean.
+- **o_8 (Overtime Pay)**: i_2, i_6 → op_2 → o_7 → (i_5, o_7) → op_3 → o_8 → op_5 (`b0`) → o_12 → op_7 → o_15. M=1. o_7 is consumed exactly once (op_3), no bypass. Clean.
+- **o_11 (Night-shift Differential Pay)**: i_9, i_10 → op_4 → o_11 → op_5 (`b1`) → o_12 → op_7 → o_15. M=1. Clean.
+- **o_12 (Gross Pay)**: consumed by both op_6 (tax calc) and op_7 (subtract). This matches the structural reference flag for multi-consumption, but the shape is `Net = Gross − (Gross × rate)`, i.e. Net = Gross×(1−rate) — a standard, non-duplicative tax-deduction formula, not an inflation/double-count of Gross into the sum. Verified numerically: 1066.0000 × 0.18 = 191.88 (matches o_14), and 1066.0000 − 191.880000 = 874.120000 (matches o_15 exactly). No unexplained divergence between S_dedup and S_reported. Benign.
+- **o_14 (Tax Withholding)**: o_12, i_13 → op_6 → o_14 → op_7 (`b`, subtracted) → o_15. M=1. Clean.
+- **i_2 (Base Rate)** reused by op_1 and op_2: legitimate shared basis (drives both straight-time pay and the overtime-rate calculation), each feeding a distinct downstream quantity that is summed exactly once at o_12. Not double counting.
+- **Leaf set** = {o_15} only — the sole leaf is the intended terminal output; no mandatory contributor (regular pay, overtime pay, night pay, tax) is left as an orphaned dead-end. No Calculation Omission (M=0) detected.
+- **Leaf name-collision set** is empty, and no root INPUT was found silently substituting for a computed sibling's `resultId` at any consuming operation — every operation's arguments reference the literal `resultId` of its true upstream producer (e.g., op_3 consumes `o_7`, not a hardcoded stand-in for the overtime rate; op_7 consumes `o_12`/`o_14`, the actual computed values). Origin_Propagation_Valid holds for o_15: full forward replay from all eight root inputs reproduces 874.120000 exactly.
+
+### Secondary Observation (Flagged, Outside Strict Scope)
+`i_6` is labeled "Overtime multiplier (1.5x)" in its descriptor name — the conventional US legal overtime multiplier — but its stored `value` is `1.25`, not `1.5`. There is no computed sibling for this quantity anywhere in the graph (it is a genuine root INPUT), so it does not technically satisfy the graph's three defined topological-fraud shapes (no path-multiplicity or resultId-substitution violation is present — op_2 correctly consumes `i_6` as declared). However, a label that names one rate while the payload encodes a materially different one is precisely the kind of disguise that structural ID/name-collision checks cannot catch, and it directly biases the terminal result: had the documented 1.5x been used, Overtime Pay would be 198.00 instead of 165.00, Gross Pay 1099.00, Tax 197.82, and Net Pay ≈901.18 instead of the reported 874.120000 — a ~$27 understatement. This is a value/metadata integrity concern warranting human confirmation of intent, even though it falls outside the strict M=0/M>1/wrong-source-ID topology this audit targets.
+
+### Details
+The DAG's causal topology into the terminal output `o_15` is well-formed: every mandatory contributor (regular pay, overtime pay, night differential, gross pay, tax) has path multiplicity exactly 1 into the terminal aggregation chain, the apparent multi-consumption of `o_12` and `i_2` reflects legitimate, arithmetically-verified formula structure (tax-on-gross, shared rate basis) rather than duplication, and full forward propagation from the true root inputs reproduces the reported terminal value exactly, satisfying Origin_Propagation_Valid. No Calculation Omission, Double-Counting, or Lineage-Disconnection/Context-Substitution pattern as strictly defined was found. The one genuine anomaly identified — the overtime multiplier's descriptor/value mismatch — does not manifest as a graph-topology defect (no substituted resultId, no extra path, no dropped argument) but is flagged because it materially affects the trustworthiness of the reported Net Pay and would evade any ID- or name-based structural heuristic.

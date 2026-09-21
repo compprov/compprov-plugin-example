@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: SUSPICIOUS LOGIC
+- **Risk score**: 55.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_7` ("Seconds per hour" = 3600), `i_15` ("Orbital period, T (hours)" = 23.935), `o_14` ("Orbital period, T (s)" = 86166.72260766155)
+
+- `i_7` and `i_15` are both **root** INPUT variables (no producing operation) *and* **leaf** variables (never consumed as an argument by any operation, per the structural reference data).
+- `o_14` is the terminal, correctly-computed OUTPUT of the traced pipeline (2π·√(r³/GM)), also flagged as a leaf.
+- No operation in the graph ever divides `o_14` by `i_7` (or performs any equivalent seconds→hours conversion). The `divide` wrapper (`op_3`, used elsewhere for `r³/GM`) is never invoked with `o_14` and `i_7` as arguments.
+
+**Flow of the anomaly:** the graph computes the orbital period precisely in seconds (`o_14 = 86166.72260766155`, verified correct to the declared 16-digit `MathContext`/HALF_EVEN precision by independent recomputation of every step: `o_8`, `o_10`, `o_11`, `o_12`, `o_13`, `o_14` all reconcile exactly with exact rational arithmetic at the stated precision). In parallel, a second, structurally disconnected pair of nodes (`i_7`, `i_15`) exists that semantically represents the *same physical quantity* (`i_15`'s descriptor name is "Orbital period, T (hours)", i.e. the same period as `o_14` but unit-converted) and carries the unit constant needed to derive it (`i_7` = 3600 s/hour) — yet neither is wired into any operation.
+
+Independent recomputation of the true seconds→hours conversion: `86166.72260766155 / 3600 = 23.9352007238...` hours. The value actually stored in `i_15` is `23.935` — a truncated/rounded value that silently drops the `0.0002007...` hour (~0.72 second) residual, and, critically, was never produced by an auditable division of `o_14` by `i_7` at all — it is injected as a raw, unverifiable INPUT.
+
+## Details
+
+This matches the invariant that "scale conversions between units must strictly preserve the source asset's native precision and maintain exact arbitrary-precision representations without unhandled intermediate truncations." Here, the unit conversion that the graph's own constants (`i_7`) imply should occur is never actually executed as a traceable operation. Instead, a pre-baked, lower-precision value (`i_15`) sits in the graph under a name nearly identical to the legitimate output (`o_14`) — differing only in unit label ("(s)" vs "(hours)"), which is exactly the kind of near-duplicate-name evasion that exact-match heuristics (which reported zero name collisions) are blind to.
+
+Because `i_15` is a leaf that is never consumed downstream *within this graph*, the audited computation chain terminating at `o_14` is itself numerically clean — recomputation of every operation (`op_1`–`op_6`) confirms correctness within the declared `MathContext(precision=16, HALF_EVEN)` at every step, with no salami-slicing bias or asset-conservation violation detected in the main lineage.
+
+However, the presence of a disconnected, hardcoded, imprecise "shadow" restatement of the same physical output — bypassing the divide operation that would have preserved full precision — is a structural red flag consistent with precision-tampering tradecraft: an unaudited, truncated figure that could be substituted for the precise computed result in downstream reporting/consumption without leaving any lineage trace back to the verified computation. The unused `i_7` constant strongly suggests a conversion operation was intended (or previously existed) and was replaced/removed in favor of the static injected value.
+
+**Impact assessment:** the delta (~0.0002 hours / ~0.72s, ~8 ppm relative) is small and isolated to a single, non-scalable conversion instance — it does not meet the bar for cyclic/salami-slicing risk, and it does not corrupt the primary traced output `o_14`. But it is a confirmed, unexplained break in provenance for a unit-converted restatement of the key result, which is exactly the invariant this audit is scoped to catch. Given the ambiguity between "benign leftover reference constant" and "deliberately planted low-precision substitute value," this is reported as a moderate-confidence, unresolved structural violation rather than dismissed as benign.

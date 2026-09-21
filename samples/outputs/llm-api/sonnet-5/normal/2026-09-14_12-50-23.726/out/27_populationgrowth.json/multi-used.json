@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1839417Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Initial population, N0 (cells)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1839417Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Continuous growth rate, r (per hour)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.03"
+} ]

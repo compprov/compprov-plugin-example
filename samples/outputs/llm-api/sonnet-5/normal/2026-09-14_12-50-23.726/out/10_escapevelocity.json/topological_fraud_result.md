@@ -1,0 +1,24 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 6.0
+
+## Audit Summary
+
+This CPG computes two related but independent physical results — escape velocity at the planet's surface (`o_10`) and escape velocity at a given orbital altitude (`o_13`) — from a shared set of root inputs (`G`, `M`, `r`, `altitude`, the constant `2`, and a shared `MathContext`). Both are terminal leaf outputs by design (per the structural leaf-set: `[o_13, o_10]`), which is consistent with the pipeline's stated purpose ("Orbital mechanics: escape velocity") producing two comparable figures rather than a single rolled-up aggregate.
+
+### Checked against each sub-pattern
+
+**Calculation Omission (M=0):** Both leaves `o_10` and `o_13` are the pipeline's intended dual terminal results, not intermediate contributors that should have been folded into a further aggregation. No variable in the graph carries metadata identifying it as a mandatory adjustment/deduction/cross-check that was dropped from a final formula. No omission found.
+
+**Double Counting (M>1):** The two flagged multi-consumed IDs are `i_4` (planet radius) and `o_8` (2GM).
+- `i_4` feeds `op_3` (surface `2GM/r`) and `op_5` (`r + altitude`). These are two legitimately distinct roles of the same physical radius within two independent, non-aggregating output chains (surface vs. altitude escape velocity) — they never converge into a single summed terminal value.
+- `o_8` feeds `op_3` (divide by `r`) and `op_6` (divide by `r+altitude`). Same situation: one computed quantity (2GM) legitimately reused as a shared numerator for two separate, non-competing escape-velocity computations, not summed or netted together at any point.
+Neither case reconverges additively/subtractively into a single terminal node, so this does not meet the M>1 double-counting shape.
+
+**Lineage Disconnection / Context Substitution (M=1, wrong source):** The leaf-name-collision set is empty, and manual review of root INPUTs (`i_1`–`i_6`) against computed OUTPUTs shows no root masquerading under a computed sibling's name/units/role (e.g., no separate hardcoded `r`, `GM`, or `r+altitude` INPUT competing with the computed ones). Every operation's arguments trace to the actual `resultId` of the correct upstream step (`op_1→o_7→op_2→o_8→op_3/op_6→o_9/o_12→op_4/op_7→o_10/o_13`; `op_5` independently produces `o_11` consumed only by `op_6`). No orphaned computed sibling exists alongside a substituted stand-in.
+
+### Arithmetic Verification
+Independent recomputation confirms all values: GM = 6.674E-11 × 5.972E24 ≈ 3.98571280E14 (`o_7` ✓); 2GM ≈ 7.9714256E14 (`o_8` ✓); 2GM/r_surface ≈ 125,120,477.16 (`o_9` ✓); sqrt → 11,185.73 m/s (`o_10` ✓); r+alt = 6,771,000 (`o_11` ✓); 2GM/r_alt ≈ 117,728,926.30 (`o_12` ✓); sqrt → 10,850.30 m/s (`o_13` ✓). No arithmetic discrepancies detected.
+
+## Conclusion
+All root inputs are consumed exactly once per logical role, both terminal outputs derive from a fully traceable, correctly forward-propagated computation chain from true roots, and no hardcoded stand-ins or re-wrapped duplicates were found. This graph does not exhibit Topological & Provenance Fraud under any of the three sub-patterns (omission, double counting, or lineage substitution). Residual low-level risk is assigned only due to the inherent difficulty of fully ruling out subtle semantic aliasing in a graph this small, not due to any concrete finding.

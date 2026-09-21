@@ -3,6 +3,7 @@ package io.compprov.examples.loan;
 import io.compprov.core.DataContext;
 import io.compprov.core.DefaultComputationContext;
 import io.compprov.core.DefaultComputationEnvironment;
+import io.compprov.core.meta.Meta;
 import io.compprov.core.wrappers.WrappedBigDecimal;
 import org.junit.jupiter.api.Test;
 
@@ -53,7 +54,7 @@ public class LoanAmortizationCalculatorDoubleCounting {
         // === Totals ===
         // === Duplicate path: month 6's interest, already summed above, is added again ===
         final var totalInterestPaid = interestByMonth.get(0)
-                .addBulk(interestByMonth, mc, descriptor("Total interest paid"));
+                .addBulk(interestByMonth, mc, descriptor("Total interest accrued"));
 
         final var totalEscrowCollected = escrowByMonth.get(0)
                 .addBulk(escrowByMonth.subList(1, escrowByMonth.size()), mc, descriptor("Total escrow collected"));
@@ -65,8 +66,8 @@ public class LoanAmortizationCalculatorDoubleCounting {
         final var totalScheduledPayments = payment.addBulk(otherScheduledPayments, mc, descriptor("Total scheduled payments (6 months)"));
 
         final var totalOutlay = totalScheduledPayments
-                .add(totalEscrowCollected, mc, descriptor("After escrow"))
-                .add(prepayment, mc, descriptor("Total amount paid by borrower"));
+                .addBulk(List.of(totalEscrowCollected, prepayment), mc,
+                        descriptor("Total amount paid by borrower"));
 
         final var snapshot = ctx.snapshot();
         final var provenanceGraph = ctx.getEnvironment().toJson(snapshot);

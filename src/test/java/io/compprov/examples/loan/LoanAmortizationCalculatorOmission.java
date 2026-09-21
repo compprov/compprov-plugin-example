@@ -3,6 +3,7 @@ package io.compprov.examples.loan;
 import io.compprov.core.DataContext;
 import io.compprov.core.DefaultComputationContext;
 import io.compprov.core.DefaultComputationEnvironment;
+import io.compprov.core.meta.Meta;
 import io.compprov.core.wrappers.WrappedBigDecimal;
 import org.junit.jupiter.api.Test;
 
@@ -58,7 +59,7 @@ public class LoanAmortizationCalculatorOmission {
 
         // === Totals ===
         final var totalInterestPaid = interestByMonth.get(0)
-                .addBulk(interestByMonth.subList(1, interestByMonth.size()), mc, descriptor("Total interest paid"));
+                .addBulk(interestByMonth.subList(1, interestByMonth.size()), mc, descriptor("Total interest accrued"));
         // Computed correctly, but never folded into totalOutlay below.
         final var totalEscrowCollected = escrowByMonth.get(0)
                 .addBulk(escrowByMonth.subList(1, escrowByMonth.size()), mc, descriptor("Total escrow collected"));

@@ -1,0 +1,17 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-08T13:21:47.8253125Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "period",
+        "value" : "41"
+      } ],
+      "name" : "Rate accumulator"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "500"
+} ]

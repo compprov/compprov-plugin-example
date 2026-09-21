@@ -5,7 +5,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8473066Z",
+      "createdAt" : "2026-09-14T06:29:32.1995647Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Computation precision (DECIMAL64)"
@@ -21,7 +21,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8503046Z",
+      "createdAt" : "2026-09-14T06:29:32.2025989Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Lumber"
@@ -34,7 +34,7 @@
     "value" : "18500.00"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.853384Z",
+      "createdAt" : "2026-09-14T06:29:32.2046072Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Concrete"
@@ -47,7 +47,7 @@
     "value" : "9200.00"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.853384Z",
+      "createdAt" : "2026-09-14T06:29:32.2046072Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Roofing materials"
@@ -60,7 +60,7 @@
     "value" : "6300.00"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.853384Z",
+      "createdAt" : "2026-09-14T06:29:32.2046072Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Electrical materials"
@@ -73,7 +73,7 @@
     "value" : "4100.00"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.854389Z",
+      "createdAt" : "2026-09-14T06:29:32.2046072Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Total materials cost"
@@ -86,7 +86,7 @@
     "value" : "31800.00"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Carpentry hours"
@@ -99,7 +99,7 @@
     "value" : "180"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Carpentry rate ($\/hr)"
@@ -112,7 +112,7 @@
     "value" : "55.00"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Carpentry labor cost"
@@ -125,7 +125,7 @@
     "value" : "9900.00"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Electrical hours"
@@ -138,7 +138,7 @@
     "value" : "60"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Electrical rate ($\/hr)"
@@ -151,7 +151,7 @@
     "value" : "75.00"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Electrical labor cost"
@@ -164,7 +164,7 @@
     "value" : "4500.00"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Total labor cost"
@@ -177,7 +177,7 @@
     "value" : "14400.00"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Direct cost (materials + labor)"
@@ -190,7 +190,7 @@
     "value" : "46200.00"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Overhead rate (10%)"
@@ -203,7 +203,7 @@
     "value" : "0.10"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Overhead"
@@ -216,7 +216,7 @@
     "value" : "4620.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Cost including overhead"
@@ -229,9 +229,12 @@
     "value" : "50820.0000"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
-        "meta" : [ ],
+        "meta" : [ {
+          "key" : "basis",
+          "value" : "markup-on-cost-including-overhead"
+        } ],
         "name" : "Profit margin rate (15%)"
       },
       "id" : "i_18",
@@ -242,7 +245,7 @@
     "value" : "0.15"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Profit margin"
@@ -255,7 +258,7 @@
     "value" : "7623.000000"
   }, {
     "track" : {
-      "createdAt" : "2026-09-03T10:58:34.8553897Z",
+      "createdAt" : "2026-09-14T06:29:32.2056419Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Total bid price"
@@ -276,10 +279,10 @@
         } ],
         "name" : "addBulk"
       },
-      "finishedAt" : "2026-09-03T10:58:34.854389Z",
+      "finishedAt" : "2026-09-14T06:29:32.2046072Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-09-03T10:58:34.854389Z",
+      "startedAt" : "2026-09-14T06:29:32.2046072Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -305,10 +308,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
+      "finishedAt" : "2026-09-14T06:29:32.2056419Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-09-03T10:58:34.8553897Z",
+      "startedAt" : "2026-09-14T06:29:32.2056419Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -331,10 +334,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
+      "finishedAt" : "2026-09-14T06:29:32.2056419Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-09-03T10:58:34.8553897Z",
+      "startedAt" : "2026-09-14T06:29:32.2056419Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -357,10 +360,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
+      "finishedAt" : "2026-09-14T06:29:32.2056419Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-09-03T10:58:34.8553897Z",
+      "startedAt" : "2026-09-14T06:29:32.2056419Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -383,10 +386,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
+      "finishedAt" : "2026-09-14T06:29:32.2056419Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-09-03T10:58:34.8553897Z",
+      "startedAt" : "2026-09-14T06:29:32.2056419Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -409,10 +412,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
+      "finishedAt" : "2026-09-14T06:29:32.2056419Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-09-03T10:58:34.8553897Z",
+      "startedAt" : "2026-09-14T06:29:32.2056419Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -435,10 +438,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
+      "finishedAt" : "2026-09-14T06:29:32.2056419Z",
       "id" : "op_7",
       "numericId" : 7,
-      "startedAt" : "2026-09-03T10:58:34.8553897Z",
+      "startedAt" : "2026-09-14T06:29:32.2056419Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -461,10 +464,10 @@
         } ],
         "name" : "multiply"
       },
-      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
+      "finishedAt" : "2026-09-14T06:29:32.2056419Z",
       "id" : "op_8",
       "numericId" : 8,
-      "startedAt" : "2026-09-03T10:58:34.8553897Z",
+      "startedAt" : "2026-09-14T06:29:32.2056419Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
@@ -487,10 +490,10 @@
         } ],
         "name" : "add"
       },
-      "finishedAt" : "2026-09-03T10:58:34.8553897Z",
+      "finishedAt" : "2026-09-14T06:29:32.2056419Z",
       "id" : "op_9",
       "numericId" : 9,
-      "startedAt" : "2026-09-03T10:58:34.8553897Z",
+      "startedAt" : "2026-09-14T06:29:32.2056419Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {

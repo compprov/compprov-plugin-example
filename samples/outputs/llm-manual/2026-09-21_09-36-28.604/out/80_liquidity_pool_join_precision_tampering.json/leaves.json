@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-10T13:09:31.5016Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Required USDC contribution (tokenAmountIn)"
+    },
+    "id" : "o_17",
+    "kind" : "OUTPUT",
+    "numericId" : 17,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-10T13:09:31.5006018Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "USDC scale"
+    },
+    "id" : "o_6",
+    "kind" : "OUTPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "1000000"
+} ]

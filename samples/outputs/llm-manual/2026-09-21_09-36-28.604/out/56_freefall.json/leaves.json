@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8978018Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Impact velocity cross-check, g × t (m\/s)"
+    },
+    "id" : "o_12",
+    "kind" : "OUTPUT",
+    "numericId" : 12,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "44.27188724235731"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.8978018Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Kinetic energy at impact, KE (J)"
+    },
+    "id" : "o_15",
+    "kind" : "OUTPUT",
+    "numericId" : 15,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2450.000000000000"
+} ]

@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-14T06:29:32.2056419Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total bid price"
+    },
+    "id" : "o_20",
+    "kind" : "OUTPUT",
+    "numericId" : 20,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "58443.000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-14T06:29:32.2046072Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Roofing materials"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6300.00"
+} ]

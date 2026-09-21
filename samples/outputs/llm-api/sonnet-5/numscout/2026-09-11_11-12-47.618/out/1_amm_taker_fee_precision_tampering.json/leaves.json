@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-08T14:42:57.6291088Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Net amount to taker"
+    },
+    "id" : "o_6",
+    "kind" : "OUTPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "996303"
+} ]

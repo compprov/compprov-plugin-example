@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-14T06:28:34.9208221Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "1.0"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-14T06:28:34.9254233Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Taxable amount"
+    },
+    "id" : "o_24",
+    "kind" : "OUTPUT",
+    "numericId" : 24,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "202.50"
+} ]

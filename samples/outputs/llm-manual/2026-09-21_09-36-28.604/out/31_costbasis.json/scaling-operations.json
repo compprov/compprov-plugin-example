@@ -1,0 +1,171 @@
+{
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "scaling operations set"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-09-03T08:04:34.3902937Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Computation precision"
+      },
+      "id" : "i_2",
+      "kind" : "INPUT",
+      "numericId" : 2,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 2,
+      "roundingMode" : "DOWN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T08:04:34.3912919Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Lot 1"
+      },
+      "id" : "i_3",
+      "kind" : "INPUT",
+      "numericId" : 3,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "45.678912"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T08:04:34.3932933Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Lot 1 shares"
+      },
+      "id" : "o_4",
+      "kind" : "OUTPUT",
+      "numericId" : 4,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "45.67"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T08:04:34.3942938Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Lot 2"
+      },
+      "id" : "i_7",
+      "kind" : "INPUT",
+      "numericId" : 7,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "67.234156"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T08:04:34.3942938Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Lot 2 shares"
+      },
+      "id" : "o_8",
+      "kind" : "OUTPUT",
+      "numericId" : 8,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "67.23"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T08:04:34.3942938Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Lot 3"
+      },
+      "id" : "i_11",
+      "kind" : "INPUT",
+      "numericId" : 11,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "22.891347"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T08:04:34.3942938Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Lot 3 shares"
+      },
+      "id" : "o_12",
+      "kind" : "OUTPUT",
+      "numericId" : 12,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "22.89"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "setScale(a)mc"
+        } ],
+        "name" : "setScale"
+      },
+      "finishedAt" : "2026-09-03T08:04:34.3932933Z",
+      "id" : "op_1",
+      "numericId" : 1,
+      "startedAt" : "2026-09-03T08:04:34.3932933Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_3"
+    }, {
+      "key" : "mc",
+      "value" : "i_2"
+    } ],
+    "resultId" : "o_4"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "setScale(a)mc"
+        } ],
+        "name" : "setScale"
+      },
+      "finishedAt" : "2026-09-03T08:04:34.3942938Z",
+      "id" : "op_3",
+      "numericId" : 3,
+      "startedAt" : "2026-09-03T08:04:34.3942938Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_7"
+    }, {
+      "key" : "mc",
+      "value" : "i_2"
+    } ],
+    "resultId" : "o_8"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "setScale(a)mc"
+        } ],
+        "name" : "setScale"
+      },
+      "finishedAt" : "2026-09-03T08:04:34.3942938Z",
+      "id" : "op_5",
+      "numericId" : 5,
+      "startedAt" : "2026-09-03T08:04:34.3942938Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_11"
+    }, {
+      "key" : "mc",
+      "value" : "i_2"
+    } ],
+    "resultId" : "o_12"
+  } ]
+}

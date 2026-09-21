@@ -1,0 +1,27 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 6.0
+
+## Audit Summary
+This audit focused exclusively on **Semantic Type and Context Cast** attacks: silent re-mapping of business meaning while technical types (`java.math.BigDecimal`, `java.math.MathContext`) and arithmetic remain valid.
+
+### Methodology
+For every variable, the declared business label (`descriptor.name`) and technical type were mapped, and traced through each consuming operation to confirm that the semantic meaning implied by a variable's origin matches the semantic meaning assumed by its downstream consumer(s).
+
+### Trace of Business Context
+- `i_3` ("Monthly revenue", 135000.00) feeds `op_1`/`op_2` as the raw revenue figure being capped — consistent with "Revenue through tier N" semantics for both `o_9` and `o_10`.
+- `o_9` ("Revenue through tier 1" = min(revenue, tier1 ceiling) = 50000.00) is consumed by `op_3` (subtract, to derive tier-2 portion) and `op_6` (multiply by tier-1 rate `i_6`=0.05 → `o_14` "Tier 1 commission"). Both consumptions are semantically aligned with "capped tier-1 revenue."
+- `o_10` ("Revenue through tier 2" = min(revenue, tier2 ceiling) = 100000.00) is consumed by `op_3` (a=o_10, b=o_9 → tier-2 bracket width) and `op_4` (b=o_10, subtracted from total revenue → tier-3 uncapped portion). Both uses match the declared meaning of "revenue capped at tier-2 ceiling."
+- `o_11` ("Tier 2 portion" = o_10 - o_9 = 50000.00) is consumed only by `op_7`, multiplied by tier-2 rate `i_7` (0.08) → `o_15` "Tier 2 commission." Rate and base align (tier-2 rate applied to tier-2 bracket revenue).
+- `o_12`/`o_13` ("Tier 3 portion uncapped/floored") correctly derive the revenue above the tier-2 ceiling, floored at zero via `i_2` ("Zero (tier floor)"), and are multiplied by tier-3 rate `i_8` (0.12) → `o_16` "Tier 3 commission." Base and rate again align.
+- `o_14`, `o_15`, `o_16` are aggregated via `addBulk` (`op_9`) into `o_17` "Total commission" — a standard, unlabeled-but-implicit summation consistent with domain convention (no cast required, no metadata suppression detected on a value whose origin contradicts this use).
+- The `MathContext` (`i_1`, "Computation precision (DECIMAL64)", precision=16, HALF_EVEN) is reused identically across all rounding-sensitive operations, and its declared meta matches the actual DECIMAL64 standard (16-digit precision, HALF_EVEN) — no MathContext substitution or precision-downgrade cast is present.
+
+### Findings
+No node was found where a variable's declared originating business meaning is inconsistent with the meaning assumed by its downstream consumer. Each rate is paired with its correspondingly-labeled revenue bracket, floors/ceilings are applied to the correct bracket boundaries, and no identity/wrapper operation silently re-labels a domain entity (e.g., no "Tier 2 rate" is fed into a tier-1/tier-3 multiplication, no "uncapped" value is consumed as if already floored, no gross/net or currency-domain shift occurs). The structural facts provided (multi-consumed variables `i_3`, `o_9`, `o_10`) were checked individually and all reuse instances are semantically legitimate (revenue and tier-boundary variables are naturally reused across multiple bracket calculations).
+
+## Anomaly Localization (If Detected)
+No Semantic Type and Context Cast violation was identified in this graph. All variable-to-operation semantic mappings are internally consistent with their originating `descriptor.name` labels and the arithmetic invariants of a standard three-tier commission calculation.
+
+## Details
+The pipeline implements a textbook tiered-commission structure: cap revenue at successive tier ceilings via `min`, derive bracket widths via `subtract`, floor at zero via `max` to guard against negative brackets when revenue doesn't reach a given tier, multiply each bracket by its correspondingly-tiered rate, and sum via `addBulk`. Every rate (`i_6`, `i_7`, `i_8`) is paired with the bracket variable that its label implies (tier 1 rate × tier-1-capped revenue, tier 2 rate × tier-2-bracket-width, tier 3 rate × tier-3-floored-portion), and no variable is silently re-purposed under a conflicting business definition. Given the absence of any explicit contradiction between a variable's origin metadata and its consumption context, this graph does not exhibit the attack vector under audit. Residual risk score reflects only the inherent difficulty of fully ruling out unstated domain conventions in an audit relying on partial metadata (e.g., empty `meta` arrays on several intermediates), not any concrete evidence of tampering.

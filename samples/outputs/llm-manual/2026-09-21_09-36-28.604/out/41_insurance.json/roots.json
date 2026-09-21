@@ -1,0 +1,235 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0980705Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "claimType",
+        "value" : "Collision"
+      } ],
+      "name" : "Policy limit"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "10000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0990717Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "claimType",
+        "value" : "Liability"
+      } ],
+      "name" : "Coinsurance rate"
+    },
+    "id" : "i_21",
+    "kind" : "INPUT",
+    "numericId" : 21,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0990717Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "claimType",
+        "value" : "Liability"
+      } ],
+      "name" : "Deductible"
+    },
+    "id" : "i_20",
+    "kind" : "INPUT",
+    "numericId" : 20,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "250.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0990717Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "claimType",
+        "value" : "Comprehensive"
+      } ],
+      "name" : "Deductible"
+    },
+    "id" : "i_12",
+    "kind" : "INPUT",
+    "numericId" : 12,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0990717Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "claimType",
+        "value" : "Comprehensive"
+      } ],
+      "name" : "Claim amount"
+    },
+    "id" : "i_11",
+    "kind" : "INPUT",
+    "numericId" : 11,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "20000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0990717Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "claimType",
+        "value" : "Liability"
+      } ],
+      "name" : "Policy limit"
+    },
+    "id" : "i_22",
+    "kind" : "INPUT",
+    "numericId" : 22,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0990717Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "claimType",
+        "value" : "Comprehensive"
+      } ],
+      "name" : "Policy limit"
+    },
+    "id" : "i_14",
+    "kind" : "INPUT",
+    "numericId" : 14,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "12000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0990717Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "claimType",
+        "value" : "Comprehensive"
+      } ],
+      "name" : "Coinsurance rate"
+    },
+    "id" : "i_13",
+    "kind" : "INPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.90"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.1000718Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Reinsurance recovery rate (40%)"
+    },
+    "id" : "i_28",
+    "kind" : "INPUT",
+    "numericId" : 28,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.40"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0990717Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "claimType",
+        "value" : "Liability"
+      } ],
+      "name" : "Claim amount"
+    },
+    "id" : "i_19",
+    "kind" : "INPUT",
+    "numericId" : 19,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "5000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0920719Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0980705Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "claimType",
+        "value" : "Collision"
+      } ],
+      "name" : "Claim amount"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "8000.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0960717Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Zero (claim floor)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0980705Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "claimType",
+        "value" : "Collision"
+      } ],
+      "name" : "Coinsurance rate"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.80"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-13T04:35:58.0980705Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "claimType",
+        "value" : "Collision"
+      } ],
+      "name" : "Deductible"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "500.00"
+} ]

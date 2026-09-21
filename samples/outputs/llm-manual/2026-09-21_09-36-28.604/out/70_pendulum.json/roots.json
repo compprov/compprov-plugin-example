@@ -1,0 +1,82 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1729322Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Constant 1"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1729322Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1729322Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Gravitational acceleration, g (m\/s²)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "9.8"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1729322Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Pendulum length, L (m)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2.0"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1729322Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Constant 2"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.1729322Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Constant π"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3.14159265358979"
+} ]

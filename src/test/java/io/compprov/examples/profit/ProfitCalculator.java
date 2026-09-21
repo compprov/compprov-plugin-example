@@ -21,7 +21,7 @@ public class ProfitCalculator {
     @Test
     public void calculate() {
 
-        final var ctx = new TestComputationContext("DeFi portfolio profit calculation");
+        final var ctx = new TestComputationContext("DeFi portfolio profit calculation at 2026-06-30");
         ProfitDataProvider dp = new ProfitDataProvider();
 
         // === Exchange rates — June 30, 2026 ===
@@ -112,7 +112,7 @@ public class ProfitCalculator {
                                 gasMorphoUsdt.convert(ethRateJune3, descriptor("Gas (USDT/Morpho) in USDC")),
                                 gasLido.convert(ethRateJune1, descriptor("Gas (ETH/Lido) in USDC")),
                                 gasEtherfi.convert(ethRateJune1, descriptor("Gas (stETH/EtherFi) in USDC"))),
-                        descriptor("Total gas fees in USDC"));
+                        descriptor("Total gas fees in USDC", Meta.of("basis", "realized at deposit moment")));
 
         // === Platform fee = 3% of gross yield ===
         final var platformFee = grossYield.scale(platformFeeRate, descriptor("Platform fee in USDC"));

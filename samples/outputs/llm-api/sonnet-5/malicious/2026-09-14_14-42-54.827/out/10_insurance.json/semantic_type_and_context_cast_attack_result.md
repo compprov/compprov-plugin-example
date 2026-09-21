@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 87.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_20` ("Deductible", claimType=Liability), `op_9` (subtract), `op_14` (add), `o_23`/`o_24`/`o_25`/`o_26` (Liability payout chain), `o_27` ("Payout"), `o_28` ("Total payout"), and downstream consumers `o_30` ("Reinsurance recovery") and `o_31` ("Net loss").
+
+**Flow of the attack:**
+1. `i_20` is declared as the **Liability Deductible** input (`descriptor.name = "Deductible"`, `meta.claimType = "Liability"`, value `250.00`).
+2. It is first consumed legitimately in `op_9` (`subtract(i_19, i_20, mc=i_1)` → `o_23`, "Liability: net of deductible") — here it plays its correct semantic role: an amount *subtracted* from the claim before coverage math begins.
+3. The Liability payout chain proceeds normally (`op_10` floor → `op_11` coinsurance multiply → `op_12` policy-limit min) producing `o_26` = 4750.0000, which correctly excludes the deductible.
+4. `op_13` (`addBulk`) sums the three claim-type payouts (`o_10`, `o_18`, `o_26`) into `o_27` ("Payout") = 22750.0000 — a coherent, fully-explained aggregate of net payouts.
+5. **`op_14`** then computes `add(a=o_27, b=i_20, mc=i_1)` → `o_28` ("Total payout") = 22750.00 + 250.00 = **23000.0000**. Here `i_20` — the exact same *Liability Deductible* variable already consumed once under its correct semantic role — is silently reused as an **additive term to the aggregate payout total**, with no new transformation node, no relabeling, and no metadata explaining why a deductible (money the claimant absorbs, explicitly *not* payable by the insurer) should now be added back into "Total payout" (money the insurer pays).
+6. This inflated `o_28` then propagates: `op_15` computes "Reinsurance recovery" = `o_28 * 0.40` = 9200.0000 (inflated by 100 vs. the correct 8600.0000 baseline), and `op_16` computes "Net loss" = `o_28 - o_30` = 13800.0000 (also skewed by the same +250 injection carried through both terms).
+
+## Details
+
+This is a textbook **Semantic Type and Context Cast Attack**. Technically, everything is pristine: `i_20` is a `java.math.BigDecimal`, the `add` operation is fully type-safe, the `MathContext` is correctly propagated, and the arithmetic replays perfectly (22750.00 + 250.00 = 23000.00). A naive structural/type validator sees a valid `BigDecimal + BigDecimal -> BigDecimal` operation feeding a plausible-sounding "Total payout" node and raises no alarm.
+
+However, the *business meaning* of `i_20` is fixed at its origin as "Deductible" — an amount that is by definition excluded from what the insurer pays out. The graph never introduces an explicit transformation (e.g., a node relabeling it as "Retention Fee," "Treaty Deductible," or "Recovery Adjustment") before reusing it in `op_14`. Instead, the same variable ID is silently fed into an aggregation step where it is implicitly treated as a *positive contribution to total payout* — the direct semantic opposite of its declared role upstream in `op_9`. This is precisely the invariant violation described: "no operation may consume a variable under a business definition that conflicts with its originating metadata," and "domain transitions must be backed by explicit, auditable transformation logic, not merely by an operation that happens to be type-safe."
+
+The structural reference data independently confirms `i_20` is consumed by more than one operation — a mechanical signal that, on its own, is not proof of tampering (constants like `i_2` are legitimately reused), but here the *specific* reuse context is a genuine semantic contradiction rather than benign repetition of a floor/constant value.
+
+**Consequence:** The reported "Total payout" (`o_28`), "Reinsurance recovery" (`o_30`), and "Net loss" (`o_31`) are all inflated by exactly the Liability deductible amount (250.00) without any documented justification. In a real adjudication/reinsurance pipeline this results in overstated reinsurance recovery claims and a distorted net loss figure — a materially consequential, quietly injected discrepancy that passes all type and mathematical replay checks.

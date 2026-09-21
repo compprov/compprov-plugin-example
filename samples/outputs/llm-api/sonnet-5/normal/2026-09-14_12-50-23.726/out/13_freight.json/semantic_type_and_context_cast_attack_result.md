@@ -1,0 +1,29 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 8.0
+
+## Audit Summary
+This review specifically targeted **Semantic Type and Context Cast** attacks — situations where technical type/schema validity (BigDecimal → BigDecimal, correct MathContext propagation, arithmetic replay) is preserved while the underlying business meaning of a variable is silently swapped between consumer and producer.
+
+### Trace of Business Context Through the Graph
+- `i_3` (Total shipment weight) is consumed identically as "total weight" in `op_1` (min vs tier1 ceiling), `op_2` (min vs tier2 ceiling), and `op_4` (subtract to get tier-3 uncapped portion). No relabeling occurs; all three consumers treat it as the same physical quantity (lbs).
+- `o_9` ("Weight through tier 1" = min(620,100) = 100) is consumed in `op_3` (as the tier-1 baseline to subtract) and `op_6` (multiplied by the tier-1 rate). Both consumers treat it consistently as "weight subject to tier-1 pricing."
+- `o_10` ("Weight through tier 2" = min(620,500) = 500) is consumed in `op_3` (a) and `op_4` (b), consistently as the cumulative weight capped at the tier-2 ceiling. No downstream node treats it as, e.g., a rate or a cost.
+- `o_11` ("Tier 2 weight portion" = 500-100 = 400) flows only into `op_7`, multiplied against `i_7` (Tier 2 rate, $0.60/lb) — the domain pairing (tier-2 weight × tier-2 rate) matches the originating label exactly.
+- `o_12`/`o_13` ("Tier 3 weight portion," uncapped then floored at zero via `op_5` max against `i_2`) flow into `op_8`, multiplied by `i_8` (Tier 3 rate, $0.40/lb) — again a matched pairing.
+- `o_14`, `o_15`, `o_16` (tier costs) are aggregated via `addBulk` into `o_17` ("Total weight-based cost") — a standard, non-context-shifting aggregation of like-typed cost components.
+- `o_20` ("Distance surcharge" = distance × rate) and `o_17` are summed into `o_21` ("Pre-fuel subtotal") — both addends are cost components denominated in the same currency unit; no domain conflict.
+- `o_21` is reused twice: once as the base for the fuel-surcharge multiply (`op_12` → `o_23`), and once as an addend into the final total (`op_13` → `o_24`). Both consumptions treat `o_21` identically as "pre-fuel subtotal in dollars" — there is no silent reinterpretation of it as, e.g., an already-taxed or net figure.
+- The final `add` (`op_13`) combines `o_21` (pre-fuel subtotal) with `o_23` (fuel surcharge) into `o_24` ("Total freight cost") — consistent domain aggregation.
+
+### Findings
+No node was found where a variable's declared business meaning (`descriptor.name`/implicit domain) conflicts with how a downstream operation consumes it. Specifically:
+- No rate variable is ever consumed as a weight/quantity or vice versa.
+- No "floored"/"capped" intermediate is later treated as the original uncapped value (the floor/cap operations are explicit and auditable: `min`, `max`, `subtract`).
+- No gross/net or pre-tax/post-tax relabeling occurs; the fuel surcharge is computed transparently from an explicitly named "Pre-fuel subtotal" and added back in an explicit `add` step — there is no implicit swallowing of an adjustment.
+- Reused variables (`i_3`, `o_9`, `o_10`, `o_21`) are consumed identically in every downstream operation relative to their originating semantic label; none show a C_source ≠ C_target divergence.
+
+Metadata arrays are empty for most variables, but per the audit's stated convention, absence of explicit `domainType`/`unit` tags on self-explanatory intermediate subtotal/tier variables is not itself an anomaly, and no explicit contradiction between a variable's origin and its consumption was located anywhere in the graph.
+
+### Conclusion
+This is a mathematically and semantically coherent tiered-freight-cost pipeline (weight tiering → distance surcharge → fuel surcharge on subtotal → total). No evidence of an implicit domain relabeling, wrapper-based identity cast, or gross/net conflation was found. Risk is scored low, reflecting a clean result for this specific attack vector, with only the standard caveat that sparse metadata slightly limits fully explicit auditability.

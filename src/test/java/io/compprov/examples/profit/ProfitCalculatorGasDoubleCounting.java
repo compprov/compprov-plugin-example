@@ -21,7 +21,7 @@ public class ProfitCalculatorGasDoubleCounting {
     @Test
     public void calculate() {
 
-        final var ctx = new TestComputationContext("DeFi portfolio profit calculation");
+        final var ctx = new TestComputationContext("DeFi portfolio profit calculation at 2026-06-30");
         ProfitDataProvider dp = new ProfitDataProvider();
 
         // === Exchange rates — June 30, 2026 ===
@@ -107,7 +107,7 @@ public class ProfitCalculatorGasDoubleCounting {
                                 gasMorphoUsdtConverted,
                                 gasLidoConverted,
                                 gasEtherfiConverted),
-                        descriptor("Total gas fees in USDC"));
+                        descriptor("Total gas fees in USDC", Meta.of("basis", "realized at deposit moment")));
 
         // === Convert all yields to USDC at today's prices ===
         var wbtcAaveYieldInBtc = wbtcAaveYield.convert(wbtcBtcPegRate, descriptor("wBTC yield in BTC (peg-adjusted)"));

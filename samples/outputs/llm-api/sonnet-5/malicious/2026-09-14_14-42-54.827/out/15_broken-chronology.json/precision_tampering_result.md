@@ -1,0 +1,34 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 3.0
+
+## Precision and Scale Tampering Audit — ETH/USDC daily options payout
+
+### Anomaly Localization (If Detected)
+No material precision, scale, or rounding-mode anomaly was identified in this graph. All ten option legs (op_1–op_30) and the final aggregation (op_31 → o_54) were independently recomputed using exact rational arithmetic and cross-checked against the reported values.
+
+### Recomputation Summary
+
+| Leg | Type | Strike | Size | Intrinsic | Payout (reported) | Payout (recomputed) | Δ |
+|---|---|---|---|---|---|---|---|
+| 0 | CALL K=4630 | 4630 | 6.8639 | 20 | 137.2780 | 137.2780 | 0 |
+| 1 | PUT K=4710 | 4710 | 2.8431 | 60 | 170.5860 | 170.5860 | 0 |
+| 2 | CALL K=4670 | 4670 | 9.0434 | 0 | 0.0000 | 0.0000 | 0 |
+| 3 | PUT K=4550 | 4550 | 2.8299 | 0 | 0.0000 | 0.0000 | 0 |
+| 4 | PUT K=4730 | 4730 | 7.8507 | 80 | 628.0560 | 628.0560 | 0 |
+| 5 | CALL K=4630 | 4630 | 4.4213 | 20 | 88.4260 | 88.4260 | 0 |
+| 6 | CALL K=4710 | 4710 | 3.9270 | 0 | 0.0000 | 0.0000 | 0 |
+| 7 | PUT K=4690 | 4690 | 5.9841 | 40 | 239.3640 | 239.3640 | 0 |
+| 8 | PUT K=4590 | 4590 | 8.2771 | 0 | 0.0000 | 0.0000 | 0 |
+| 9 | PUT K=4550 | 4550 | 5.9155 | 0 | 0.0000 | 0.0000 | 0 |
+
+Sum of payouts = 137.2780 + 170.5860 + 0 + 0 + 628.0560 + 88.4260 + 0 + 239.3640 + 0 + 0 = **1263.7100**, matching the reported `o_54` (Total payout in USDC = 1263.7100) exactly, with Δ = 0 at every step.
+
+### Details
+- **MathContext usage**: Every `subtract` and `multiply` operation explicitly carries `mc = i_1` (precision=16, HALF_EVEN — consistent with the standard IEEE 754 DECIMAL64 convention as labeled). Since all intermediate magnitudes in this pipeline involve at most 6–7 significant digits (e.g., `239.364`, `628.056`), they fall far below the 16-digit precision ceiling of the declared MathContext, so no rounding truncation is mathematically possible at any step — HALF_EVEN vs. any other mode is a moot distinction here because no rounding boundary is ever reached.
+- **max()/floor logic**: The `max(a, i_2)` (i_2 = "0") pattern used to compute OTM floors for both CALL (`spot - strike`) and PUT (`strike - spot`) legs is directionally correct and consistently applied across all 10 legs — no sign inversion, no reused/mismatched strike-spot ordering was found.
+- **Aggregation (`addBulk`, op_31)**: Sums all 10 leg payouts (`o_8, o_13, o_18, o_23, o_28, o_33, o_38, o_43, o_48, o_53`) under the same MathContext; the reported total reconciles exactly to the recomputed exact sum with zero residual — no evidence of scale-truncation-before-aggregation ("residual value leakage") or salami-slicing bias in any direction.
+- **Reused variables** (`i_2` zero floor, `i_3` spot price) are legitimately fan-out inputs to multiple independent per-leg computations, not evidence of tampering — their reuse pattern is structurally expected for a multi-strike options basket sharing one spot price and one floor constant.
+- **Strike reuse across legs** (e.g., K=4630 appears as CALL in both leg 0 and leg 5; K=4710 appears as PUT in leg 1 and CALL in leg 6; K=4550 appears as PUT in legs 3 and 9) reflects legitimate distinct option positions at overlapping strikes, not duplicate/injected nodes — sizes and computed payouts differ appropriately in each case, and intrinsic values are computed independently and correctly for each.
+
+**Conclusion**: No precision degradation, unauthorized downcasting, premature scale reduction, or directional rounding bias was found. All arithmetic reconciles exactly under the graph's own declared MathContext, and the final aggregate is fully conserved with zero delta. This is a clean, well-formed provenance trace with respect to the Precision and Scale Tampering vector.

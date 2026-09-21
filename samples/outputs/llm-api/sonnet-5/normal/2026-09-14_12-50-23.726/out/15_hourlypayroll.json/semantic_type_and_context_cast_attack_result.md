@@ -1,0 +1,22 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 5.0
+
+## Anomaly Localization (If Detected)
+No variable or operation exhibiting a Semantic Type and Context Cast violation was identified in this graph.
+
+Traced business context (C) end-to-end:
+
+- `i_2` (Base hourly rate) → `op_1` → `o_4` (Regular pay): hours × rate = pay. Context preserved (rate consumed as rate).
+- `i_2` (Base hourly rate) → `op_2` → `o_7` (Overtime rate): base rate × overtime multiplier (`i_6`, explicitly labeled "Overtime multiplier (1.5x)") = derived overtime rate. This is the one node where `i_2` is reused (flagged in structural data), but both consumptions treat `i_2` consistently as an hourly dollar rate — no relabeling occurs.
+- `i_5` (Overtime hours) × `o_7` (Overtime rate) → `op_3` → `o_8` (Overtime pay): hours × rate = pay, consistent with its origin as a derived rate, not silently cast into an unrelated category (e.g., a discount factor or multiplier reused as a rate would be a violation — that is not what happens here).
+- `i_9` × `i_10` → `op_4` → `o_11` (Night-shift differential pay): hours × $/hr differential = pay. Consistent.
+- `o_4 + o_8 + o_11` → `op_5` → `o_12` (Gross pay): standard aggregation of three earned-pay line items into a gross total. No mislabeled component is smuggled into the sum.
+- `o_12` (Gross pay) → `op_6` → `o_14` (Payroll tax withholding), and `o_12` → `op_7` → `o_15` (Net pay = Gross − Withholding). `o_12` is reused (flagged in structural data) but in both cases it is consumed under its own declared meaning — "Gross pay" — first as the tax base, then as the minuend for net pay. Neither consumption reinterprets it as something else (e.g., neither treats it as already-net or as a different currency/base).
+
+All `resultId` semantics (regular pay, overtime rate, overtime pay, differential pay, gross pay, withholding, net pay) match the mathematical role their producing operation actually performs, and match the descriptor name assigned to the resulting variable. No operation silently re-maps a Gross figure into a Net context, no multiplier is cast as a rate/discount without an explicit multiply step, and no metadata (`units`, `domainType`, `taxStatus`) is stripped or altered mid-flow — all variables uniformly carry only `descriptor.name` metadata with empty `meta` arrays, which is the graph-wide baseline convention rather than a selective suppression targeting one node.
+
+## Details
+Every arithmetic step is a legitimate, explicit business operation (multiply for rate×hours, addBulk for aggregation, multiply for tax, subtract for net), and the variable driving each step is consumed under the same business definition it was produced or declared under. The two variables flagged by structural fan-out analysis (`i_2`, `o_12`) are reused in ways fully consistent with normal payroll semantics (a base rate feeding both straight-time pay and an overtime-rate derivation; a gross-pay figure feeding both a tax calculation and a net-pay subtraction) — this is expected multi-consumer behavior for foundational quantities in a payroll DAG, not an identity/wrapper op used to re-brand a value's meaning.
+
+No instance was found where a variable's originating descriptor conflicts with the operational assumption of a downstream consumer (e.g., a "Net" value consumed as "Gross," a risk multiplier consumed as a discount factor, or a rate silently re-scoped to a different currency/jurisdiction). Given the strict requirement for an explicit contradiction to constitute this attack class, and finding none, the residual risk is limited to the general, non-attack-specific observation that intermediate variables carry minimal metadata (empty `meta` arrays) — which the audit brief itself designates as an accepted convention, not an anomaly. Risk score is kept low but non-zero purely to reflect that metadata sparsity slightly reduces auditability of intent, not because a violation was found.

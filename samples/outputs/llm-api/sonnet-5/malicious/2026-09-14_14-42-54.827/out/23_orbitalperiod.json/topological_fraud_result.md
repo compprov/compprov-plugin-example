@@ -1,0 +1,28 @@
+# Summary
+- **Verdict**: SUSPICIOUS LOGIC
+- **Risk score**: 55.0
+
+## Anomaly Localization
+
+**Implicated variables:** `i_7` ("Seconds per hour", value `3600`), `i_15` ("Orbital period, T (hours)", value `23.935`).
+**Implicated terminal output:** `o_14` ("Orbital period, T (s)", value `86166.72260766155`).
+**Implicated (missing) operation:** a would-be conversion/cross-check step, e.g. `divide(o_14, i_7)` compared against `i_15`, which does not exist anywhere in the `operations` array.
+
+Trace of the actual causal chain to the terminal result:
+`i_3, i_4 → op_1 → o_8` (GM) → `i_2, i_9 → op_2 → o_10` (r³) → `o_10, o_8 → op_3 → o_11` (r³/GM) → `o_11 → op_4 → o_12` (√) → `i_5, i_6 → op_5 → o_13` (2π) → `o_13, o_12 → op_6 → o_14` (final T, seconds).
+
+`i_7` and `i_15` are **not** part of this chain at all. Both are confirmed structural leaves and roots: they are never consumed as an argument by any operation (`op_1`…`op_6`), and neither is produced by any operation. They terminate the graph as dead-end, orphaned nodes.
+
+## Details
+
+This is a textbook **Calculation Omission (M=0)** pattern, explicitly analogous to the "unused cross-validation measurement in a metrology pipeline" example named in the attack-vector definition itself.
+
+Why this is not incidental clutter:
+- `i_7`'s descriptor name, "Seconds per hour" = `3600`, is a unit-conversion constant that has no use anywhere in the Kepler formula chain (`T = 2π·√(r³/GM)` is computed and reported entirely in seconds). Its only plausible purpose is to convert the seconds-based result `o_14` into hours.
+- `i_15`'s descriptor name, "Orbital period, T (hours)" = `23.935`, is suspiciously specific: dividing the correctly-computed terminal output by exactly `i_7`'s value reproduces it almost exactly (`86166.7226 / 3600 ≈ 23.9352`, rounds to `23.935`). This is not a coincidental constant — its value is derivable directly from the graph's own correct computation, truncated to 3 decimal places.
+- Despite this, `i_15` is declared with `kind: INPUT`, not `OUTPUT` — an already-known "answer" value smuggled in as if it were a root input, sitting unused and unchecked against the pipeline's own derivation.
+- No operation in the graph performs the conversion (`o_14 / i_7`) or the comparison against `i_15`. Both variables are fully wired for a verification step (correct conversion factor + correct expected value) that never fires.
+
+Consequence: the graph presents a self-contained cross-validation mechanism (convert result to hours, compare to the physically expected ~23.935h sidereal-day style benchmark) but silently drops the wiring that would perform it. Downstream consumers of this pipeline's terminal output (`o_14`) have no way to know whether the automated sanity check that was clearly intended to run (and whose ingredients are present in the graph) actually passed — because it never executes. This is precisely the domain-agnostic "skipped correction/cross-check" omission described in the attack taxonomy: the terminal computation itself is arithmetically self-consistent (verified via manual replay of `op_1`–`op_6`), but a mandated verification contributor was excised from the final aggregation path, leaving `i_7` and `i_15` as unconsumed, provenance-orphaned dead ends.
+
+No Double-Counting (M>1) evidence was found — the structural reference data confirms no non-MathContext variable is consumed by more than one operation, and manual re-tracing of `o_8`, `o_10`–`o_13` confirms each feeds exactly one downstream consumer. No Lineage-Disconnection/context-substitution was found either: `i_15`, despite its suspicious near-match to the true hours-converted value, is never consumed by any operation, so it cannot have been substituted into the critical path — it is purely a dropped/omitted verification input, not a swapped one.

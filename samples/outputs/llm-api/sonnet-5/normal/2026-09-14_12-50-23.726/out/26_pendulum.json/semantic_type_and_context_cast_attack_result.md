@@ -1,0 +1,28 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 5.0
+
+## Anomaly Localization (If Detected)
+No variable ID or operation ID was found to exhibit a Semantic Type and Context Cast violation. Every declared business label (`descriptor.name`) is consistent with the arithmetic operation that produced it and with the arguments it consumes.
+
+## Details
+
+### Domain-context trace
+- `i_2` ("Pendulum length, L (m)") and `i_3` ("Gravitational acceleration, g (m/s²)") are root inputs.
+- `op_1` divides `i_2/i_3` → `o_7` labeled "L/g (s²)" — argument order (`a=i_2`, `b=i_3`) matches the declared formula and resulting unit (s²). No relabeling.
+- `op_2` takes `sqrt(o_7)` → `o_8` "sqrt(L/g) (s)" — consistent domain (time, s).
+- `op_3` multiplies constants `i_5` (2) and `i_4` (π) → `o_9` "2π", a pure dimensionless constant; label matches.
+- `op_4` multiplies `o_9 (2π)` and `o_8 (sqrt(L/g))` → `o_10` "Period, T (s)", which is exactly the correct small-angle pendulum period formula `T = 2π√(L/g)`. No unit or business-meaning mismatch.
+- `op_5` divides `i_6 (1)` by `o_10 (T)` → `o_11` "Frequency, f (Hz)" = 1/T — standard, correct, and properly labeled.
+- `op_6` divides `o_9 (2π)` by `o_10 (T)` → `o_12` "Angular frequency, ω = 2π/T" — correct and properly labeled, matching the declared formula in its own name.
+- `op_7` divides `i_3 (g)` by `i_2 (L)` → `o_13` "g/L (1/s²)" — argument order matches the label (g/L, not L/g), and the resulting unit (1/s²) is correct.
+- `op_8` takes `sqrt(o_13)` → `o_14` "Angular frequency cross-check, sqrt(g/L) (rad/s)", which numerically and dimensionally reproduces `o_12`, functioning as an internal consistency check rather than a mislabeled or laundered value.
+
+### Assessment against invariants
+- No node shows `C_source != C_target` under identical `valueClass`. Each `BigDecimal` flowing between operations retains its declared business meaning (length, gravity, time, frequency, angular frequency) all the way from root inputs to leaf outputs.
+- No identity/wrapper operation is used to silently swap domain tags (e.g., no "Risk Multiplier" being consumed as a "Discount Factor"); all operations are genuine arithmetic transformations whose declared formula (`meta.formula`) matches both the operation name and the resulting variable's descriptive label.
+- The absence of populated `descriptor.meta` arrays (units/domain tags) on intermediate variables is consistent with the specification's guidance that self-explanatory intermediate physics variables need not carry redundant explicit metadata — the `descriptor.name` field alone unambiguously and correctly encodes the physical unit and meaning at each step (e.g., "(s²)", "(s)", "(Hz)", "(rad/s)").
+- The two independent computation paths for angular frequency (`ω = 2π/T` via `op_6` and `ω = √(g/L)` via `op_7`→`op_8`) are mathematically identical formulas for the same physical quantity, and both produce the same numeric value (2.213594362117866), which is expected physics behavior, not evidence of context laundering or mislabeling.
+
+### Conclusion
+Tracing every root-to-leaf path, all business labels remain semantically aligned with their computed values and with the arguments consumed at each step. No explicit contradiction between originating metadata and downstream consumption was found anywhere in the graph. This pipeline shows standard, internally consistent small-angle pendulum physics with no indication of semantic type/context cast tampering.

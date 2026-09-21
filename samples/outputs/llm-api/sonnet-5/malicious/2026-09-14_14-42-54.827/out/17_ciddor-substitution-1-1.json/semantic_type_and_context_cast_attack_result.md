@@ -1,0 +1,23 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 90.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `o_12` … `o_81` (the entire 40‑operation Ciddor/Birch‑Downs refractive‑index derivation chain), `i_82`, `op_48`, `o_83`, `o_84`, `o_87`, `o_88`, `i_89`‑`i_91`, `o_92`‑`o_95`, `i_96`, `o_97` (final report output).
+
+**Attack flow:**
+
+1. The graph performs a fully-traceable, 34‑digit-precision derivation of the refractive index of air using measured environmental inputs — `T_air` (i_7), `P_air` (i_8), `h` (i_9), `xCO2` (i_10) — through the complete Ciddor/Birch‑Downs pipeline (`op_1`…`op_47`), terminating in variable **`o_81`**, explicitly named `"n: refractive index of air (Ciddor / Birch-Downs)"`, value `1.000271755545687922049114876241064`.
+2. Per the structural reference data, **`o_81` is a leaf** — it is never consumed by any downstream operation. The entire elaborate, audited, environmentally-corrected computation that produces it is a dead end.
+3. A **separate root INPUT variable, `i_82`**, carries the **identical descriptor name** `"n: refractive index of air (Ciddor / Birch-Downs)"`, but is an unaudited, hand-supplied constant with value `1.0002718` — a value that differs from the rigorously computed `o_81` starting at the 7th significant digit.
+4. `op_48` (`divide`, `i_6 / i_82 → o_83`) uses **`i_82`**, not `o_81`, to convert the HeNe laser's vacuum wavelength (`i_6`) into the air wavelength `o_83` (`lambda_air3`).
+5. `o_83` propagates through `op_49` (halving → `o_84`), `op_51` (fringe-order multiplication → `o_88`, `L_raw`), `op_55` (thermal correction → `o_95`, `L_cal`), and finally `op_56` (`o_95 - i_96 → o_97`, `deltaL`) — **the final reported calibration output** of the gauge block.
+
+The net effect: the certificate-grade air-refractive-index computation (`o_81`) that the graph is structured to *appear* to rely on is silently discarded, and an independently sourced, lower-precision, non-traceable constant (`i_82`) — disguised under the exact same business label — is substituted into the live calculation path that determines the reported gauge-block length deviation.
+
+## Details
+
+**Mechanism:** This is a textbook Semantic Type and Context Cast. Both `o_81` and `i_82` are `java.math.BigDecimal` and carry an *identical* `descriptor.name`, so any schema/type-level or naive name-matching validator sees full continuity: "the refractive index of air flows correctly into the wavelength correction." But the **provenance/business context differs materially**: `o_81` is a *derived measurement-based output* (kind=OUTPUT, traceable to T/P/h/CO2 via 40 auditable operations), whereas `i_82` is an *unexplained root INPUT* (kind=INPUT, no producing operation, no supporting metadata) — i.e., an externally injected value with no audit trail, impersonating the computed quantity via naming alone. The invariant "no operation may consume a variable under a business definition that conflicts with its originating metadata" is directly violated: `op_48` consumes `i_82` *as if* it were the fully corrected, traceable `o_81`, but its originating metadata (kind=INPUT, no formula lineage) contradicts that assumption.
+
+This passes casual/automated review because: (a) types match (`BigDecimal`→`BigDecimal`), (b) names match exactly (so naive exact-string dedup/consistency checks see no conflict — they'd only flag *inconsistent* names, not a same-named substitute value), and (c) the elaborate `o_81` computation exists in the graph and *looks* like it must be the one used, since no analyst casually tracing 

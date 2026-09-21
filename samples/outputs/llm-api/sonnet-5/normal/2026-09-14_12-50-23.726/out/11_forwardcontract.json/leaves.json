@@ -1,0 +1,20 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-14T06:28:21.7700251Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "basis",
+        "value" : "interest-rate-parity forward premium at valuation date"
+      } ],
+      "name" : "Mark-to-market value vs. spot (USD)"
+    },
+    "id" : "o_15",
+    "kind" : "OUTPUT",
+    "numericId" : 15,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "10077.39",
+    "currency" : "USD"
+  }
+} ]

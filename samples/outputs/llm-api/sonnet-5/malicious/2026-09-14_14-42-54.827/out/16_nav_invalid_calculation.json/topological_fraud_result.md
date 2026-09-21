@@ -1,0 +1,24 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 93.0
+
+## Anomaly Localization
+
+**Terminal operation:** `op_6` (`addBulk`), consuming `o_9, o_10, o_11, o_12, o_13`, writing to `resultId = o_14` ("Assets sum").
+
+**Implicated variables:** `o_9` (146948.10), `o_10` (48624.45), `o_11` (538.22), `o_12` (12312.36), `o_13` (223326.04) → all correctly and transparently derived from their respective `convert` operations (`op_1`\-`op_5`) over legitimate root inputs (`i_1`\-`i_8`).
+
+**Terminal output implicated:** `o_14` = 441749.17 (reported).
+
+### Attack flow
+1. Every sub-asset conversion (`op_1`-`op_5`) replays correctly and independently against its own root inputs, using a consistent truncation convention (verified digit-by-digit: 2.13×68989.72→146948.10; 23.34×2083.31→48624.45; 532.9×1.01→538.22; 5.91×2083.31→12312.36; 221114.9×1.01→223326.04). No rate/amount is duplicated into two competing terminal branches, so path multiplicity for every root contributor into `op_6` is exactly 1 (M=1) — no Calculation Omission, no Double-Counting is present at the sub-asset level.
+2. The failure is at the terminal aggregation itself: `op_6` (`addBulk`) declares exactly the five correct addends (`o_9`..`o_13`) as arguments — a fully valid, non-tampered argument list. Yet forward-propagating those five values arithmetically (146948.10 + 48624.45 + 538.22 + 12312.36 + 223326.04) yields **431749.17**, not the value stored at `resultId = o_14`, which is **441749.17** — a discrepancy of exactly **10,000.00**.
+3. This means the value written to `o_14` was NOT actually produced by forward-propagating the graph's own root inputs through its own declared computation chain (`i_1..i_8 → op_1..op_5 → op_6`). The operation's arguments are legitimate/decoy — a hardcoded or externally-injected terminal value has been substituted for the true computed result of `addBulk`, while the recorded lineage graph is left looking fully consistent to a naive replay-per-node check.
+
+## Details
+
+This is a textbook **Lineage Disconnection / Context Substitution** violation applied at the terminal aggregation node itself rather than at an intermediate input: `Origin_Propagation_Valid` fails for the reported terminal output. Local, single-step replay of each `convert` operation passes cleanly (each result matches its own inputs), which is exactly why a naive per-node audit or hash-of-arguments check would miss this — the tampering is not in any argument list or in variable routing, it is in the stored `resultId` value of the final rollup, which silently diverges from what its own declared, correctly-computed arguments actually sum to.
+
+The magnitude of the discrepancy — a perfectly round **$10,000.00** — is inconsistent with rounding/precision drift (all five underlying conversions were independently verified to reconcile to the cent using a consistent truncation rule) and is far too large and too round to be a MathContext/precision artifact. This is the signature of an inserted, undocumented adjustment: either a hidden asset/credit fabricated into the reported NAV, or a post-hoc override of the true aggregate to hit a target number.
+
+**Impact:** The reported "Assets sum" (NAV) of $441,749.17 overstates the true, fully-substantiated computed total of $431,749.17 by $10,000.00 — a material misstatement of the fund's net asset value that is invisible to argument-list inspection or single-hop replay, and only surfaces when the terminal aggregation is independently recomputed end-to-end from root inputs.

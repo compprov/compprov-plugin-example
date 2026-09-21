@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.81825Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Mass of solute in final volume (g)"
+    },
+    "id" : "o_13",
+    "kind" : "OUTPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.1688000"
+} ]

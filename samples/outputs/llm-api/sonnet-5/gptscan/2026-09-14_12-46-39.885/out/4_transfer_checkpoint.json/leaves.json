@@ -1,0 +1,20 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-08T13:22:10.6675014Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "balanceBasis",
+        "value" : "opening"
+      }, {
+        "key" : "recordedAt",
+        "value" : "2026-09-08T10:15:04Z"
+      } ],
+      "name" : "Sender checkpoint reward"
+    },
+    "id" : "o_5",
+    "kind" : "OUTPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "14000"
+} ]

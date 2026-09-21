@@ -1,0 +1,28 @@
+# Summary
+- **Verdict**: SUSPICIOUS LOGIC
+- **Risk score**: 65.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_2` (MathContext: precision=2, DOWN), `i_3`, `i_7`, `i_11` (raw lot quantities, 6-decimal precision), `op_1`, `op_3`, `op_5` (`setScale(a)mc` operations), `o_4`, `o_8`, `o_12` (truncated share quantities), `op_2`, `op_4`, `op_6` (`multiply` cost calculations), `o_6`, `o_10`, `o_14` (lot costs), `op_7`/`op_8` (`addBulk` aggregations), `o_15` (Total shares held), `o_16` (Total cost), and everything downstream that consumes them: `op_9` (WAC divide) → `o_17`, `op_11` (cost basis of shares sold) → `o_21`, `op_12` (realized gain/loss) → `o_22`.
+
+**Flow of the defect:**
+1. Each lot's raw, full-precision share quantity (`i_3=45.678912`, `i_7=67.234156`, `i_11=22.891347`) is passed through `setScale(a)mc` using `i_2` — a MathContext with **precision=2 and rounding mode `DOWN`** (pure truncation toward zero, never rounding to nearest).
+2. The truncated values (`o_4=45.67`, `o_8=67.23`, `o_12=22.89`) — not the original precise quantities — are then used as the multiplicand in the cost computation (`op_2`, `op_4`, `op_6`) against the per-share price, and are also the values summed into `o_15` (Total shares held).
+3. The discarded fractional remainders (0.008912, 0.004156, 0.001347 shares respectively) are never captured in any variable, residual account, or adjustment node anywhere in the graph — they simply vanish before the aggregation step.
+4. This lost value then propagates through `o_16` (Total cost), `o_17` (Weighted-average cost), `o_21` (Cost basis of shares sold) and finally `o_22` (Realized gain/loss), silently biasing every downstream financial figure in this trade log.
+
+## Details
+
+Recomputing with full-precision (untruncated) share quantities:
+- True Lot 1 cost = 45.678912 × 210.50 = 9615.410976 vs. reported `o_6` = 9613.5350 (Δ ≈ 1.876)
+- True Lot 2 cost = 67.234156 × 340.75 = 22910.038657 vs. reported `o_10` = 22908.6225 (Δ ≈ 1.416)
+- True Lot 3 cost = 22.891347 × 1850.00 = 42348.99195 vs. reported `o_14` = 42346.5000 (Δ ≈ 2.492)
+- True total shares = 135.804415 vs. reported `o_15` = 135.79 (Δ = 0.014415 shares)
+- True total cost = 74874.441583 vs. reported `o_16` = 74868.6575 (Δ ≈ 5.784)
+
+All arithmetic *within* the declared MathContexts (`i_1` precision-16/HALF_EVEN for multiply/add/divide/subtract) is internally exact and self-consistent — every multiply, addBulk, divide, and subtract step reproduces its reported result to full precision. The defect is not a rounding-mode slip on a single operation; it is a **structural precision-reduction step inserted before the aggregation of asset quantities and their derived costs**. Because `setScale` with `DOWN` mode is applied uniformly and only ever truncates toward zero (never rounds up), the bias is strictly one-directional across all three lots in this trade — exactly the kind of consistent, non-cancelling skim the invariants describe as concerning when repeated.
+
+Why this passes casual review: each individual `setScale` call is locally "correct" relative to its own explicit `mc` argument (`i_2`), so a naive check of "does the op's output match its declared MathContext" passes cleanly. The violation only becomes visible when tracing where the *pre-truncation* precision (`i_3`, `i_7`, `i_11`) was discarded and confirming it is never reconciled, refunded, or exposed as a residual anywhere downstream — the fractional share value simply disappears between the raw INPUT and the OUTPUT lot records.
+
+**Materiality and cyclicality:** In this single trade log the leakage is modest (~$5.78 on a $74,868.66 cost basis, ~0.0077%), and the downstream effect on realized gain (`o_22`) is proportionally small. However, the use of a dedicated, reusable `MathContext` (`i_2`, precision=2/DOWN) applied via a generic `setScale` wrapper pattern to every lot strongly suggests this same truncation logic executes identically for every lot of every trade processed by the underlying system — a scalable, high-frequency operation population. If so, the consistent downward bias in recorded share quantities and cost basis compounds materially across volume, which is the defining condition under which this class of finding should be scored as high risk rather than dismissed as isolated rounding noise. No accompanying metadata, comment, or reconciliation node in the graph documents this truncation as an intentional settlement-precision control, so the benign "round-lot settlement" explanation cannot be confirmed from the graph itself.

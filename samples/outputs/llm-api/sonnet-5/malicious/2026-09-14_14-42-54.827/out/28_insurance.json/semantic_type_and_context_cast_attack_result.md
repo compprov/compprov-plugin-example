@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: SUSPICIOUS LOGIC
+- **Risk score**: 68.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_1` (Computation precision — precision 16, HALF_EVEN), `i_2` (Computation precision — precision 3, DOWN), `op_3`, `op_7`, `op_11` (the three parallel "coinsurance amount" multiply operations for Collision, Comprehensive, and Liability respectively), and their outputs `o_10`, `o_18`, `o_26`.
+
+The pipeline computes coinsurance amounts identically for three claim types via a `multiply(floored_net, coinsurance_rate, mc)` pattern:
+
+- `op_3` (Collision): `a=o_9, b=i_6, mc=i_1` → `o_10`
+- `op_7` (Comprehensive): `a=o_17, b=i_14, mc=i_2` → `o_18`
+- `op_11` (Liability): `a=o_25, b=i_22, mc=i_1` → `o_26`
+
+Every other `MathContext`-bearing operation in this graph (`op_1, op_2… op_15`, including both the `subtract`/`max`/`min`/`addBulk` chains and the reinsurance recovery/net-loss calculations) consistently uses `i_1` as the rounding/precision context. `op_7` is the single, isolated exception, silently substituting `i_2` — a MathContext with a *materially different* rounding regime (precision 3, `RoundingMode.DOWN` — a truncating, non-banker's rounding with only 3 significant digits) instead of the pipeline-standard (precision 16, `RoundingMode.HALF_EVEN`).
+
+Critically, both `i_1` and `i_2` share the **identical** `descriptor.name`: `"Computation precision"`, with no distinguishing metadata (`meta` is empty on both). This means at the schema/type level (`valueClass: java.math.MathContext`) and even at the display-name level, the two objects are indistinguishable — yet they encode fundamentally different rounding semantics. An automated or superficial audit checking only `valueClass` continuity and node-name equality would see "MathContext → MathContext, same name" and pass this without flagging anything.
+
+## Details
+
+This is a textbook Semantic Type and Context Cast: technical type safety is fully preserved (`java.math.MathContext` in, `java.math.MathContext` out; the `multiply` operation signature is respected in all three branches), but the *business/computational meaning* of the parameter — "the precision and rounding rule this entire pipeline commits to for financial computations" — is covertly swapped for exactly one claim type (Comprehensive) without any explicit annotation, business justification, or domain-transformation node marking the change. The invariant that "downstream operations must consume variables whose domain attributes match the operational assumptions of the consuming node" is violated: `op_7` consumes a precision/rounding context whose operational assumptions (truncate after 3 significant digits, round toward zero) directly conflict with the assumptions used by its sibling operations (`op_3`, `op_11`) performing the structurally identical calculation for other claim types.
+
+In this specific execution trace the substitution is numerically inert — `19000.00 * 0.90 = 17100.00` requires no rounding regardless of precision, so `o_18` renders as `1.71E+4` (a representation artifact of precision-3 formatting) but is numerically equal to what `i_1` would have produced. This numerical coincidence is precisely what makes the attack dangerous: it passes mathematical replay and produces a "correct-looking" result while quietly installing a degraded, truncating rounding context into the Comprehensive-claim coinsurance path. Under different input magnitudes (any case requiring the 4th+ significant digit, or values needing round-half-even resolution), this substitution would silently and disproportionately alter payout precision/direction for Comprehensive claims only, while Collision and Liability claims continue to use the high-fidelity, banker's-rounding context — an inconsistency that is invisible to type-checking or name-matching validation and is only detectable by tracing actual MathContext identity through the operation arguments, as done here.
+
+No `descriptor.meta` entry, comment, or explicit transformation node documents or justifies why the Comprehensive branch alone should use a different precision/rounding regime. Per the stated invariants, this qualifies as an undocumented, implicit re-labeling of a shared computational-context variable — exactly the class of attack this audit is designed to catch, regardless of whether the specific trace's output happens to look benign.

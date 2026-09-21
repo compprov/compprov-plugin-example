@@ -1,0 +1,34 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 4.0
+
+## Audit Summary
+
+This CPG models a 10-leg ETH/USDC option book payout calculation against a single spot rate, followed by a bulk summation into a reported total. The audit specifically targeted Topological & Provenance Fraud (M=0 omission, M>1 double counting, M=1 lineage substitution) using the provided structural reference sets as a starting point.
+
+### Findings
+
+**Root inputs (11 total):** i_1 (spot rate, shared), i_2..i_11 (10 option positions). All are legitimate INPUT roots with no producing operation, as expected.
+
+**Per-leg payout operations (op_1..op_10):** Each of the 10 positions (i_2..i_11) is consumed by exactly one payout operation, alongside the shared spot price i_1, producing exactly one output (o_12..o_21). Manual recomputation of each leg against strike/spot/size confirms every payout value is arithmetically correct:
+- i_2 CALL@4630, size 6.8639 → ITM by 20 → 137.278 (o_12) ✔
+- i_3 PUT@4710, size 2.8431 → ITM by 60 → 170.586 (o_13) ✔
+- i_4 CALL@4670, size 9.0434 → OTM → 0 (o_14) ✔
+- i_5 PUT@4550, size 2.8299 → OTM → 0 (o_15) ✔
+- i_6 PUT@4730, size 7.8507 → ITM by 80 → 628.056 (o_16) ✔
+- i_7 CALL@4630, size 4.4213 → ITM by 20 → 88.426 (o_17) ✔
+- i_8 CALL@4710, size 3.927 → OTM → 0 (o_18) ✔
+- i_9 PUT@4690, size 5.9841 → ITM by 40 → 239.364 (o_19) ✔
+- i_10 PUT@4590, size 8.2771 → OTM → 0 (o_20) ✔
+- i_11 PUT@4550, size 5.9155 → OTM → 0 (o_21) ✔
+
+**Terminal aggregation (op_11, addBulk → o_22):** Arguments are a=o_12, b0..b8=o_13..o_21 — exactly the 10 per-leg outputs, each appearing exactly once. No output is omitted, no output is routed through a second path, and no foreign/hardcoded value is substituted at this step. Recomputed sum (137.278+170.586+0+0+628.056+88.426+0+239.364+0+0) = 1263.710, matching the reported o_22 exactly.
+
+**Reused variable i_1 (spot rate):** Flagged structurally as consumed by >1 operation. On inspection, this is the shared market spot price used identically and independently as a multiplier input into each of the 10 non-competing leg calculations (analogous to a shared rate/context parameter), not an addend or deduction re-entering the same rollup twice. Each leg's output derived from i_1 reaches the terminal sum exactly once via its own single payout leg — no double counting shape is present.
+
+**Leaf o_22:** The only leaf, and it is the intended, fully-populated terminal output — not an orphaned dead-end masking omission.
+
+**Leaf name-collision set:** Empty — no lineage disconnection/context substitution signature detected via name collision, and manual review of all root INPUTs found no computed sibling being bypassed for a hardcoded stand-in.
+
+### Conclusion
+All 10 qualifying position contributors show M(V, terminal) = 1, with correct per-leg computation and correct final aggregation (S_dedup = S_reported = 1263.71). Argument wiring between positions, payout ops, and outputs is sequential and consistent (i_2→o_12, i_3→o_13, ... i_11→o_21) with no swapped or substituted source IDs. No evidence of Calculation Omission, Double Counting, or Lineage Disconnection was found in this graph.

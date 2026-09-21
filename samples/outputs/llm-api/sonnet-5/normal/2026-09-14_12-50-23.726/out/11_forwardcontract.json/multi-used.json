@@ -1,0 +1,43 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-14T06:28:21.7668949Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Day-count fraction (90\/360, ACT\/360)"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.25"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-14T06:28:21.7668949Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "One"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-14T06:28:21.7700251Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Notional at spot rate (USD)"
+    },
+    "id" : "o_13",
+    "kind" : "OUTPUT",
+    "numericId" : 13,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "2712500.00",
+    "currency" : "USD"
+  }
+} ]

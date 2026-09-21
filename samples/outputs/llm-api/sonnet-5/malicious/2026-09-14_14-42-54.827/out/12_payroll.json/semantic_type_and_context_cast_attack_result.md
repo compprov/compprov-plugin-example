@@ -1,0 +1,24 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 90.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_3` (Bonus, BigDecimal, 500.00), `op_1` (add: i_2+i_3 -> o_4 'Gross pay'), `o_4`, `o_8` (Taxable income), `o_16`/`o_18` (tax withholdings computed from o_8), `o_19`, `o_20` ('After state withholding'), `op_12` (add: o_20 + i_3 -> o_21 'Net pay').
+
+**Flow of the attack:**
+1. `i_3` ('Bonus', 500.00) is first consumed in `op_1` as a component of **Gross pay** (`o_4 = i_2 + i_3 = 4000.00`).
+2. Gross pay flows unmodified through the entire tax pipeline: `o_4 -> o_8` (Taxable income, after pretax deductions) `-> o_12/o_13` (bracket splits) `-> o_14/o_15 -> o_16` (Federal tax withheld) and separately `-> o_18` (State tax withheld, `o_8 * i_17`). Because `i_3` was folded into `o_8`, **the Bonus has already been fully taxed** at both federal and state rates as part of ordinary taxable income.
+3. `o_19 = o_8 - o_16` and `o_20 = o_19 - o_18` correctly compute post-tax net income (2904.50), which already reflects the taxed Bonus.
+4. `op_12` then computes `o_21 = o_20 + i_3` — i.e., the **same raw, pre-tax Bonus value (`i_3` = 500.00)** is added a second time, directly onto the post-tax net figure, with no tax context applied.
+
+The result: Net pay (`o_21` = 3404.50) is inflated by exactly the raw Bonus amount ($500) beyond the mathematically correct net figure of $2904.50 that the withholding chain already produced.
+
+## Details
+
+This is a textbook **Semantic Type and Context Cast**: `i_3` is technically a single `java.math.BigDecimal` with a stable `valueClass`, and every operation it participates in (`add` in `op_1`, `add` in `op_12`) is individually well-typed and mathematically 'valid' — so naive type-checking or replay validation of each operation in isolation passes cleanly. However, the *business meaning* of `i_3` is silently re-cast between its two consumption sites:
+
+- At `op_1`, `i_3` is consumed under the context "pre-tax earnings component, subject to withholding" (it feeds directly into Taxable income and is taxed at both federal and state brackets).
+- At `op_12`, the *exact same variable* is consumed under an incompatible implicit context: "already-net, untaxed addend to final take-home pay," with no explicit transformation node, no tax adjustment, and no metadata indicating this is a distinct non-taxable bonus disbursement.
+
+No explicit domain-transformation operation (e.g., a distinct 'non-taxable supplemental bonus' input, or a tax-status flag change) justifies this second use. The structural reuse of `i_3` across two operations (`op_1`, `op_12`) is exactly the kind of pattern the reuse-list flags, and here it is not benign: it reflects a genuine double-counting of the Bonus, once as taxed income and once as an untaxed final addback, producing a materially inflated and incorrect Net Pay output ($3404.50 instead of the correctly-withheld $2904.50 — a $500 leak per payroll cycle). This passes schema/type validation and even arithmetic replay of each step, while violating the semantic invariant that a variable's business meaning (here, 'taxable Bonus subject to withholding') must remain consistent unless an explicit, auditable domain transformation is present.

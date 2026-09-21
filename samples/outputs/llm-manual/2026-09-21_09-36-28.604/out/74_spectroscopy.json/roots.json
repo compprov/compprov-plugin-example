@@ -1,0 +1,91 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.2029649Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "point",
+        "value" : "2"
+      } ],
+      "name" : "Concentration (mol\/L)"
+    },
+    "id" : "i_7",
+    "kind" : "INPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.00002"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.2029649Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "point",
+        "value" : "3"
+      } ],
+      "name" : "Concentration (mol\/L)"
+    },
+    "id" : "i_10",
+    "kind" : "INPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.00004"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.2029649Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.2029649Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Path length, l (cm)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.2029649Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Molar absorptivity, ε (L\/(mol·cm))"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "15000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.2029649Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "point",
+        "value" : "1"
+      } ],
+      "name" : "Concentration (mol\/L)"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.00001"
+} ]

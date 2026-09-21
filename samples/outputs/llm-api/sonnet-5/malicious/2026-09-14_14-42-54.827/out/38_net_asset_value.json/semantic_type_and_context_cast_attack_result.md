@@ -1,0 +1,24 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 92.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_8` (ETH balance, source=Trust Nodes), `i_9` (WSTETH balance, source=Lido), `op_1` (`add`), `o_11` (labeled "WSTETH balance"), `op_2` (`convert` using WSTETH/ETH rate `i_3`), `o_12` ("WSTETH->ETH"), `op_6` (`convert` using ETH/USD rate `i_2`), `o_16` ("ETH(Staked)->USD"), and finally `op_8` (`addBulk`) / `o_18` ("Assets sum").
+
+**Flow of the attack:**
+1. `i_9` is an `Amount` with `currency="WSTETH"`, value `51.629114720513456404`.
+2. `i_8` is a *separate* `Amount` with `currency="ETH"`, value `0.314511152401086846` — a fundamentally different asset with its own market price (WSTETH/ETH rate = 1.243492, i.e. NOT 1:1).
+3. `op_1` (`add`, formula `a+b`) sums `i_9 + i_8` directly as raw numeric amounts (51.629114720513456404 + 0.314511152401086846 = 51.943625872914543250) and stores the result in `o_11`, **labeled and typed as "WSTETH balance"**. The `currency` tag of the ETH-denominated `i_8` value is silently discarded/overwritten by the WSTETH tag of the result — a textbook metadata suppression: the technical type (`Amount`/`BigDecimal`) is preserved end-to-end, but the business/domain meaning (which asset this money actually is) is not.
+4. `op_2` then converts the *entire* `o_11` figure using the WSTETH→ETH rate (`i_3` = 1.243492), treating the ETH portion contributed by `i_8` as if it, too, were WSTETH. This inflates the ETH-equivalent value: the ETH-denominated 0.314511152401086846 ETH becomes 0.391092101913850846 ETH-equivalent instead of its true 1:1 value of 0.314511152401086846 ETH — an overstatement of ≈0.07658 ETH.
+5. This inflated `o_12` flows into `op_6` (`convert` at ETH/USD = 2083.31), producing an inflated `o_16` ("ETH(Staked)->USD" = 134,564.08), which is then summed unmodified into the final NAV output `o_18` ("Assets sum" = 588,971.37) via `op_8`.
+
+Net effect: the reported NAV is overstated by roughly $159.57 in this instance (≈0.07658 ETH × 2083.31 USD/ETH) purely because an ETH balance was silently re-cast as a WSTETH balance before an asset-specific FX conversion was applied. The magnitude scales linearly with balance size and rate divergence, so this is a structurally dangerous, not merely cosmetic, defect.
+
+## Details
+
+The `add` operation (`op_1`) operates on the generic `Amount`/`WrappedAmount` type, which type-checks identically whether the underlying `currency` field is `"WSTETH"` or `"ETH"`. Nothing in the graph enforces that `add()` requires matching `currency` values on its operands — this is exactly the gap the attack vector describes: technical type continuity (`Amount -> Amount`, `BigDecimal -> BigDecimal`) is preserved, so schema/type validators and even mathematical replay of the addition pass cleanly, while the domain meaning of one operand (an unstaked ETH balance) is silently absorbed into and re-labeled as another asset class (staked WSTETH).
+
+This is materially different from benign implicit aggregation (e.g., "Subtotal + Shipping = Tax Base") because here the two operands are **different currencies with a non-trivial, time-varying exchange rate** (`i_3` = 1.243492, explicitly present elsewhere in the graph as the WSTETH/ETH rate) — the graph itself proves the two amounts are *not* fungible 1:1, yet they are added as if they were, and the combined total is then run through an asset-specific FX conversion that only applies validly to the WSTETH portion.
+
+The consequence is a quantifiable, silent inflation of the reported NAV (`o_18`) that bypasses type-safety and mathematical-replay checks entirely, since every individual multiplication/addition step is numerically self-consistent — the anomaly lives purely in the mismatched business/currency context carried (and then discarded) across `op_1` and `op_2`. This is a clear instance of the Semantic Type and Context Cast attack: C_source (`ETH`) != C_target (`WSTETH`) despite identical technical `Amount`/`BigDecimal` types, with no explicit domain-transformation node (e.g., an ETH->WSTETH conversion using the WSTETH/ETH rate) inserted before the addition.

@@ -1,0 +1,24 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 78.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_14`–`i_19` (six ETH gas-fee inputs), `i_5`–`i_8` (historical ETH/USDC rates), `op_1`–`op_6` (gas → USDC conversions), `o_21`–`o_26` (per-transaction gas costs in USDC), `op_7` (addBulk), **`o_27` "Total gas fees in USDC"** (meta: `basis: realized at deposit moment`), `o_33` "Gross yield in USDC", `op_14`/`o_34` "Platform fee in USDC", `op_15`/**`o_35` "Net profit in USDC"**.
+
+**Flow of the defect:**
+1. The graph meticulously computes a fully-justified, per-transaction gas-cost lineage: six `convert` ops (`op_1`–`op_6`) each correctly match a transaction's ETH gas amount to the ETH/USDC rate *dated on that same transaction day* (e.g. `i_14`/2026-06-01 with `i_5`/2026-06-01; `i_16`/2026-06-08 with `i_8`/2026-06-08, etc.). These are summed via `op_7` into `o_27` = 111.433600 USDC, explicitly annotated "realized at deposit moment" — i.e., a documented, deliberate cost-basis figure meant to represent real capital outlay.
+2. Separately, yield legs (`i_9`, `i_10`, `i_11`, `i_12`, `i_13`) are converted to USDC using *current* (2026-06-30) rates (`i_1`, `i_2`, `i_3`) and summed via `op_13` into `o_33` "Gross yield in USDC" = 1738.305562.
+3. `op_14` computes a 3% platform fee (`o_34` = 52.149166) directly off `o_33`.
+4. `op_15` computes `o_35` = `o_33` − `o_34` = 1686.156396 and labels it **"Net profit in USDC"**.
+5. Critically, `o_27` (Total gas fees) is a dead-end leaf — per the structural traversal, it is never consumed by any subsequent operation. It feeds nothing into `op_13`, `op_14`, or `op_15`.
+
+The result: a variable explicitly and elaborately computed to represent a real, deposit-time cost is discarded, while the final output is labeled "Net profit" — a term that semantically asserts *all* costs have been deducted — when in fact only the platform fee was deducted.
+
+## Details
+
+This is a textbook Semantic Type and Context Cast: every individual operation is type-safe (`Amount`→`Amount` in USDC throughout) and every individual arithmetic step replays correctly (verified by hand: 22.4+17.3844+12.93+17.5032+17.92+23.296 = 111.4336; 1738.305562×0.03 = 52.149166; 1738.305562−52.149166 = 1686.156396). A naive validator checking type continuity and per-node arithmetic would find nothing wrong — every node's local math checks out.
+
+The violation is at the level of business semantics: the label "Net profit" (`o_35`) makes an implicit but strong domain claim — that the figure nets out *all* legitimate costs of generating the yield, including the gas fees the graph itself computed and tagged as "realized at deposit moment." Per the invariant set, a domain transition (Gross → Net) must be backed by explicit, auditable transformation logic covering all cost categories asserted by that label; instead, the transformation silently omits an already-quantified cost stream (`o_27`) that was computed in full, correctly-sourced detail specifically for this purpose, then orphaned. This is precisely the "metadata suppression via omission" and "unadjusted metric consumed as though already post-adjustment" pattern described in the attack definition — `o_33` (Gross) is used as though it were already gas-cost-adjusted when it is not, and `o_35` is re-labeled "Net" without the required adjustment actually occurring.
+
+**Consequence:** The reported "Net profit in USDC" (1686.156396) overstates true economic profit by the full amount of unaccounted gas costs (111.4336 USDC, ~6.6% of the reported net figure). A downstream consumer trusting the `o_35` label as fully netted (which the naming and the parallel, carefully-computed `o_27` branch strongly imply was the intent) would be materially misled about actual portfolio profitability. Because the gas-fee sub-computation is internally consistent, well-documented, and dated correctly, this is not a simple arithmetic bug that would show up as a broken replay — it is a structurally deliberate-looking omission that passes every type and connectivity check while breaking semantic correctness of the final figure.

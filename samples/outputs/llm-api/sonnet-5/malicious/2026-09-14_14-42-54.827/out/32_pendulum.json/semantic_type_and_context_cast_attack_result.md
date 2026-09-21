@@ -1,0 +1,23 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 72.0
+
+## Anomaly Localization (If Detected)
+
+**Implicated nodes:** `i_1`, `i_2`, `op_2`, `o_9`, `op_4`, `o_11`, `op_5`, `o_12`, `op_6`, `o_13`, and (as a contrast baseline) `op_8`/`o_15`.
+
+**Flow:**
+1. Two distinct `INPUT` variables — `i_1` (`MathContext{precision=16, HALF_EVEN}`) and `i_2` (`MathContext{precision=3, DOWN}`) — are both labeled with the *identical* `descriptor.name`: **"Computation precision"**. No `descriptor.meta` distinguishes their intended scope, purpose, or applicability.
+2. Every arithmetic operation in the pipeline (`op_1`, `op_3`, `op_4`, `op_5`, `op_6`, `op_7`, `op_8`) consumes `i_1` as its rounding/precision context — establishing `i_1` as the de-facto "Computation precision" standard for this pipeline.
+3. `op_2` (`sqrt(L/g)` → `o_9`, labeled "sqrt(L/g) (s)") is the **sole exception**: it silently substitutes `i_2` in place of `i_1` for the `mc` argument, truncating the result to 3 significant digits with `DOWN` rounding (a mode that only ever reduces magnitude, never rounds up).
+4. The mathematically correct value of `sqrt(0.2040816326530612)` is ≈ `0.4517540...`; under `i_2` it is stored as `0.451` — a value that is both lower precision *and* systematically biased low by the `DOWN` mode.
+5. This truncated `o_9` then propagates directly into `o_11` ("Period, T (s)", via `op_4`), and `o_11` in turn feeds `o_12` ("Frequency, f (Hz)", `op_5`) and `o_13` ("Angular frequency, ω", `op_6"`) — contaminating three downstream "final" physical outputs with degraded precision, while every arithmetic step *looks* type-safe (`MathContext → MathContext`, `BigDecimal → BigDecimal`) and internally self-consistent.
+6. Critically, the structurally symmetric operation `op_8` (`sqrt(g/L)` → `o_15`, the explicit "cross-check") correctly uses the full-precision `i_1` context, producing `2.213594362117866` instead of a truncated equivalent. The pipeline therefore applies two different "Computation precision" standards to two mathematically analogous square-root operations, with no documented justification for the discrepancy.
+
+## Details
+
+This is a textbook **Semantic Type and Context Cast**: technical type continuity is perfect (both `i_1` and `i_2` are legitimately typed `java.math.MathContext`, and every consuming operation's signature validates cleanly), but the *business context* — "the precision standard used for this scientific computation" — has been covertly forked. By giving `i_2` the exact same `descriptor.name` ("Computation precision") as `i_1`, an auditor or automated schema/name-matching tool sees no anomaly: both nodes present as instances of the same declared business concept. Only a value-level and cross-reference audit reveals that `i_2` encodes a fundamentally different (and biased) rounding policy, and that it is quietly substituted into exactly one physically-critical step (`op_2`) rather than being applied uniformly or flagged as an intentional "quick-estimate" branch.
+
+The naive structural checks in this audit's own reference data are insufficient to catch this: the "duplicate leaf-variable name" detector only inspects leaf variables, but `i_1`/`i_2` are *root* inputs, so the name collision is invisible to it. The "multiply-consumed variable" detector explicitly excludes `MathContext` variables from its listing (since precision-context reuse is normally benign), which is precisely the blind spot exploited here — the attack doesn't need `i_2` to be reused across many operations; it only needs to be swapped in for one sensitive step under camouflage of an identical display name.
+
+**Consequences:** The reported "Period, T (s)" (`o_11` = `2.833716573537991`), "Frequency, f (Hz)" (`o_12`), and "Angular frequency, ω" (`o_13`) are all derived from an artificially truncated/biased intermediate (`o_9` = `0.451` instead of the correct ≈`0.451754`), producing a systematic downstream error (~0.17%+ in T, propagating identically into f and ω) that is undetectable by type-checking, mathematical replay of the stated operations, or casual review of the graph's node connectivity — since every operation node, taken individually, is fully valid and internally consistent with its own inputs. Only comparing the *declared business meaning* of `i_1` vs. `i_2` against their actual numeric substance, and noting the asymmetric application to structurally mirrored `sqrt` operations (`op_2` vs `op_8`), exposes the covert context substitution.

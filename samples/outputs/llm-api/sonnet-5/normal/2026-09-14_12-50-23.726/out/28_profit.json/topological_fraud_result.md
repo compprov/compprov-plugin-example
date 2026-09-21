@@ -1,0 +1,34 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 8.0
+
+## Summary
+
+A full forward-propagation trace of every root INPUT through every operation to the sole terminal leaf `o_36` ("Net profit in USDC") was performed, cross-referencing all four structural reference sets. **No Calculation Omission, Double Counting, or Lineage Disconnection was confirmed.** The graph is unusually well-formed and internally consistent; every candidate flagged by the mechanical heuristics was individually investigated and found to have a benign, arithmetically-verified explanation.
+
+## Investigation of Flagged Candidates
+
+### M>1 candidate: `o_26` (Gross yield in USDC)
+`o_26` is consumed by **op_14** (`scale(o_26, i_20)` → `o_34`, Platform fee) and **op_15** (`subtract(o_26, o_33)` → `o_35`, After-gas amount). Tracing both paths forward to `o_36`:
+
+`o_36 = o_35 - o_34 = (o_26 - o_33) - (0.03 * o_26)`
+
+The net algebraic coefficient on `o_26` in the terminal result is `(1 - 0.03) = 0.97` — i.e., `o_26` is consumed once as principal and once as the (transparently named, `scale`/`a*f`-labeled) basis for a proportional 3% platform fee, not added or subtracted twice as the same quantity. This is the standard "net = gross − gas − fee(gross)" shape, not the double-counting attack pattern (same entity re-entered as two independent addends/deductions into the same rollup). No violation.
+
+### M>1 candidates: `i_2`, `i_5` (ETH/USDC rates)
+`i_2` (2026-06-30 rate) is reused only as a **conversion-rate parameter** for two distinct yield amounts (`i_10`→`o_23`, `i_13`→`o_25`); `i_5` (2026-06-01 rate) is reused as the conversion-rate parameter for three distinct gas amounts realized on that same date (`i_14`→`o_27`, `i_18`→`o_31`, `i_19`→`o_32`). In both cases the *reused variable* is a rate, not a principal/cost entity itself — each principal/cost value (`i_10`, `i_13`, `i_14`, `i_18`, `i_19`) flows into the terminal aggregation exactly once. This matches the explicitly-permitted "shared allocation/reference basis" pattern, not duplication of an entity.
+
+### Leaf `o_36` and empty name-collision set
+The only leaf is the intended terminal output; the name-collision set is empty and no semantically-equivalent root/computed-sibling substitution was found on manual inspection (no root INPUT silently mirrors a computed OUTPUT's role/date/units while the computed twin goes unconsumed).
+
+### Full arithmetic replay (root → terminal)
+All 16 operations were replayed by hand:
+- 5 yield sources (`i_9,i_10,i_11,i_12,i_13`) each traverse exactly one conversion path into `o_26` (verified sum: 405.658296+127.193403+119.583561+299.529123+786.341179 = 1738.305562, exact match).
+- 6 gas-fee legs (`i_14..i_19`) each use the ETH/USDC rate **dated to their own transaction date** (`i_14`/`i_18`/`i_19`→`i_5` 06-01; `i_17`→`i_6` 06-03; `i_15`→`i_7` 06-04; `i_16`→`i_8` 06-08), consistent with the documented "realized at deposit moment" basis on `o_33`, and sum exactly to 111.433600.
+- Yield conversions correctly use the report-date (2026-06-30) rates `i_1/i_2/i_3`, consistent with mark-to-market valuation at the report date.
+- `o_34` (52.149166), `o_35` (1626.871962), `o_36` (1574.722796) all reconcile exactly under DOWN-truncation to each currency's documented precision.
+
+No `resultId` substitution, no argument pointing to a different variable than its logical predecessor, and no root left dangling unconsumed (all 20 roots are consumed; the only leaf is the correct terminal output).
+
+## Details
+Every mandatory contributor (5 yield legs, 6 gas legs, platform-fee rate) reaches `o_36` via exactly one causal path (`M=1`), and the two variables reused by multiple operations (`i_2`, `i_5`, and `o_26`) are reused strictly as rate/basis parameters feeding distinct downstream computations rather than being re-entered as duplicate principal/cost entities into the same rollup. Origin-propagation was validated end-to-end with exact-value arithmetic replay, confirming `O_derived == O_reported` at every intermediate and the terminal node. This is consistent with a clean, deliberately transparent DeFi profit-and-loss computation rather than a tampered graph. Residual risk score reflects only the inherent difficulty of proving a fully negative result with certainty, not any concrete finding.

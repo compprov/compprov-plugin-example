@@ -1,0 +1,16 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 10.0
+
+## Summary
+This CPG models a standard 5-year straight-line depreciation schedule (Asset cost 85,000; Salvage 10,000; Useful life 5 years → Annual depreciation 15,000/yr). All twelve operations were replayed and the arithmetic is internally consistent end-to-end: Depreciable base (75,000) → Annual depreciation (15,000) → cumulative Accumulated Depreciation track (15k/30k/45k/60k/75k) and a parallel Book Value track (70k/55k/40k/25k/10k), terminating exactly at the Salvage Value (10,000.00) in Year 5 — the expected mathematical closure condition for a correctly implemented straight-line schedule.
+
+## Anomaly Localization (If Detected)
+No confirmed Semantic Type and Context Cast violation was found. One structural point was inspected closely as a candidate and is documented below for transparency, but it does not rise to the level of an explicit domain conflict.
+
+- **op_4** (`subtract`, args: `a=i_2 "Asset cost"`, `b=o_6 "Annual depreciation"` → `o_9 "Book value [Year 1]"`): this computes Book Value Year 1 as `Cost − Annual Depreciation` rather than `Cost − Accumulated Depreciation [Year 1]` (`o_8`). Numerically these are identical only because, in Year 1, Accumulated Depreciation equals Annual Depreciation by definition (o_8 = i_7(0) + o_6 = o_6). No downstream operation repeats this shortcut; Years 2–5 book values (`o_11, o_13, o_15, o_17`) are instead computed recursively from the prior year's book value minus the annual depreciation figure (`op_6, op_8, op_10, op_12`), which is mathematically equivalent to Cost − Accumulated Depreciation for all years and is a standard, auditable recursive implementation pattern for straight-line schedules.
+
+## Details
+The op_4 pattern is the only place where a variable explicitly labeled as a per-period flow ("Annual depreciation", o_6) is consumed in a formula whose intent (Cost minus cumulative depreciation) would normally call for the cumulative balance variable ("Accumulated depreciation [Year 1]", o_8). This is the shape of a Semantic Type/Context Cast (flow variable silently substituted for a balance variable, same BigDecimal type, same numeric result), but it does not meet the bar of an explicit, material contradiction required by the invariants: the substitution is only valid — and only exercised — in the single period where the two quantities are mathematically identical by construction (accumulated = annual + 0 in year 1), it is not repeated or compounded in later periods, no domain metadata (units, tax status, currency, gross/net) is stripped or reassigned, and the final result reconciles exactly to the salvage value, confirming no value-level drift was introduced. No reused variable (`i_2`, `o_6`) is consumed under a conflicting business definition anywhere else in the graph, and the flagged structural sets (leaf variables, multi-consumed variables) show no name collisions or relabeling.
+
+Overall, this is best characterized as a benign, common depreciation-schedule implementation shortcut rather than tampering. Risk is scored low but non-zero to reflect the residual ambiguity of the op_4 substitution, which a stricter provenance-labeling policy would likely require to route through `o_8` explicitly rather than reusing `o_6`.

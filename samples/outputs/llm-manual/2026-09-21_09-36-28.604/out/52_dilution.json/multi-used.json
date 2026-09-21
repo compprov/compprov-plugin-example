@@ -1,0 +1,17 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.817251Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "step",
+        "value" : "2"
+      } ],
+      "name" : "Step 2 final volume, V2 (L)"
+    },
+    "id" : "i_8",
+    "kind" : "INPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.000"
+} ]

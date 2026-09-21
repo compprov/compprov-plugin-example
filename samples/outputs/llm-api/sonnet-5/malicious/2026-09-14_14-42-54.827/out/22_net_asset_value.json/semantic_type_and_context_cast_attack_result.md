@@ -1,0 +1,22 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 93.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_1`, `i_4`, `op_1`, `o_9` (legitimate, discarded computation) vs. `i_10`, `op_6`, `o_15` (tainted consumption path).
+
+**Flow of the attack:**
+1. `op_1` (`convert`) correctly computes the BTC balance `i_4` (9.91350497 BTC) at the audited market rate `i_1` (68989.72 USD/BTC), producing `o_9` = **683,929.93 USD** — labelled `"BTC->USD"`. This is the only auditable, rate-derived representation of the BTC position's USD value in the graph.
+2. `o_9` is never consumed by any downstream operation — it is a dead-end leaf (confirmed by the structural leaf-set: `o_9` appears there).
+3. Instead, the final aggregation `op_6` (`addBulk` → `o_15`, "Assets sum") consumes `i_10`, an unrelated **root INPUT** variable named `"BTC amount in USD"` with value **752,322.92 USD** — a value with *no producing operation, no rate lineage, and no traceable derivation from `i_1`/`i_4` at all*.
+4. `752,322.92 / 683,929.93 = 1.09999...` — i.e., `i_10` is exactly the legitimately-computed `o_9` inflated by ~10% (a difference of **+68,392.99 USD**), strongly suggesting `i_10` was manufactured to approximate — but silently overstate — the real conversion result rather than being an independent, differently-sourced figure.
+5. The final reported NAV (`o_15` = 1,255,501.78 USD) therefore embeds this unverified, unauditable +68,392.99 USD delta. Had the correctly computed `o_9` been used in place of `i_10`, `o_15` would be 1,187,108.79 USD.
+
+## Details
+
+Both `o_9` and `i_10` carry the identical technical type (`io.compprov.examples.nav.model.Amount`, currency `USD`) and near-identical business labels (`"BTC->USD"` vs `"BTC amount in USD"`), which is precisely why this substitution slips past schema/type-based validation and even past naive duplicate-name detection (the names are similar but not exact-matches, and neither is flagged as a shared-leaf-name because `o_9`'s consumer set is empty rather than duplicated). A validator checking only `valueClass` continuity (`Amount -> Amount`) and DAG connectivity sees nothing wrong: `op_6`'s `a` argument is a well-typed `Amount` in USD, exactly what `addBulk` expects.
+
+However, semantically, the pipeline's own design establishes that "BTC value in USD" must be produced via `convert(balance, rate)` — as proven by the parallel treatment of every other asset leg (`op_2`..`op_5`, all consuming a balance + a rate to produce the USD-denominated output actually used in the sum). The BTC leg alone breaks this pattern: its properly computed, rate-derived, auditable output (`o_9`) is silently discarded, and an un-derived, context-injected root value (`i_10`) is substituted in its place at the exact point of final aggregation. This is a canonical Semantic Type and Context Cast: technical type and mathematical well-formedness are preserved end-to-end, but the business meaning "BTC amount in USD" is covertly re-mapped from "rate-converted, auditable output" to "arbitrary unverified input," with no explicit transformation node, rationale, or metadata justifying the swap or the ~10% uplift.
+
+**Impact:** The reported NAV (`o_15` = 1,255,501.78 USD) is overstated by 68,392.99 USD (≈5.8%) relative to what the pipeline's own verified rate-conversion logic would produce, via a mechanism specifically engineered to be invisible to type-checking and connectivity-only audits.

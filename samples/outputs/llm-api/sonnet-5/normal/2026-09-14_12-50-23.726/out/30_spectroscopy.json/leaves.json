@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.2029649Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Absorbance ratio A3\/A1 (expect ≈ c3\/c1)"
+    },
+    "id" : "o_14",
+    "kind" : "OUTPUT",
+    "numericId" : 14,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:33.2029649Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Absorbance ratio A2\/A1 (expect ≈ c2\/c1)"
+    },
+    "id" : "o_13",
+    "kind" : "OUTPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2"
+} ]

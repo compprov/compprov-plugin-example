@@ -1,0 +1,27 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 6.0
+
+## Audit Summary
+This CPG models a standard 5-year straight-line depreciation schedule (asset cost 85,000.00; salvage value 10,000.00; useful life 5 years) and produces a full year-by-year schedule of accumulated depreciation and book value, terminating in two leaf variables: `o_16` (Accumulated depreciation [Year 5]) and `o_17` (Book value [Year 5]).
+
+### Anomaly Localization (If Detected)
+No confirmed Topological & Provenance Fraud (Omission, Double Counting, or Lineage Disconnection) was found. Full arithmetic re-derivation of every node was performed:
+
+- `o_5` = i_2 - i_3 = 85000.00 - 10000.00 = 75000.00 ✔ (Depreciable base)
+- `o_6` = o_5 / i_4 = 75000.00 / 5 = 15000.00 ✔ (Annual depreciation)
+- `o_8..o_16` (accumulated depreciation Y1-Y5) = i_7 + n*o_6 for n=1..5 → 15000, 30000, 45000, 60000, 75000 — all verified ✔, culminating in `o_16` = 75000.00 = depreciable base (`o_5`), exactly as required.
+- `o_9..o_17` (book value Y1-Y5) = i_2 - n*o_6 for n=1..5 → 70000, 55000, 40000, 25000, 10000 — all verified ✔, culminating in `o_17` = 10000.00 = salvage value (`i_3`), exactly as required.
+
+All five root inputs (`i_1` MathContext, `i_2` cost, `i_3` salvage, `i_4` life, `i_7` opening accumulated depreciation = 0) are consumed at least once and flow correctly into the terminal leaves. No root or intermediate mandatory contributor (`i_3` salvage value, `i_4` useful life, `i_7` opening balance) is dropped from the formula it should participate in — ruling out Calculation Omission (M=0).
+
+### Details on Flagged Reuse (`i_2`, `o_6`)
+The structural reference data flags `i_2` (Asset cost) and `o_6` (Annual depreciation) as multi-consumed (M>1 candidates). Tracing every path:
+
+- `o_6` is legitimately re-consumed once per year (10 times total across `op_3`-`op_12`) as the fixed periodic depreciation increment/decrement in an iterative rollforward schedule. This is the expected shape of a straight-line schedule, not artificial inflation — deduplicating this reuse and reconstructing the closed form gives `o_16 = i_7 + 5*o_6 = 75000.00` and `o_17 = i_2 - 5*o_6 = 10000.00`, both matching the reported values exactly. There is no divergence between $S_{dedup}$ and $S_{reported}$.
+- `i_2` is consumed twice: once directly in `op_4` (book value Year 1 = cost - annual depreciation) and once indirectly via `op_1` → `o_5` → `o_6` (embedded in the annual depreciation figure that is subtracted 5 times). Algebraically this yields `o_17 = i_2 - 5*o_6 = i_2 - (i_2 - i_3) = i_3`, i.e. the cost term cancels exactly and the terminal book value equals the salvage value — the mathematically correct closed-form result for straight-line depreciation. This is a necessary decomposition of the formula, not a duplicate addend inflating or deflating the result.
+
+No hardcoded literal was found overriding any variable that has a computed sibling elsewhere (`i_7` = 0 is a genuine boundary condition — opening accumulated depreciation at the start of the asset's life — with no computed counterpart in the graph). No leaf shares a name with another variable in the graph (confirmed empty per structural data), so no Lineage Disconnection / context-substitution candidate was found for `o_16`/`o_17`, and forward propagation from true roots reproduces the reported terminal values exactly ($O_{derived} = O_{reported}$ for both leaves).
+
+### Conclusion
+All arithmetic, path multiplicities, and terminal derivations check out as internally consistent and correct. The reused variables (`i_2`, `o_6`) are structurally necessary and their reuse does not distort the reported result — deduplicated reconstruction matches the reported schedule exactly. No violation of the stated EXPECTED_INVARIANTS was substantiated. Residual risk score reflects only the inherent difficulty of fully excluding a very well-disguised, non-arithmetic-affecting substitution, not any concrete finding.

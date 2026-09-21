@@ -3,6 +3,7 @@ package io.compprov.examples.construction;
 import io.compprov.core.DataContext;
 import io.compprov.core.DefaultComputationContext;
 import io.compprov.core.DefaultComputationEnvironment;
+import io.compprov.core.meta.Meta;
 import org.junit.jupiter.api.Test;
 
 import java.math.MathContext;
@@ -53,7 +54,8 @@ public class ConstructionEstimateCalculator {
 
         final var costWithOverhead = directCost.add(overhead, mc, descriptor("Cost including overhead"));
 
-        final var profitMarginRate = ctx.wrapBigDecimal(dp.fetchProfitMarginRate(), descriptor("Profit margin rate (15%)"));
+        final var profitMarginRate = ctx.wrapBigDecimal(dp.fetchProfitMarginRate(), descriptor("Profit margin rate (15%)",
+                Meta.of("basis", "markup-on-cost-including-overhead")));
         final var profitMargin = costWithOverhead.multiply(profitMarginRate, mc, descriptor("Profit margin"));
 
         // === Total bid price ===

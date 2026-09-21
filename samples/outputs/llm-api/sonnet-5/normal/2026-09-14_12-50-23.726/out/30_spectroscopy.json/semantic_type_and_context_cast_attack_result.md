@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 12.0
+
+## Summary
+This CPG models a Beer–Lambert law calibration series (A = ε·c·l) across three concentration points, followed by absorbance-ratio checks. A full trace of business context (C) from roots to leaves was performed to look for a Semantic Type and Context Cast Attack — i.e., a node where technical type continuity (BigDecimal → BigDecimal) is preserved but the declared business meaning silently changes.
+
+## Trace of Business Context
+- `i_2` (ε, L/(mol·cm)) and `i_3` (l, cm) are shared constants, legitimately reused across all three calibration points (op_1/op_3/op_5 and op_2/op_4/op_6 respectively) — consistent with their originating domain definitions throughout.
+- `i_4`/`i_7`/`i_10` (Concentration, mol/L, points 1-3) each feed a `multiply` with ε to produce `o_5`/`o_8`/`o_11` ("ε × c"), consistently labeled as such — no relabeling occurs.
+- `o_5`/`o_8`/`o_11` are each multiplied by path length `i_3` to yield `o_6`/`o_9`/`o_12` ("Absorbance, A1/A2/A3"). This is the standard, dimensionally-correct Beer–Lambert composition (ε·c·l = A); the domain transition from "ε×c" to "Absorbance" is backed by an explicit, auditable multiplication against path length — not an implicit relabeling.
+- `o_6` (A1) is consumed twice, as the denominator in both `op_7` (A2/A1) and `op_8` (A3/A1) — consistent with its declared meaning as the baseline absorbance; no conflicting definition is imposed on it.
+- Final outputs `o_13`/`o_14` ("Absorbance ratio A2/A1", "A3/A1") are simple divisions of already-consistent Absorbance variables — arithmetic and labels agree (2 and 4, matching the 2:1 and 4:1 concentration ratios).
+
+No node was found where a variable is consumed under a business definition that contradicts its originating metadata (e.g., no "Net" value silently treated as "Gross", no "Risk Multiplier" cast into a "Discount Factor", no unit/tax-status stripping that changes downstream interpretation).
+
+## Anomaly Localization (Minor, Non-Attack Finding)
+- `i_7` ("Concentration (mol/L)", point 2, value 0.00002) has an **empty `descriptor.meta`** array, whereas its sibling calibration inputs `i_4` and `i_10` both carry an explicit `{"key":"point","value":...}` tag. This breaks the otherwise consistent point-tagging convention used everywhere else in the graph (o_6, o_9, o_12 all carry point tags too).
+- This omission does not, however, produce any contradiction in downstream consumption: `i_7` is used identically to `i_4`/`i_10` (multiplied by ε, then by path length) and the resulting numeric values and labels ("ε × c (point 2)", "Absorbance, A2") remain fully consistent with its role as concentration point 2. No relabeling, unit swap, or tax/adjustment-status change occurs.
+
+## Details
+By the task's own invariant notes, absence of a meta tag on a self-explanatory intermediate/root variable is not inherently an attack, and a genuine context-cast requires an explicit contradiction between originating and consumed business meaning. Here, all domain transitions (ε×c → Absorbance) are backed by explicit, dimensionally-justified multiplication operations, and no variable's declared meaning is ever silently overridden by a downstream consumer. The single metadata omission on `i_7` is an inconsistency worth flagging for hygiene/audit-trail completeness, but it does not rise to the level of a confirmed Semantic Type and Context Cast violation since no C_source != C_target substitution was found anywhere in the graph.
+
+## Conclusion
+No confirmed semantic context-cast attack detected. One minor, non-material metadata inconsistency (missing `point` tag on `i_7`) is noted as a low-severity hygiene finding that should be reconciled but does not constitute evidence of tampering or business-meaning drift.

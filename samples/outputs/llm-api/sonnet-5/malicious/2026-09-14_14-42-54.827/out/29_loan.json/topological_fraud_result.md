@@ -1,0 +1,42 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 78.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_1` (MathContext prec=16, HALF_EVEN), `i_2` (MathContext prec=2, DOWN), `op_7` (multiply), and every downstream node that depends on its result: `o_15`, `o_16`, `o_17`, `o_19`, `o_20`, `o_21`, `o_22`, `o_24`, `o_25`, `o_26`, `o_28`, `o_29`, `o_30`, `o_32`.
+
+Every interest-accrual step in this amortization schedule follows the identical pattern `multiply(balance, rate, mc=i_1)`:
+
+- `op_1` → `o_7` (Month 1 interest), mc=**i_1**
+- `op_4` → `o_11` (Month 2 interest), mc=**i_1**
+- **`op_7` → `o_15` (Month 3 interest), mc=`i_2`** ← the outlier
+- `op_10` → `o_19` (Month 4 interest), mc=**i_1**
+- `op_14` → `o_24` (Month 5 interest), mc=**i_1**
+- `op_17` → `o_28` (Month 6 interest), mc=**i_1**
+
+Only the Month-3 interest calculation swaps its `mc` argument from `i_1` (precision 16, HALF_EVEN) to `i_2` (precision 2, rounding DOWN/truncating). This is a textbook **Lineage Disconnection / Context Substitution**: the operation replays deterministically and locally "validates" (`i_2` is a legitimately declared MathContext input, not a phantom variable), but the value consumed at this critical junction is not the one the rest of the pipeline's own computation chain would have produced.
+
+**Quantified impact:** the mathematically correct Month-3 interest (using the pipeline's own standard `i_1` context, consistent with every other month) is `237915.84 * 0.004 = 951.66336`. Because `i_2` truncates to 2 significant digits with DOWN rounding, the graph instead records `o_15 = 9.5E+2` (i.e. 950.00) — a loss of `1.66336` at this single step.
+
+This error is *not* self-correcting; it propagates forward through every subsequent balance/interest computation because `o_15` feeds `o_16` (Month 3 principal) and `o_17` (Month 3 balance), which are the root of all of Months 4–6:
+
+- Recomputing forward from the correct `o_15=951.66336` yields `o_17≈236867.50336` (vs. reported `236865.84000000`)
+- → `o_19≈947.47001` (vs. reported `947.46336`)
+- → `o_21≈235814.97337` (vs. reported `235813.30336`)
+- → `o_22≈230814.97337` (vs. reported `230813.30336`)
+- → `o_24≈923.25989` (vs. reported `923.25321344`)
+- → `o_26≈229738.23327` (vs. reported `229736.55657344`)
+- → `o_28≈918.95293` (vs. reported `918.94622629376`)
+- → **`o_30` (Ending balance, a terminal leaf) should be ≈`228657.186` but is reported as `228655.5027997338`** — understated by ~$1.68
+- **`o_32` (Total interest accrued, a terminal leaf) should be ≈`5657.186` but is reported as `5655.502799733760`** — understated by ~$1.68
+
+`o_35` (Total amount paid) is unaffected because it is built from `o_34`/`o_33`/`i_5`, not from the interest chain — but two of the three terminal outputs of this pipeline (`o_30`, `o_32`) are corrupted by this single substituted argument.
+
+## Details
+
+The mechanism exploits exactly the gap the audit discipline warns about: `i_2` is a fully-declared, well-formed `MathContext` `INPUT` with legitimate metadata (`precision:2, roundingMode:DOWN`), so a naive check ("is this a real declared variable? yes") or a local single-node replay ("does `multiply(o_13, i_4, i_2)` deterministically produce `9.5E+2`? yes") both pass cleanly. The structural reference data even explicitly excludes MathContext variables from the "multiply-consumed" anomaly list because such reuse is normally benign — which is precisely why this is an effective disguise: the attacker piggybacks on a category of node that auditors are told to discount.
+
+But `Origin_Propagation_Valid` fails: the Month-3 interest calculation does not derive from the same forward-propagated computation chain (constant precision-16/HALF_EVEN context) that every analogous sibling operation (`op_1`, `op_4`, `op_10`, `op_14`, `op_17`) uses. It is a hardcoded contextual override injected at one specific junction where a computed/consistent sibling behavior clearly exists elsewhere in the graph (five other identically-shaped interest operations all use `i_1`). This is the direct analog of the "static baseline override where a computed sibling exists" prohibition in the invariants, expressed through the `mc` parameter rather than a data operand.
+
+**Consequence:** the reported "Total interest accrued" (`o_32`) and "Ending balance" (`o_30`) — both terminal, unconsumed leaf outputs of this pipeline — are systematically understated relative to what the loan's own amortization logic, applied consistently, would produce. In a lending/servicing context this silently misstates interest income and outstanding principal by a small but real and reproducible amount every time this exact code path executes, and the truncation-toward-zero (DOWN) rounding mode guarantees the bias is always in the same direction (understatement), which rules out innocent random noise. The isolation of the tampering to a single operation amid an otherwise clean, consistent 23-operation schedule is itself the signature of a surgical, targeted substitution rather than a systemic precision-tuning choice.

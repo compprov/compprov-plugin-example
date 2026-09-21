@@ -1,0 +1,23 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 5.0
+
+## Precision and Scale Tampering Audit
+
+### Methodology
+Every arithmetic operation in this 6-month amortization trace (op_1 through op_25) was independently recomputed using exact rational arithmetic, then rounded to the declared `MathContext` (precision=16, HALF_EVEN, `i_1`) to reproduce the exact scale/precision behavior of `java.math.BigDecimal.multiply/subtract/add(..., MathContext)`. Every single intermediate and terminal value was checked against this independent recomputation.
+
+### Findings
+
+**Interest/Principal chain (o_6 → o_31):** Recomputing month-by-month (interest = balance × rate, principal = payment − interest, new balance = balance − principal), including the mid-stream prepayment adjustment (o_21–o_23), every reported value matches the exact-precision recomputation to the digit, including cases where BigDecimal's natural scale growth (5, 8, 11, 13… decimal places) eventually exceeds the 16-significant-digit cap and forces a HALF_EVEN rounding (e.g., o_16, o_19, o_20, o_27, o_30, o_31). In every such case, the reported value is exactly what a correct 16-sig-fig HALF_EVEN rounding produces — no residual leakage, no salami-slicing bias, no silent truncation.
+
+**Conservation check:** Starting principal (240000.00) − Ending balance (o_31 = 228677.3465200015) = 11322.6534799985..., which reconciles (to available precision) with the sum of all six principal portions (o_7,o_11,o_15,o_19,o_26,o_30) plus the prepayment principal (o_22 = 4980.00000) = 11322.653479998505. Asset conservation holds within expected rounding noise across every step — no leakage into any sink.
+
+**Aggregation operations (op_22–op_25):** `o_33` (total interest), `o_34` (total escrow), `o_35` (total scheduled payments), and `o_36` (total paid) were all recomputed by direct summation of their bulk arguments and match exactly.
+
+**Rounding-mode verification:** At every point where the natural (unrounded) BigDecimal result exceeded 16 significant digits, the specific rounding digit was inspected. In all such cases the discarded digit was unambiguously >5 or <5 (never an exact tie at 5), meaning HALF_EVEN and HALF_UP would have produced an identical result — the graph gives no opportunity to distinguish a maliciously altered rounding convention from the declared one, and the declared MathContext is honored throughout.
+
+### Details
+No precision degradation, scale truncation, salami-slicing pattern, or MathContext violation was found. The one structurally unusual feature — charging one month's interest (`o_21` = i_4 × i_3 = 20.00) against the lump-sum prepayment (`i_4`) before crediting the remainder (`o_22`) to principal — is a business-logic/domain modeling choice (whether a prepayment accrues interest before being applied), not a precision/scale manipulation: it uses the same declared MathContext and is computed with the same fidelity as every other step, with no truncation or hidden rounding bias detected. This is out of scope for the specific attack vector under audit here but is noted for completeness.
+
+All six escrow, principal, interest, and payment reconciliation totals tie out exactly to the individually computed steps, and conservation of principal holds end-to-end. No evidence of Precision and Scale Tampering was identified in this CPG.

@@ -1,0 +1,29 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 8.0
+
+## Semantic Type & Context Cast Audit
+
+### Anomaly Localization (If Detected)
+No variable or operation was found where a technical type (`java.math.BigDecimal`) passes replay/type validation while the underlying business meaning (`descriptor.name` / domain context) is silently swapped, suppressed in a way that contradicts an explicit prior label, or re-consumed under a conflicting definition.
+
+Full trace of business context propagation:
+- `i_2` (Lot 1 shares) + `i_3` (Lot 1 price/share) --[multiply]--> `o_4` (Lot 1 cost). Context: shares*price=cost. Consistent.
+- `i_5`/`i_6` --[multiply]--> `o_7` (Lot 2 cost). Consistent.
+- `i_8`/`i_9` --[multiply]--> `o_10` (Lot 3 cost). Consistent.
+- `i_2`,`i_5`,`i_8` --[addBulk]--> `o_11` (Total shares held). Shares aggregated with shares only. Consistent.
+- `o_4`,`o_7`,`o_10` --[addBulk]--> `o_12` (Total cost). Cost aggregated with cost only. Consistent.
+- `o_12`/`o_11` --[divide]--> `o_13` (Weighted-average cost per share). Cost/shares=price-per-share; unit algebra and label match exactly.
+- `i_14` (Shares sold) * `i_15` (Sale price/share) --[multiply]--> `o_16` (Sale proceeds). Consistent.
+- `i_14` (Shares sold) * `o_13` (Weighted-average cost/share) --[multiply]--> `o_17` (Cost basis of shares sold). This is the standard average-cost-method computation (avg cost/share applied uniformly to the disposed shares) — label and math are aligned, and `o_13` is consumed under the identical definition it was produced with (no relabeling as 'market price' or 'net-of-tax price').
+- `o_16` (Sale proceeds) − `o_17` (Cost basis of shares sold) --[subtract]--> `o_18` (Realized gain/loss). Standard proceeds-minus-basis formula; no evidence either operand was silently substituted for a gross/net or pre/post-tax variant.
+
+All numeric replays check out exactly (100*42.50=4250.00; 150*38.25=5737.50; 75*51.00=3825.00; sums to 325 shares / 13812.50 cost; 13812.50/325=42.50; 120*47.75=5730.00; 120*42.50=5100.00; 5730.00-5100.00=630.00), and every descriptor label at each hop matches the semantic operation being performed on it (shares, price/share, cost, aggregate cost, aggregate shares, average price/share, proceeds, cost basis, gain/loss) with no leakage between unit types (e.g., no share-count consumed as a price, no per-lot cost consumed as a per-share cost, no gross value consumed as net).
+
+### Details
+- The `MathContext` node `i_1` is labeled "Computation precision (DECIMAL64)" and its value (`precision:16, roundingMode:HALF_EVEN`) is exactly the specification of `java.math.MathContext.DECIMAL64` — technical label and payload agree, so this is not a disguised precision downgrade/upgrade.
+- The variables flagged structurally as multi-consumed (`i_2`, `i_5`, `i_8`, `i_14`) are each reused in ways fully consistent with their originating semantic role (a lot's share count feeding both its own cost calc and the shares total; shares-sold feeding both proceeds and cost-basis-of-sale) — no instance of a variable being consumed a second time under a conflicting business definition.
+- No duplicate/near-duplicate descriptor names were found that would indicate an identity-swap disguised as a distinct entity, and no `domainType`/unit/tax-status metadata is present that is later contradicted downstream — the graph's business narrative (three-lot weighted-average cost basis, partial sale, gain/loss) is internally coherent from root inputs to the leaf output.
+- One minor domain nuance worth flagging for human review (not a graph-internal contradiction, hence not scored as a violation): using a pure "weighted-average cost" method across discrete equity lots is a real-world tax-methodology choice (more commonly associated with fungible fund shares than individually-lotted stock under many tax regimes); however, since the CPG's own descriptor explicitly declares this computation as "weighted-average across 3 lots, partial sale" up front, there is no internal metadata contradiction — the computation does exactly what it says. This is a domain/regulatory-suitability question outside the scope of an in-graph semantic-cast finding, not a detected cast attack.
+
+Overall, this CPG shows no evidence of a Semantic Type and Context Cast attack: type continuity and business-context continuity both hold at every hop.

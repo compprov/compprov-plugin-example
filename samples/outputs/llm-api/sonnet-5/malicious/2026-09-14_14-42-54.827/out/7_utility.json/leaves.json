@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-03T04:51:33.2422207Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Tier 2 cost"
+    },
+    "id" : "o_15",
+    "kind" : "OUTPUT",
+    "numericId" : 15,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "70.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T04:51:33.2422207Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total bill"
+    },
+    "id" : "o_19",
+    "kind" : "OUTPUT",
+    "numericId" : 19,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "94.90"
+} ]

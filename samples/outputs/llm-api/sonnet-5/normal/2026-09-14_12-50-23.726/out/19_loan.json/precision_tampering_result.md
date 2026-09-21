@@ -1,0 +1,20 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 8.0
+
+## Summary
+This CPG models a 6-month loan amortization with `MathContext(precision=16, HALF_EVEN)` propagated as an explicit `mc` argument to every arithmetic operation (`op_1`–`op_23`). A full recomputation of the exact rational value at every node — including deliberate re-derivation of the 16-significant-digit HALF_EVEN rounding boundary — was performed and cross-checked against every reported `value`.
+
+## Anomaly Localization (If Detected)
+One structural irregularity was located and fully traced, but it does **not** rise to a confirmed Precision/Scale Tampering violation:
+
+- **Node:** `o_16` ("Balance after payment [Month 3]"), produced by `op_9` (`subtract(o_12, o_15, mc=i_1)`).
+- **Observation:** Exact BigDecimal subtraction semantics (`scale = max(scale(a), scale(b))`) would produce a result with scale 11 (`236867.50336000000`), but the recorded value `236867.5033600000` carries scale 10 — one trailing decimal digit short of the scale a naive BigDecimal engine would emit.
+- **Propagation:** This one-digit scale offset is carried forward consistently through `o_18`, `o_19`, `o_20`, `o_21`, `o_23`, `o_24`, `o_25`... i.e., every downstream node's printed scale is exactly one digit shorter than "textbook" BigDecimal scale-widening would predict.
+
+## Details
+The dropped digit at every one of these nodes is a **trailing zero** — i.e., numerically `236867.5033600000 == 236867.50336000000`. This was confirmed by re-deriving each subsequent value from first principles (exact rational arithmetic) rather than from the graph's own (possibly scale-truncated) intermediate values, and every single downstream figure — `o_25` (`229738.2332669338`), `o_27` (`918.9529330677352`), `o_28` (`1081.047066932265`), `o_29` / Ending balance (`228657.1862000015`), `o_31` / Total interest (`5657.186200001495`), and the final aggregates `o_32`–`o_34` — reproduces **exactly** the value produced by correct arbitrary-precision arithmetic followed by proper `MathContext(16, HALF_EVEN)` rounding at the points where the exact result exceeds 16 significant digits (verified explicitly at `o_25`, `o_28`, `o_29`, `o_31`, where the 17th/18th significant digit correctly triggers a round-up or round-down consistent with HALF_EVEN). No value leakage, truncation, or beneficiary-directed skimming was found at any step — asset conservation holds to the full precision available at every node, and the final "Total amount paid by borrower" (`19400.00`) correctly equals scheduled payments (`12000.00`) + escrow (`2400.00`) + prepayment (`5000.00`).
+
+The scale-10-vs-11 discrepancy at `o_16` is therefore most consistent with a benign serialization/trailing-zero-stripping artifact in how that single intermediate `BigDecimal` was captured into the trace, not a precision-degrading operation — it has zero effect on the numeric value and does not compound, drain, or bias any downstream figure. Per the stated invariants, a single-node scale quirk with zero associated value delta, immediately followed by a chain of independently-verified, exactly-correct MathContext-consistent computations through to the final aggregates, does not meet the bar for confirmed tampering (no accumulation toward a sink, no directional bias, no materiality). It is flagged here for completeness and because absence-of-exact-match heuristics shouldn't be mistaken for absence-of-anomaly, but the deep recomputation clears it of being an actual arithmetic/precision exploit.
+
+No evidence of Salami Slicing, non-standard rounding mode substitution, premature truncation causing residual leakage, or float/double downcasting was found anywhere in the graph. All operations consistently use the same declared `MathContext` (`i_1`), and every rounding event verified matches HALF_EVEN behavior at the 16-significant-digit boundary.

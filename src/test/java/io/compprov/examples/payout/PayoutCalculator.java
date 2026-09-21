@@ -5,8 +5,6 @@ import io.compprov.examples.nav.wrapped.WrappedAmount;
 import io.compprov.examples.nav.wrapped.WrappedOptionPosition;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,9 +33,6 @@ public class PayoutCalculator {
 
         PayoutDataProvider dp = new PayoutDataProvider();
 
-        // === Shared constants ===
-        var mc   = ctx.wrapMathContext(MathContext.DECIMAL64, descriptor("Computation precision (DECIMAL64)"));
-        var zero = ctx.wrapBigDecimal(BigDecimal.ZERO, descriptor("Zero (OTM floor)"));
         var spot = ctx.wrap(dp.fetchSpotPrice(), descriptor("ETH/USDC spot (2026-06-30)"));
 
         // === Per-position payout: max(intrinsic, 0) × size ===

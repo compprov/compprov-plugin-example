@@ -1,0 +1,53 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-03T09:06:13.508543Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Initial volume (L)"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "10"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T09:06:13.508543Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Compressed volume (L)"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T09:06:13.5095423Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "n × R × T"
+    },
+    "id" : "o_8",
+    "kind" : "OUTPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "61.16450"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T09:06:13.5095423Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "P1 × V1"
+    },
+    "id" : "o_10",
+    "kind" : "OUTPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "61.16450"
+} ]

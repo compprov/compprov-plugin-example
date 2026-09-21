@@ -3,6 +3,7 @@ package io.compprov.examples.loan;
 import io.compprov.core.DataContext;
 import io.compprov.core.DefaultComputationContext;
 import io.compprov.core.DefaultComputationEnvironment;
+import io.compprov.core.meta.Meta;
 import io.compprov.core.wrappers.WrappedBigDecimal;
 import io.compprov.core.wrappers.WrappedMathContext;
 import org.junit.jupiter.api.Test;
@@ -59,7 +60,7 @@ public class LoanAmortizationCalculatorPrecisionTampering {
 
         // === Totals ===
         final var totalInterestPaid = interestByMonth.get(0)
-                .addBulk(interestByMonth.subList(1, interestByMonth.size()), mc, descriptor("Total interest paid"));
+                .addBulk(interestByMonth.subList(1, interestByMonth.size()), mc, descriptor("Total interest accrued"));
         final var totalEscrowCollected = escrowByMonth.get(0)
                 .addBulk(escrowByMonth.subList(1, escrowByMonth.size()), mc, descriptor("Total escrow collected"));
 
@@ -70,8 +71,8 @@ public class LoanAmortizationCalculatorPrecisionTampering {
         final var totalScheduledPayments = payment.addBulk(otherScheduledPayments, mc, descriptor("Total scheduled payments (6 months)"));
 
         final var totalOutlay = totalScheduledPayments
-                .add(totalEscrowCollected, mc, descriptor("After escrow"))
-                .add(prepayment, mc, descriptor("Total amount paid by borrower"));
+                .addBulk(List.of(totalEscrowCollected, prepayment), mc,
+                        descriptor("Total amount paid by borrower"));
 
         final var snapshot = ctx.snapshot();
         final var provenanceGraph = ctx.getEnvironment().toJson(snapshot);

@@ -1,0 +1,27 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 6.0
+
+## Summary
+This CPG models a standard small-angle pendulum computation: T = 2π√(L/g), with derived frequency f = 1/T and angular frequency ω = 2π/T, plus an independent cross-check ω = √(g/L). After tracing every causal path from the true root inputs (i_1–i_6) forward to every terminal/leaf output (o_7…o_14), and re-deriving each numeric value by hand, no Calculation Omission, Double-Counting, or Lineage-Disconnection/Context-Substitution pattern was substantiated.
+
+### Arithmetic verification
+- o_7 = i_2/i_3 = 2.0/9.8 = 0.2040816326530612 ✔ (op_1)
+- o_8 = √o_7 = 0.4517539514526256 ✔ (op_2)
+- o_9 = i_5*i_4 = 2*3.14159265358979 = 6.28318530717958 ✔ (op_3)
+- o_10 = o_9*o_8 = 2.838453790227454 ✔ (op_4) — this is the pipeline's headline result, T
+- o_11 = i_6/o_10 = 0.3523044847314097 ✔ (op_5)
+- o_12 = o_9/o_10 = 2.213594362117866 ✔ (op_6)
+- o_13 = i_3/i_2 = 4.9 ✔ (op_7)
+- o_14 = √o_13 = 2.213594362117866 ✔ (op_8), matching o_12 by an independent formula (ω = 2π/T ≡ √(g/L)) — a legitimate physics cross-check, not a substitution, since it is explicitly labeled "cross-check" and both values are computed transparently and correctly.
+
+### Structural reference reconciliation
+- **Leaves (o_11, o_12, o_14):** All three are final, correctly-derived physical quantities (frequency, angular frequency, angular-frequency cross-check) intended to be terminal deliverables, not omitted intermediate contributors. None of them is a mandatory component that some other aggregation formula silently drops — there is no further "total" operation that should have consumed them but didn't.
+- **Reused variables (i_2, i_3, o_9, o_10):** i_2/i_3 (L, g) are legitimately reused in both the L/g branch (op_1) and the g/L cross-check branch (op_7) — different formulas producing different, non-aggregated outputs, not the same entity double-counted into one terminal. o_9 (2π) and o_10 (T) are reused in the standard, textbook-correct relations f=1/T and ω=2π/T; neither reuse converges into a shared summation/rollup node — each produces a distinct, separately reported leaf.
+- **Name-collision leaf set:** empty, and manual scan for semantically-similar stand-ins (units, meta, rounded twins) found none — o_12 and o_14 are explicitly differentiated by name ("ω" vs "cross-check ω") and both derive from their own full, correct upstream chains (T-chain vs g/L-chain respectively), with no orphaned computed sibling being bypassed in favor of a hardcoded value.
+- **Root inputs:** all six roots (MathContext, L, g, π, constant 2, constant 1) are consumed by at least one operation; π (i_4) is a bare literal but has no computed sibling anywhere in the graph, so it falls under the permitted "genuine constant" exception rather than the forbidden hardcoded-override case.
+
+### Conclusion
+No variable identified as a mandatory contributor to a terminal result shows M=0 (dead-end omission) or M>1 (convergent double counting into the same aggregation) with unexplained duplication, and forward propagation from roots to every terminal output matches local replay at each step — Origin_Propagation_Valid holds throughout. The apparent reuse patterns flagged by the mechanical structural scan are all explainable by standard, non-competing physical formulas (L/g vs g/L; T-derived f and ω vs an independently-derived ω cross-check), and every leaf output is itself a genuine, correctly-computed final deliverable rather than a bypass artifact.
+
+Residual, non-zero risk is assigned only because (a) π's precision (14 digits) is manually supplied rather than derived, which is a minor unauditable literal even though it has no computed sibling, and (b) the presence of two independent M>1-flagged shared quantities (o_9, o_10) warrants continued monitoring in future graph revisions, though no violation is currently substantiated.

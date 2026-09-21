@@ -1,0 +1,33 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 6.0
+
+## Audit Summary: Semantic Type and Context Cast Attack Vector
+
+**Scope:** Verify that business/domain meaning (descriptor names, implied units, domain role) is preserved consistently for every variable as it flows from root INPUTs through all consuming operations, and that no variable is silently re-interpreted under a conflicting domain definition while retaining its BigDecimal type.
+
+### Anomaly Localization (If Detected)
+No confirmed instance of a Semantic Type and Context Cast was found. Full trace of every reused variable (the structurally-flagged multi-consumption set: i_2, i_3, i_4, i_5, i_6, i_7, i_8, o_10, o_14) was performed:
+
+- **i_2 (Interior temp)** → op_1 (ΔT_total = i_2 - i_3) and op_7 (interface temp = i_2 - o_14). Both consumptions treat i_2 strictly as "interior temperature" — consistent.
+- **i_3 (Exterior temp)** → op_1 and op_8 (temp drop layer 2 = interface - i_3). Consistent use as exterior boundary temperature.
+- **i_4 (Area)** → op_9 (k1×A) and op_12 (k2×A). Consistent use as wall cross-sectional area in both layers.
+- **i_5 (k1)** → op_2 (R1 = d1/k1) and op_9 (k1×A). Consistent conductivity role.
+- **i_6 (d1)** → op_2 (R1=d1/k1) and op_11 (Q1 = .../d1). Consistent thickness role (Fourier's law denominator).
+- **i_7 (k2)** → op_3 and op_12. Consistent.
+- **i_8 (d2)** → op_3 and op_14. Consistent.
+- **o_10 (R1)** → op_4 (R_total = R1+R2) and op_6 (ΔT1 = q×R1). Consistent resistance semantics in both the series-resistance summation and the flux-to-ΔT conversion.
+- **o_14 (ΔT1)** → op_7 (interface temp = i_2 − ΔT1) and op_10 (k1×A×ΔT1). Consistent temperature-drop semantics in both consumers.
+
+All unit/dimensional relationships hold (R = d/k → m²K/W; q = ΔT/R → W/m²; ΔT = q·R → K; Q = k·A·ΔT/d → W), and the two independently-computed heat-flow values (o_19 = Q1 = 122.4 W via k·A·ΔT1/d1, and o_22 = Q2 = 122.4 W via k·A·ΔT2/d2) agree with each other and with q·A, which is exactly the physical invariant expected in steady-state conduction. This cross-check is a *positive* indicator of internal consistency, not a red flag.
+
+No variable is passed through an operation that silently swaps its declared business role (e.g., no "Gross→Net" style relabeling, no risk-multiplier-as-discount-factor substitution, no post-tax/pre-tax conflation). Descriptor names for every output variable accurately and specifically describe the quantity actually produced by its generating operation (e.g., "Thermal resistance, layer 1", "Heat flow through layer 1, Q1 (W)"), and every downstream consumer's use of that variable matches its stated meaning.
+
+The MathContext variable (i_1, "Computation precision (DECIMAL64)") is legitimately reused across all operations and its value (precision=16, HALF_EVEN) is the correct definition of IEEE 754 decimal64 — name and value are semantically aligned, not a mislabeling.
+
+Empty `descriptor.meta` arrays on intermediate/output variables (o_9 through o_22) are consistent with the note on "Standard Domain Conventions": these are self-explanatory physics intermediates (resistances, temperature drops, heat flows) whose names alone convey unambiguous domain meaning, and no explicit contradicting metadata exists anywhere in the graph.
+
+### Details
+This CPG models a standard two-layer steady-state wall conduction problem (brick + insulation). Every operation is dimensionally and semantically justified by classical heat-transfer relations (R=d/k, q=ΔT/R, ΔT=qR, Q=kAΔT/d), and the graph even contains a redundant, independently-derived verification path (op_9–op_14) that recomputes heat flow via a different formula and arrives at the same numeric result as the flux-based path — a hallmark of a well-formed, non-tampered pipeline rather than an attack surface. No node exhibits a divergence between a variable's originating domain definition and its downstream consumption context; C_source == C_target holds for every traced edge. No domain-transition node (e.g., gross→net, local→base currency) exists in this graph at all, so there is no opportunity for an unauthorized/implicit domain transition to be smuggled in.
+
+Given the absence of any explicit contradiction between declared and consumed business meaning, and the presence of internally self-validating physics, this graph shows no evidence of a Semantic Type and Context Cast attack. Residual risk score reflects only the inherent difficulty of fully ruling out undocumented convention-based mislabeling in a sparse-metadata graph, not any concrete finding.

@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-08T14:43:24.4807269Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Per-winner payout"
+    },
+    "id" : "o_3",
+    "kind" : "OUTPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "333"
+} ]

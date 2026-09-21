@@ -1,0 +1,92 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-10T13:09:31.5006018Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Requested BPT (poolAmountOut)"
+    },
+    "id" : "i_7",
+    "kind" : "INPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "1000"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-10T13:09:31.5006018Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Pool USDC balance"
+    },
+    "id" : "i_9",
+    "kind" : "INPUT",
+    "numericId" : 9,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "1000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-10T13:09:31.5006018Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total BPT supply"
+    },
+    "id" : "i_8",
+    "kind" : "INPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "5000000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-10T13:09:31.4927339Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "10 constant"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "10"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-10T13:09:31.4996024Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "BONE decimals"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.lang.Integer"
+  },
+  "value" : 18
+}, {
+  "track" : {
+    "createdAt" : "2026-09-10T13:09:31.4996024Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "2 constant"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "2"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-10T13:09:31.5006018Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "USDC decimals"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.lang.Integer"
+  },
+  "value" : 6
+} ]

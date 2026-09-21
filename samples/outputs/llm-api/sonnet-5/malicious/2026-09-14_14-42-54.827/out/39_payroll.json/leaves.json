@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-03T04:50:40.8397229Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Net pay"
+    },
+    "id" : "o_22",
+    "kind" : "OUTPUT",
+    "numericId" : 22,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2992.1000"
+} ]
