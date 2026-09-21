@@ -1,0 +1,20 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 85.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_1` (MathContext, precision=16, HALF_EVEN, labeled "Computation precision (DECIMAL64)"), `i_2` (MathContext, precision=2, DOWN, labeled generically "Computation precision"), `o_19` ("Subtotal after SAVE10"), `o_21` ("Discount multiplier (LOYALTY5)"), `op_9` (multiply), `o_22` ("Subtotal after LOYALTY5"), `o_24` ("Taxable amount"), `op_10`, `op_11`, `op_26`/`o_26` ("Sales tax"), `op_12`, `o_27` ("Order total").
+
+**Flow of the attack:**
+1. Every other arithmetic step in this pipeline (`op_1`–`op_8`, `op_10`, `op_11`, `op_12`) consistently uses the system-wide financial precision context `i_1` ("Computation precision (DECIMAL64)", precision=16, HALF_EVEN) — the standard Java `MathContext.DECIMAL64`, appropriate for currency-grade decimal arithmetic.
+2. `op_9`, and *only* `op_9`, silently swaps in `i_2` — a second, vaguely-named "Computation precision" context configured with **precision=2 (significant digits, not decimal places) and rounding mode DOWN**.
+3. `op_9` computes `o_22 = o_19 * o_21` = 205.1280 × 0.95 = 194.8716 (the true, mathematically correct discounted subtotal). Under `i_2`'s precision-2/DOWN context this is truncated to **2 significant digits**, producing `1.9E+2` (190) — silently discarding ~$4.87 of value and collapsing a currency amount into scientific notation with zero cents-level resolution.
+4. This corrupted value (190, not 194.8716) is then propagated as fact into `o_24` ("Taxable amount" = 190 + 12.50 shipping = 202.50), `o_26` ("Sales tax" = 202.50 × 0.08 = 16.20), and finally `o_27` ("Order total" = 202.50 + 16.20 = 218.70).
+5. Had the pipeline's own declared standard context `i_1` been used consistently (as it is for every structurally identical multiply/add step before and after), the correct order total would be ≈223.96, not 218.70 — a ~$5.26 (2.4%) understatement that survives full type-checking and full mathematical replay of each individual operation.
+
+## Details
+
+This is a textbook Semantic Type and Context Cast: technically, `op_9` is a valid `multiply(BigDecimal, BigDecimal, MathContext) -> BigDecimal` call, indistinguishable in signature or type from every other multiply in the graph, and it replays deterministically to its stored result. No `valueClass` is altered, no argument is missing, and the operation "looks legitimate in isolation." The attack lives entirely in the *business meaning of the MathContext itself*: `i_1` represents the pipeline's declared computational-precision domain (DECIMAL64, decimal-safe for money), used everywhere else including the structurally identical SAVE10 discount application (`op_7`). `i_2` is an undocumented, near-duplicate-named context ("Computation precision" vs. "Computation precision (DECIMAL64)") that silently re-maps the business domain of this single operation from "precise currency computation" to "2-significant-digit approximation with truncation," with no metadata, annotation, or domain-justified transformation node explaining the switch. The resulting `o_22` even manifests the domain violation directly in its stored value — a currency subtotal expressed as `1.9E+2`, violating the implicit but universal domain convention that monetary intermediates in this pipeline retain cents-level decimal representation (as every other monetary variable in the graph does, e.g. `16.2000`, `218.7000`).
+
+Because node connectivity, `resultId` wiring, and per-operation type signatures all validate cleanly, naive schema/replay checks pass. Only tracing the *semantic* precision-context lineage (which MathContext each operation is entitled to use, per the pipeline's own established convention) exposes the single surgical substitution. The consequence is a materially incorrect "Order total" (`o_27`) and "Sales tax" (`o_26`) — both computed off a covertly under-valued taxable base — representing a direct, quantifiable financial impact (~2.4% revenue/tax leakage) hidden behind full technical type continuity.

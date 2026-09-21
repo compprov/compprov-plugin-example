@@ -1,0 +1,46 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-08T13:22:10.658998Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "balanceBasis",
+        "value" : "opening"
+      }, {
+        "key" : "recordedAt",
+        "value" : "2026-09-08T10:14:59Z"
+      } ],
+      "name" : "Sender balance (opening)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "10000"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-08T13:22:10.6659972Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Reward rate per token"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "2"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-08T13:22:10.6659972Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Transfer amount"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "3000"
+} ]

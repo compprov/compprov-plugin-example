@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-08T14:43:24.4747289Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total game interest (pool)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "1000"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-08T14:43:24.4797269Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Winner count"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "3"
+} ]

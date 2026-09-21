@@ -1,0 +1,24 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 90.0
+
+## Anomaly Localization (If Detected)
+
+**Implicated nodes:** `i_4` (Roofing materials, value `6300.00`), `op_1` (`addBulk`, formula `(a+b0+...+bn)mc`), `o_6` (Total materials cost), and every downstream node that consumes `o_6`: `op_5` → `o_14` (Direct cost), `op_6` → `o_16` (Overhead), `op_7` → `o_17` (Cost including overhead), `op_8` → `o_19` (Profit margin), `op_9` → `o_20` (Total bid price, terminal output).
+
+**Attack flow:**
+1. Four material-cost inputs are declared: `i_2` (Lumber, 18500.00), `i_3` (Concrete, 9200.00), `i_4` (Roofing materials, 6300.00), `i_5` (Electrical materials, 4100.00).
+2. `op_1` (`addBulk`) is supposed to sum *all* material costs into `o_6` ("Total materials cost"). Its argument map is `{a: i_2, b0: i_3, b1: i_5, mc: i_1}` — note the sequential `b0`, `b1` naming convention strongly implies a `b2` slot for `i_4` was intended but omitted.
+3. `i_4` is never referenced by any operation in the graph — it is confirmed as a leaf (per the structural reference data) with in-degree of consumption = 0. Its correctly-recorded value (6300.00) never reaches any aggregation.
+4. `o_6` = 18500.00 + 9200.00 + 4100.00 = 31800.00 — arithmetically self-consistent *for the three arguments actually supplied*, but silently short of the true total materials cost (which should be 38100.00).
+5. This understated `o_6` propagates deterministically and correctly through every subsequent step: `o_14` (Direct cost) = `o_6 + o_13`, `o_16` (Overhead) = `o_14 * 10%`, `o_17` = `o_14 + o_16`, `o_19` (Profit margin) = `o_17 * 15%`, `o_20` (Total bid price) = `o_17 + o_19`. Every downstream operation replays perfectly against its own (already-corrupted) inputs, which is why local, step-by-step audit checks pass.
+
+**Impact quantification:** Had `i_4` been correctly included, Total materials cost would be 38100.00 (not 31800.00), Direct cost 52500.00 (not 46200.00), and after the 10% overhead and 15% margin compounding, the Total bid price should be approximately 52500 * 1.10 * 1.15 ≈ 66,412.50, versus the reported 58,443.00 — an understatement of roughly $7,970, entirely attributable to the dropped roofing-materials line item.
+
+## Details
+
+This is a textbook **Calculation Omission ($M=0$)** under the Topological & Provenance Fraud taxonomy. `i_4` ("Roofing materials") is unambiguously a mandatory contributor to "Total materials cost" by name, role (`INPUT`, same valueClass and sibling position as the other three material costs), and by the pipeline's own formula intent (`addBulk` is explicitly the multi-term summation operator meant to aggregate *all* material line items). Yet it is excluded from the argument list of `op_1`, the very operation whose name and metadata (`(a+b0+...+bn)mc`) declare it should absorb an arbitrary number of cost terms.
+
+The reason this survives casual/local verification is that every operation node, taken in isolation, replays correctly against the inputs it is actually given — `op_1`'s output exactly matches `18500+9200+4100`, and every downstream sum/multiply is likewise internally consistent. The fraud is not an arithmetic error at any single node; it is a topological one — a legitimate cost variable that was fully specified upstream and then quietly never wired into the aggregation that claims to represent the total. This is precisely the mechanism the audit is designed to catch: a naive recomputation of each operation's output from its declared arguments would pass every check, while the omitted contributor sits as an unconsumed leaf next to the terminal output `o_20` in the leaf-variable set.
+
+**Consequence:** The reported "Total bid price" (`o_20` = 58,443.00) materially understates the true cost basis and resulting bid by omitting a real, itemized $6,300 cost category before overhead and profit margin are compounded on top of it. In a construction-bid context, this either represents a bidding/estimation error with direct financial exposure (the contractor eats the roofing cost) or a deliberately suppressed line item to make a bid appear more competitive — both of which are severe, material outcomes warranting escalation rather than dismissal as coincidental.

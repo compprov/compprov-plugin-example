@@ -98,7 +98,7 @@ It builds one of two underlying clients depending on `CHATMODEL_URL`:
 | If `CHATMODEL_URL` contains `"anthropic"` | Otherwise |
 |---|---|
 | Uses langchain4j's native `AnthropicChatModel` against the real Claude Messages API. | Uses `OpenAiChatModel` against an OpenAI-compatible chat completions endpoint. |
-| Real JSON-schema-enforced structured output (`verdict`/`confidence_score`/`markdown_report`), server-side system-message caching (`cacheSystemMessages(true)`), a 5-minute request timeout, a 100k output token budget. | Requests `"json_object"` mode (a generic JSON object, not a schema-enforced one) and the same token/timeout settings. |
+| Real JSON-schema-enforced structured output (`risk_score`/`markdown_report`), server-side system-message caching (`cacheSystemMessages(true)`), a 5-minute request timeout, a 100k output token budget. | Requests `"json_object"` mode (a generic JSON object, not a schema-enforced one) and the same token/timeout settings. |
 
 For Claude, this means pointing the three env vars at Anthropic's native API — **not** its
 OpenAI-compatibility endpoint:
@@ -156,20 +156,6 @@ java -jar compprov-analytics.jar \
 `Using chat model`) on startup. From then on, any CPG snapshot containing `Amount`, `Rate`, or
 `OptionPosition` input values deserializes and replays correctly, and prompt-based analysis uses
 the model at `CHATMODEL_URL`/`CHATMODEL_NAME` — Claude, in the example above.
-
-### Overriding prompt templates
-
-`compprov-analytics` ships its own fraud-detection prompt templates, but any of them can be
-swapped out per run with `--<templateKey>=<path-to-file>` on the command line, e.g.
-`--precision_tampering_user=path/to/my_template.md` replaces the bundled "Precision and Scale
-Tampering" user prompt with the contents of that file (`--shared_system=<path>` does the same for
-the system prompt shared across every attack template). `--llmTemplates=<names>` narrows which
-prompts run at all for a given invocation, e.g. `--llmTemplates=precision_tampering` skips the
-other four alarms.
-
-This is worth reaching for when auditing a specific domain: the bundled prompts are deliberately
-domain-agnostic, so when you know the domain being checked, it's worth adding that domain's actual
-rules into the prompt rather than relying on the model to infer them from the raw numbers alone.
 
 ## Test snapshots
 
@@ -251,72 +237,37 @@ additional fraud-pattern coverage for `compprov-analytics` itself.
 
 ## Sample analysis run
 
-`samples/outputs/llm-api/sonnet-5/` holds four full `compprov-analytics --executePrompts=true`
-runs (Claude Sonnet 5), one per fixture category — `normal/`, `malicious/`, `gptscan/`,
-`numscout/` — each under its own `<timestamp>/out/`, with one subfolder per input file plus a
-top-level `summary.md`. Every fixture is run through five LLM prompts/alarms — Calculation
-omission, Lineage disconnection, Precision tampering, Semantic violation, Double counting — each
-returning `CLEAN` or a named detection verdict with a confidence score.
-`samples/outputs/llm-manual/` holds one additional run over the full `malicious/` set in
-prompt-dump mode: instead of calling the configured chat model, `compprov-analytics` writes each
-prompt to a `*_prompt.md` file for pasting into a chat UI by hand, so its `summary.md` has no
-verdicts (`—` in every alarm column) — a way to exercise this plugin without needing
-`CHATMODEL_API_KEY` set.
+`samples/outputs/llm-api/sonnet-5/` holds `compprov-analytics --executePrompts=true` runs (Claude
+Sonnet 5), one subtree per fixture category — `normal/`, `malicious/`, `gptscan/`, `numscout/` —
+each under its own `<timestamp>/out/`, with one subfolder per input file plus a top-level
+`summary.md`. `samples/outputs/llm-manual/` holds one additional run spanning the entire combined
+83-file fixture set (`normal/` + `malicious/` + `gptscan/` + `numscout/`) in prompt-dump mode:
+instead of calling the configured chat model, `compprov-analytics` writes each prompt to a
+`*_prompt.md` file for pasting into a chat UI by hand, so its `summary.md` has no verdicts (`—` in
+every alarm column) — a way to exercise this plugin without needing `CHATMODEL_API_KEY` set.
 
-As of the runs captured here: every one of the 39 `malicious/` fixtures and all 5 `gptscan/`
-fixtures trip at least one detection (not always the alarm matching their own category — e.g. a
-`lineage_disconnection/` fixture may also flag Calculation omission). 32 of the 33 `normal/`
-fixtures, and 4 of the 5 `numscout/` fixtures analyzed, come back fully `CLEAN` across all five
-alarms. The two exceptions are real, worth knowing about before extending this project further:
+Run under the three-prompt default (`topological_fraud`, `precision_tampering`,
+`semantic_type_and_context_cast_attack`):
 
-- **`normal/metrology.json`** — flags both Precision tampering and Calculation omission, for two
-  unrelated reasons:
-  - Precision tampering (`SUSPICIOUS LOGIC`, 62.0): one operation (`Exp_double`, computing
-    saturation vapor pressure) carries no `MathContext` argument and is evaluated at IEEE-754
-    `double` precision, unlike every neighboring operation in the same 34-digit `BigDecimal`
-    chain. This isn't tampering — `BigDecimal` has no built-in `exp()`, so any `BigDecimal`
-    pipeline that needs exponentiation has to drop out to `double` (or hand-roll a Taylor-series
-    approximation with an explicit `MathContext`, which this fixture doesn't) for that one step.
-    It's a real, technically-necessary gap rather than an injected defect, and per the report's own
-    materiality check the resulting error is many orders of magnitude below what the final result
-    needs.
-  - Calculation omission (`CALCULATION OMISSION DETECTED`, 58.0): the water-vapor enhancement
-    factor is assembled from two additively-named intermediate terms (`"alpha + beta*P"`,
-    `"gamma*T_air^2"`), but the operation that combines them into the final `f_enh` node
-    (`op_38`) is a `subtract`, not an `add`. The model recomputes the discrepancy exactly (the
-    sign flip costs `2·(gamma*T_air²)`, propagated through to a sub-nanometer bias in the final
-    calibrated length) and flags it at its lowest confidence score across the entire 33-snapshot
-    run, explicitly noting that "an alternative, undocumented sign convention specific to the
-    unverifiable [cited] reference cannot be entirely excluded." Independent verification against
-    the published literature (Birch & Downs 1993; Picard et al. 2008, the CIPM-2007 revision of
-    Davis's 1992 water-vapor enhancement factor) found that the Sellmeier dispersion and
-    temperature/pressure correction terms elsewhere in the same fixture match their cited sources
-    exactly, while this specific term's coefficients and sign do not match the standard,
-    widely-published formula — so the model's caution, reached with no access to external
-    literature and reasoning purely from the graph's own variable-naming convention, turns out to
-    have been well-placed on independent grounds, even though it could not (and by design does
-    not) assert that with high confidence from the CPG alone. See
-    [`calculation_omission_result.md`](samples/outputs/llm-api/sonnet-5/normal/2026-08-06_09-26-07.920/out/21_metrology.json/calculation_omission_result.md)
-    for the model's full trace of how this propagates from `f_enh` through to the final reported
-    `deltaL`.
-- **`numscout/amm_taker_fee_precision_tampering.json`** — comes back fully `CLEAN` despite
-  [`AmmTakerFeeCalculatorPrecisionTampering`](src/test/java/io/compprov/examples/numscout/AmmTakerFeeCalculatorPrecisionTampering.java)
-  deliberately using floor division where the pool requires ceiling division. The graph itself is
-  fully transparent — every value flows cleanly from inputs to the final `amountAfterFee` with
-  nothing missing or disconnected — so the model reads the one-unit-per-trade dust landing with
-  the trader as an ordinary, expected rounding outcome rather than a violation, since nothing in
-  the trace asserts what the pool actually requires.
-
-**Note:** Read together with `metrology.json` above, these two cases make the same point from
-opposite directions: the model reasons entirely from the graph's own naming and structure, with no
-access to domain literature or protocol specs, so its verdict is only as good as the domain
-grounding available to it. In `metrology.json` that grounding was present indirectly, in the
-intermediate variables' own additive names, and it was enough for the model to flag the defect
-cautiously and correctly. Here there's no equivalent signal anywhere in the trace, and the result
-is a miss rather than a low-confidence catch. See
-[Overriding prompt templates](#overriding-prompt-templates) for how to close that gap without
-touching the fixture — by supplying the missing domain invariant through a custom
-`precision_tampering_user` prompt instead.
+- **`normal/`** (33 fixtures) — 32 come back fully `CLEAN`. The one exception is
+  **`metrology.json`**, flagged by precision tampering (`SUSPICIOUS LOGIC`, risk score 32): of its
+  56 operations, 55 explicitly thread a shared 34-digit `MathContext` — the one exception is a
+  saturation-vapor-pressure exponentiation (`Exp_double`) that has no arbitrary-precision `exp()`
+  available and so drops to native `double`. The model correctly spots this as the only operation
+  missing the `mc` argument, but also recomputes that the resulting error is many orders of
+  magnitude below both the final result's precision and the input measurements' own uncertainty —
+  a real, technically-necessary gap rather than an injected defect.
+- **`malicious/`** (39 fixtures) — 38 trip at least one of the three prompts (not always the alarm
+  matching their own category, e.g. a `lineage_disconnection/` fixture caught by
+  `topological_fraud` instead). The one miss, `legacy/broken-chronology.json`, comes back `CLEAN`
+  on all three prompts — it's only caught by compprov-analytics' separate chronology-validity
+  check, not by the LLM prompts.
+- **`gptscan/`** (5 fixtures, `semantic_type_and_context_cast_attack` only) — all 5 flagged,
+  `ANOMALY DETECTED` at risk scores 74–88, reimplementing bug patterns from
+  [GPTScan](https://arxiv.org/abs/2308.03314).
+- **`numscout/`** (5 fixtures, `precision_tampering` only) — all 5 flagged (2 `ANOMALY DETECTED`,
+  3 lower-confidence `SUSPICIOUS LOGIC`), reimplementing defect patterns from the
+  [NumScout](https://arxiv.org/abs/2503.10041) taxonomy. No misses in this run.
 
 ## Project layout
 

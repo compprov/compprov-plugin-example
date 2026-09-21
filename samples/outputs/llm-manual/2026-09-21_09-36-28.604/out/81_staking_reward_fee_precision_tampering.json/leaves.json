@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-08T14:43:59.8785569Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Developer reward (fee)"
+    },
+    "id" : "o_5",
+    "kind" : "OUTPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "10"
+} ]

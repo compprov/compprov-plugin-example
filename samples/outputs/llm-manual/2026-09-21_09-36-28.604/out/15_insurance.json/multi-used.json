@@ -1,0 +1,43 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-03T04:47:02.6549349Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Zero (claim floor)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T04:47:02.6594414Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "claimType",
+        "value" : "Liability"
+      } ],
+      "name" : "Deductible"
+    },
+    "id" : "i_20",
+    "kind" : "INPUT",
+    "numericId" : 20,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "250.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T04:47:02.6594414Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total payout"
+    },
+    "id" : "o_28",
+    "kind" : "OUTPUT",
+    "numericId" : 28,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "23000.0000"
+} ]

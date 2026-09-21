@@ -1,0 +1,31 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 6.0
+
+## Scope
+Audited for Topological & Provenance Fraud (M=0 omission, M>1 double counting, M=1-wrong-source substitution) across the 1-D elastic collision CPG, using the provided structural reference sets as a starting point.
+
+## Terminal Output Identification
+The graph has two genuine terminal (leaf) outputs: `o_22` (Total momentum before collision) and `o_25` (Total momentum after collision). This is a physically meaningful pipeline design: it computes the two final velocities via the standard elastic-collision formulas, then independently re-derives momentum before and after collision as a **conservation-law cross-check**. Both leaves are legitimate terminal targets, not a single terminal result with a dropped side-channel.
+
+## Omission Check (M=0)
+Every variable that is a mandatory contributor to either momentum quantity is present and consumed:
+- Before: `o_20` (m1·v1) and `o_21` (m2·v2) both feed `op_16 -> o_22`.
+- After: `o_23` (m1·v1') and `o_24` (m2·v2') both feed `op_19 -> o_25`.
+No mandatory component (mass, velocity, or derived final velocity) is left as an unconsumed dead-end relative to its own role. No omission found.
+
+## Double-Counting Check (M>1)
+The reference set flags `i_2, i_3, i_4, i_5, i_6, o_7` as multi-consumed. Tracing each:
+- `i_2`(m1), `i_4`(m2), `i_3`(v1), `i_5`(v2) are each used multiple times, but every use corresponds to a *distinct* term required by the correct elastic-collision equations: v1'-numerator term, v2'-numerator term, pre-collision momentum term, post-collision momentum term. These are mathematically independent terms of the physics formula, not the same quantity re-entered redundantly into one aggregate.
+- `i_6` (constant 2) is reused only as the literal coefficient in `2·m1` and `2·m2`, a genuine constant with no computed sibling — permitted reuse, analogous to MathContext.
+- `o_7` (total mass, m1+m2) is consumed twice (`op_7`, `op_13`) as the shared denominator for v1' and v2'. This is the textbook *shared allocation basis* pattern explicitly required by the physics (both final velocities divide by the same total mass) — it converges into two *different* downstream quantities (`o_13`, `o_19`) that are not summed with each other directly; they each go on to multiply against a different mass before entering the momentum-after sum. No unique root value is added twice into the same aggregate.
+Recomputing the aggregates confirms `S_dedup = S_reported`: before-momentum = 12.00 + (-10.00) = 2.00; after-momentum = -10.50 + 12.50 = 2.00. No inflation/deflation detected.
+
+## Lineage Substitution Check (M=1, wrong source)
+No leaf shares an exact name with another node (confirmed by reference data). Manual scan for near-duplicate/role-based stand-ins: all six root INPUTs (`i_1`...`i_6`) are unique physical quantities (precision context, m1, v1, m2, v2, constant 2) with no computed sibling elsewhere in the graph that could have been bypassed. Every downstream operation's arguments were verified to reference the actual `resultId` of the correct preceding step (e.g., `op_17` consumes `o_13`, the real output of `op_7`, not a hardcoded stand-in; `op_18` consumes `o_19` from `op_13`). Full forward propagation from roots reproduces both reported terminal values exactly (`o_22=2.00`, `o_25=2.00`), satisfying Origin_Propagation_Valid.
+
+## Arithmetic Verification
+All 19 operations were independently recomputed from their stated arguments and match the stored `value` fields exactly (m1+m2=8.0, v1'=-3.5, v2'=2.5, momentum before = momentum after = 2.00 kg·m/s), consistent with conservation of momentum for an elastic collision.
+
+## Conclusion
+No Calculation Omission, Double Counting, or Lineage Disconnection pattern was substantiated. The apparent multi-consumption of mass/velocity/total-mass variables is fully explained by the legitimate mathematical structure of the elastic-collision formulas (each variable naturally appears in multiple independent terms), and the two leaf terminal outputs are an intentional, complete before/after conservation cross-check rather than a dropped or duplicated contributor. Residual risk score reflects only the inherent structural complexity (many multi-consumed nodes) that superficially resembles the attack pattern but resolves cleanly on inspection.

@@ -1,0 +1,12 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 90.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `o_27` (Total payout), `o_29` (Reinsurance recovery), `o_30` (Net loss), `op_14` (multiply), `op_15` (add) — and transitively every upstream contributor that feeds `o_27`: `o_10` (Collision payout), `o_18` (Comprehensive payout), `o_26` (Liability payout), and all their root inputs (`i_3..i_6`, `i_11..i_14`, `i_19..i_22`).
+
+**Flow:**
+1. `op_13` (`addBulk`) correctly consolidates the three line-of-business payouts into `o_27 = 22750.0000` (`o_10 + o_18 + o_26`). This is the legitimate, single-path aggregation point for the payout entities — fine so far.
+2. `op_14` (`multiply`) consumes `o_27` and `i_28` (0.40) to produce `o_29 = 9100.000000` — the reinsurance recovery attributable to that same total payout.
+3. `op_15` (`add`, documented formula `(a+b)mc`) then consumes **both** `o_27` and `o_29` together to produce the terminal output `o_30 = 31850.000000` (

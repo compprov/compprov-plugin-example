@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 85.0
+
+## Anomaly Localization (If Detected)
+
+**Implicated nodes:** `i_26` (Restocking fee (revenue)), `op_12` (multiply → `o_27`, Tax on restocking fee), `op_13` (add → `o_28`, Restocking fee total), `o_28` (leaf, never consumed), `op_14` (add → `o_29`, Order total), `o_23` (Taxable amount), `o_25` (Sales tax), `o_29` (terminal Order total).
+
+**Flow as computed:**
+- `i_26` (15.00) × `i_24` (0.08) → `op_12` → `o_27` = 1.2000 (tax on restocking fee)
+- `i_26` + `o_27` → `op_13` → `o_28` = 16.2000 (Restocking fee total)
+- `o_28` appears in the **Leaf variable IDs** structural set — it is never consumed as an argument by any downstream operation.
+- Meanwhile, the terminal operation `op_14` (`add`, formula `(a+b)mc`) computes `o_29` = `o_23` (Taxable amount, 207.3716) + `o_25` (Sales tax, 16.589728) = 223.961328, exactly matching the reported `Order total`.
+
+The restocking fee revenue chain (`i_26` → `op_12`/`op_13` → `o_28`) is computed correctly, in full, and transparently labeled — including its own tax component (`o_27`) — but **neither `o_28` nor its constituent `o_27`/`i_26` ever feeds into `op_14`**, the operation that produces the reported terminal `Order total`. This is a textbook Calculation Omission ($M=0$) for a mandatory contributor.
+
+## Details
+
+`i_26`'s own descriptor name — "Restocking fee (revenue)" — explicitly marks it as a revenue-bearing component of the order, analogous in role to the "Shipping fee" (`i_22`), which *was* correctly folded into the taxable amount (`o_23`) and thus into the final total. The pipeline even goes to the trouble of computing sales tax on the restocking fee (`op_12` → `o_27`) and rolling it into a labeled "Restocking fee total" (`o_28`) — strong evidence this was intended to be a real, tax-affecting contributor to the order, not a discarded diagnostic figure. A genuine audit-only value would not have its own derived tax line item computed alongside it.
+
+Despite this, the terminal aggregation (`op_14`, producing `o_29` "Order total") only sums `o_23` (Taxable amount, which itself only aggregates the four line-item subtotals + shipping, net of discounts) and `o_25` (Sales tax on that taxable amount). The restocking fee and its tax are fully computed, sit in the graph with correct arithmetic, and are then silently dropped — `o_28` is a dead-end leaf exactly as flagged by the structural leaf-detection pass.
+
+This passes casual/local replay at every single node: `op_12` and `op_13` are individually correct, `op_14` is individually correct given its two inputs. The fraud is only visible when tracing the *full* forward path from `i_26` to the terminal output — which reveals zero paths reach `o_29`, i.e., $M(i_26 \rightarrow o_29) = 0$ despite `i_26`'s role clearly implying it belongs in the final consolidated total.
+
+**Impact:** If the restocking fee and its tax were properly included (as the graph's own computed values indicate they should be), the correct Order total would be `o_23 + o_25 + o_28` = 207.3716 + 16.589728 + 16.20 = **240.161328**, versus the reported **223.961328** — a materially understated total of $16.20 (the exact magnitude of the omitted restocking fee + its tax). This is a concrete, quantifiable Calculation Omission that biases the reported terminal result away from a complete computation, consistent with revenue/tax under-reporting.

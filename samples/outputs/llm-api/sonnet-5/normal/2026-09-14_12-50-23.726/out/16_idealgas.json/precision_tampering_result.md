@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 4.0
+
+## Precision and Scale Tampering Audit
+
+### Anomaly Localization (If Detected)
+No confirmed anomaly was found. All arithmetic operations (op_1 through op_8) were independently recomputed using exact rational arithmetic and cross-checked against the declared `MathContext` (precision=16, HALF_EVEN) carried on every arithmetic op via the `mc` argument.
+
+| Op | Formula | Exact Value | Reported | Δ |
+|----|---------|--------------|----------|---|
+| op_1 | 2.5 × 0.0821 | 0.20525 | 0.20525 | 0 |
+| op_2 | 0.20525 × 298 | 61.1645 | 61.16450 | 0 (trailing-zero scale only) |
+| op_3 | 61.1645 / 10 | 6.11645 | 6.11645 | 0 |
+| op_4 | 6.11645 × 10 | 61.1645 | 61.16450 | 0 |
+| op_5 | 61.1645 / 4 | 15.291125 | 15.291125 | 0 |
+| op_6 | 15.291125 × 4 | 61.1645 | 61.164500 | 0 |
+| op_7 | compare(P1V1, nRT) | equal | 0 | correct |
+| op_8 | compare(P1V1, P2V2) | equal | 0 | correct |
+
+All intermediate quantities have ≤8 significant digits, well inside the 16-digit precision budget, so no rounding was ever actually invoked by the MathContext — the HALF_EVEN mode is present but never exercised. BigDecimal scale behavior (preferred-scale arithmetic producing trailing zeros such as `61.16450` vs `61.164500`) fully explains the differing displayed scales; the underlying numeric values are identical, which is confirmed by the two `compare` operations (op_7, op_8) both correctly returning 0.
+
+### Details
+- **Asset conservation**: nRT (o_8) and P1V1 (o_10) are numerically identical (61.1645), and P1V1 (o_10) equals P2V2 (o_12), consistent with Boyle's Law (P1V1 = P2V2) and the Ideal Gas Law (PV = nRT). Both invariant-check `compare` operations correctly resolve to 0, confirming no value leakage across the multiply/divide chain.
+- **Rounding mode**: Every arithmetic operation explicitly carries the `mc` (MathContext, precision=16, HALF_EVEN) argument, satisfying the 

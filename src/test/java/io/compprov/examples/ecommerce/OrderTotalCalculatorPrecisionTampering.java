@@ -12,6 +12,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.compprov.core.meta.Meta;
+
 import static io.compprov.core.meta.Descriptor.descriptor;
 
 public class OrderTotalCalculatorPrecisionTampering {
@@ -45,7 +47,8 @@ public class OrderTotalCalculatorPrecisionTampering {
         // tampered: evaluated at 2 significant digits instead of DECIMAL64
         final var discountedSubtotal = afterDiscount1.multiply(discount2Multiplier, lowPrecisionMc, descriptor("Subtotal after LOYALTY5"));
 
-        final var shipping = ctx.wrapBigDecimal(dp.fetchShippingFee(), descriptor("Shipping fee"));
+        final var shipping = ctx.wrapBigDecimal(dp.fetchShippingFee(), descriptor("Shipping fee",
+                Meta.of("taxable", "true", "jurisdiction", "California")));
         final var taxableAmount = discountedSubtotal.add(shipping, mc, descriptor("Taxable amount"));
 
         final var taxRate = ctx.wrapBigDecimal(dp.fetchTaxRate(), descriptor("Tax rate (8%, California)"));

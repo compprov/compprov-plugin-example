@@ -39,9 +39,13 @@ public class NetAssetValueCalculator {
         final var binanceUsdcAmount = ctx.wrap(
                 dataProvider.fetchBinanceUsdcAmount(),
                 descriptor("USDC balance", Meta.of("source", "Binance")));
-        final var stakedEthAmount = ctx.wrap(
-                dataProvider.fetchStakedEthAmount(),
-                descriptor("ETH balance", Meta.of("source", "Stake")));
+        final var wstEthEthRate = ctx.wrap(
+                dataProvider.fetchWstEthEthPrice(),
+                descriptor("WSTETH/ETH rate", Meta.of("origin", "Binance")));
+        final var stakedLidoAmount = ctx.wrap(
+                dataProvider.fetchStakedLidoAmount(),
+                descriptor("WSTETH balance", Meta.of("source", "Lido")));
+        final var stakedEthAmount = stakedLidoAmount.convert(wstEthEthRate, descriptor("Staked ETH (Lido wstETH, converted)"));
         final var morphoUsdcAmount = ctx.wrap(
                 dataProvider.fetchMorphoUsdcAmount(),
                 descriptor("USDC balance", Meta.of("source", "Morpho")));

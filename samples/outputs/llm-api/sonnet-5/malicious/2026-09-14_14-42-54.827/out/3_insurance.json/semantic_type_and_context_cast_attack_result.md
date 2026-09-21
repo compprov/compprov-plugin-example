@@ -1,0 +1,21 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 88.0
+
+## Anomaly Localization (If Detected)
+
+**Implicated nodes:** `o_10` (Collision claim payout), `o_18` (Comprehensive claim payout), `o_26` (Liability claim payout), `op_13` (`addBulk` → `o_27`), `o_27` ("Total payout"), `op_14` (→ `o_29` Reinsurance recovery), `op_15` (→ `o_30` Net loss).
+
+**Attack flow:**
+1. Three structurally identical claim-adjudication pipelines run in parallel: Collision (`i_3`→`o_10`), Comprehensive (`i_11`→`o_18`), and Liability (`i_19`→`o_26`). Each independently computes `net of deductible → floored → coinsurance amount → min(policy limit)` and produces a final "claim payout" output.
+2. `op_13` (`addBulk`, formula `(a+b0+...+bn)mc`) is the node explicitly responsible for aggregating claim payouts into the variable labeled **"Total payout"** (`o_27`). Its arguments are only `a = o_10` (Collision payout) and `b0 = o_18` (Comprehensive payout). The Liability payout `o_26` is never wired in as a `b1` argument, despite the `addBulk` operator being designed precisely to accept an arbitrary number of terms (`b0...bn`) — the mechanism to include a third term exists and is unused.
+3. `o_26` ("Liability claim payout", value `4750.0000`) consequently becomes a dead-end **leaf variable** — computed, fully valid, correctly typed `BigDecimal`, but never consumed by any downstream operation. This matches the structural leaf-list finding for `o_26`.
+4. The mislabeled `o_27` ("Total payout" = `18000.0000`, actually only Collision+Comprehensive) is then fed as the base into `op_14` (reinsurance recovery = `Total payout * 0.40`) and `op_15` (`Net loss = Total payout - Reinsurance recovery`). Both downstream financial outputs (`o_29` = `7200.000000`, `o_30` = `10800.000000`) are computed as if `o_27` genuinely represents the full liability of the insurer across all adjudicated claims in this batch, when it silently omits an entire $4,750.0000 claim payout.
+
+## Details
+
+This is a textbook **Semantic Type and Context Cast**: every individual operation is technically flawless — `addBulk` performs a mathematically correct `BigDecimal` sum with correct `MathContext` rounding, and every intermediate node retains proper type (`java.math.BigDecimal`) and traceable lineage. Naive validation (type-checking, schema compliance, replay of the arithmetic actually performed) passes with zero errors, because `18000.0000 = 6000.0000 + 12000.0000` is arithmetically correct *for the two operands actually supplied*.
+
+The violation is at the business-semantics layer: the descriptor name **"Total payout"** asserts a domain meaning — the complete aggregate liability of the insurer for this adjudication run — that is contradicted by what the operation actually consumes. A third, fully-computed claim payout (`o_26`, Liability, $4,750.0000) exists in the same graph, was produced by an identical and equally legitimate adjudication pipeline, and is silently excluded from the aggregation without any explicit annotation, exclusion rationale, or domain-transformation node explaining why Liability claims are treated differently (e.g., "excluded — subrogated," "excluded — different treaty layer"). No such metadata exists anywhere in `o_26`'s or `o_27`'s `descriptor.meta`, both of which are empty.
+
+This is precisely the attack pattern described in the invariants: an operation that is type-safe and mathematically self-consistent is used to implicitly redefine "Total payout" as "Total payout excluding Liability claims," without any explicit transformation logic or documented business justification. Downstream, `Reinsurance recovery` and `Net loss` — both regulatorily and financially material figures — inherit this understatement, meaning the insurer's ceded reinsurance recovery and reported net loss are calculated on an artificially deflated base. The practical consequence is a material understatement of total claims liability (by $4,750.0000, ~26% of the true total of $22,750.0000), propagated into reinsurance settlement and net-loss reporting, while every individual node in isolation appears legitimate and passes type/replay validation.

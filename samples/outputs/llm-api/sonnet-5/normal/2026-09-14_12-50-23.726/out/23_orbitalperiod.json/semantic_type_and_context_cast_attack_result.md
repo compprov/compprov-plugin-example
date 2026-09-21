@@ -1,0 +1,31 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 5.0
+
+## Audit Summary: Semantic Type and Context Cast Attack Analysis
+
+### Scope
+This audit traced business/domain context (descriptor names, implied units, and domain semantics) for every variable in the Kepler's Third Law orbital-period computation, from root INPUT nodes through every operation to the final OUTPUT (`o_15`), cross-checking declared domain meaning against the operation actually performed at each node.
+
+### Findings
+
+#### Domain/Unit Consistency Trace
+- `i_3` (G, N·m²/kg²) × `i_4` (M, kg) → `o_8` labeled "G × M, standard gravitational parameter (m³/s²)" — dimensionally and semantically correct (`multiply`).
+- `i_2` (r, m) raised to `i_9` (exponent 3) → `o_10` "r³ (m³)" — correct (`pow`).
+- `o_10` (m³) ÷ `o_8` (m³/s²) → `o_11` "r³/(GM) (s²)" — unit algebra checks out exactly (m³ / (m³/s²) = s²), matching the declared label.
+- `sqrt(o_11)` (s²) → `o_12` "sqrt(r³/(GM)) (s)" — units resolve correctly (s² → s).
+- `i_6` (2) × `i_5` (π) → `o_13` "2π" — correct, dimensionless constant.
+- `o_13` (2π, dimensionless) × `o_12` (s) → `o_14` "Orbital period, T (s)" — matches Kepler's Third Law formula T = 2π√(r³/GM) exactly, both in structure and units.
+- `o_14` (s) ÷ `i_7` ("Seconds per hour", s/hour) → `o_15` "Orbital period, T (hours)" — a standard, explicit, and dimensionally correct unit conversion (s ÷ (s/hr) = hr). No hidden re-labeling: the divisor's declared meaning (seconds-per-hour) matches its actual use as a unit-conversion factor.
+
+#### Arithmetic Replay
+Independent recomputation of each step (GM, r³, r³/GM, sqrt, 2π, T(s), T(hr)) matches the recorded output values within expected rounding tolerance for a DECIMAL64/16-digit `MathContext`, confirming no numeric substitution accompanies the labels.
+
+#### MathContext Reuse
+`i_1` (DECIMAL64, precision 16) is reused identically across all seven operations, which is the expected, benign pattern for a shared rounding/precision context and is explicitly excluded from the "multi-consumed variable" anomaly set — precision 16 also correctly matches the IEEE 754-2008 `decimal64` significant-digit count, so no shell-game substitution of precision context is present either.
+
+### Conclusion
+No variable is consumed downstream under a business/domain definition that conflicts with its originating metadata. Every intermediate result's declared name matches both the mathematical operation applied and the dimensional/unit algebra implied by its inputs (m → m³ → s² → s → dimensionless×s → s → hours). There is no identity/wrapper operation silently re-mapping a variable's domain tag (e.g., no Gross→Net, no Risk-Multiplier→Discount-Factor style relabeling), and no metadata suppression that contradicts an explicit upstream label. This is a clean, internally consistent physics computation with no evidence of a Semantic Type and Context Cast attack.
+
+### Residual Note
+The only minor observation is that intermediate outputs carry empty `descriptor.meta` arrays (no explicit unit tags beyond the free-text name) — per the audit guidance, this is standard omission of redundant metadata for self-explanatory intermediate values and does not constitute an anomaly absent an explicit contradiction, which was not found here.

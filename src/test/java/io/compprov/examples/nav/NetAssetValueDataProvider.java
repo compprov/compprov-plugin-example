@@ -16,7 +16,7 @@ public class NetAssetValueDataProvider {
     }
 
     public Rate fetchUsdcUsdPrice() {
-        return new Rate(Currency.USDC, Currency.USD, new BigDecimal("1.01"));
+        return new Rate(Currency.USDC, Currency.USD, new BigDecimal("0.99993"));
     }
 
     public Rate fetchWstEthEthPrice() {

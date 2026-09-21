@@ -12,14 +12,15 @@
         "USDC" : 6,
         "USDT" : 6,
         "USD" : 2,
+        "EUR" : 2,
         "WSTETH" : 18
       }
     } ],
-    "name" : "DeFi portfolio profit calculation"
+    "name" : "DeFi portfolio profit calculation at 2026-06-30"
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1126996Z",
+      "createdAt" : "2026-09-14T06:29:45.770596Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "date",
@@ -42,7 +43,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1126996Z",
+      "createdAt" : "2026-09-14T06:29:45.7723102Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "date",
@@ -65,7 +66,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1126996Z",
+      "createdAt" : "2026-09-14T06:29:45.7723102Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "date",
@@ -88,7 +89,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1126996Z",
+      "createdAt" : "2026-09-14T06:29:45.7723102Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "source",
@@ -108,7 +109,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1126996Z",
+      "createdAt" : "2026-09-14T06:29:45.7723102Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "date",
@@ -131,7 +132,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1126996Z",
+      "createdAt" : "2026-09-14T06:29:45.7723102Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "date",
@@ -154,7 +155,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1126996Z",
+      "createdAt" : "2026-09-14T06:29:45.7723102Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "date",
@@ -177,7 +178,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1126996Z",
+      "createdAt" : "2026-09-14T06:29:45.7723102Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "date",
@@ -200,7 +201,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7723102Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "protocol",
@@ -225,7 +226,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7734141Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "protocol",
@@ -250,7 +251,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7734141Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "protocol",
@@ -275,7 +276,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7734141Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "protocol",
@@ -297,7 +298,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7734141Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "protocol",
@@ -322,7 +323,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7734141Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "tx",
@@ -344,7 +345,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7734141Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "tx",
@@ -366,7 +367,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7734141Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "tx",
@@ -388,7 +389,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7734141Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "tx",
@@ -410,7 +411,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7734141Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "tx",
@@ -432,7 +433,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7734141Z",
       "descriptor" : {
         "meta" : [ {
           "key" : "tx",
@@ -454,7 +455,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7734141Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Platform fee rate (3%)"
@@ -467,7 +468,7 @@
     "value" : "0.03"
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7765188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "wBTC yield in BTC (peg-adjusted)"
@@ -483,7 +484,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7765188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "wBTC yield in USDC"
@@ -499,7 +500,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "ETH(AAVE) yield in USDC"
@@ -515,7 +516,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "USDT(Morpho) yield in USDC"
@@ -531,7 +532,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "ETH(Lido+EtherFi) yield in USDC"
@@ -547,7 +548,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Gross yield in USDC"
@@ -563,7 +564,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Gas (wBTC\/AAVE) in USDC"
@@ -579,7 +580,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Gas (ETH\/AAVE) in USDC"
@@ -595,7 +596,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Gas (USDC\/AAVE) in USDC"
@@ -611,7 +612,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Gas (USDT\/Morpho) in USDC"
@@ -627,7 +628,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Gas (ETH\/Lido) in USDC"
@@ -643,7 +644,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Gas (stETH\/EtherFi) in USDC"
@@ -659,9 +660,12 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
-        "meta" : [ ],
+        "meta" : [ {
+          "key" : "basis",
+          "value" : "realized at deposit moment"
+        } ],
         "name" : "Total gas fees in USDC"
       },
       "id" : "o_33",
@@ -675,7 +679,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Platform fee in USDC"
@@ -691,7 +695,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "After gas deduction"
@@ -707,7 +711,7 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-05T08:19:33.1136984Z",
+      "createdAt" : "2026-09-14T06:29:45.7775188Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Net profit in USDC"
@@ -731,10 +735,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7765188Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7765188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -754,10 +758,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7765188Z",
       "id" : "op_2",
       "numericId" : 2,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7765188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -777,10 +781,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_3",
       "numericId" : 3,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7765188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -800,10 +804,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_4",
       "numericId" : 4,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7775188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -823,10 +827,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_5",
       "numericId" : 5,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7775188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -846,10 +850,10 @@
         } ],
         "name" : "addBulk"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_6",
       "numericId" : 6,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7775188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -878,10 +882,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_7",
       "numericId" : 7,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7775188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -901,10 +905,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_8",
       "numericId" : 8,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7775188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -924,10 +928,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_9",
       "numericId" : 9,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7775188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -947,10 +951,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_10",
       "numericId" : 10,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7775188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -970,10 +974,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_11",
       "numericId" : 11,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7775188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -993,10 +997,10 @@
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_12",
       "numericId" : 12,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7775188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -1016,10 +1020,10 @@
         } ],
         "name" : "addBulk"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_13",
       "numericId" : 13,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7775188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -1051,10 +1055,10 @@
         } ],
         "name" : "scale"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_14",
       "numericId" : 14,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7775188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -1074,10 +1078,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_15",
       "numericId" : 15,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7775188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
@@ -1097,10 +1101,10 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-05T08:19:33.1136984Z",
+      "finishedAt" : "2026-09-14T06:29:45.7775188Z",
       "id" : "op_16",
       "numericId" : 16,
-      "startedAt" : "2026-08-05T08:19:33.1136984Z",
+      "startedAt" : "2026-09-14T06:29:45.7775188Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {

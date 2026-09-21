@@ -1,0 +1,40 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-08T14:42:57.6235991Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Gross amount to taker"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "1000003"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-08T14:42:57.6281088Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Basis points denominator"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "10000"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-08T14:42:57.6281088Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Fee rate (basis points)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "37"
+} ]

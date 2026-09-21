@@ -1,0 +1,17 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-14T06:29:18.7323606Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Assets sum"
+    },
+    "id" : "o_16",
+    "kind" : "OUTPUT",
+    "numericId" : 16,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "867943.33",
+    "currency" : "USD"
+  }
+} ]

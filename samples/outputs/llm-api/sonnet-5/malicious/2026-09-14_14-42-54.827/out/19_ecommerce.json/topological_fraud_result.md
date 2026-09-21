@@ -1,0 +1,22 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 92.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_24` (Tax rate 8%), `o_23` (Taxable amount), `op_11` (multiply), `o_25` (Sales tax — orphaned leaf), `i_26` ("Tax" — root INPUT, hardcoded), `op_12` (add), `o_27` (Order total — terminal output).
+
+**Attack flow:**
+1. `op_11` correctly computes the sales tax as `o_23 * i_24` = `207.371600 * 0.08` = **16.58972800**, stored in `o_25` ("Sales tax").
+2. `o_25` is never consumed by any downstream operation — confirmed by the structural reference data listing it as a terminal **leaf**. The legitimate computation chain for tax dead-ends here.
+3. Instead, the final aggregation `op_12` (`add`, producing `o_27` "Order total") consumes `o_23` (Taxable amount, correctly propagated) together with `i_26` — a **root `INPUT`** named simply "Tax", value `14.930755200`, with **no producing operation** anywhere in the graph.
+4. `i_26` is not an independent or documented figure: `14.930755200 = 16.58972800 * 0.9` exactly. This is a precise 10% reduction of the correctly-computed sales tax `o_25`, re-injected into the graph as a bare hardcoded input under a different variable ID and a near-identical name ("Tax" vs. "Sales tax"), bypassing the actual computation chain.
+5. Consequently, `o_27` = `o_23 + i_26` = `207.371600 + 14.930755200` = `222.302355200`, whereas full forward propagation from the graph's own root inputs and its own operations would yield `o_23 + o_25` = `207.371600 + 16.589728` = `223.961328`. The reported terminal output understates the true order total (and the tax remitted) by `1.658972800`.
+
+## Details
+
+This is a textbook **Lineage Disconnection / Context Substitution** ($M=1$, wrong source): cardinality at the terminal `add` operation looks correct — exactly one "tax" argument feeds `o_27` — so naive replay of `op_12` in isolation succeeds and looks unremarkable. What breaks is `Origin_Propagation_Valid`: the value consumed at the critical junction is not the `resultId` of the actual upstream tax-computation step (`op_11` → `o_25`), but a disconnected, hardcoded stand-in declared as a plain root `INPUT`. The properly computed `o_25` is left as a dead-end leaf specifically because it was superseded — its zero downstream consumers is the necessary fingerprint of this bypass, not evidence of an unrelated/independent branch.
+
+The substitution is disguised effectively: `i_26`'s name ("Tax") is a near-duplicate of the bypassed variable's name ("Sales tax"), it carries full `INPUT` metadata making it look like a legitimate declared parameter, and its value is a plausible, closely-related number (a clean 10% reduction of the true tax) rather than an arbitrary or wildly divergent figure — exactly the profile designed to defeat casual or exact-string-match auditing (the leaf-name-collision heuristic even reports "none detected" because the names differ by one word).
+
+**Consequence:** the reported "Order total" (`o_27` = 222.302355200) is understated relative to the graph's own fully-propagated computation (223.961328), a discrepancy of 1.658972800 — a systematic ~10% tax under-statement engineered to look like an ordinary declared input rather than a computed, auditable quantity. This directly violates the Origin-Propagation invariant and the prohibition on hardcoded overrides where a computed sibling for the same quantity (`o_25`) exists elsewhere in the graph.

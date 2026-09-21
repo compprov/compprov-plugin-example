@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 87.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_19` (Discount rate LOYALTY5), `o_18` (Subtotal after SAVE10), `o_20` (Discount multiplier LOYALTY5), `o_21` (Subtotal after LOYALTY5), `o_23` (Taxable amount), `o_25` (Sales tax), `o_26` (Order), `o_27` (Loyalty discount), `o_28` (Order total) via `op_8, op_9, op_10, op_11, op_12, op_13, op_14`.
+
+**Flow of the double-count:**
+
+1. `op_8`: `subtract(i_2=1, i_19=0.05)` → `o_20` = 0.95 (a *multiplier* form of the LOYALTY5 discount).
+2. `op_9`: `multiply(o_18, o_20)` → `o_21` = 205.128 * 0.95 = **194.8716**. The LOYALTY5 discount is now *embedded* in the subtotal — 205.128 − 194.8716 = 10.2564 has already been removed from the running total.
+3. `o_21` propagates forward, already net of the loyalty discount, through `op_10` (`o_23` = taxable amount), `op_11` (`o_25` = tax), and `op_12` (`o_26` = "Order" = `o_23 + o_25` = 223.961328). At this point the loyalty discount has been fully and correctly applied exactly once.
+4. Independently, `op_13`: `multiply(o_18, i_19)` → `o_27` = 205.128 * 0.05 = **10.2564** ("Loyalty discount", the *same* discount amount computed a second time, this time in additive/subtractive form from the *same* `o_18` root).
+5. `op_14`: `subtract(o_26, o_27)` → `o_28` ("Order total") = 223.961328 − 10.2564 = **213.704928**.
+
+The terminal output `o_28` therefore has the LOYALTY5 discount subtracted **twice**: once implicitly (via the 0.95 multiplier baked into `o_21`→`o_23`→`o_26`), and once explicitly (via `o_27` subtracted at `op_14`). The reference data independently flags both `o_18` and `i_19` as consumed by more than one operation — exactly the two junctions where the discount's origin entity is forked into two convergent causal paths that both terminate at `o_28`.
+
+## Details
+
+This is the deduction-side mirror of Topological Accumulation Fraud explicitly called out in the attack taxonomy: "netting a cost out of one branch's intermediate subtotal and then subtracting that same cost again from a later aggregate that already incorporates that subtotal." Here the "cost" is the LOYALTY5 discount amount (10.2564), the intermediate subtotal is `o_18`, and the later aggregate is `o_26` (which already incorporates the discounted subtotal `o_21`).
+
+Why this passes casual/local checks: every individual operation replays correctly in isolation — `op_9` correctly computes a discounted subtotal, and `op_13` correctly computes "the loyalty discount amount" from the same inputs. Each node's arithmetic is locally valid (this explains why `op_13`/`o_27` looks like a legitimate, well-labeled, transparently-computed output rather than an injected value). The fraud only becomes visible when tracing full forward propagation from `i_19` and `o_18` to the terminal `o_28` and observing that both the multiplicative and additive forms of the same discount converge on the same terminal aggregation.
+
+**Consequence:** The reported "Order total" (`o_28` = 213.704928) is understated relative to a correct single application of the loyalty discount. A correctly computed order total should equal `o_26` = 223.961328 (subtotal after both discounts, plus shipping, plus tax) — full stop. Instead, an additional 10.2564 (roughly 4.6% of the order) is stripped out a second time, which — depending on which side of the transaction consumes this figure — either overstates a discount granted to a customer or understates recognized revenue/tax base by a materially incorrect amount. This is a textbook double-deduction and a mandatory-contributor path-multiplicity violation (M>1) on the LOYALTY5 discount entity, not a benign reproduction of a diagnostic value, since `o_27` is consumed directly at the final subtraction step `op_14` feeding the reported terminal output.

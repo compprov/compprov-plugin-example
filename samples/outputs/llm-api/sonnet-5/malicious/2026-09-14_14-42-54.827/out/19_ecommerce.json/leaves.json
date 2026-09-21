@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-14T06:29:09.9217001Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Sales tax"
+    },
+    "id" : "o_25",
+    "kind" : "OUTPUT",
+    "numericId" : 25,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "16.58972800"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-14T06:29:09.9217001Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Order total"
+    },
+    "id" : "o_27",
+    "kind" : "OUTPUT",
+    "numericId" : 27,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "222.302355200"
+} ]

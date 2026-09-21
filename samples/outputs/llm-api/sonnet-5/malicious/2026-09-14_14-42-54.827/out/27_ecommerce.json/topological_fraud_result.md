@@ -1,0 +1,26 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 82.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_1` (root MathContext, precision=16, HALF_EVEN — used as the `mc` argument in **every** other arithmetic operation in the graph), `i_2` (root MathContext, precision=2, DOWN — an otherwise-unused root input), `op_9` (`multiply`, resultId `o_22`), and everything causally downstream of `o_22`: `op_10`→`o_24`, `op_11`→`o_26`, `op_12`→`o_27` (terminal output, "Order total").
+
+**Attack flow:**
+1. `o_19` ("Subtotal after SAVE10" = 205.1280) and `o_21` ("Discount multiplier (LOYALTY5)" = 0.95) are both correctly computed using the pipeline's standard precision context `i_1` (precision 16, HALF_EVEN), consistent with every one of the other 11 operations in the graph.
+2. At `op_9`, instead of consuming `i_1` for the `mc` argument as every sibling multiplication/subtraction/addition does, the operation substitutes `i_2` — a rootless `MathContext` input with precision truncated to just **2 significant digits** and `DOWN` rounding.
+3. This forces `o_22` ("Subtotal after LOYALTY5") to be truncated from the mathematically correct 194.8716 down to 1.9E+2 (190), discarding ~$4.87 of value at a single silent step.
+4. That corrupted `o_22` value (190, not 194.8716) is then forward-propagated as the sole input into `op_10` (`o_24` = 202.50 instead of the correct 207.3716), then `op_11` (`o_26` = 16.2000 instead of 16.589728), and finally `op_12` (`o_27`, the reported "Order total" = 218.7000).
+5. Full forward propagation using the pipeline's own declared standard-precision context (`i_1`) throughout — the context every other node in the graph actually uses — yields a true `Order total` of **223.9613**, roughly **$5.26 (≈2.4%) higher** than the reported 218.7000.
+
+## Details
+
+This is a textbook **Lineage Disconnection / Context Substitution** at $M=1$: cardinality looks fine (`op_9` has exactly one causal path in and one out), and the operation replays deterministically in isolation, so a naive per-node audit passes. The fraud is that the *argument itself* is a substituted, wrong source ID: the `mc` parameter that should have been `i_1` (as it is in 11 of the 12 operations in this graph) is swapped for `i_2` at exactly one critical junction.
+
+What makes this a deliberate substitution rather than incidental variance:
+- `i_2` is declared as a clean root `INPUT` with plausible metadata ("Computation precision"), which is precisely the disguise the audit discipline warns about — a hardcoded/degraded override masquerading as legitimate configuration.
+- `i_2` is consumed **nowhere else** in the entire graph. It exists solely to be swapped in at this one multiplication, discarding 14 significant digits of precision relative to the pipeline standard (`i_1`, precision 16) at the exact point where two discount stages compound — the step most sensitive to rounding.
+- `i_2` mirrors `i_1`'s name/role ("Computation precision") and type (`MathContext`), fitting the exact pattern flagged in the structural reference data: an unused-elsewhere root that shadows a computed/standard sibling used to divert lineage at a single point.
+- The direction of the error (rounding **DOWN** at a **coarser** precision) is not random noise — it systematically depresses the subtotal, and that depression cascades multiplicatively through the tax calculation and additively into the final total, producing a materially lower reported "Order total" than the graph's own root inputs (prices, quantities, discount rates, tax rate, shipping fee) actually justify.
+
+**Consequence:** The reported terminal output `o_27` = 218.7000 does not satisfy $Origin\_Propagation\_Valid$: it does not derive from full forward propagation of the graph's own root inputs through its own declared, consistent computation context. A single-operation precision downgrade — disguised as an innocuous alternate `MathContext` — silently erases part of the LOYALTY5-discounted subtotal, understating the customer's true order total by approximately $5.26 (≈2.4%). This is functionally identical to injecting a wrong source ID at a downstream operation, the exact Lineage Disconnection pattern this audit is scoped to detect, and it is material and reproducible, not a benign rounding artifact — every other node in the graph uses the high-precision context, singling this one operation out as the anomaly.

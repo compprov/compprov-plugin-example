@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-14T06:29:01.0780104Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Order total"
+    },
+    "id" : "o_29",
+    "kind" : "OUTPUT",
+    "numericId" : 29,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "223.96132800"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-14T06:29:01.0780104Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Restocking fee total"
+    },
+    "id" : "o_28",
+    "kind" : "OUTPUT",
+    "numericId" : 28,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "16.2000"
+} ]

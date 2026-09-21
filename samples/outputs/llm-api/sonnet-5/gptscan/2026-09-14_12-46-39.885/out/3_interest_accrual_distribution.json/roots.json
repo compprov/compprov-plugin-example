@@ -1,0 +1,59 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-08T13:21:47.8198016Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Staked principal"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "100000"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-08T13:21:47.8253125Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "period",
+        "value" : "42"
+      } ],
+      "name" : "Interest accrued (bps)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "37"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-08T13:21:47.8253125Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "period",
+        "value" : "41"
+      } ],
+      "name" : "Rate accumulator"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "500"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-08T13:21:47.8253125Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Basis points denominator"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "10000"
+} ]

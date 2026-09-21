@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 5.0
+
+## Anomaly Localization (If Detected)
+No confirmed Precision/Scale Tampering was found. A full independent recomputation of every operation (op_1 through op_7) was performed using exact rational/integer arithmetic and compared against the reported output values.
+
+- **op_1** (`convert(i_8, i_7) -> o_9`, WSTETH→ETH): Exact = 75.382334582395535302525572...; Reported = 75.382334582395535302. Delta ≈ 5.26e-19, i.e. <1 unit at ETH's declared 18-decimal precision. Consistent with DOWN truncation.
+- **op_2** (`convert(i_4, i_1) -> o_11`, BTC→USD): Exact = 457700.6235894788; Reported = 457700.62. Exact DOWN truncation to USD's 2-decimal precision.
+- **op_3** (`convert(i_5, i_2) -> o_12`, ETH→USD): Exact = 106300.33963140798...; Reported = 106300.33. Exact DOWN truncation.
+- **op_4** (`convert(i_6, i_3) -> o_13`, USDC→USD): Exact = 78758.22988596564; Reported = 78758.22. Exact DOWN truncation.
+- **op_5** (`convert(o_9, i_2) -> o_14`, staked ETH→USD): Exact = 157044.77145905004265...; Reported = 157044.77. Exact DOWN truncation.
+- **op_6** (`convert(i_10, i_3) -> o_15`, USDC(Morpho)→USD): Exact = 68139.39860519121; Reported = 68139.39. Exact DOWN truncation.
+- **op_7** (`addBulk(o_11,o_12,o_13,o_14,o_15) -> o_16`): 457700.62+106300.33+78758.22+157044.77+68139.39 = 867943.33, matching reported o_16 exactly. Integer/cent-level addition is exact — no leakage or drift introduced at the summation step itself.
+
+Cumulative truncation loss across the 5 conversion legs (sum of exact pre-truncation values = 867943.36317109... vs. reported 867943.33) is ≈ $0.033, entirely explained by 5 independent sub-cent DOWN-truncations (each < $0.01), matching the descriptor's explicit global policy: `rounding: DOWN (Amount always truncates to the currency's decimal precision; balance-safety invariant)`.
+
+## Details
+Every multiplication/conversion operation in this graph was re-derived using exact integer arithmetic (scaling amounts and rates to their native integer representations) and compared bit-for-bit against the reported outputs. In all seven operations, the reported value equals the mathematically exact product truncated (rounded DOWN, never up) at the *target* currency's declared decimal precision (`currencyPrecisions` metadata: USD=2, ETH=18, etc.). No operation exhibits a discrepancy inconsistent with this single, uniformly-applied, and explicitly documented rounding convention — there is no evidence of an alternate/hidden rounding mode, no double-truncation, no premature scale reduction ahead of aggregation, and no mid-pipeline downcast to a lower-precision type.
+
+The small aggregate shortfall (~$0.033 on a ~$868k NAV) is the mathematically unavoidable consequence of applying a conservative (DOWN) truncation independently to five conversion legs before summing — exactly the behavior the descriptor states is intentional ("balance-safety invariant"), it is directionally conservative (always understates assets, never overstates), and it does not accumulate toward any identifiable beneficiary — it simply reduces the reported NAV slightly. Per the audit invariants, this is not Salami Slicing: the operation population here (5 fixed asset-conversion legs in a single NAV snapshot) is not scalable with transaction/user volume, and there is no sink or beneficiary account absorbing the residual. It is a fixed, bounded, and disclosed rounding policy applied uniformly.
+
+No variable reuse (i_2, i_3 used twice each) introduces any inconsistency — both reuses are legitimate: the same market rate is correctly applied to two independent balances of the same asset (ETH balance + staked-ETH-converted balance using i_2; two USDC balances from different custodians using i_3).
+
+**Conclusion:** The graph is internally consistent, arithmetically exact under its stated DOWN-truncation convention at every step, and asset conservation holds within the mathematically expected bound for that documented policy. No tampering, precision degradation, or hidden rounding-mode exploitation was identified.

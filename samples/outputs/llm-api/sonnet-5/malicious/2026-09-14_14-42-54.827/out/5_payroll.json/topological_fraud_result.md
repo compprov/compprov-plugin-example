@@ -1,0 +1,26 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 87.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_5`, `i_6`, `op_2`, `o_7` (Pretax deductions), `o_4` (Gross pay), `op_3`, `o_8` (Taxable income), `op_10`, `o_16` (Federal tax withheld), `o_19` (After federal withholding), `op_11`, `o_18` (State tax withheld), `o_20` (Net pay, terminal output).
+
+**Attack flow:**
+
+1. `op_2` correctly computes Pretax deductions `o_7` = 401k (`i_5`) + Health premium (`i_6`) = 350.00.
+2. `op_3` correctly computes Taxable income `o_8` = Gross pay (`o_4`, 4000.00) − Pretax deductions (`o_7`, 350.00) = 3650.00. Up to this point the pipeline is sound: the deduction is properly netted out of the tax base.
+3. `o_8` is then consumed exclusively for **tax-bracket determination** (`op_4`, `op_5`, `op_9`), which produces Federal tax (`o_16` = 563.0000) and State tax (`o_18` = 182.5000). These taxes are computed on the *reduced* taxable income, so they are proportionally smaller than they would be on the full gross pay — meaning the $350 deduction is already partially "credited" to the employee through lower tax, but the deduction itself is never actually withheld from the paycheck anywhere in the graph.
+4. Critically, `op_10` (`(a-b)mc`, "After federal withholding") takes `a = o_4` (raw **Gross pay**, 4000.00) and `b = o_16` (Federal tax, 563.0000) — **not** `o_8` (Taxable income, which already reflects the 350.00 deduction). This produces `o_19` = 3437.0000.
+5. `op_11` then subtracts State tax (`o_18` = 182.5000) from `o_19`, yielding the terminal `o_20` Net pay = 3254.5000.
+
+The net effect: `o_7` (Pretax deductions) is fully and correctly computed, but its dollar value **never directly reaches the terminal aggregation**. Its only downstream influence is the marginal, tax-rate-scaled side effect it has on `o_16`/`o_18` through the bracket calculation — a small fraction of its true value (roughly 22% + 5% = 27% of $350, i.e. ~$94-95), not the full $350.00 it should reduce net pay by as an actual payroll withholding.
+
+**Quantified discrepancy:** A correctly propagated pipeline would compute Net pay = Taxable income − Federal tax − State tax = 3650.00 − 563.0000 − 182.5000 = **2904.5000**, or equivalently Gross − Deductions − Federal tax − State tax. The graph instead reports **3254.5000** — inflated by exactly **350.00**, the precise value of the omitted Pretax deductions (`o_7`). $S_{dedup} \neq S_{reported}$ by exactly this amount, confirming the violation is not incidental rounding.
+
+## Details
+
+This is a hybrid Calculation-Omission / Lineage-Substitution defect concentrated at `op_10`:
+
+- **From the omission angle:** `o_7` (Pretax deductions) is a mandatory contributor per its own descriptor ("401k contribution" + "Health premium" summed into a variable explicitly named "Pretax deductions"). The terminal Net Pay formula must subtract it, yet the terminal aggregation chain (`op_10`→`op_11`) never takes `o_7` or its properly-deduction-adjusted successor `o_8` as an argument — `op_10`'s argument list is `{a: o_4, b: o_16}`, silently dropping the deduction term.
+- **From the substitution angle:** `o_8` (Taxable income) is the correctly-computed, deduction-adjusted sibling of `o_4` (Gross pay) that *should* have fed `op_10` as the minuend. Instead, `op_10` reaches back past `o_8` to consume the untouched root-adjacent value `o_4`. `o_8` is not an orphaned leaf (it legitimately feeds the tax-bracket sub-computation), but the specific deduction-adjusted quantity it represents is bypassed at the one place — the final net-pay subtraction — where its full value was required. This is exactly the kind of 

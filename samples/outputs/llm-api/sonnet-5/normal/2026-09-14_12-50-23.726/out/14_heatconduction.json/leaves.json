@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9158069Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Heat flow through layer 2, Q2 (W)"
+    },
+    "id" : "o_22",
+    "kind" : "OUTPUT",
+    "numericId" : 22,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "122.4000000000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9158069Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Heat flow through layer 1, Q1 (W)"
+    },
+    "id" : "o_19",
+    "kind" : "OUTPUT",
+    "numericId" : 19,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "122.400000000000"
+} ]

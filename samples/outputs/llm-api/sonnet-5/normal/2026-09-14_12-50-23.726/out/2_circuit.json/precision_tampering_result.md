@@ -1,0 +1,30 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 5.0
+
+## Precision & Scale Tampering Audit — Series-Parallel Resistor Network
+
+### Methodology
+Every operation (`op_1`–`op_9`) was recomputed using exact rational arithmetic and then rounded according to the explicitly declared `MathContext` (`i_1`: precision=16, roundingMode=HALF_EVEN), which is passed as the `mc` argument to *every* operation in the graph without exception.
+
+### Step-by-step verification
+- `op_1` add(100,150) → 250 (exact) — matches `o_7`.
+- `op_2` multiply(300,600) → 180000 (exact) — matches `o_8`.
+- `op_3` add(300,600) → 900 (exact) — matches `o_9`.
+- `op_4` divide(180000,900) → 200 (exact) — matches `o_10`.
+- `op_5` add(250,200) → 450 (exact) — matches `o_11`.
+- `op_6` divide(120,450) → exact value 4/15 = 0.2666666666666666666…, rounded HALF_EVEN to 16 sig figs → 0.2666666666666667 — matches `o_12` exactly.
+- `op_7` multiply(0.2666666666666667, 120) → exact 32.000000000000004 (17 sig figs), rounds down (17th digit=4) to 32.00000000000000 — matches `o_13` exactly.
+- `op_8` pow(0.2666666666666667, 2) → exact value derived algebraically as 0.071111111111111128888… , rounded to 16 sig figs (17th sig digit=8, round up) → 0.07111111111111113 — matches `o_15` exactly.
+- `op_9` multiply(0.07111111111111113, 450) → exact 32.0000000000000085, rounded to 16 sig figs (17th digit=8, round up) → 32.00000000000001 — matches `o_16` exactly.
+
+All nine operations reproduce their reported results bit-for-bit once the declared `MathContext` (precision 16, HALF_EVEN) is applied. No operation silently drops the `mc` argument, no operation downcasts to `float`/`double`/`int` mid-pipeline, and no scale-reduction step occurs ahead of an aggregation.
+
+### The apparent discrepancy between o_13 and o_16
+The two cross-check power values, `o_13` (P = I·V = 32.00000000000000) and `o_16` (P = I²·R = 32.00000000000001), differ by 1e-14. This is not evidence of tampering: it is the well-understood, expected consequence of reusing the same rounded intermediate (`o_12`, the current I) in two independently-rounded downstream formulas under a fixed finite precision context. The delta is far below the materiality threshold implied by the declared precision (16 significant digits ⇒ ULP-scale noise near 1e-14 for a magnitude-32 value), and it does not accumulate toward any beneficiary — it is a self-cancelling artifact of a single-pass sanity cross-check, not a scalable, repeatable skim. This matches the invariant guidance that isolated, context-consistent rounding noise at the ULP boundary is not a violation.
+
+### Reused variables (`i_4`, `i_5`, `i_6`, `o_11`, `o_12`)
+All multi-consumption instances are legitimate: R3/R4 feed both the product and sum needed for the parallel-resistance formula, `Rtotal` feeds both the current calculation and the I²R cross-check, and `I` feeds both the P=IV and P=I²R formulas. No hidden re-derivation, duplication, or divergent-precision branch was found.
+
+### Conclusion
+No salami-slicing, no premature truncation, no rounding-mode substitution, and no unit/scale-precision loss were identified. The single declared `MathContext` is applied uniformly and every output is verifiably the correct HALF_EVEN rounding of the exact intermediate value at precision 16. The graph is consistent with a clean, non-adversarial computation; residual sub-cent-scale discrepancy between the two independent power formulas is expected numerical behavior, not an attack indicator.

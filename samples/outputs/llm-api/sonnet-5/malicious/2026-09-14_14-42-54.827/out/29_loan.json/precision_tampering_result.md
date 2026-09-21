@@ -1,0 +1,23 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 82.0
+
+## Anomaly Localization
+
+**Primary implicated nodes:** `op_7` (multiply), `i_2` (MathContext, precision=2, DOWN), `i_1` (MathContext, precision=16, HALF_EVEN), `o_13`, `o_15`, `o_16`, `o_17`, and every downstream node that depends on `o_17` (`o_19`, `o_20`, `o_21`, `o_22`, `o_24`, `o_25`, `o_26`, `o_28`, `o_29`, `o_30`, `o_32`).
+
+**Attack flow:**
+1. The amortization loop computes "interest accrued" for months 1, 2, 4, 5, and 6 via `op_1`, `op_4`, `op_10`, `op_14`, `op_17` — all structurally identical `multiply(balance, rate, mc)` calls that consistently use `mc = i_1` (precision 16, HALF_EVEN).
+2. The month-3 interest calculation, `op_7` (`multiply(o_13, i_4, mc)`), silently substitutes `mc = i_2` (precision **2**, rounding **DOWN**) instead of `i_1`.
+3. Exact math: `237915.84000000 * 0.004 = 951.66336000000`. Under `i_1` (precision 16, HALF_EVEN) this would round to `951.66336000000`, consistent with the pattern seen in every sibling month (e.g., `o_19 = 947.46336000000`). Under the substituted `i_2` (precision 2, DOWN), the result is truncated to 2 significant digits: `9.5E+2` = `950` — exactly the value recorded in `o_15`.
+4. This single substitution silently discards **1.66336** units of accrued interest for month 3 (Δ = 951.66336 − 950 = 1.66336), which is many orders of magnitude larger than any legitimate "1 unit at target scale" rounding-mode ambiguity (target scale here is 5+ decimal places, so a legitimate single-rounding-mode discrepancy could be at most ~0.00001).
+5. Because `principal = payment − interest` (`op_8`), the missing interest is misclassified as extra principal repayment (`o_16 = 1050.00` instead of the correct `1048.33664`), which flows into `o_17` (`Balance after payment [Month 3]` = `236865.84000000` instead of the correct `236867.50336000000`).
+6. This depressed balance then propagates through every subsequent operation in the chain (`op_10` → `op_19`, `op_12` → `o_21`, `op_13` → `o_22` prepayment base, `op_14`–`op_19` → months 5–6, and finally `op_20` → `o_32` Total interest accrued), permanently and cumulatively understating the lender's interest income for the remainder of the loan term, not just in month 3.
+
+## Details
+
+**Mechanism:** The graph legitimately defines two `MathContext` inputs: `i_1` (precision 16, HALF_EVEN — used as the working precision for the entire amortization schedule) and `i_2` (precision 2, DOWN — never explained by any accompanying descriptor/meta as to its intended purpose). Every multiply operation that computes a month's interest accrual uses `i_1` except for month 3 (`op_7`), which uses `i_2`. This is a targeted, one-operation substitution hidden inside an otherwise mechanically repetitive 5-operation family — precisely the kind of surgical tampering that evades naive automated checks (both `i_1` and `i_2` are legitimate, declared, non-duplicated variables, so exact-match/duplicate-ID heuristics see nothing wrong).
+
+Why it isn't benign: the EXPECTED_INVARIANTS explicitly state that an explicit `mc` argument should be checked directly against its declared context — here it *is* consistent with `i_2`, but `i_2` is the wrong context for this position in the pattern, evidenced by the stark inconsistency with all 4 sibling operations performing the identical `balance × rate` calculation with `i_1`. The resulting delta (1.66336) vastly exceeds the "single rounding-mode, 1-unit-at-scale" ceiling described as the maximum innocent explanation, so this cannot be dismissed as ordinary rounding-mode variance.
+
+**Consequences:** The immediate effect understates one month's interest income by ~$1.66 and overstates principal reduction by the same amount. Because this is an amortization schedule, the artificially lowered balance compounds: every subsequent month's interest is calculated against a principal that is $1.66 lower than it should be, and this gap does not self-correct anywhere in the graph (the totals in `o_32`/`o_35` simply inherit and lock in the loss). While the absolute dollar impact in this single trace is modest relative to the $240,000 principal, the mechanism — an isolated, precision-crushing MathContext swap embedded in a recurring per-period calculation — is exactly the shape of a systemic defect/exploit that would replicate identically across every loan processed by the same code path (e.g., always mis-costing "month 3" of every amortization schedule run through this pipeline), which is a scalable, portfolio-wide leakage vector rather than a one-off anomaly confined to this single output.

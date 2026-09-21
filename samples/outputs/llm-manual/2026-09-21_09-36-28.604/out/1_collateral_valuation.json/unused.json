@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-08T13:16:20.7106835Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Oracle price (quote per base)"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "2000"
+} ]

@@ -1,0 +1,28 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 93.0
+
+#### Anomaly Localization (If Detected)
+
+**Implicated nodes:** `i_4` (Roofing materials, value `6300.00`), `op_1` (`addBulk`), `o_6` (Total materials cost), and every downstream node that depends on `o_6`: `op_5`→`o_14` (Direct cost), `op_6`→`o_16` (Overhead), `op_7`→`o_17` (Cost including overhead), `op_8`→`o_19` (Profit margin), `op_9`→`o_20` (Total bid price).
+
+**Flow of the defect:**
+1. `i_4` ("Roofing materials", $6,300.00) is declared as a normal `INPUT` variable, identical in structure/type to the other three material-cost inputs (`i_2` Lumber, `i_3` Concrete, `i_5` Electrical materials).
+2. `op_1` (`addBulk`, formula `(a+b0+...+bn)mc`) is supposed to sum *all* material cost line items into `o_6` ("Total materials cost"). Its argument list is `a=i_2, b0=i_3, b1=i_5, mc=i_1` — **`i_4` is silently omitted** from the term list.
+3. `o_6` is reported as `31800.00` (=18500.00+9200.00+4100.00), which is arithmetically self-consistent with the *truncated* argument set — so a naive recomputation of `op_1` in isolation shows zero delta. The exact-match structural checks (duplicate names, duplicate leaves) also pass, because `i_4` is a uniquely-named, uniquely-valued leaf — nothing looks duplicated or renamed.
+4. Because `i_4` is never consumed anywhere in the graph (confirmed leaf), its $6,300.00 value simply vanishes from the computation. It never reaches `o_6`, `o_14` (direct cost), `o_16` (overhead), `o_17` (cost incl. overhead), `o_19` (profit margin), or `o_20` (total bid price) — a textbook asset-conservation violation: a declared, real-world cost input has zero path to any output.
+5. Recomputing the full pipeline *with* `i_4` correctly included:
+   - True total materials = 18500.00+9200.00+6300.00+4100.00 = **38100.00** (vs. reported 31800.00, Δ=6300.00)
+   - True direct cost = 38100.00+14400.00 = **52500.00** (vs. reported 46200.00)
+   - True overhead (10%) = **5250.00** (vs. reported 4620.0000)
+   - True cost incl. overhead = **57750.00** (vs. reported 50820.0000)
+   - True profit margin (15%) = **8662.50** (vs. reported 7623.000000)
+   - True total bid price = **66412.50** (vs. reported 58443.000000)
+
+   Final Δ on the bid price = **$7,969.50**, a ~13.6% understatement of the total bid — and this gap *compounds* through the 10% overhead and 15% margin markups rather than being a flat, cancelling offset.
+
+#### Details
+
+This is not a rounding-mode or MathContext discrepancy — every individual multiply/add operation that *is* performed matches its declared `MathContext` (precision 16, HALF_EVEN) exactly, with zero delta at each step. The defect is structural: an input variable representing a legitimate, priced cost category ("Roofing materials") is present in the `variables` array with full descriptor metadata, indistinguishable in form from the three sibling material costs that *are* correctly aggregated, yet it is excluded from the `addBulk` argument list in `op_1`. This is precisely the kind of "near-duplicate is fine, but one term is quietly dropped" tampering that a naive check (verifying `op_1`'s own arithmetic, or scanning for duplicate/renamed variables) cannot catch — the operation is internally consistent, and `i_4` is uniquely named and uniquely valued, so no naive heuristic flags it. Only tracing full data lineage (does every INPUT reach an OUTPUT?) exposes that `i_4` is a dead-end leaf that never contributes to `o_6` or any downstream aggregate.
+
+Consequence: the reported "Total materials cost," "Direct cost," "Cost including overhead," "Profit margin," and ultimately "Total bid price" are all understated by a material, compounding amount (~13.6% of the final bid, ~$7,970 on a ~$58k bid). Per the stated Materiality Override, this magnitude of error is high-risk regardless of whether the underlying process is cyclic or a one-off bid computation — a single bid submitted at $58,443 instead of the true $66,412.50 is a severe, exploitable understatement (e.g., a contractor systematically losing money per bid, or a customer/insider benefiting from omitted cost lines). This should be treated as a confirmed asset-conservation violation and escalated for human review rather than dismissed as benign rounding.

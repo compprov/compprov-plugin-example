@@ -1,0 +1,31 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 8.0
+
+## Semantic Type & Context Cast Audit — Insurance Claims Adjudication Pipeline
+
+### Anomaly Localization (If Detected)
+No confirmed instance of a Semantic Type and Context Cast Attack was identified. A full trace of business context (C) was performed from every root INPUT through every downstream OUTPUT, and in each case the declared domain meaning at the point of consumption matched the domain meaning at the point of origination.
+
+Traced chains, per claim type:
+
+- **Collision**: i_3 (Claim amount, claimType=Collision) − i_4 (Deductible, claimType=Collision) → o_7 ("Collision: net of deductible") → max(·, i_2) → o_8 ("Collision: net of deductible (floored)") → ×i_5 (Coinsurance rate, claimType=Collision) → o_9 ("Collision: coinsurance amount") → min(·, i_6 Policy limit, claimType=Collision) → o_10 ("Collision claim payout"). All arguments at every step belong to the Collision cohort; no cross-claim substitution detected.
+- **Comprehensive**: i_11/i_12/i_13/i_14 → o_15/o_16/o_17/o_18, same pattern, fully self-consistent, no Collision/Liability inputs leak into this chain.
+- **Liability**: i_19/i_20/i_21/i_22 → o_23/o_24/o_25/o_26, same pattern, fully self-consistent (note: coinsurance rate = 1.00, i.e., no cost-sharing — a legitimate data value, not a relabeling).
+- **Aggregation**: op_13 (addBulk) sums o_10 + o_18 + o_26 — three like-typed, like-domain "claim payout" values — into o_27 "Total payout". This is standard subtotal aggregation exempted by the stated domain convention (no per-claim metadata required on the aggregate).
+- **Reinsurance layer**: op_14 multiplies o_27 (Total payout) by i_28 (Reinsurance recovery rate) → o_29 (Reinsurance recovery); op_15 subtracts o_29 from o_27 → o_30 (Net loss). The consuming semantics ("recovery is a share of total payout", "net loss = payout minus recovery") are internally consistent with the variable names and do not silently reinterpret a gross figure as net, or a rate as a different kind of factor.
+
+No variable is consumed under a business definition that conflicts with its originating `descriptor.name`/`meta`. The shared constants (`i_1` MathContext, `i_2` Zero floor) are legitimately reused across claim types without any relabeling. No `domainType`/unit/tax-status stripping or contradiction was found on any edge.
+
+### Details
+This pipeline implements a straightforward three-line claims adjudication (Collision/Comprehensive/Liability) followed by portfolio-level reinsurance recovery and net loss calculation. Every operation's arguments were checked against their originating `descriptor` metadata (claimType tags and variable names), and in every case the consuming operation's business assumption matches the producing variable's declared meaning:
+- deductions applied to the correct claim type's own deductible,
+- flooring against the same generic zero constant (a legitimate cross-claim shared root, not a cast),
+- coinsurance multiplication using each claim type's own rate,
+- policy-limit capping using each claim type's own limit,
+- aggregation of same-domain "claim payout" values into a total,
+- reinsurance rate and net-loss subtraction applied consistently to the aggregate "Total payout" variable without any intervening relabeling node.
+
+The absence of `claimType` metadata on intermediate/aggregate outputs (o_7–o_10, o_15–o_18, o_23–o_30) is expected and benign per stated convention — the claim-type context is still carried unambiguously through the variable *names* (e.g., "Collision: coinsurance amount"), and no downstream node treats one claim type's intermediate as belonging to another, nor treats a rate/multiplier field as a different kind of factor, nor silently swaps gross/net or pre/post-tax semantics.
+
+**Conclusion**: No explicit contradiction between originating domain definition and downstream consumption was found anywhere in the graph. The risk score is kept low but non-zero only to reflect the inherent residual uncertainty of metadata sparsity on intermediate nodes (a stylistic weakness, not a demonstrated attack) — a human reviewer may still wish to confirm the absence of implicit conventions is intentional documentation policy rather than incidental.

@@ -1,0 +1,23 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 92.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `o_22` ("Ending balance", OUTPUT, computed), `i_23` ("Ending balance", INPUT, injected), `o_25` ("Total contributions"), `o_26` ("Total growth (interest earned)"), `op_18` (produces o_22), `op_19` (produces o_25), `op_20` (consumes i_23 and o_25 to produce o_26).
+
+**Attack flow:**
+1. The annuity engine legitimately computes a 6-year compounding projection: `i_4` (start balance) → `op_1..op_18` → `o_22` = **42919.74444420000**, labeled "Ending balance". Per the structural reference data, `o_22` is a **leaf** — it is never consumed by any downstream operation. The fully-audited, mathematically-replayable result of the entire computation chain is silently discarded.
+2. A second variable, `i_23`, is introduced as a **root INPUT** (no producing operation, appears from nowhere in the trace) carrying the **identical display name** "Ending balance" and the **identical technical type** (`java.math.BigDecimal`), but holding a materially different value: **44399.53**.
+3. `op_20` (`subtract`) computes `o_26` ("Total growth (interest earned)") as `i_23 - o_25`, where `o_25` = `i_2 * i_24` = 36000.00 ("Total contributions", correctly derived).
+4. Reported growth: `44399.53 - 36000.00 = 8399.53`.
+5. Actual growth implied by the audited annuity computation: `o_22 - o_25 = 42919.744444 - 36000.00 = 6919.744444`.
+6. Discrepancy: **~1,479.79 (≈21% overstatement)** of the reported "growth" figure relative to what the graph's own verified computation produced.
+
+## Details
+
+This is a textbook Semantic Type and Context Cast: `i_23` passes every technical check that a naive validator would run — same `valueClass` (`java.math.BigDecimal`), same `descriptor.name` ("Ending balance"), and it participates in a type-safe, well-formed `subtract` operation with a correctly computed operand (`o_25`). Mathematically, `op_20` "replays" cleanly. But there is no explicit transformation node, reconciliation step, or metadata (e.g., `source: external/audited`, `domainType: actual vs projected`) that would justify substituting an externally-sourced or otherwise independent "Ending balance" for the one the pipeline itself just computed through 18 chained operations. The originating metadata for `o_22` establishes its business meaning as *the result of this specific 6-year compounding projection*; `i_23` is consumed downstream **as though it carries that same meaning**, despite having a divergent value and a completely different provenance (INPUT vs OUTPUT/derived).
+
+Because `o_22` and `i_23` share an identical name and type, a schema/connectivity-only audit — or a human skimming variable names — would likely assume `i_23` is simply a re-exposure or echo of `o_22`, and would not flag the swap. In reality, the final "Total growth" figure reported to the retirement plan/customer is fabricated from an untraced, unaudited number rather than from the model's own verified compounding math. This lets an adversary silently inflate (or otherwise manipulate) the reported investment growth by ~21% while every individual operation and type signature in the graph remains locally "valid."
+
+**Impact:** The pipeline's headline output (`o_26`, "Total growth (interest earned)") is decoupled from the actual computed annuity trajectory. This is a material, financially consequential misstatement risk — exactly the scenario the Semantic Type and Context Cast invariant is designed to catch, since C_source (model-computed "Ending balance") ≠ C_target (injected "Ending balance") despite identical technical types and names, with no auditable transformation bridging the two.

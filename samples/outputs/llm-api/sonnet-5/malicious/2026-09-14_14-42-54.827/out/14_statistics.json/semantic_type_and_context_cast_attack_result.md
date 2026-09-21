@@ -1,0 +1,23 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 88.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_2` ("[0] Sample value (mL)", value `12.5`), `op_1` (`addBulk`), `o_8` ("Sum of samples (mL)"), `i_9` ("Sample count, n" = 6), `o_10` ("Mean (mL)"), and by transitive dependency every downstream statistical output: `o_11`–`o_22` (per-sample deviations/squared deviations), `o_23` ("Sum of squared deviations"), `i_24` ("Degrees of freedom, n-1" = 5), `o_25` ("Sample variance"), `o_26` ("Sample standard deviation").
+
+**Attack flow:**
+
+1. `op_1` (`addBulk`, formula `(a+b0+...+bn)mc`) is supposed to sum the six independent replicate measurements `i_2..i_7` exactly once each, consistent with the declared "Sample count, n" = 6 (`i_9`) and "Degrees of freedom, n-1" = 5 (`i_24`).
+2. The actual argument map for `op_1` is: `a=i_2, b0=i_3, b1=i_4, b2=i_5, b3=i_6, b4=i_7, b5=i_2`. Note that `i_2` is bound to **both** `a` and `b5` — it is silently reused as a phantom 7th term, while the true sixth-and-only-once inputs `i_2..i_7` should have appeared exactly once each.
+3. This produces `o_8 = 92.6`, which only reconciles as `12.5(a) + 15.2 + 11.8 + 14.1 + 13.6 + 12.9 + 12.5(b5, duplicate) = 92.6`. The mathematically honest sum of the six distinct replicates `i_2..i_7` is `80.1`.
+4. `op_2` then divides this inflated sum by `i_9 = 6` (the declared, and still-correct, sample count) to yield `o_10 = 15.43333...` as the "Mean". The true mean of the six replicates is `13.35`.
+5. Every subsequent deviation (`o_11, o_13, o_15, o_17, o_19, o_21`), squared deviation (`o_12, o_14, o_16, o_18, o_20, o_22`), sum of squared deviations (`o_23`), variance (`o_25`), and standard deviation (`o_26`) is computed relative to this corrupted mean, so the entire statistical output block is silently biased.
+
+## Details
+
+Technically, this passes every naive validation: `addBulk` is a legitimate, well-formed operation, all arguments resolve to valid `BigDecimal` track IDs, the `MathContext` is correctly threaded, and the arithmetic within each operation is internally consistent (i.e., `o_8` really is the sum of the operands listed). A schema/type/replay checker sees nothing wrong — that is precisely why this is a *semantic* cast rather than a technical one.
+
+The violation is at the business-meaning layer: `i_2` is declared and described as "[0] Sample value (mL)" — a single, specific replicate measurement. By binding it to a second argument slot (`b5`) in the same `addBulk` call, the pipeline implicitly recasts `i_2` from "one of six independent replicates" into "two virtual replicates," without any accompanying metadata change, transformation node, or annotation acknowledging a reweighting. Meanwhile `i_9` ("Sample count, n" = 6) and `i_24` ("Degrees of freedom, n-1" = 5) continue to assert — unchanged — that exactly six independent, equally-weighted measurements underlie this analysis. The consuming nodes (`divide` by `n=6`, and all deviation/variance operations) operate under the business assumption that the sum in `o_8` represents six unique data points, an assumption that is now false due to the duplicated argument. This is a direct instance of "no operation may consume a variable under a business definition that conflicts with its originating metadata": `i_2`'s originating metadata identifies it as a single sample, yet `op_1` consumes it as if it were two.
+
+**Consequence:** the reported mean (15.433 mL) is inflated ~15.6% above the true mean (13.35 mL) of the six recorded titration replicates, and all derived dispersion statistics (deviations, variance, standard deviation) are computed against this false center of mass. In a regulated analytical/QA context (titration replicate statistics), this silently skews the reported precision and central tendency of the assay without leaving any type-level or connectivity-level trace — an attacker (or defective instrumentation-to-graph adapter) could reweight any single replicate's influence on a reported mean/SD purely through duplicate argument binding, undetectable by schema or type-based provenance validators.

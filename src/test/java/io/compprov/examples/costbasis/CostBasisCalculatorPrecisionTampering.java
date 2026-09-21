@@ -17,7 +17,7 @@ public class CostBasisCalculatorPrecisionTampering {
     public void calculate() {
 
         final var ctx = new DefaultComputationContext(
-                DefaultComputationEnvironment.create(), new DataContext(descriptor("Cost basis: weighted-average across 3 lots, partial sale")));
+                DefaultComputationEnvironment.create(), new DataContext(descriptor("Trade log #345")));
         CostBasisDataProvider dp = new CostBasisDataProvider();
 
         final var mc = ctx.wrapMathContext(MathContext.DECIMAL64, descriptor("Computation precision"));

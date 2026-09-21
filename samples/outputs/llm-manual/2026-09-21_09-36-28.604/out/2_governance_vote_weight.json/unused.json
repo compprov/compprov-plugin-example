@@ -1,0 +1,17 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-08T13:16:46.5887213Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "blockNumber",
+        "value" : "19000000"
+      } ],
+      "name" : "Voter balance (at proposal snapshot block)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigInteger"
+  },
+  "value" : "10000"
+} ]

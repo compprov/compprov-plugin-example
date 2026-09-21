@@ -1,0 +1,24 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 88.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_4` (root input), `op_13`, `op_14`, `op_15`, `o_21`, `o_22`, `o_23`, and (by omission) `o_33`.
+
+**Attack flow:**
+1. `i_4` is defined with an explicit, unambiguous business label: *"Extra principal prepayment (**non-interest-bearing**)"* = 5000.00 (`BigDecimal`).
+2. `op_13` (`multiply`, formula `(a*b)mc`) computes `o_21 = i_4 * i_3` = 5000.00 * 0.004 = 20.00000, labeled *"Interest on prepayment [Month 4]"*. This is the *exact same formula* (`multiply` against the monthly period rate `i_3`) used everywhere else in the graph to derive **interest owed on an interest-bearing balance** (e.g. `op_1`: `o_6 = i_5 * i_3`, `op_7`: `o_14 = o_12 * i_3`, etc.).
+3. `op_14` (`subtract`, formula `(a-b)mc`) computes `o_22 = i_4 - o_21` = 5000.00 - 20.00000 = 4980.00000, labeled *"Prepayment principal portion [Month 4]"* — again reusing the identical principal/interest-split pattern applied to genuinely interest-bearing monthly payments (e.g. `op_2`: `o_7 = i_2 - o_6`).
+4. `op_15` then reduces the running balance using only the diminished `o_22` value: `o_23 = o_20 - o_22` = 235814.9733734400 − 4980.00000 = 230834.9733734400, instead of the semantically-correct `o_20 - i_4` = 230814.9733734400.
+5. The fictitious "interest on prepayment" (`o_21`) is *not* included in `op_22`'s `addBulk` computation of `o_33` ("Total interest accrued"), which only sums `o_6, o_10, o_14, o_18, o_25, o_29`. So the $20.00 is never reported as interest income anywhere in the output set, yet it still silently reduces the principal credit the borrower receives for the prepayment.
+
+Net effect: the borrower's $5,000.00 non-interest-bearing prepayment is processed through the same type-safe `multiply`/`subtract` machinery used for interest-bearing scheduled payments, producing an unaccounted $20.00 delta baked into the ending balance (`o_23` → `o_25` → ... → `o_31`), while every intermediate value remains a perfectly valid `BigDecimal` under the shared `MathContext` (`i_1`).
+
+## Details
+
+This is a textbook **Semantic Type and Context Cast Attack**: technical type continuity (`BigDecimal` in, `BigDecimal` out) and mathematical replay both check out perfectly — `op_13`/`op_14`/`op_15` are internally consistent, correctly rounded, and reuse legitimate formula patterns (`(a*b)mc`, `(a-b)mc`) already validated elsewhere in the pipeline. A naive structural or type-checking auditor sees only well-formed, previously-seen operation shapes operating on `BigDecimal` operands under a shared `MathContext`, and would pass this without concern.　
+
+The violation is purely at the business-semantics layer: the originating metadata for `i_4` **explicitly and unambiguously** declares the value "non-interest-bearing." Despite this, the graph silently re-casts `i_4` into the same domain role as a normal interest-bearing installment by running it through an interest-accrual formula (`op_13`) and then treating the residual as "principal portion" (`op_14`), exactly mirroring the treatment given to genuinely interest-bearing monthly payments (`i_2`) elsewhere in the graph. No transformation node, annotation, or `descriptor.meta` entry documents or justifies this reinterpretation — it is an implicit relabeling of a non-interest-bearing cash flow into an interest-bearing one, in direct contradiction of the variable's own declared context, which the invariants explicitly prohibit.
+
+**Consequences:** The borrower's stated non-interest-bearing prepayment of $5,000.00 only credits $4,980.00 toward principal reduction; a $20.00 phantom "interest" charge is extracted, is not disclosed anywhere in the output (it is excluded from `o_33` "Total interest accrued"), and permanently understates the borrower's true ending balance benefit while overstating the lender's economic gain by $20.00 for this cycle (and compounding in subsequent balance calculations `o_25`→`o_31`). This is a material, well-disguised financial harm hidden behind fully valid types and formulas — precisely the profile of a targeted, surgical context-cast attack rather than incidental sloppiness.

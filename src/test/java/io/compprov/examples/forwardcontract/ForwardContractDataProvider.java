@@ -21,14 +21,19 @@ public class ForwardContractDataProvider {
         return new Rate(Currency.EUR, Currency.USD, new BigDecimal("1.0850"));
     }
 
-    /** Domestic (USD) interest rate for the 90-day contract period. */
+    /** Domestic (USD) annualized benchmark interest rate. */
     public BigDecimal fetchDomesticInterestRate() {
         return new BigDecimal("0.0525");
     }
 
-    /** Foreign (EUR) interest rate for the 90-day contract period. */
+    /** Foreign (EUR) annualized benchmark interest rate. */
     public BigDecimal fetchForeignInterestRate() {
         return new BigDecimal("0.0375");
+    }
+
+    /** ACT/360 day-count fraction for a 90-day period (90/360). */
+    public BigDecimal fetchDayCountFraction() {
+        return new BigDecimal("90").divide(new BigDecimal("360"));
     }
 
     public BigDecimal fetchOne() {

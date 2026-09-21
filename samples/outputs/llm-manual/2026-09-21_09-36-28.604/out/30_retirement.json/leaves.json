@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-03T04:51:16.9952471Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Ending balance"
+    },
+    "id" : "o_22",
+    "kind" : "OUTPUT",
+    "numericId" : 22,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "42919.74444420000"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T04:51:16.9952471Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total growth (interest earned)"
+    },
+    "id" : "o_26",
+    "kind" : "OUTPUT",
+    "numericId" : 26,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "8399.53"
+} ]

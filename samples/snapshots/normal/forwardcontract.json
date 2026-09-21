@@ -20,7 +20,7 @@
   },
   "variables" : [ {
     "track" : {
-      "createdAt" : "2026-08-12T05:54:44.1836773Z",
+      "createdAt" : "2026-09-14T06:28:21.7631045Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Computation precision (DECIMAL64)"
@@ -36,10 +36,10 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T05:54:44.18718Z",
+      "createdAt" : "2026-09-14T06:28:21.7648891Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Domestic (USD) interest rate, 90-day period"
+        "name" : "Domestic (USD) interest rate, annual"
       },
       "id" : "i_2",
       "kind" : "INPUT",
@@ -49,10 +49,10 @@
     "value" : "0.0525"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T05:54:44.1891831Z",
+      "createdAt" : "2026-09-14T06:28:21.7668949Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Foreign (EUR) interest rate, 90-day period"
+        "name" : "Foreign (EUR) interest rate, annual"
       },
       "id" : "i_3",
       "kind" : "INPUT",
@@ -62,66 +62,105 @@
     "value" : "0.0375"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T05:54:44.1891831Z",
+      "createdAt" : "2026-09-14T06:28:21.7668949Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "One"
+        "name" : "Day-count fraction (90\/360, ACT\/360)"
       },
       "id" : "i_4",
       "kind" : "INPUT",
       "numericId" : 4,
       "valueClass" : "java.math.BigDecimal"
     },
-    "value" : "1"
+    "value" : "0.25"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T05:54:44.1891831Z",
+      "createdAt" : "2026-09-14T06:28:21.7668949Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Domestic growth factor (1 + domestic rate)"
+        "name" : "One"
       },
-      "id" : "o_5",
-      "kind" : "OUTPUT",
+      "id" : "i_5",
+      "kind" : "INPUT",
       "numericId" : 5,
       "valueClass" : "java.math.BigDecimal"
     },
-    "value" : "1.0525"
+    "value" : "1"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T05:54:44.1891831Z",
+      "createdAt" : "2026-09-14T06:28:21.7679093Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Foreign growth factor (1 + foreign rate)"
+        "name" : "Domestic (USD) interest rate, 90-day period"
       },
       "id" : "o_6",
       "kind" : "OUTPUT",
       "numericId" : 6,
       "valueClass" : "java.math.BigDecimal"
     },
-    "value" : "1.0375"
+    "value" : "0.013125"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T05:54:44.1901835Z",
+      "createdAt" : "2026-09-14T06:28:21.7679093Z",
       "descriptor" : {
         "meta" : [ ],
-        "name" : "Interest rate parity ratio (forward\/spot)"
+        "name" : "Foreign (EUR) interest rate, 90-day period"
       },
       "id" : "o_7",
       "kind" : "OUTPUT",
       "numericId" : 7,
       "valueClass" : "java.math.BigDecimal"
     },
-    "value" : "1.014457831325301"
+    "value" : "0.009375"
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T05:54:44.1901835Z",
+      "createdAt" : "2026-09-14T06:28:21.7679093Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Domestic growth factor (1 + domestic rate)"
+      },
+      "id" : "o_8",
+      "kind" : "OUTPUT",
+      "numericId" : 8,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1.013125"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T06:28:21.7679093Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Foreign growth factor (1 + foreign rate)"
+      },
+      "id" : "o_9",
+      "kind" : "OUTPUT",
+      "numericId" : 9,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1.009375"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T06:28:21.7679093Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Interest rate parity ratio (forward\/spot)"
+      },
+      "id" : "o_10",
+      "kind" : "OUTPUT",
+      "numericId" : 10,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1.003715170278638"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T06:28:21.7679093Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Notional amount (EUR)"
       },
-      "id" : "i_8",
+      "id" : "i_11",
       "kind" : "INPUT",
-      "numericId" : 8,
+      "numericId" : 11,
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
@@ -130,14 +169,14 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T05:54:44.1911836Z",
+      "createdAt" : "2026-09-14T06:28:21.7689338Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Spot rate (EUR\/USD)"
       },
-      "id" : "i_9",
+      "id" : "i_12",
       "kind" : "INPUT",
-      "numericId" : 9,
+      "numericId" : 12,
       "valueClass" : "io.compprov.examples.nav.model.Rate"
     },
     "value" : {
@@ -147,14 +186,14 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T05:54:44.1911836Z",
+      "createdAt" : "2026-09-14T06:28:21.7700251Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Notional at spot rate (USD)"
       },
-      "id" : "o_10",
+      "id" : "o_13",
       "kind" : "OUTPUT",
-      "numericId" : 10,
+      "numericId" : 13,
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
@@ -163,34 +202,37 @@
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T05:54:44.1921837Z",
+      "createdAt" : "2026-09-14T06:28:21.7700251Z",
       "descriptor" : {
         "meta" : [ ],
         "name" : "Settlement amount at forward rate (USD)"
       },
-      "id" : "o_11",
+      "id" : "o_14",
       "kind" : "OUTPUT",
-      "numericId" : 11,
+      "numericId" : 14,
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
-      "amount" : "2751716.86",
+      "amount" : "2722577.39",
       "currency" : "USD"
     }
   }, {
     "track" : {
-      "createdAt" : "2026-08-12T05:54:44.1921837Z",
+      "createdAt" : "2026-09-14T06:28:21.7700251Z",
       "descriptor" : {
-        "meta" : [ ],
+        "meta" : [ {
+          "key" : "basis",
+          "value" : "interest-rate-parity forward premium at valuation date"
+        } ],
         "name" : "Mark-to-market value vs. spot (USD)"
       },
-      "id" : "o_12",
+      "id" : "o_15",
       "kind" : "OUTPUT",
-      "numericId" : 12,
+      "numericId" : 15,
       "valueClass" : "io.compprov.examples.nav.model.Amount"
     },
     "value" : {
-      "amount" : "39216.86",
+      "amount" : "10077.39",
       "currency" : "USD"
     }
   } ],
@@ -199,48 +241,22 @@
       "descriptor" : {
         "meta" : [ {
           "key" : "formula",
-          "value" : "(a+b)mc"
+          "value" : "(a*b)mc"
         } ],
-        "name" : "add"
+        "name" : "multiply"
       },
-      "finishedAt" : "2026-08-12T05:54:44.1891831Z",
+      "finishedAt" : "2026-09-14T06:28:21.7679093Z",
       "id" : "op_1",
       "numericId" : 1,
-      "startedAt" : "2026-08-12T05:54:44.1891831Z",
+      "startedAt" : "2026-09-14T06:28:21.7679093Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
       "key" : "a",
-      "value" : "i_4"
-    }, {
-      "key" : "b",
       "value" : "i_2"
     }, {
-      "key" : "mc",
-      "value" : "i_1"
-    } ],
-    "resultId" : "o_5"
-  }, {
-    "track" : {
-      "descriptor" : {
-        "meta" : [ {
-          "key" : "formula",
-          "value" : "(a+b)mc"
-        } ],
-        "name" : "add"
-      },
-      "finishedAt" : "2026-08-12T05:54:44.1891831Z",
-      "id" : "op_2",
-      "numericId" : 2,
-      "startedAt" : "2026-08-12T05:54:44.1891831Z",
-      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
-    },
-    "arguments" : [ {
-      "key" : "a",
-      "value" : "i_4"
-    }, {
       "key" : "b",
-      "value" : "i_3"
+      "value" : "i_4"
     }, {
       "key" : "mc",
       "value" : "i_1"
@@ -251,22 +267,22 @@
       "descriptor" : {
         "meta" : [ {
           "key" : "formula",
-          "value" : "(a\/b)mc"
+          "value" : "(a*b)mc"
         } ],
-        "name" : "divide"
+        "name" : "multiply"
       },
-      "finishedAt" : "2026-08-12T05:54:44.1891831Z",
-      "id" : "op_3",
-      "numericId" : 3,
-      "startedAt" : "2026-08-12T05:54:44.1891831Z",
+      "finishedAt" : "2026-09-14T06:28:21.7679093Z",
+      "id" : "op_2",
+      "numericId" : 2,
+      "startedAt" : "2026-09-14T06:28:21.7679093Z",
       "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
     },
     "arguments" : [ {
       "key" : "a",
-      "value" : "o_5"
+      "value" : "i_3"
     }, {
       "key" : "b",
-      "value" : "o_6"
+      "value" : "i_4"
     }, {
       "key" : "mc",
       "value" : "i_1"
@@ -277,24 +293,102 @@
       "descriptor" : {
         "meta" : [ {
           "key" : "formula",
+          "value" : "(a+b)mc"
+        } ],
+        "name" : "add"
+      },
+      "finishedAt" : "2026-09-14T06:28:21.7679093Z",
+      "id" : "op_3",
+      "numericId" : 3,
+      "startedAt" : "2026-09-14T06:28:21.7679093Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_5"
+    }, {
+      "key" : "b",
+      "value" : "o_6"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_8"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a+b)mc"
+        } ],
+        "name" : "add"
+      },
+      "finishedAt" : "2026-09-14T06:28:21.7679093Z",
+      "id" : "op_4",
+      "numericId" : 4,
+      "startedAt" : "2026-09-14T06:28:21.7679093Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_5"
+    }, {
+      "key" : "b",
+      "value" : "o_7"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_9"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a\/b)mc"
+        } ],
+        "name" : "divide"
+      },
+      "finishedAt" : "2026-09-14T06:28:21.7679093Z",
+      "id" : "op_5",
+      "numericId" : 5,
+      "startedAt" : "2026-09-14T06:28:21.7679093Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_8"
+    }, {
+      "key" : "b",
+      "value" : "o_9"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_10"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
           "value" : "convert(a,r)"
         } ],
         "name" : "convert"
       },
-      "finishedAt" : "2026-08-12T05:54:44.1911836Z",
-      "id" : "op_4",
-      "numericId" : 4,
-      "startedAt" : "2026-08-12T05:54:44.1911836Z",
+      "finishedAt" : "2026-09-14T06:28:21.7700251Z",
+      "id" : "op_6",
+      "numericId" : 6,
+      "startedAt" : "2026-09-14T06:28:21.7700251Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
       "key" : "a",
-      "value" : "i_8"
+      "value" : "i_11"
     }, {
       "key" : "r",
-      "value" : "i_9"
+      "value" : "i_12"
     } ],
-    "resultId" : "o_10"
+    "resultId" : "o_13"
   }, {
     "track" : {
       "descriptor" : {
@@ -304,20 +398,20 @@
         } ],
         "name" : "scale"
       },
-      "finishedAt" : "2026-08-12T05:54:44.1921837Z",
-      "id" : "op_5",
-      "numericId" : 5,
-      "startedAt" : "2026-08-12T05:54:44.1911836Z",
+      "finishedAt" : "2026-09-14T06:28:21.7700251Z",
+      "id" : "op_7",
+      "numericId" : 7,
+      "startedAt" : "2026-09-14T06:28:21.7700251Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
       "key" : "a",
-      "value" : "o_10"
+      "value" : "o_13"
     }, {
       "key" : "f",
-      "value" : "o_7"
+      "value" : "o_10"
     } ],
-    "resultId" : "o_11"
+    "resultId" : "o_14"
   }, {
     "track" : {
       "descriptor" : {
@@ -327,19 +421,19 @@
         } ],
         "name" : "subtract"
       },
-      "finishedAt" : "2026-08-12T05:54:44.1921837Z",
-      "id" : "op_6",
-      "numericId" : 6,
-      "startedAt" : "2026-08-12T05:54:44.1921837Z",
+      "finishedAt" : "2026-09-14T06:28:21.7700251Z",
+      "id" : "op_8",
+      "numericId" : 8,
+      "startedAt" : "2026-09-14T06:28:21.7700251Z",
       "wrapperClass" : "io.compprov.examples.nav.wrapped.WrappedAmount"
     },
     "arguments" : [ {
       "key" : "a",
-      "value" : "o_11"
+      "value" : "o_14"
     }, {
       "key" : "b",
-      "value" : "o_10"
+      "value" : "o_13"
     } ],
-    "resultId" : "o_12"
+    "resultId" : "o_15"
   } ]
 }

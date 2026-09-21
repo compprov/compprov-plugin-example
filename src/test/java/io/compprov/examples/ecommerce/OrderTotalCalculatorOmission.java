@@ -11,6 +11,8 @@ import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.compprov.core.meta.Meta;
+
 import static io.compprov.core.meta.Descriptor.descriptor;
 
 /**
@@ -46,7 +48,8 @@ public class OrderTotalCalculatorOmission {
         final var discount2Multiplier = one.subtract(discount2Rate, mc, descriptor("Discount multiplier (LOYALTY5)"));
         final var discountedSubtotal = afterDiscount1.multiply(discount2Multiplier, mc, descriptor("Subtotal after LOYALTY5"));
 
-        final var shipping = ctx.wrapBigDecimal(dp.fetchShippingFee(), descriptor("Shipping fee"));
+        final var shipping = ctx.wrapBigDecimal(dp.fetchShippingFee(), descriptor("Shipping fee",
+                Meta.of("taxable", "true", "jurisdiction", "California")));
         final var taxableAmount = discountedSubtotal.add(shipping, mc, descriptor("Taxable amount"));
 
         final var taxRate = ctx.wrapBigDecimal(dp.fetchTaxRate(), descriptor("Tax rate (8%, California)"));

@@ -1,0 +1,27 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 6.0
+
+## Audit Scope
+This audit specifically targets **Semantic Type and Context Cast Attacks**: cases where a variable's technical type (`java.math.BigDecimal`) is preserved end-to-end while its declared business/domain meaning is silently swapped for a different meaning at some consumption point (e.g., a Gross value silently consumed as Net, a Risk Multiplier silently consumed as a Discount Factor, metadata stripped to hide a domain transition).
+
+## Methodology
+Every operation (op_1 through op_56) was traced and cross-checked against three axes:
+1. The `descriptor.name`/units of each argument variable at the point it was produced.
+2. The `descriptor.name`/`formula` meta of the consuming operation.
+3. The `descriptor.name`/units of the resulting output variable.
+
+This was done for the full pipeline: Wexler/Sonntag saturation vapor pressure (i_6..o_24), wavelength→wavenumber conversion (i_25/o_26/o_27), Peck-Reeder/Edlen dispersion (Sellmeier) standard refractivity (i_29-i_33/o_34-o_39), CO2 correction (i_10,i_40,i_41/o_42-o_45), Birch & Downs dry-air pressure/thermal correction (i_46-i_50/o_51-o_61), CIPM water-vapor enhancement factor (i_62-i_64/o_65-o_69), partial water vapor pressure (o_70), Edlen water-vapor refractivity correction (i_71-i_73/o_74-o_78), total refractivity and refractive index (o_79-o_81), air wavelength and half-wavelength (o_82-o_83), interferometric fringe-order length (i_84-i_85/o_86-o_87), thermal expansion correction to ISO 1 reference temperature (i_88-i_90/o_91-o_94), and final deviation from nominal (i_95/o_96).
+
+## Findings
+For every one of the 56 operations, the argument-to-descriptor mapping is internally consistent: each consumed variable's declared business meaning (units, physical quantity, and role — e.g., T_air in °C vs. T_K in Kelvin, P_air in Pa, sigma/sigma^2 in um^-1/um^-2, N_s/N_v/N_tp/N_total all consistently expressed in ×10^-8 refractivity units) matches exactly what the operation's formula and output label claim to compute. No case was found where:
+- a variable produced under one domain label (e.g., "dry air refractivity") is consumed downstream as if it carried a different domain label (e.g., "corrected/final refractivity") without an explicit, auditable transformation node performing that exact relabeling.
+- generic reusable constants (`i_2`="constant 1", `i_3`="constant 2", `i_49`="scale factor 1e-8") are used in a way that conflicts with their (intentionally generic, non-domain-specific) declared meaning — they are consistently used as literal 1, 2, and 1e-8 multipliers/additions across independent, legitimate formula branches (CO2 factor, pressure correction, thermal correction, refractive index baseline, pressure-scaling term, N-to-(n-1) scaling, half-wavelength division). None of these reuses smuggle a business-context change; they remain purely arithmetic constants.
+- duplicate-consumption variables (i_6, i_7, i_8, o_12, o_28) are each used strictly within contexts matching their own declared physical quantity (e.g., T_air in Celsius is only ever used where a Celsius temperature is required — Wexler equation instead correctly uses the separately derived T_K; lambda_vac3 (nm) is used both for unit conversion and for the final vacuum→air wavelength division, both legitimately "vacuum wavelength").
+- the CO2 correction module (i_10, i_40, i_41, o_42-o_45) numerically evaluates to a no-op (xCO2 = reference = 450 ppm, so correction factor = 1.0000000000), but this is a numeric/value-selection observation, not a semantic mislabeling — the descriptors, units, and operation chain remain fully consistent with the stated "CO2 correction" business logic throughout; no domain relabeling occurs.
+- the thermal-expansion correction (o_91-o_94) and final deviation computation (o_96) correctly consume T_part/T_ref/alpha/L_nom under their stated meanings, with no cross-contamination between "measured length at T_part" and "length at reference temperature" — the division by (1+alpha*deltaT) is the standard, explicit, auditable transformation node required for that domain transition.
+
+No instance of C_source != C_target was found for any variable across any operation. No metadata suppression that would mask a domain transition was detected — all intermediate variables that lack explicit `meta` tags are self-explanatory arithmetic sub-steps (e.g., "b*T", "A*T_K^2") consistent with the note on standard domain conventions, not context-cast targets.
+
+## Conclusion
+This CPG is a well-formed, internally consistent dimensional-metrology/interferometry computation (HeNe interferometer gauge-block length measurement with Ciddor/Edlen/Birch-Downs air refractive index correction and ISO 1 thermal-expansion correction). Exhaustive argument-by-argument tracing against declared descriptors found no explicit domain-label contradiction, no implicit re-mapping through an identity/wrapper operation, and no stripped-metadata domain transition. The specific attack vector under audit (Semantic Type and Context Cast) is **not substantiated** by structural or semantic evidence in this graph.

@@ -1,0 +1,19 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 82.0
+
+## Anomaly Localization
+
+**Implicated nodes:** `i_24` (root INPUT, "Tax rate (8%, California)"), `op_11` (multiply: o_23 * i_24 -> o_25), `o_25` ("Sales tax"), `op_12` (add: o_23 + o_25 -> o_26), `o_26` ("Order total", terminal output).
+
+The attack flow is a **Lineage Disconnection / Context Substitution** at the root-input level: the variable `i_24` is declared, named, and documented as "Tax rate (8%, California)" — its `descriptor.name` explicitly asserts the value should be `0.08`, consistent with the `jurisdiction: California` metadata attached to the sibling `Shipping fee` (`i_22`) variable that is folded into the same taxable base. However, the actual stored `value` of `i_24` is `"0.02"` — a 2% rate, one-quarter of what its own name claims.
+
+This substituted value is then consumed deterministically and "correctly" by `op_11` (`o_25 = o_23 * i_24`) and propagates cleanly into the terminal aggregation `op_12` (`o_26 = o_23 + o_25`). Local replay of every single node passes: `207.3716 * 0.02 = 4.147432` ✓, and `207.3716 + 4.147432 = 211.519032` ✓ (matches reported `211.51903200`). But full forward propagation from the *true* root input the variable's own name and metadata declare (8%) would yield `o_25 = 207.3716 * 0.08 = 16.589728` and `o_26 = 207.3716 + 16.589728 = 223.961328` — a materially different terminal result (~$12.44 higher).
+
+## Details
+
+This is exactly the shape of Origin_Propagation_Valid failure the audit is designed to catch: cardinality into the terminal node is correct (M=1 for the tax-rate contribution — no double counting, no omission), and every single-step replay checks out, which is why casual/local auditing passes. But the *identity* of the root input has been silently decoupled from its declared meaning: a hardcoded, unmonitored `0.02` literal has been substituted where the variable's own name, and the domain fact pattern (California state sales tax rates are materially higher than 2%, and 8% is explicitly named), indicate `0.08` was the intended/true root value. The substitution is engineered to still replay deterministically downstream — multiplying by 0.02 is arithmetically indistinguishable in structure from multiplying by 0.08 — so no downstream node's local computation looks wrong in isolation.
+
+The practical consequence is a systematically under-reported `Sales tax` (`o_25`) and `Order total` (`o_26`): the terminal output derives from a tax rate that contradicts its own documented provenance, meaning the reported order total does not actually reflect the pipeline's own declared tax policy for the stated jurisdiction. This is a classic disguised-substitution pattern: an attacker (or corrupted upstream config) can silently understate tax liability by altering only the numeric payload of a root input while leaving its descriptive metadata untouched as camouflage, defeating any auditor who only checks that "the value used matches the value stored" rather than checking that "the stored value matches what the variable claims to represent."
+
+No other Calculation Omission (M=0) or Double Counting (M>1) violations were found elsewhere in the graph: all four line-item totals (`o_5`, `o_8`, `o_11`, `o_14`) are consumed exactly once into the `Subtotal` (`o_15`); the two discount multipliers derived from the shared `1.0` constant (`i_2`) are legitimate identity-element reuse, not entity duplication; and the reuse of `o_23` (taxable amount) in both `op_11` and `op_12` is the mathematically necessary shape of a `Total = Base + Base*rate` formula, not artificial duplication. The sole, but material, finding is the `i_24` name/value mismatch driving the terminal `Order total`.

@@ -1,0 +1,28 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 78.0
+
+## Precision & Scale Tampering Audit — Loan: 6-month amortization
+
+### Methodology
+Every operation (`op_1`…`op_23`) was recomputed at full rational precision and then re-rounded to the declared `MathContext` (`i_1`: precision=16, HALF_EVEN) to check both the correctness of the arithmetic *and* the correctness of the rounding at each cutover point (16 significant digits).
+
+### Result of arithmetic recomputation
+All amortization-chain operations (`op_1`–`op_19`, `op_20` interest roll-up, `op_22` scheduled-payment roll-up) reproduce their reported values **exactly** once the 16-significant-digit / HALF_EVEN context is correctly applied at each step (verified digit-by-digit for `o_6` through `o_31`, including the multi-digit truncations at `o_16`, `o_18`, `o_20`, `o_24`, `o_25`, `o_28`, `o_29`, `o_31`). No salami-slicing bias, no truncate-vs-round mismatch, and no MathContext misuse was found anywhere in the interest/principal/balance ladder. This portion of the graph is clean.
+
+### Anomaly Localization (If Detected)
+The genuine irregularity is in the **escrow aggregation and final payment totals**, not in the interest-schedule math:
+
+- `i_9`, `i_13`, `i_17`, `i_22`, `i_26`, `i_30` = 400.00 each ("Escrow collected [Month 1..6]") are correctly summed by `op_21` (`addBulk`) into `o_32` = **2400.00** ("Total escrow collected") — arithmetically correct (6 × 400.00 = 2400.00).
+- However, `o_32` is a **leaf node that is never consumed by any downstream operation** (confirmed by structural leaf-set: `o_32` appears in the leaf list alongside genuine terminal outputs `o_29`/`o_31`/`o_35`). The properly computed escrow total is silently discarded.
+- Instead, `op_23` (`addBulk`, producing the headline output `o_35` "Total amount paid by borrower") consumes `i_33` — a **root INPUT** ("Total escrow") with value **2280.0000**, which has no producing operation anywhere in the graph and no traceable derivation from the six escrow collections.
+- `2400.00 (o_32, computed) ≠ 2280.0000 (i_33, injected)` — a **$120.00 unexplained shortfall**, exactly 6 × $20.00, i.e., a consistent $20/month skim across all six escrow collection events feeding into the final reported total.
+- Flow: `i_9,i_13,i_17,i_22,i_26,i_30 → op_21 → o_32` (correct, but dead-ended) vs. `i_33 → op_23 → o_35` (uses an unaudited substitute value). `o_35 = o_34(12000.00) + i_33(2280.0000) + i_4(5000.00) = 19280.0000`, when the internally-consistent figure should be `12000.00 + 2400.00 + 5000.00 = 19400.0000`.
+
+### Details
+This is a classic "computed-but-unused / substituted-with-uncomputed" pattern: a value is correctly derived through the graph's own operations (`o_32`), giving the appearance of a fully-audited pipeline, but the final headline aggregate (`o_35`, "Total amount paid by borrower") quietly swaps in a differently-scaled (`scale=4` vs the natural `scale=2` of the escrow legs), unauditable root input (`i_33`) instead. A naive check would see that `o_32` was "computed correctly" and move on, missing that it is never actually used. Casual review of `o_35`'s formula (`addBulk` over `o_34`, `i_33`, `i_4`) also looks legitimate at the operation level — the tampering is entirely in *which* variable was wired in as an argument, not in the operation's math.
+
+**Consequence:** The borrower-facing total (`o_35` = 19280.0000) understates true total cash collected by $120.00 relative to what the graph's own escrow-collection operations prove was received ($2400.00 vs $2280.00 credited). This violates the asset-conservation invariant: an intermediate, correctly-computed asset-flow total (`o_32`) fails to propagate into the final reconciliation, and is replaced by a value with no lineage. If this substitution pattern is templated across a loan portfolio (each loan skimming a fixed escrow shortfall into an unaudited input), it is a scalable, per-transaction siphon rather than an isolated rounding artifact, which materially elevates severity beyond a simple 1-ULP rounding-mode disagreement.
+
+### Verdict
+The interest/principal amortization math is fully sound and MathContext-compliant. The escrow reconciliation, however, shows a genuine, material, unexplained discrepancy consistent with intentional value substitution rather than benign rounding — warranting a high risk score pending human confirmation of intent.

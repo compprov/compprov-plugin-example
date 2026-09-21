@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-03T04:42:26.3527706Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Total commission"
+    },
+    "id" : "o_17",
+    "kind" : "OUTPUT",
+    "numericId" : 17,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "13200.0000"
+} ]

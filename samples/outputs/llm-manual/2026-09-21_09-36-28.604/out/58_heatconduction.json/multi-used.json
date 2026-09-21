@@ -1,0 +1,118 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9158069Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Interior temperature (°C)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "22.0"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9158069Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Exterior temperature (°C)"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "5.0"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9158069Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Wall area, A (m²)"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "10.0"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9158069Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Layer 1 (brick) thermal conductivity, k1 (W\/(m·K))"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.72"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9158069Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Layer 1 (brick) thickness, d1 (m)"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.10"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9158069Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Layer 2 (insulation) thermal conductivity, k2 (W\/(m·K))"
+    },
+    "id" : "i_7",
+    "kind" : "INPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.04"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9158069Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Layer 2 (insulation) thickness, d2 (m)"
+    },
+    "id" : "i_8",
+    "kind" : "INPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.05"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9158069Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Thermal resistance, layer 1 (m²·K\/W)"
+    },
+    "id" : "o_10",
+    "kind" : "OUTPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.1388888888888889"
+}, {
+  "track" : {
+    "createdAt" : "2026-08-05T08:19:32.9158069Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Temperature drop across layer 1 (K)"
+    },
+    "id" : "o_14",
+    "kind" : "OUTPUT",
+    "numericId" : 14,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.700000000000000"
+} ]

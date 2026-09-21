@@ -1,0 +1,33 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-14T06:29:36.7224225Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Assets sum"
+    },
+    "id" : "o_15",
+    "kind" : "OUTPUT",
+    "numericId" : 15,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "1255501.78",
+    "currency" : "USD"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-09-14T06:29:36.7214226Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "BTC->USD"
+    },
+    "id" : "o_9",
+    "kind" : "OUTPUT",
+    "numericId" : 9,
+    "valueClass" : "io.compprov.examples.nav.model.Amount"
+  },
+  "value" : {
+    "amount" : "683929.93",
+    "currency" : "USD"
+  }
+} ]

@@ -1,0 +1,33 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-03T04:50:14.1430831Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T04:50:14.1460876Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 2,
+    "roundingMode" : "DOWN"
+  }
+} ]

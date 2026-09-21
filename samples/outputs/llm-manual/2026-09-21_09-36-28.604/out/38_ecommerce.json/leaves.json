@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-14T06:28:26.1958004Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Order total"
+    },
+    "id" : "o_26",
+    "kind" : "OUTPUT",
+    "numericId" : 26,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "211.51903200"
+} ]

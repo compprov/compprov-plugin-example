@@ -1,0 +1,137 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-09-03T08:04:34.3942938Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Lot 2"
+    },
+    "id" : "i_7",
+    "kind" : "INPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "67.234156"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T08:04:34.3942938Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Lot 2 price per share"
+    },
+    "id" : "i_9",
+    "kind" : "INPUT",
+    "numericId" : 9,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "340.75"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T08:04:34.3942938Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Lot 3"
+    },
+    "id" : "i_11",
+    "kind" : "INPUT",
+    "numericId" : 11,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "22.891347"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T08:04:34.3942938Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Lot 3 price per share"
+    },
+    "id" : "i_13",
+    "kind" : "INPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1850.00"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T08:04:34.3867803Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T08:04:34.3912919Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Lot 1"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "45.678912"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T08:04:34.3952918Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Shares sold"
+    },
+    "id" : "i_18",
+    "kind" : "INPUT",
+    "numericId" : 18,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "60"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T08:04:34.3902937Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 2,
+    "roundingMode" : "DOWN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T08:04:34.3942938Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Lot 1 price per share"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "210.50"
+}, {
+  "track" : {
+    "createdAt" : "2026-09-03T08:04:34.3952918Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Sale price per share"
+    },
+    "id" : "i_19",
+    "kind" : "INPUT",
+    "numericId" : 19,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "650.00"
+} ]

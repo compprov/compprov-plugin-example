@@ -1,0 +1,30 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 3.0
+
+## Audit Summary
+
+This CPG implements a standard sample-statistics pipeline (sum → mean → deviations → squared deviations → sum-of-squares → sample variance (n−1) → standard deviation) over six titration replicate measurements. A full forward-propagation replay and topological analysis were performed against the three Topological & Provenance Fraud sub-patterns (Omission, Double-Counting, Lineage Disconnection).
+
+### Arithmetic Replay (sanity check)
+- op_1 addBulk(i_2..i_7) → o_8 = 12.5+15.2+11.8+14.1+13.6+12.9 = 80.1 ✓
+- op_2 divide(o_8, i_9=6) → o_10 = 13.35 ✓
+- op_3/5/7/9/11/13 subtract(sample_k, o_10) → deviations {-0.85, 1.85, -1.55, 0.75, 0.25, -0.45}, which sum to exactly 0 — the expected sanity property of mean-centered deviations ✓
+- op_4/6/8/10/12/14 square each deviation correctly ✓
+- op_15 addBulk(all six squared deviations) → o_23 = 7.375 ✓
+- op_16 divide(o_23, i_24=5) → o_25 = 1.475 (sample variance, n−1 denominator) ✓
+- op_17 sqrt(o_25) → o_26 = 1.214495780149112 ✓
+
+All intermediate and terminal values are internally consistent with the declared formulas.
+
+### Calculation Omission (M=0) check
+The only leaf is `o_26` (the final standard deviation), which is the intended, sole terminal output. No mandatory contributor (sample values, mean, deviations, squared deviations, sum-of-squares, variance) is left as an unconsumed dead-end; every intermediate is consumed exactly once by the next logical step in the variance/stddev formula chain.
+
+### Double Counting (M>1) check
+The flagged reused IDs (`i_2..i_7`, `o_10`, `o_11`, `o_13`, `o_15`, `o_17`, `o_19`, `o_21`) are reused only in the pattern intrinsic to the variance formula itself: each raw sample feeds both the sum (for the mean) and its own deviation-from-mean (for the variance) — two *different* terminal quantities, not two paths into the *same* aggregation node. Each deviation variable (`o_11`, `o_13`, ...) is consumed exactly twice as `a` and `b` of the *same* `multiply` op to compute its own square (i.e., squaring itself), and each resulting squared deviation (`o_12`, `o_14`, `o_16`, `o_18`, `o_20`, `o_22`) feeds `addBulk` (op_15) exactly once. No entity reaches `o_23`, `o_25`, or `o_26` via more than one causal path. `S_dedup` for the sum-of-squares equals the reported `o_23` value.
+
+### Lineage Disconnection / Context Substitution (M=1, wrong source) check
+The provided leaf-collision set is empty, and no root `INPUT` shadows a computed sibling's name/units/role. `i_9` ("Sample count, n" = 6) and `i_24` ("Degrees of freedom, n-1" = 5) are root INPUTs with no producing operation — but they have no computed sibling anywhere in the graph (no operation ever independently derives a count-of-samples or n−1 value), so the "hardcoded override of a computed sibling" invariant does not apply here; they are genuine boundary parameters, consistent with the six actual sample values present (`i_2`..`i_7`) and the n−1=5 degrees of freedom used in the variance divisor. Every downstream operation consumes the literal `resultId` of its true predecessor step (verified op-by-op above: `o_10`→`o_11`/`o_13`/.../`o_21`→squares→`o_23`→`o_25`→`o_26`), with no substituted stand-in variable observed at any junction.
+
+## Conclusion
+No Calculation Omission, Double Counting, or Lineage Disconnection pattern was found. The terminal output `o_26` derives validly and completely from full forward propagation of the true root inputs through the graph's own computation chain. The graph appears clean with respect to the specified Topological & Provenance Fraud vector.

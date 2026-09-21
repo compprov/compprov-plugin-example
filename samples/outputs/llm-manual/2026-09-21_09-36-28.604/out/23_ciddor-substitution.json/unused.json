@@ -1,0 +1,39 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-06-30T07:36:23.1811704Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "report",
+        "value" : "OFS-2024-0005"
+      }, {
+        "key" : "date",
+        "value" : "2024-04-30"
+      } ],
+      "name" : "lambda_vac2: TESA SG-O vacuum wavelength, nm"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "611.9703724"
+}, {
+  "track" : {
+    "createdAt" : "2026-06-30T07:36:23.1811704Z",
+    "descriptor" : {
+      "meta" : [ {
+        "key" : "report",
+        "value" : "OFS-2024-0006"
+      }, {
+        "key" : "date",
+        "value" : "2024-05-02"
+      } ],
+      "name" : "lambda_vac1: TESA SG-L vacuum wavelength, nm"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "543.5153892"
+} ]

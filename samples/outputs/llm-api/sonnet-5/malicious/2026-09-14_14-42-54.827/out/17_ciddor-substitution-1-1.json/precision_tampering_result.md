@@ -1,0 +1,21 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 92.0
+
+## Anomaly Localization
+
+**Primary Finding — Discarded high-precision refractive index, silently replaced by a truncated hard-coded duplicate**
+
+- `o_81` — "n: refractive index of air (Ciddor / Birch-Downs)", the fully computed result of the entire atmospheric-correction chain (`op_1`…`op_47`: temperature→Wexler SVP, Sellmeier dispersion, CO2 correction, Birch & Downs dry-air refractivity, water-vapor enhancement, final combination). Value: `1.000271755545687922049114876241064` (34 significant digits, computed under `mc=i_1`, precision 34, HALF_EVEN).
+- `i_82` — a second, independently supplied **INPUT** variable with the *identical display name* "n: refractive index of air (Ciddor / Birch-Downs)", but hard-coded to only 8 significant figures: `1.0002718`.
+- `op_48` (`divide`, `a=i_6`, `b=i_82`, `mc=i_1`) computes `o_83` (`lambda_air3`) — the air wavelength of the HeNe laser used for the actual interferometric length measurement — **using `i_82`, not `o_81`**.
+- `o_81` is confirmed by structural traversal to be a **leaf node**: it is never consumed by any operation. All 47 operations building it are executed, reported, and then thrown away.
+- The tampered value flows: `i_82 → op_48 → o_83 (lambda_air3) → op_49 → o_84 (half-wavelength) → op_51 → o_88 (L_raw) → op_55 → o_95 (L_cal) → op_56 → o_97 (deltaL, the final calibration output)`.
+
+**Secondary Finding — Undeclared double-precision downcast inside the arbitrary-precision chain**
+
+- `op_9`, named `Exp_double`, computes `o_24` (`svp`) from `o_23` (`ln(svp)`, 34-digit precision). Unlike every other one of the 56 operations in this graph, `op_9`'s argument list **omits the `mc` (MathContext) argument entirely** — the only such omission in the graph. The operation name itself (`_double` suffix) and the resulting value's precision (`2339.1632301967884`, ~17 significant digits — exactly double-precision floating point's ceiling) indicate the BigDecimal operand was silently downcast to `double`, the exponential computed in native FP arithmetic, and the ~17-digit result re-wrapped as BigDecimal. All downstream nodes (`o_70`, `o_76`…`o_81`) then continue computing with 34-digit MathContext as if the input still carried full precision, laundering a truncated value into an apparently rigorous high-precision chain.
+
+## Details
+
+**Why the primary finding is a Precision and Scale Tampering violation:** The pipeline was explicitly architected to derive `n` to 34 significant digits via a full first-principles atmospheric correction (Wexler/Sonntag SVP, Sellmeier dispersion for the specific HeNe line, CO2-adjusted refractivity, Birch & Downs pressure/temperature correction, Ciddor water-vapor enhancement). This is precisely the 
