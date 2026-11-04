@@ -1,0 +1,121 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7903076Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7903076Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Dimension, k"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7903076Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Mean, μ"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "-1.5"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7903076Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Covariance, Σ"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7903076Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Evaluation point, x"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7903076Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "π"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3.141592653589793"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7903076Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Constant 2"
+    },
+    "id" : "i_7",
+    "kind" : "INPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7903076Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Constant −1/2"
+    },
+    "id" : "i_8",
+    "kind" : "INPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "-0.5"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7903076Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Constant 1"
+    },
+    "id" : "i_9",
+    "kind" : "INPUT",
+    "numericId" : 9,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+} ]

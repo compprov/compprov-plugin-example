@@ -1,0 +1,24 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 85.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud** (sub-pattern: Lineage Disconnection / Context Substitution) — Score 55: Two distinct custodial holdings (ETH @ Trust Nodes, WSTETH @ Lido) are merged under a single provenance identity before conversion; no omission or literal double-count, but provenance of the ETH holding is corrupted.
+- **Precision and Scale Tampering** — Score 15: All `convert`/`addBulk` steps replay exactly under the declared global DOWN-truncation-to-currency-precision convention; no rounding-mode or scale anomalies found in isolation from the semantic issue below.
+- **Semantic Type and Context Cast** — Score 85: A `BigDecimal`-equivalent `Amount` for ETH is summed, unit-for-unit, into a `WSTETH` balance and then propagated through the WSTETH→ETH and ETH→USD conversion chain, silently re-labeling an ETH holding as WSTETH while remaining fully type-valid.
+
+#### Anomaly Localization (Semantic Type and Context Cast / Topological Lineage Disconnection)
+- `i_8` — "ETH balance" (source: Trust Nodes), value `0.314511152401086846 ETH`
+- `i_9` — "WSTETH balance" (source: Lido), value `51.629114720513456404 WSTETH`
+- `op_1` (`add`, formula `a+b`) — consumes `a=i_9`, `b=i_8` → `resultId = o_11`
+- `o_11` — "WSTETH balance", value `51.943625872914543250` (exactly `i_9 + i_8` as raw decimal numbers, with **no currency conversion applied to `i_8` before the addition**)
+- `op_2` (`convert`) — consumes `o_11` with rate `i_3` (WSTETH→ETH, `1.243492`) → `o_12 = 64.591483223962251215 ETH` (verified to be the exact, correctly-computed product of `o_11 * 1.243492`, confirming the corruption originates at `op_1`, not in later arithmetic)
+- `op_6` (`convert`) — consumes `o_12` with rate `i_2` (ETH→USD) → `o_16 = 134564.08 USD`, labeled "ETH(Staked)->USD"
+- `o_16` flows into `op_8` (`addBulk`) → terminal `o_18` "Assets sum" = `588971.37 USD`
+
+Flow: the Trust Nodes ETH balance (`i_8`) never receives its own ETH→USD conversion. Instead it is injected as raw numeric units into what is reported as a "WSTETH balance" (`o_11`, deliberately sharing its display name with the legitimate root `i_9`), and is then converted at the WSTETH→ETH rate (`1.243492`) as if it were itself WSTETH, before finally being converted to USD alongside the genuine WSTETH holding.
+
+#### Details
+Technically every operation is type-consistent (`Amount` in, `Amount` out) and every downstream `convert`/`addBulk` step replays exactly against its inputs — `op_2` reproduces `o_11 * i_3` to 18 decimal places, and `op_6`/`op_8` are arithmetically exact given their inputs. This is precisely why the attack evades casual or purely mathematical verification: local replay of every step passes. The violation lives at `op_1`, where a quantity denominated in ETH is added, unit-for-unit, to a quantity denominated in WSTETH, and the result is re-labeled with the exact same descriptor name as the legitimate WSTETH input ("WSTETH balance"), erasing any trace that a second, differently-denominated asset was folded in. No metadata anywhere in the graph (`o_11`, `o_12`, `o_16` all carry empty `meta`) reconciles this merge or documents an intentional staking/wrapping relationship between the Trust Nodes ETH position and the Lido WSTETH position — the two are economically distinct custodial assets with materially different market rates (`WSTETH/ETH = 1.243492` vs. implicit `ETH/ETH = 1`).
+
+Consequence: the Trust Nodes ETH balance is effectively priced as if it were WSTETH, inflating its USD-equivalent contribution by the WSTETH/ETH rate factor. Quantitatively, the correct ETH→USD value for `i_8` would be `0.314511152401086846 * 2083.31 ≈ 655.08 USD`, but through the merge it instead contributes approximately `0.314511152401086846 * 1.243492 * 2083.31 ≈ 814.7 USD` to `o_16`/`o_18` — an overstatement of roughly `$160` in this instance. While small in absolute terms against the ~$589k total (≈0.027%), the mechanism is structurally identical to a scalable mis-pricing exploit: the overstatement scales linearly and multiplicatively with the size of the "Trust Nodes ETH" position and the spread between the ETH and WSTETH rates, meaning materiality is purely a function of position size, not of the flaw's validity. The deceptive reuse of the exact label "WSTETH balance" for the contaminated intermediate (`o_11`) rather than a distinct name (e.g., "Combined Staked Assets") is itself evidence of an engineered context cast rather than an innocent aggregation convention, since standard domain convention would preserve distinct units through dedicated conversion nodes before any aggregation, exactly as done correctly for every other asset class in this same graph (BTC, Binance-ETH, Binance-USDC, Morpho-USDC).

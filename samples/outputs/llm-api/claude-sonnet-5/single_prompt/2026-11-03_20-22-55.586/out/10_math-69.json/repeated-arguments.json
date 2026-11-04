@@ -1,0 +1,1585 @@
+{
+  "version" : "1.0",
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "operations consuming the same variable more than once"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9486678Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Computation precision (DECIMAL64)"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 16,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[0] x deviation"
+      },
+      "id" : "o_35",
+      "kind" : "OUTPUT",
+      "numericId" : 35,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-6.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[0] y deviation"
+      },
+      "id" : "o_36",
+      "kind" : "OUTPUT",
+      "numericId" : 36,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-5.732254451897309"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[0] dx²"
+      },
+      "id" : "o_38",
+      "kind" : "OUTPUT",
+      "numericId" : 38,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "42.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[0] dy²"
+      },
+      "id" : "o_39",
+      "kind" : "OUTPUT",
+      "numericId" : 39,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "32.85874110129652"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[1] x deviation"
+      },
+      "id" : "o_40",
+      "kind" : "OUTPUT",
+      "numericId" : 40,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-5.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[1] y deviation"
+      },
+      "id" : "o_41",
+      "kind" : "OUTPUT",
+      "numericId" : 41,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-5.232254451897309"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[1] dx²"
+      },
+      "id" : "o_43",
+      "kind" : "OUTPUT",
+      "numericId" : 43,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "30.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[1] dy²"
+      },
+      "id" : "o_44",
+      "kind" : "OUTPUT",
+      "numericId" : 44,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "27.37648664939921"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[2] x deviation"
+      },
+      "id" : "o_45",
+      "kind" : "OUTPUT",
+      "numericId" : 45,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-4.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[2] y deviation"
+      },
+      "id" : "o_46",
+      "kind" : "OUTPUT",
+      "numericId" : 46,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-4.398921118563976"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[2] dx²"
+      },
+      "id" : "o_48",
+      "kind" : "OUTPUT",
+      "numericId" : 48,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "20.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[2] dy²"
+      },
+      "id" : "o_49",
+      "kind" : "OUTPUT",
+      "numericId" : 49,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "19.35050700734814"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[3] x deviation"
+      },
+      "id" : "o_50",
+      "kind" : "OUTPUT",
+      "numericId" : 50,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-3.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[3] y deviation"
+      },
+      "id" : "o_51",
+      "kind" : "OUTPUT",
+      "numericId" : 51,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-3.482254451897309"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[3] dx²"
+      },
+      "id" : "o_53",
+      "kind" : "OUTPUT",
+      "numericId" : 53,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "12.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[3] dy²"
+      },
+      "id" : "o_54",
+      "kind" : "OUTPUT",
+      "numericId" : 54,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "12.12609606775863"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[4] x deviation"
+      },
+      "id" : "o_55",
+      "kind" : "OUTPUT",
+      "numericId" : 55,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-2.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[4] y deviation"
+      },
+      "id" : "o_56",
+      "kind" : "OUTPUT",
+      "numericId" : 56,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-2.532254451897309"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[4] dx²"
+      },
+      "id" : "o_58",
+      "kind" : "OUTPUT",
+      "numericId" : 58,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "6.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[4] dy²"
+      },
+      "id" : "o_59",
+      "kind" : "OUTPUT",
+      "numericId" : 59,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "6.412312609153741"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[5] x deviation"
+      },
+      "id" : "o_60",
+      "kind" : "OUTPUT",
+      "numericId" : 60,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-1.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[5] y deviation"
+      },
+      "id" : "o_61",
+      "kind" : "OUTPUT",
+      "numericId" : 61,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-1.565587785230642"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[5] dx²"
+      },
+      "id" : "o_63",
+      "kind" : "OUTPUT",
+      "numericId" : 63,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "2.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[5] dy²"
+      },
+      "id" : "o_64",
+      "kind" : "OUTPUT",
+      "numericId" : 64,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "2.451065113263387"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[6] x deviation"
+      },
+      "id" : "o_65",
+      "kind" : "OUTPUT",
+      "numericId" : 65,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-0.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[6] y deviation"
+      },
+      "id" : "o_66",
+      "kind" : "OUTPUT",
+      "numericId" : 66,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-0.589397309040166"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[6] dx²"
+      },
+      "id" : "o_68",
+      "kind" : "OUTPUT",
+      "numericId" : 68,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[6] dy²"
+      },
+      "id" : "o_69",
+      "kind" : "OUTPUT",
+      "numericId" : 69,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.3473891879037889"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[7] x deviation"
+      },
+      "id" : "o_70",
+      "kind" : "OUTPUT",
+      "numericId" : 70,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[7] y deviation"
+      },
+      "id" : "o_71",
+      "kind" : "OUTPUT",
+      "numericId" : 71,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.392745548102691"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[7] dx²"
+      },
+      "id" : "o_73",
+      "kind" : "OUTPUT",
+      "numericId" : 73,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[7] dy²"
+      },
+      "id" : "o_74",
+      "kind" : "OUTPUT",
+      "numericId" : 74,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.1542490655544832"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[8] x deviation"
+      },
+      "id" : "o_75",
+      "kind" : "OUTPUT",
+      "numericId" : 75,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[8] y deviation"
+      },
+      "id" : "o_76",
+      "kind" : "OUTPUT",
+      "numericId" : 76,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1.378856659213801"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[8] dx²"
+      },
+      "id" : "o_78",
+      "kind" : "OUTPUT",
+      "numericId" : 78,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "2.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[8] dy²"
+      },
+      "id" : "o_79",
+      "kind" : "OUTPUT",
+      "numericId" : 79,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1.901245686658244"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[9] x deviation"
+      },
+      "id" : "o_80",
+      "kind" : "OUTPUT",
+      "numericId" : 80,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "2.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[9] y deviation"
+      },
+      "id" : "o_81",
+      "kind" : "OUTPUT",
+      "numericId" : 81,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "2.367745548102691"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[9] dx²"
+      },
+      "id" : "o_83",
+      "kind" : "OUTPUT",
+      "numericId" : 83,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "6.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[9] dy²"
+      },
+      "id" : "o_84",
+      "kind" : "OUTPUT",
+      "numericId" : 84,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "5.606218980560113"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[10] x deviation"
+      },
+      "id" : "o_85",
+      "kind" : "OUTPUT",
+      "numericId" : 85,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "3.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[10] y deviation"
+      },
+      "id" : "o_86",
+      "kind" : "OUTPUT",
+      "numericId" : 86,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "3.358654639011783"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[10] dx²"
+      },
+      "id" : "o_88",
+      "kind" : "OUTPUT",
+      "numericId" : 88,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "12.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[10] dy²"
+      },
+      "id" : "o_89",
+      "kind" : "OUTPUT",
+      "numericId" : 89,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "11.28056098415537"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[11] x deviation"
+      },
+      "id" : "o_90",
+      "kind" : "OUTPUT",
+      "numericId" : 90,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "4.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[11] y deviation"
+      },
+      "id" : "o_91",
+      "kind" : "OUTPUT",
+      "numericId" : 91,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "4.351078881436025"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[11] dx²"
+      },
+      "id" : "o_93",
+      "kind" : "OUTPUT",
+      "numericId" : 93,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "20.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[11] dy²"
+      },
+      "id" : "o_94",
+      "kind" : "OUTPUT",
+      "numericId" : 94,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "18.93188743247857"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[12] x deviation"
+      },
+      "id" : "o_95",
+      "kind" : "OUTPUT",
+      "numericId" : 95,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "5.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[12] y deviation"
+      },
+      "id" : "o_96",
+      "kind" : "OUTPUT",
+      "numericId" : 96,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "5.344668625025768"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[12] dx²"
+      },
+      "id" : "o_98",
+      "kind" : "OUTPUT",
+      "numericId" : 98,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "30.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[12] dy²"
+      },
+      "id" : "o_99",
+      "kind" : "OUTPUT",
+      "numericId" : 99,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "28.56548271133483"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[13] x deviation"
+      },
+      "id" : "o_100",
+      "kind" : "OUTPUT",
+      "numericId" : 100,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "6.5"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[13] y deviation"
+      },
+      "id" : "o_101",
+      "kind" : "OUTPUT",
+      "numericId" : 101,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "6.339174119531262"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[13] dx²"
+      },
+      "id" : "o_103",
+      "kind" : "OUTPUT",
+      "numericId" : 103,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "42.25"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9496739Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[13] dy²"
+      },
+      "id" : "o_104",
+      "kind" : "OUTPUT",
+      "numericId" : 104,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "40.18512851773495"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9506682Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Pearson correlation, r"
+      },
+      "id" : "o_110",
+      "kind" : "OUTPUT",
+      "numericId" : 110,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.9991646825344998"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9506682Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "r²"
+      },
+      "id" : "o_114",
+      "kind" : "OUTPUT",
+      "numericId" : 114,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.9983300628242678"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9506682Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "t statistic, |t|"
+      },
+      "id" : "o_119",
+      "kind" : "OUTPUT",
+      "numericId" : 119,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "84.69887290375384"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9506682Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "t²"
+      },
+      "id" : "o_120",
+      "kind" : "OUTPUT",
+      "numericId" : 120,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "7173.899071166246"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_8",
+      "numericId" : 8,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_35"
+    }, {
+      "key" : "b",
+      "value" : "o_35"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_38"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_9",
+      "numericId" : 9,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_36"
+    }, {
+      "key" : "b",
+      "value" : "o_36"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_39"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_13",
+      "numericId" : 13,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_40"
+    }, {
+      "key" : "b",
+      "value" : "o_40"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_43"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_14",
+      "numericId" : 14,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_41"
+    }, {
+      "key" : "b",
+      "value" : "o_41"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_44"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_18",
+      "numericId" : 18,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_45"
+    }, {
+      "key" : "b",
+      "value" : "o_45"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_48"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_19",
+      "numericId" : 19,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_46"
+    }, {
+      "key" : "b",
+      "value" : "o_46"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_49"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_23",
+      "numericId" : 23,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_50"
+    }, {
+      "key" : "b",
+      "value" : "o_50"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_53"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_24",
+      "numericId" : 24,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_51"
+    }, {
+      "key" : "b",
+      "value" : "o_51"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_54"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_28",
+      "numericId" : 28,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_55"
+    }, {
+      "key" : "b",
+      "value" : "o_55"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_58"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_29",
+      "numericId" : 29,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_56"
+    }, {
+      "key" : "b",
+      "value" : "o_56"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_59"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_33",
+      "numericId" : 33,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_60"
+    }, {
+      "key" : "b",
+      "value" : "o_60"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_63"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_34",
+      "numericId" : 34,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_61"
+    }, {
+      "key" : "b",
+      "value" : "o_61"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_64"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_38",
+      "numericId" : 38,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_65"
+    }, {
+      "key" : "b",
+      "value" : "o_65"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_68"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_39",
+      "numericId" : 39,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_66"
+    }, {
+      "key" : "b",
+      "value" : "o_66"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_69"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_43",
+      "numericId" : 43,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_70"
+    }, {
+      "key" : "b",
+      "value" : "o_70"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_73"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_44",
+      "numericId" : 44,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_71"
+    }, {
+      "key" : "b",
+      "value" : "o_71"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_74"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_48",
+      "numericId" : 48,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_75"
+    }, {
+      "key" : "b",
+      "value" : "o_75"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_78"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_49",
+      "numericId" : 49,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_76"
+    }, {
+      "key" : "b",
+      "value" : "o_76"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_79"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_53",
+      "numericId" : 53,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_80"
+    }, {
+      "key" : "b",
+      "value" : "o_80"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_83"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_54",
+      "numericId" : 54,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_81"
+    }, {
+      "key" : "b",
+      "value" : "o_81"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_84"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_58",
+      "numericId" : 58,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_85"
+    }, {
+      "key" : "b",
+      "value" : "o_85"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_88"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_59",
+      "numericId" : 59,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_86"
+    }, {
+      "key" : "b",
+      "value" : "o_86"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_89"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_63",
+      "numericId" : 63,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_90"
+    }, {
+      "key" : "b",
+      "value" : "o_90"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_93"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_64",
+      "numericId" : 64,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_91"
+    }, {
+      "key" : "b",
+      "value" : "o_91"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_94"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_68",
+      "numericId" : 68,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_95"
+    }, {
+      "key" : "b",
+      "value" : "o_95"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_98"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_69",
+      "numericId" : 69,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_96"
+    }, {
+      "key" : "b",
+      "value" : "o_96"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_99"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_73",
+      "numericId" : 73,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_100"
+    }, {
+      "key" : "b",
+      "value" : "o_100"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_103"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9496739Z",
+      "id" : "op_74",
+      "numericId" : 74,
+      "startedAt" : "2026-10-29T15:27:54.9496739Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_101"
+    }, {
+      "key" : "b",
+      "value" : "o_101"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_104"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9506682Z",
+      "id" : "op_82",
+      "numericId" : 82,
+      "startedAt" : "2026-10-29T15:27:54.9506682Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_110"
+    }, {
+      "key" : "b",
+      "value" : "o_110"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_114"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9506682Z",
+      "id" : "op_88",
+      "numericId" : 88,
+      "startedAt" : "2026-10-29T15:27:54.9506682Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_119"
+    }, {
+      "key" : "b",
+      "value" : "o_119"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_120"
+  } ]
+}

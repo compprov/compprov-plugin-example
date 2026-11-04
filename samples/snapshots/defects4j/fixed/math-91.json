@@ -1,0 +1,191 @@
+{
+  "version" : "1.0",
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "Fractions: ordering of two close approximations of pi"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:55.0449199Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Exact long arithmetic (DECIMAL128)"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 34,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:55.0449199Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "First numerator"
+      },
+      "id" : "i_2",
+      "kind" : "INPUT",
+      "numericId" : 2,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1068966896"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:55.0449199Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "First denominator"
+      },
+      "id" : "i_3",
+      "kind" : "INPUT",
+      "numericId" : 3,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "340262731"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:55.0449199Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Second numerator"
+      },
+      "id" : "i_4",
+      "kind" : "INPUT",
+      "numericId" : 4,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "411557987"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:55.0449199Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Second denominator"
+      },
+      "id" : "i_5",
+      "kind" : "INPUT",
+      "numericId" : 5,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "131002976"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:55.0449199Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "First numerator · second denominator"
+      },
+      "id" : "o_6",
+      "kind" : "OUTPUT",
+      "numericId" : 6,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "140037844621482496"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:55.0449199Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "First denominator · second numerator"
+      },
+      "id" : "o_7",
+      "kind" : "OUTPUT",
+      "numericId" : 7,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "140037844621482497"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:55.0449199Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Fraction comparison"
+      },
+      "id" : "o_8",
+      "kind" : "OUTPUT",
+      "numericId" : 8,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-1"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:55.0449199Z",
+      "id" : "op_1",
+      "numericId" : 1,
+      "startedAt" : "2026-10-29T15:27:55.0449199Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_2"
+    }, {
+      "key" : "b",
+      "value" : "i_5"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_6"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:55.0449199Z",
+      "id" : "op_2",
+      "numericId" : 2,
+      "startedAt" : "2026-10-29T15:27:55.0449199Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_3"
+    }, {
+      "key" : "b",
+      "value" : "i_4"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_7"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "a.compare(b)"
+        } ],
+        "name" : "compare"
+      },
+      "finishedAt" : "2026-10-29T15:27:55.0449199Z",
+      "id" : "op_3",
+      "numericId" : 3,
+      "startedAt" : "2026-10-29T15:27:55.0449199Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_6"
+    }, {
+      "key" : "b",
+      "value" : "o_7"
+    } ],
+    "resultId" : "o_8"
+  } ]
+}

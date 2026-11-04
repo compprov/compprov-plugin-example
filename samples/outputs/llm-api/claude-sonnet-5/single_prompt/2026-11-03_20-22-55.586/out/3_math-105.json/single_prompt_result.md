@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 6.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud**: Score 5 — Clean. The graph implements a textbook Welford/West one-pass streaming algorithm for simple linear regression SSE; every root reaches the terminal computation chain through legitimate shared-parameter reuse, no mandatory contributor is dropped, and no root substitutes for a computed value.
+- **Precision and Scale Tampering**: Score 8 — Clean, with one immaterial rounding artifact (−3E-14) attributable to the consistently-applied DECIMAL64 (precision 16, HALF_EVEN) context, not tampering.
+- **Semantic Type and Context Cast**: Score 3 — Clean. All variables keep consistent statistical semantics (Sxx/Syy/Sxy, running means, deviations) end to end; no cross-domain relabeling or metadata stripping that contradicts usage.
+
+#### Anomaly Localization (If Detected)
+No structural, precision, or semantic violation was confirmed. For completeness, the following non-finding is documented:
+
+- **Operations**: op_33 (Sxy² = o_42*o_42), op_34 (o_48 = o_47/o_36), op_35 (o_49 = o_39 − o_48).
+- **Variables**: o_47 ("Sxy²"), o_36 ("Sxx" final), o_39 ("Syy" final), o_48 ("Regression sum of squares"), o_49 ("Sum of squared errors", terminal leaf).
+
+Flow: the three synthetic data points (i_2/i_3, i_7/i_8, i_27/i_28) have exactly equal x-spacing (0.00864) and y-spacing (6.2077), i.e., they are perfectly collinear. Under exact arithmetic this forces Sxy²/Sxx = Syy exactly, so the true SSE is 0. Recomputing the full chain in exact rational arithmetic confirms every intermediate (o_11–o_46) is exact to the decimal places shown, and o_47 (Sxy² = 0.011506650375131136 exact) is correctly HALF_EVEN-rounded to 16 significant digits as 0.01150665037513114 per the declared MathContext i_1 (precision 16, HALF_EVEN). Dividing this 16-digit-rounded numerator by the exact denominator o_36 then yields 77.07107858000003 instead of the mathematically exact 77.07107858, producing a final subtraction result of −3E-14 instead of 0.
+
+#### Details
+This is standard, expected floating/decimal precision noise, not evidence of tampering, for the following reasons:
+- A single declared MathContext (i_1: precision 16, HALF_EVEN) is applied uniformly to every operation in the graph (op_1 through op_35) — there is no directional rounding mode (DOWN/UP/FLOOR/CEILING), no coarser precision smuggled in for a subset of steps, and no mismatch between the declared context and the rounding actually applied (verified exactly for o_47).
+- The resulting discrepancy (−3E-14 against a value of magnitude ~77) is a relative error of ~4×10⁻¹⁶, i.e., within one unit of the 16th significant digit — exactly the mathematical ceiling for a single rounding step at the declared precision, not a magnified or compounding error.
+- The computation is a small, structurally bounded, non-cyclic batch (3 observations processed once); there is no scalable population of operations whose individual skims could accumulate toward a beneficiary, so the Salami Slicing / Cyclic Scaling aggravating factors do not apply.
+- No asset-conservation violation exists at any materiality threshold relevant to the quantities involved; the invariant chain (Sxx, Syy, Sxy accumulation via the Welford update factor n/(n+1)) replays correctly at every step when checked against exact rational arithmetic.
+
+No Calculation Omission, Lineage Disconnection/Context Substitution, Double Counting, Precision/Scale tampering, or Semantic Type/Context Cast was substantiated. The two non-consumed leaves (o_44, o_46 — final running means of x and y) are legitimate standalone descriptive statistics outside the SSE formula and are not mandatory contributors to the terminal result (o_49), so their leaf status is benign rather than an omission.

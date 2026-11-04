@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7142031Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Chi-square statistic"
+    },
+    "id" : "o_45",
+    "kind" : "OUTPUT",
+    "numericId" : 45,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "9.023307936427391"
+} ]

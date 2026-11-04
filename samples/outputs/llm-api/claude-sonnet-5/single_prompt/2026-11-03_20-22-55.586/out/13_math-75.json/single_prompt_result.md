@@ -1,0 +1,26 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 90.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud (Double Counting)** — Score: 88/100. `i_2, i_3, i_4` are each consumed twice (op_1 and op_2) and both resulting sums converge into the single terminal division (op_3), producing a self-canceling ratio instead of a true percentage.
+- **Precision and Scale Tampering** — Score: 5/100. MathContext (DECIMAL64, HALF_EVEN, precision 16) is applied consistently across all three operations; all values are exact integers and replay exactly. No evidence of truncation, scale abuse, or salami slicing.
+- **Semantic Type and Context Cast** — Score: 90/100. `o_6` ("Cumulative count up to value 3") is consumed by `op_3` as if it were the isolated "Count of value 3" (`i_4`), silently converting the terminal output from an individual-category percentage into a cumulative (CDF) percentage while keeping the misleading label "Percentage of value 3".
+
+#### Anomaly Localization — Topological & Provenance Fraud (Double Counting)
+Variables: `i_2` (Count of value 1 = 2), `i_3` (Count of value 2 = 2), `i_4` (Count of value 3 = 4), `o_5` (Total count = 8, from `op_1`: addBulk(i_2,i_3,i_4)), `o_6` (Cumulative count up to value 3 = 8, from `op_2`: addBulk(i_2,i_3,i_4) — identical arguments to op_1), `o_7` (Percentage of value 3 = 1, from `op_3`: divide(o_6, o_5)).
+
+Flow: the three root counts are summed twice, once into `o_5` and once into `o_6`, both yielding 8. These two identical sums are then divided (`op_3`), so every unit of `i_2`, `i_3`, and `i_4` is counted once in the numerator and once in the denominator of the very same terminal ratio. The structural reference data independently confirms `i_2, i_3, i_4` are each consumed by more than one operation, exactly matching the Double Counting pattern ("the same value converges into the same total more than once"), here manifesting as a self-canceling ratio (8/8=1) rather than numeric inflation.
+
+#### Details — Topological & Provenance Fraud
+Local replay of `op_1`, `op_2`, and `op_3` each pass perfectly (8+... , 8+..., 8/8=1 are all internally consistent), which is precisely why casual validation misses the issue. The structural flaw is that `o_6` is not an independent quantity — because value 3 is the last category in a 3-category table, its "cumulative count" is mathematically forced to equal the grand total. Feeding this redundant aggregate into a ratio against the same total destroys the information the percentage is supposed to convey. The true per-category share of value 3 (`i_4 / o_5` = 4/8 = 0.5 = 50%) never reaches the terminal node; instead, a trivially-true identity (total/total = 1 = 100%) is reported as the final "Percentage of value 3". This is a Calculation Omission (the individual-count path from `i_4` to a percentage is never built) compounded by Double Counting (the shared root values are routed into both sides of the final division).
+
+#### Anomaly Localization — Semantic Type and Context Cast
+Variables: `o_6` (declared name: "Cumulative count up to value 3"), `o_7` (declared name: "Percentage of value 3"), operation `op_3` (divide, formula `(a/b)mc`, a=`o_6`, b=`o_5`).
+
+`o_6`'s own descriptor explicitly defines it as a *cumulative* (running-total) quantity, a distinct statistical concept from an individual category count. `op_3` nonetheless consumes `o_6` in the `a` slot of a division whose output is labeled "Percentage of value 3" — the business-standard meaning of which is an individual category's share of the total (`count_of_value_3 / total`), not a cumulative share. Technically, `o_6` and `i_4` are both `java.math.BigDecimal`, so type-checking and mathematical replay pass without any error; the business context substitution (cumulative quantity silently treated as an individual quantity) is invisible to structural or type validation.
+
+#### Details — Semantic Type and Context Cast
+Because the metadata chain was never required to "reconcile" the two concepts (no node renames `o_6` to "Count of value 3" or documents why a cumulative figure is legitimate here), the contradiction between `o_6`'s originating definition (cumulative) and its downstream use (as an individual-category numerator) is explicit and unresolved — exactly the signature this vector targets. The practical consequence is material: a report consumer reading "Percentage of value 3: 100%" would conclude that value 3 constitutes the entire dataset, when in fact it represents only 50% (4 of 8 observations). If this were instead intentionally labeled "Cumulative percentage up to value 3", the 100% figure would be correct and benign (trivially true for the last category) — but the label on `o_7` claims a different, narrower business meaning than what was actually computed, which is the core of the attack.
+
+Both findings trace to the same root cause (reuse of `i_2, i_3, i_4` into a redundant `o_6` that collapses to the total), so they are reported together as the dominant, material risk in this graph; the Precision vector shows no independent issues.

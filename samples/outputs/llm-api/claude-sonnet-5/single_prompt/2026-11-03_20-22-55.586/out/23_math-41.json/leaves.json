@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8408995Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Weighted sample variance"
+    },
+    "id" : "o_48",
+    "kind" : "OUTPUT",
+    "numericId" : 48,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.664450833812536"
+} ]

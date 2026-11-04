@@ -1,0 +1,27 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 5.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud**: 5/100 — No omission, substitution, or double counting; the single reuse of `i_8` is a legitimate divide-then-multiply round-trip, not duplication into the terminal total.
+- **Precision and Scale Tampering**: 3/100 — All multiply/divide operations replay exactly under the declared DECIMAL64-class MathContext (precision 16, HALF_EVEN); scales match Java `BigDecimal.divide(MathContext)` preferred-scale semantics at every step; no truncation, no directional rounding mode, no premature downcast.
+- **Semantic Type and Context Cast**: 4/100 — Every variable's descriptor name matches its role in the dilution formula (C1·V1 → concentration → aliquot → final concentration → moles → mass); no relabeling or metadata stripping that contradicts usage.
+
+#### Anomaly Localization (If Detected)
+No confirmed violations were localized. The only structurally notable item is the reuse of `i_8` ("Step 2 final volume, V2 (L)", value 1.000 L) as an argument to both `op_4` (`o_10 = o_9 / i_8`) and `op_5` (`o_12 = o_10 * i_8`). Tracing this to the terminal output `o_13`: `o_12 = (o_9 / i_8) * i_8`, which is mathematically the identity `o_12 = o_9` (both equal 0.02000 mol in the trace), confirming the step is a legitimate re-derivation of moles from the final concentration and final volume (`moles = C × V`), not a second injection of the same quantity into an aggregate. `o_9` itself is not independently summed or reused elsewhere, so there is no inflation/deflation of the final mass `o_13`.
+
+#### Details
+**Topological check**: Root set (`i_1,i_2,i_3,i_4,i_7,i_8,i_11`) each feed exactly one causal role; the only leaf (`o_13`) is the intended terminal result with no competing or orphaned computed leaf requiring reconciliation. No root variable duplicates a computed quantity's role (e.g., no second "final concentration" or "molar mass" root exists to substitute into the chain). The repeated use of `i_8` is the divisor in computing working concentration and then the multiplier recovering moles — standard chemistry algebra (C=n/V ⇒ n=C·V), and it does not create a second, additive contribution to the final mass.
+
+**Precision check**: Recomputing each step with exact rational arithmetic:
+- `op_1`: 2.00×0.050=0.100 → reported 0.10000 (scale 5 = 2+3) ✓
+- `op_2`: 0.10000/0.500=0.2, preferred scale 5-3=2 → reported 0.20 ✓
+- `op_3`: 0.20×0.100=0.020000, scale 2+3=5 → reported 0.02000 ✓
+- `op_4`: 0.02000/1.000=0.02, preferred scale 5-3=2 → reported 0.02 ✓
+- `op_5`: 0.02×1.000=0.02000, scale 2+3=5 → reported 0.02000 ✓
+- `op_6`: 0.02000×58.44=1.1688000, scale 5+2=7 → reported 1.1688000 ✓
+All deltas are zero; the declared MathContext (precision 16, HALF_EVEN) never binds because every intermediate value has far fewer significant digits, so no rounding or truncation occurs anywhere in the chain. No salami-slicing pattern, no coarsening of precision, no float/double downcast.
+
+**Semantic check**: Domain labels are coherent and internally consistent end-to-end: stock concentration/volume → moles transferred (`o_5`) → intermediate concentration (`o_6`) → second aliquot/volume → moles transferred again (`o_9`) → working/final concentration (`o_10`) → moles in final volume (`o_12`, correctly computed as concentration×volume) → mass via molar mass (`o_13`). No variable is consumed under a business meaning that contradicts its originating descriptor, and no identity/wrapper operation re-casts a quantity's domain meaning (e.g., no “Gross→Net” relabeling without matching arithmetic). The graph is clean on this vector.
+
+**Conclusion**: This is a clean, internally consistent serial-dilution computation with exact arithmetic replay and coherent semantics. No material findings; residual risk score reflects only the generic possibility of unstated domain convention nuances, not a confirmed defect.

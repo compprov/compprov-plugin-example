@@ -1,0 +1,28 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 15.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud**: Score 5 — No omission, substitution, or double-counting detected; all ten position payouts flow through `op_11` into the single terminal `o_22`, and the shared root `i_1` (spot price) is a legitimate shared parameter consumed by independent branches, not a duplicated value.
+- **Precision and Scale Tampering**: Score 15 — Arithmetic replay is exact at every step (no delta between recomputed and reported values); however, the pipeline's declared rounding policy (`DOWN`/truncation) is a directional mode applied to a recurring ("daily") settlement process, which is a latent systemic concern even though it caused zero deviation in this specific execution.
+- **Semantic Type and Context Cast**: Score 5 — CALL/PUT payout formulas are applied consistently with each position's declared `type`, and business meaning (position → payout → aggregate total) is preserved end-to-end with no relabeling or metadata suppression.
+
+#### Anomaly Localization (Precision and Scale Tampering)
+- Descriptor-level meta: `rounding = "DOWN (Amount always truncates to the currency's decimal precision; balance-safety invariant)"`, applied globally to all `WrappedAmount` operations (`op_1`–`op_11`), feeding into terminal `o_22` ("Total payout in USDC").
+- Verified recomputation of all ten payout legs (`op_1`–`op_10`) against spot `i_1` (4650 ETH/USDC) and each position's strike/size in `i_2`–`i_11`:
+  - `op_1` (CALL, strike 4630, size 6.8639): (4650−4630)×6.8639 = 137.278000 → matches `o_12` exactly.
+  - `op_2` (PUT, strike 4710, size 2.8431): (4710−4650)×2.8431 = 170.586000 → matches `o_13` exactly.
+  - `op_3` (CALL, strike 4670): OTM → 0.000000 → matches `o_14`.
+  - `op_4` (PUT, strike 4550): OTM → 0.000000 → matches `o_15`.
+  - `op_5` (PUT, strike 4730, size 7.8507): 80×7.8507 = 628.056000 → matches `o_16`.
+  - `op_6` (CALL, strike 4630, size 4.4213): 20×4.4213 = 88.426000 → matches `o_17`.
+  - `op_7` (CALL, strike 4710): OTM → 0.000000 → matches `o_18`.
+  - `op_8` (PUT, strike 4690, size 5.9841): 40×5.9841 = 239.364000 → matches `o_19`.
+  - `op_9`, `op_10` (PUT, OTM): 0.000000 → matches `o_20`, `o_21`.
+  - `op_11` (addBulk): sum = 1263.710000 → matches `o_22` exactly.
+- No fractional/sub-cent remainder arose at any step (all strike/spot differentials and sizes multiplied to exact 6-decimal USDC values), so the declared `DOWN` truncation mode produced zero observable deviation in this instance.
+
+#### Details (Precision and Scale Tampering)
+The pipeline's global rounding convention is a directional truncation mode (`DOWN`) rather than a round-to-nearest convention (`HALF_UP`/`HALF_EVEN`), applied uniformly to a named "daily options payout" process — i.e., a structurally scalable, recurring settlement across many positions and, presumably, many trading days. Per the precision invariants, a directional mode is tolerated only when it does not change any value that reaches a reported result; in this specific trace it does not, because every position's payout resolves to an exact 6-decimal USDC amount with no residual fraction to truncate. However, this is an artifact of the clean input values (round strikes/spot, terminating decimal sizes) rather than a structural guarantee: the same `DOWN`-truncating wrapper logic, applied day after day to positions whose payout arithmetic does not resolve so cleanly, would systematically truncate in the option seller's favor (never rounding up in the holder's favor), which is the textbook shape of a Salami Slicing design even though no skimmed value is demonstrated in this trace. Given the absence of any actual delta here, this is flagged as a latent/systemic concern for the recurring process rather than a confirmed exploit in this execution, warranting a low-to-moderate score rather than a high one — consistent with the "isolated vs. cyclic confidence" calibration guidance. No other precision, scale, or type-downcast issues were found (all `Amount`/`Rate` wrapper types and decimal scales are consistent with the declared `USDC`=6, `ETH` native precision throughout).
+
+No findings were substantiated for Topological & Provenance Fraud or Semantic Type and Context Cast — all ten independent legs reach the terminal aggregate exactly once each, the shared spot-price root is used only as a common multiplier (not duplicated into the total), and payout semantics (CALL vs. PUT intrinsic value) match each position's declared `type` with no relabeling or metadata stripping observed.

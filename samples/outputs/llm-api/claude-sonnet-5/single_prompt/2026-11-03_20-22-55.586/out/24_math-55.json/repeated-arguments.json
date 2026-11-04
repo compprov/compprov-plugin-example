@@ -1,0 +1,181 @@
+{
+  "version" : "1.0",
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "operations consuming the same variable more than once"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8659163Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Computation precision (DECIMAL64)"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 16,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8659163Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "v2.x"
+      },
+      "id" : "i_6",
+      "kind" : "INPUT",
+      "numericId" : 6,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "9070467123"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8659163Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "v2.y"
+      },
+      "id" : "i_7",
+      "kind" : "INPUT",
+      "numericId" : 7,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "4535233561"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8659163Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "v2.z"
+      },
+      "id" : "i_8",
+      "kind" : "INPUT",
+      "numericId" : 8,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8659163Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "v2.x²"
+      },
+      "id" : "o_9",
+      "kind" : "OUTPUT",
+      "numericId" : 9,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "8.227337382942390E+19"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8659163Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "v2.y²"
+      },
+      "id" : "o_10",
+      "kind" : "OUTPUT",
+      "numericId" : 10,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "2.056834345282074E+19"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8659163Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "v2.z²"
+      },
+      "id" : "o_11",
+      "kind" : "OUTPUT",
+      "numericId" : 11,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.8659163Z",
+      "id" : "op_1",
+      "numericId" : 1,
+      "startedAt" : "2026-10-29T15:27:54.8659163Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_6"
+    }, {
+      "key" : "b",
+      "value" : "i_6"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_9"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.8659163Z",
+      "id" : "op_2",
+      "numericId" : 2,
+      "startedAt" : "2026-10-29T15:27:54.8659163Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_7"
+    }, {
+      "key" : "b",
+      "value" : "i_7"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_10"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.8659163Z",
+      "id" : "op_3",
+      "numericId" : 3,
+      "startedAt" : "2026-10-29T15:27:54.8659163Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_8"
+    }, {
+      "key" : "b",
+      "value" : "i_8"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_11"
+  } ]
+}

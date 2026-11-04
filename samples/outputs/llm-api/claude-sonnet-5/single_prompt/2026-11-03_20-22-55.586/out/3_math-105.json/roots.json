@@ -1,0 +1,186 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] x"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "110.7178495"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] y"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "8906.8377"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Initial Sxx, 0"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Initial Syy, 0"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Initial Sxy, 0"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] x"
+    },
+    "id" : "i_7",
+    "kind" : "INPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "110.7264895"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] y"
+    },
+    "id" : "i_8",
+    "kind" : "INPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "8913.0454"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Observations so far, n"
+    },
+    "id" : "i_9",
+    "kind" : "INPUT",
+    "numericId" : 9,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Observations incl. this one, n + 1"
+    },
+    "id" : "i_10",
+    "kind" : "INPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7662133Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] x"
+    },
+    "id" : "i_27",
+    "kind" : "INPUT",
+    "numericId" : 27,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "110.7351295"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7662133Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] y"
+    },
+    "id" : "i_28",
+    "kind" : "INPUT",
+    "numericId" : 28,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "8919.2531"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7662133Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Observations so far, n"
+    },
+    "id" : "i_29",
+    "kind" : "INPUT",
+    "numericId" : 29,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7662133Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Observations incl. this one, n + 1"
+    },
+    "id" : "i_30",
+    "kind" : "INPUT",
+    "numericId" : 30,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3"
+} ]

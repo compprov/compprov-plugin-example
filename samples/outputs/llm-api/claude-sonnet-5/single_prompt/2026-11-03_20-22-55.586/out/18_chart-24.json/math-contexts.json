@@ -1,0 +1,33 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.6042646Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.6062659Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Truncate to integer ((int) cast)"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 0,
+    "roundingMode" : "DOWN"
+  }
+} ]

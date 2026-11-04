@@ -1,0 +1,31 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 5.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud**: 5/100 — No omission, substitution, or double counting found; all root/leaf flows are accounted for and multi-use/repeated-argument patterns are structurally justified.
+- **Precision and Scale Tampering**: 5/100 — Single consistent MathContext (precision 16, HALF_EVEN) applied uniformly across all 23 operations; full-precision recomputation of every step matches reported values exactly.
+- **Semantic Type and Context Cast**: 3/100 — Variable names, types, and formulas remain semantically coherent end-to-end; no relabeling, metadata stripping, or business-meaning drift detected.
+
+#### Anomaly Localization (If Detected)
+None. No variable or operation exhibits a confirmed violation of the stated invariants for any of the three attack vectors.
+
+#### Details
+
+**Topological & Provenance Fraud:**
+- Terminal leaves are `o_29` (Ending balance), `o_31` (Total interest accrued), `o_34` (Total amount paid by borrower). Tracing lineage: every monthly interest figure (`o_6, o_10, o_14, o_18, o_23, o_27`) feeds `op_20` → `o_31` with no omissions; every monthly balance correctly threads through `op_3→op_6→op_9→op_12→op_13(prepayment)→op_16→op_19` to `o_29`, properly incorporating the month-4 prepayment (`i_4` via `op_13` into `o_21`) before continuing the amortization schedule.
+- `i_4` (extra prepayment) is consumed twice (`op_13`, `op_23`), flagged in structural data as multi-use, but this is legitimate: one use reduces the running principal balance (independent branch), the other adds the same cash outflow into the borrower's total paid (`o_34`). Neither converges twice into the *same* total, so this is not double counting.
+- `op_22`'s repeated consumption of `i_2` six times (`addBulk`) is a repeated-addition pattern explicitly justified by the result name "Total scheduled payments (6 months)" and matched by the six actual monthly periods computed in the graph — satisfies the stated exemption for legitimate repeated addition.
+- No duplicate-name leaves, no orphaned/superseded root variables, no unused computed values with a plausible substitute root in their place. `i_5` (starting principal) is a genuine root feeding the chain once, with no parallel substitute value for the same quantity.
+
+**Precision and Scale Tampering:**
+- Full-precision (exact rational) recomputation of every `multiply`/`subtract`/`addBulk` step, applying 16-significant-digit HALF_EVEN rounding per the declared `i_1` MathContext, reproduces every reported value bit-for-bit (e.g., `o_16 = 236867.5033600000`, `o_29 = 228657.1862000015`, `o_31 = 5657.186200001495`, `o_34 = 19400.00`).
+- The MathContext (precision 16, HALF_EVEN) is applied uniformly to all 23 operations — no directional rounding modes, no coarser precision steps, no mid-pipeline downcast to float/double/int, and no premature scale truncation that would leak residual value. Precision is finer than the natural cents resolution throughout, which is compliant (coarsening, not fineness, is the violation condition).
+- No evidence of Salami Slicing: there is no accumulation pattern draining sub-cent fractions to any sink; totals (`o_31`, `o_32`, `o_33`, `o_34`) reconcile exactly with the underlying monthly figures.
+
+**Semantic Type and Context Cast:**
+- All variables remain `java.math.BigDecimal` with names and formulas that stay semantically aligned across their full lineage (e.g., "Interest accrued" always produced by `balance * rate`, "Principal portion" always `payment - interest`, "Balance after payment" always `prior balance - principal portion`).
+- The prepayment (`i_4`) is consumed consistently as a principal reduction and as a cash-outflow addend — both uses match its originating definition ("Extra principal prepayment"); no relabeling to a conflicting business concept (e.g., being treated as interest, escrow, or a discount) occurs anywhere in the graph.
+- Escrow collections remain segregated from principal/interest calculations and are only aggregated into the borrower's total cash paid (`o_34`), consistent with standard mortgage-servicing semantics; no implicit Gross/Net or currency/unit reinterpretation is present.
+
+Overall, this CPG represents a well-formed, internally consistent 6-month loan amortization with escrow and a mid-term prepayment, and does not exhibit confirmed violations under any of the three audited attack vectors.

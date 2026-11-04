@@ -1,0 +1,25 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 92.0
+
+#### Per-Vector Verdict
+
+1. **Topological & Provenance Fraud** — Score: 3/100. No omission, substitution, or double counting detected. The single leaf `o_15` is the genuine terminal output; all roots (`i_1, i_2, i_3, i_5, i_6, i_9, i_10, i_13`) are consumed exactly where expected. The two multi-use variables (`i_2` feeding both regular-pay and overtime-rate branches; `o_12` feeding both the tax calculation and the final net-pay subtraction) are legitimate shared parameters/aggregates, not duplicated contributions to the same total.
+
+2. **Precision and Scale Tampering** — Score: 5/100. A single consistent `MathContext` (`i_1`: precision 16, HALF_EVEN) is declared and used identically across every operation (`op_1`–`op_7`). Recomputing each step with exact rational arithmetic reproduces the reported values and scales exactly (e.g., `22.00*1.25=27.5000`, `6*27.5000=165.0000`, `880.00+165.0000+21.00=1066.0000`, `1066.0000*0.18=191.880000`, `1066.0000-191.880000=874.120000`). No premature truncation, no directional rounding mode, no downcasting. Asset conservation (gross = regular+OT+differential; net = gross−tax) holds exactly.
+
+3. **Semantic Type and Context Cast** — Score: 92/100. Confirmed explicit contradiction between a variable's declared business meaning and the value actually consumed in the arithmetic: `i_6` is named "Overtime multiplier (1.5x)" (the standard, legally-expected time-and-a-half overtime rule) but its stored/consumed `value` is `1.25`. This silently re-maps the business meaning of the variable while preserving full technical type validity (`BigDecimal` -> `BigDecimal`) and perfect mathematical replay, which is precisely the signature this vector targets.
+
+---
+
+#### Anomaly Localization (Semantic Type and Context Cast)
+- **i_6** ("Overtime multiplier (1.5x)", `BigDecimal`, value `"1.25"`): root variable whose descriptor name asserts a 1.5x overtime multiplier, a near-universal labor-law convention, but whose payload is 1.25.
+- **op_2** (`multiply`, formula `(a*b)mc`, args `a=i_2 (22.00)`, `b=i_6 (1.25)`) → **o_7** ("Overtime rate" = 27.5000). The operation faithfully computes `22.00 * 1.25`, technically replaying perfectly against its own inputs, but the business rule encoded in `i_6`'s own name (1.5x → rate should be 33.0000) is silently overridden by the numeric payload actually wired into the computation.
+- **op_3** (`multiply`, `a=i_5 (6)`, `b=o_7 (27.5000)`) → **o_8** ("Overtime pay" = 165.0000). Propagates the understated rate into overtime pay (should be `6*33.0000=198.0000`).
+- **op_5** (`addBulk`, `a=o_4, b0=o_8, b1=o_11`) → **o_12** ("Gross pay" = 1066.0000). The understated `o_8` flows directly into gross pay (true gross should be `880.00+198.0000+21.00=1099.00`).
+- **op_6** (`multiply`, `a=o_12, b=i_13`) → **o_14** ("Payroll tax withholding" = 191.880000), and **op_7** (`subtract`, `a=o_12, b=o_14`) → **o_15** ("Net pay" = 874.120000). Both inherit the deflated gross pay; the terminal result understates net pay by roughly $27.06 per weekly cycle (true net ≈ `1099.00 - 1099.00*0.18 = 901.18` vs. reported `874.12`).
+
+#### Details
+The mechanism exploits exactly the gap this vector targets: technical type checking (`BigDecimal` in, `BigDecimal` out, scale/precision arithmetic all internally consistent) and local mathematical replay both pass without any anomaly — `op_2` genuinely computes `22.00 * 1.25` under the declared `MathContext`, so a naive auditor verifying "does each operation match its formula and context" finds nothing wrong. The violation lives one level up, in the business-semantic layer: the variable `i_6` carries an explicit domain declaration ("1.5x", the standard overtime premium) that is never honored by the number actually fed into the multiplication. No operation in the graph performs or documents a legitimate reason for substituting 1.25 for 1.5 (no discount, proration, or policy-exception node exists), so this is not a reconciled or explained domain transformation — it is a silent contradiction between declared and consumed business meaning, per the invariant that "no operation may consume a variable under a business definition that conflicts with its originating metadata."
+
+Consequence: every downstream aggregate derived from `o_7`/`o_8` (gross pay `o_12`, tax `o_14`, and ultimately net pay `o_15`) is computed correctly in arithmetic terms but materially wrong in business terms, understating the employee's overtime pay by $33.00/week pre-tax and net pay by about $27.06/week. Because this is a per-pay-period payroll computation (the descriptor is literally "Hourly payroll: weekly net pay"), the shortfall recurs every pay cycle for every overtime-eligible employee processed through this pipeline — a small, surgical metadata/value mismatch that compounds into a systematic and scalable wage-underpayment exploit, which is why this finding is scored high despite being a single localized substitution.

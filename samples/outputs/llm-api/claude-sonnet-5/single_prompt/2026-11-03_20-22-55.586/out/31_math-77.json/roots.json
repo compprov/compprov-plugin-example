@@ -1,0 +1,108 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0258656Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0258656Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Initial maximum, 0"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0258656Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] Vector component"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "-4"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0258656Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Vector component"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0258656Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Vector component"
+    },
+    "id" : "i_9",
+    "kind" : "INPUT",
+    "numericId" : 9,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0258656Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[3] Vector component"
+    },
+    "id" : "i_12",
+    "kind" : "INPUT",
+    "numericId" : 12,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0258656Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[4] Vector component"
+    },
+    "id" : "i_15",
+    "kind" : "INPUT",
+    "numericId" : 15,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "-6"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0258656Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[5] Vector component"
+    },
+    "id" : "i_18",
+    "kind" : "INPUT",
+    "numericId" : 18,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3"
+} ]

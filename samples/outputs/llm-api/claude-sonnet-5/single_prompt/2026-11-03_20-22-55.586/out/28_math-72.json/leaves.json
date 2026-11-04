@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9628344Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Root"
+    },
+    "id" : "o_21",
+    "kind" : "OUTPUT",
+    "numericId" : 21,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3.141592653589793"
+} ]

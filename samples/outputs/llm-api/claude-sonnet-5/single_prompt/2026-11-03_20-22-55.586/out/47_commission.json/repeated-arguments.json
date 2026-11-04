@@ -1,0 +1,109 @@
+{
+  "version" : "1.0",
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "operations consuming the same variable more than once"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-09-03T04:42:26.3467729Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Computation precision (DECIMAL64)"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 16,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T04:42:26.3527706Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Tier 1 commission"
+      },
+      "id" : "o_14",
+      "kind" : "OUTPUT",
+      "numericId" : 14,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "2500.0000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T04:42:26.3527706Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Tier 2 commission"
+      },
+      "id" : "o_15",
+      "kind" : "OUTPUT",
+      "numericId" : 15,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "4000.0000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T04:42:26.3527706Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Tier 3 commission"
+      },
+      "id" : "o_16",
+      "kind" : "OUTPUT",
+      "numericId" : 16,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "4200.0000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-03T04:42:26.3527706Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Total commission"
+      },
+      "id" : "o_17",
+      "kind" : "OUTPUT",
+      "numericId" : 17,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "13200.0000"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a+b0+...+bn)mc"
+        } ],
+        "name" : "addBulk"
+      },
+      "finishedAt" : "2026-09-03T04:42:26.3527706Z",
+      "id" : "op_9",
+      "numericId" : 9,
+      "startedAt" : "2026-09-03T04:42:26.3527706Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_14"
+    }, {
+      "key" : "b0",
+      "value" : "o_14"
+    }, {
+      "key" : "b1",
+      "value" : "o_15"
+    }, {
+      "key" : "b2",
+      "value" : "o_16"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_17"
+  } ]
+}

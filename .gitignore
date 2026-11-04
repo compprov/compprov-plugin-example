@@ -20,3 +20,9 @@ desktop.ini
 # Environment
 .env
 *.env.local
+
+#samples
+samples/outputs/**
+!samples/outputs/**/
+!samples/outputs/llm-api/*/*/*/out/summary.md
+!samples/outputs/llm-api/claude-sonnet-5/single_prompt/2026-11-03_20-22-55.586/**

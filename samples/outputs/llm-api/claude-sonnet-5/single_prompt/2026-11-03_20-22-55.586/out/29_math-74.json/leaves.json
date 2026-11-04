@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9788442Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Initial step size"
+    },
+    "id" : "o_50",
+    "kind" : "OUTPUT",
+    "numericId" : 50,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.042184274819003574"
+} ]

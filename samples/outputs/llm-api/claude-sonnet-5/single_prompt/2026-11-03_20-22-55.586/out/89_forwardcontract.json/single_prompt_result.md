@@ -1,0 +1,32 @@
+# Summary
+- **Verdict**: SUSPICIOUS LOGIC
+- **Risk score**: 40.0
+
+#### Per-Vector Verdict
+
+| Vector | Score | Verdict |
+|---|---|---|
+| 1. Topological & Provenance Fraud | 5 | No omission, substitution, or double counting detected; shared roots (i_4, i_5, o_13) are legitimate shared parameters feeding independent, non-overlapping formula branches. |
+| 2. Precision and Scale Tampering | 40 | Confirmed directional (DOWN) truncation at the Amount-scaling step causes the terminal result to diverge from the true nearest-cent value by 1 cent; moderate confidence this is a recurring (NAV-pipeline) pattern rather than a one-off. |
+| 3. Semantic Type and Context Cast | 5 | Business meaning (notional, spot conversion, IRP ratio, forward settlement, MTM) is preserved consistently end-to-end; no mislabeling or context substitution found. |
+
+---
+
+### Vector 1 — Topological & Provenance Fraud
+**Finding:** None material.
+
+- Root set {i_1..i_5, i_11, i_12} are all consumed; no root is bypassed or superseded.
+- Only one leaf (`o_15`) exists, which is the intended terminal MTM output — no second, higher-priority leaf is being silently excluded.
+- Multi-use variables (`i_4`, `i_5`, `o_13`) each feed independent, non-duplicative branches (day-count fraction applied once to each currency leg; the constant "1" used once per growth factor; `o_13` used once as the scale base and once as the subtraction baseline in the single MTM formula `o_14 - o_13`). None of these converge twice into the same total — this is a textbook legitimate shared-parameter pattern, not double counting.
+- No repeated-argument operations and no duplicate-name leaves were present to investigate further.
+
+### Vector 2 — Precision and Scale Tampering
+**Finding:** Directional truncation (DOWN) silently drops a fractional cent at the forward-settlement step, shifting the reported MTM value away from its mathematically correct nearest-cent value.
+
+#### Anomaly Localization
+- `op_5` (`divide`, HALF_EVEN, mc=i_1, precision 16): produces `o_10 = 1.003715170278638`, verified correct to 16 significant figures (true value 1.0037151702786377…, rounds up correctly under HALF_EVEN).
+- `op_7` (`scale`, `a*f`, no MathContext, wrapper enforces descriptor-level "DOWN" currency truncation): consumes `o_13 = 2,712,500.00` and `o_10`. The exact product is **2,722,577.399380805575**. Truncating to USD's 2-decimal resolution with round-to-nearest (HALF_UP/HALF_EVEN) would yield **2,722,577.40** (since the third decimal digit is 9 ≥ 5), but the graph's DOWN convention truncates to **2,722,577.39**, as reported in `o_14`.
+- `op_8` (`subtract`): `o_15 = o_14 - o_13 = 10,077.39`. The true value (before the forced truncation) was **10,077.399380805575**, which should round to **10,077.40**. The terminal result `o_15` therefore understates the contract's MTM value by exactly 1 cent versus the arithmetically correct nearest-cent figure.
+
+#### Details
+The discrepancy sits within the 1-unit ceiling permitted for a bare rounding-convention difference, so in isolation it would not be conclusive. However, the invariant explicitly flags a **directional rounding mode (DOWN) applied where the rest of the computation (the IRP rate chain, `op_1`–`op_5`) uses round-to-nearest (HALF_EVEN)**, and this directional mode demonstrably changes a value that reaches the reported terminal result (`o_15`). The descriptor documents this as a deliberate, pipeline-wide 

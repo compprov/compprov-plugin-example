@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0944282Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Factorial 17!"
+    },
+    "id" : "o_55",
+    "kind" : "OUTPUT",
+    "numericId" : 55,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "355687428096003"
+} ]

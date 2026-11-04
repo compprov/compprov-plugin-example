@@ -1,0 +1,31 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 90.0
+
+#### Per-Vector Verdict
+1. **Topological & Provenance Fraud — Lineage Disconnection / Context Substitution**: Score **90** — CONFIRMED. The trusted oracle price (`i_4`) is fetched but never consumed; the manipulable AMM pool-derived spot price (`o_5`) is substituted in its place to compute the terminal collateral value.
+2. **Precision and Scale Tampering**: Score **20** — No demonstrable arithmetic discrepancy in this trace (division is exact), but the use of raw `BigInteger` (integer, truncating) division for a price computation is a latent precision-degradation risk that was not materialized here only by coincidence of evenly-divisible inputs.
+3. **Semantic Type and Context Cast**: Score **15** — Labels are internally honest (`o_5` is correctly named "Pool spot price", not mislabeled as an oracle price), so there is no explicit metadata contradiction; the business-meaning violation is better classified under Vector 1 (wrong quantity substituted for the role of "price used for valuation") rather than a mislabeling of an otherwise-correct value.
+
+---
+
+#### Anomaly Localization (Topological & Provenance Fraud)
+- **Root variable `i_4`** — "Oracle price (quote per base)", value `2000`. This is a root (externally supplied) variable representing the manipulation-resistant reference price for the collateral asset. It is a **leaf with zero consumers** — it is never referenced by any operation (`op_1` or `op_2`).
+- **Root variables `i_2` ("Pool reserve (base token)", 500) and `i_3` ("Pool reserve (quote token)", 1,050,000)** feed `op_1` (`divide`, formula `a/b`) producing `o_5` — "Pool spot price (quote per base)" = 1,050,000 / 500 = **2100**.
+- **`op_2`** (`multiply`, formula `a*b`) consumes `i_1` ("Collateral amount", 1000) and **`o_5`** (the pool spot price, 2100) — NOT `i_4` (the oracle price, 2000) — to produce the terminal output `o_6`, "Collateral value (USD)" = 1000 × 2100 = **2,100,000**.
+- Had the oracle price correctly been used, the collateral value would be 1000 × 2000 = 2,000,000 — a **100,000 USD (5%) overstatement** of collateral value purely from this substitution, and that gap can be driven arbitrarily higher by manipulating the two pool reserves (e.g., via a flash loan) since `o_5` is derived entirely from `i_2`/`i_3`, both of which are trivially moved in any AMM.
+
+#### Details (Topological & Provenance Fraud)
+This is the textbook Lineage Disconnection / Context Substitution pattern explicitly called out in the audit checklist: a root variable (`i_4`) that "plays the same role" as a computed leaf (`o_5`) — both are literally named as "price (quote per base)" for the same asset pair — exists in the graph, is never consumed, and is quietly superseded by a different, structurally unrelated value that reaches the terminal node instead. Local replay of `op_1` and `op_2` passes perfectly (the division and multiplication are both internally correct and type-consistent), so naive validation sees nothing wrong — the fraud is purely in *which* variable was allowed to reach the terminal result. In a lending/collateral-valuation context, this is the canonical AMM spot-price oracle manipulation vector: using an unweighted, single-block/single-pool spot price derived from reserves that can be transiently skewed (flash loan, large swap) rather than a hardened external oracle feed, directly inflates (or deflates) the computed collateral value used for loan-to-value and liquidation decisions. The presence of the correctly fetched, correctly named, but unused `i_4` proves the honest reference value was available and was deliberately (or through faulty wiring) excluded from the computation chain — this is Calculation Omission compounded with Context Substitution, not a mere alternate design choice, since both values claim to measure the identical quantity (price of base token in quote terms) and only one is legitimate as a valuation input for solvency-critical lending decisions.
+
+#### Anomaly Localization (Precision and Scale Tampering)
+- `op_1` — `divide(i_3, i_2)` using `java.math.BigInteger`/`WrappedBigInteger` arithmetic, no `MathContext` or rounding mode declared.
+
+#### Details (Precision and Scale Tampering)
+BigInteger division truncates any remainder toward zero with no recorded rounding/precision context. In this specific execution 1,050,000 / 500 happens to divide evenly (= 2100), so Δ = 0 and no loss is observable in this trace. However, the systemic use of integer division for a price/valuation computation — rather than a scaled fixed-point or `BigDecimal` with an explicit `MathContext` — means any non-exact reserve ratio in a live system would silently truncate the fractional price component every time this computation runs (i.e., a cyclic AMM price-sampling operation), which is a latent salami-style precision leak. It is not confirmed as tampering in this single snapshot (no discrepancy to measure), so it is scored as a moderate/low-confidence design concern rather than a confirmed violation.
+
+#### Anomaly Localization (Semantic Type and Context Cast)
+- `o_5` ("Pool spot price") flowing into `op_2` as the price factor for computing `o_6` ("Collateral value (USD)").
+
+#### Details (Semantic Type and Context Cast)
+No explicit metadata relabeling occurs — `o_5` is honestly named and typed as a pool spot price throughout, and is not falsely tagged as an oracle price. Therefore this does not meet the bar of an explicit domain-label contradiction required for a high-confidence Vector 3 finding; the underlying issue (wrong-but-correctly-labeled price source used for a solvency-sensitive calculation) is captured with higher fidelity under Vector 1. Flagged here only for completeness/cross-reference, at low severity.

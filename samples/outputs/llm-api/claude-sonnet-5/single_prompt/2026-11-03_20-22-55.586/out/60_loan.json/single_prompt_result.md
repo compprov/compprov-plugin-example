@@ -1,0 +1,43 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 88.0
+
+#### Per-Vector Verdict
+
+| Vector | Score | Verdict |
+|---|---|---|
+| Topological & Provenance Fraud (Lineage Disconnection / Context Substitution) | 88 | **VIOLATION** — computed escrow total (o_32) is orphaned; an unexplained root value (i_33) is substituted into the terminal aggregation in its place. |
+| Precision and Scale Tampering | 5 | Clean — single consistent MathContext (precision 16, HALF_EVEN) used on every operation; all recomputed values match reported values exactly under that context. |
+| Semantic Type and Context Cast | 15 | No independent finding beyond the substitution captured under Vector 1 (same incident, not a separate type-cast mechanism). |
+
+---
+
+#### Anomaly Localization (Topological & Provenance Fraud)
+
+**Implicated nodes:** `i_33` ("Total escrow", root, value `2280.0000`), `o_32` ("Total escrow collected", computed leaf, value `2400.00`), `op_21` (addBulk producing o_32), `op_23` (addBulk producing terminal `o_35`), `i_9, i_13, i_17, i_22, i_26, i_30` (the six monthly escrow inputs of `400.00` each that feed op_21).
+
+Flow of the attack:
+1. The graph faithfully computes the escrow collected across all six months via `op_21`: `o_32 = i_9+i_13+i_17+i_22+i_26+i_30 = 400.00*6 = 2400.00`. This is the correct, fully-derived escrow total and is a leaf — the structural data confirms it has **zero downstream consumers**.
+2. A root variable `i_33`, named almost identically ("Total escrow" vs. "Total escrow collected"), is injected into the graph with value `2280.0000` — a figure that does not reconcile with any computed data in the graph (6 × 400.00 ≠ 2280.00; it is not derivable from any visible operation).
+3. The terminal computation `op_23` (`o_35 = o_34 + i_33 + i_4`, "Total amount paid by borrower") consumes `i_33` instead of `o_32`, even though `i_33` occupies exactly the escrow-total slot in the formula alongside the scheduled-payments total (`o_34`) and the prepayment (`i_4`).
+4. Result: the reported "Total amount paid by borrower" (`o_35 = 19280.0000`) is understated by exactly `120.00` relative to what the graph's own computation chain proves was collected (`12000.00 + 2400.00 + 5000.00 = 19400.00`).
+
+#### Details (Topological & Provenance Fraud)
+
+This is the canonical Lineage Disconnection / Context Substitution pattern: a fully-computed, internally consistent intermediate result (`o_32`) is deliberately left dangling (a leaf with no consumers), while a root variable sharing its semantic role (same quantity, cognate name, same position in the final-sum formula) is substituted at the point of terminal aggregation. Every local check passes — `op_23` is a valid `addBulk` over three `BigDecimal` arguments under the shared `MathContext`, and `op_21`'s replay against its own inputs is exact — so naive schema/type/replay validation sees nothing wrong. Only tracing the provenance of the terminal result back through the DAG reveals that the escrow figure actually consumed never passed through the six-month collection calculation at all. The practical impact is a $120 discrepancy silently absorbed outside of the auditable computation chain (either skimmed, misreported to the borrower, or used to disguise a shortfall in escrow remittance) in a single execution — and because this is a parametrized per-loan pipeline, the same substitution pattern would scale linearly with every loan processed through it, which elevates it beyond an isolated rounding artifact to a structurally repeatable diversion mechanism.
+
+---
+
+#### Anomaly Localization (Precision and Scale Tampering)
+No findings. All six interest/principal/balance steps (`op_1`–`op_19`) and all four `addBulk` aggregations (`op_20`–`op_23`, excluding the substitution noted above) were recomputed with exact rational arithmetic and matched the reported values to the 16-significant-digit HALF_EVEN MathContext (`i_1`) in every case (e.g., `o_28 = 1081.047066932265` and `o_29 = 228657.1862000015` both replay exactly under HALF_EVEN rounding to 16 sig-figs). No directional rounding modes, no premature truncation, no type downcasting observed.
+
+#### Details (Precision and Scale Tampering)
+The pipeline uses a single, appropriately fine-grained MathContext consistently across every arithmetic step, satisfying the invariant that rounding convention and precision be uniform and no coarser than the natural resolution of the quantity. No salami-slicing or scale-conversion flaw is present.
+
+---
+
+#### Anomaly Localization (Semantic Type and Context Cast)
+Same nodes as the Vector 1 finding (`i_33`, `o_32`, `op_23`). No additional, independent semantic-cast violations were found elsewhere in the graph (e.g., the reuse of `i_4` in both the principal-reduction step `op_13` and the final cash-paid aggregation `op_23` is a legitimate dual-purpose use — reducing the loan balance vs. accumulating total cash disbursed — not a context cast).
+
+#### Details (Semantic Type and Context Cast)
+The `i_33`/`o_32` substitution could also be read as a context-cast violation (a root relabeled close enough to the computed quantity's name to pass casual review while actually representing an unreconciled, different value), but it is scored and detailed primarily under Vector 1 since the defining mechanism is a provenance substitution (computed value bypassed, root consumed in its place) rather than a metadata relabeling of an otherwise-untouched numeric value. No other variable in the graph shows a C_source ≠ C_target mismatch under identical `valueClass`.

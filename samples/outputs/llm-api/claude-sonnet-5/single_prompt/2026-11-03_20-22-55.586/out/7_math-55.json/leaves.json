@@ -1,0 +1,40 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8739329Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Cross product x"
+    },
+    "id" : "o_10",
+    "kind" : "OUTPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "-1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8739329Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Cross product y"
+    },
+    "id" : "o_13",
+    "kind" : "OUTPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8739329Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Cross product z"
+    },
+    "id" : "o_16",
+    "kind" : "OUTPUT",
+    "numericId" : 16,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0E+4"
+} ]

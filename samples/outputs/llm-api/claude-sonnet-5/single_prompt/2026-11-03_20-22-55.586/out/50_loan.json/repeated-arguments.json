@@ -1,0 +1,221 @@
+{
+  "version" : "1.0",
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "operations consuming the same variable more than once"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-09-14T07:43:45.6443481Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Computation precision (DECIMAL64)"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 16,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T07:43:45.6453347Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Monthly payment"
+      },
+      "id" : "i_2",
+      "kind" : "INPUT",
+      "numericId" : 2,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "2000.00"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T07:43:45.6500236Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Interest accrued [Month 1]"
+      },
+      "id" : "o_6",
+      "kind" : "OUTPUT",
+      "numericId" : 6,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "960.00000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T07:43:45.6510226Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Interest accrued [Month 2]"
+      },
+      "id" : "o_10",
+      "kind" : "OUTPUT",
+      "numericId" : 10,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "955.84000000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T07:43:45.6510226Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Interest accrued [Month 3]"
+      },
+      "id" : "o_14",
+      "kind" : "OUTPUT",
+      "numericId" : 14,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "951.66336000000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T07:43:45.6510226Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Interest accrued [Month 4]"
+      },
+      "id" : "o_18",
+      "kind" : "OUTPUT",
+      "numericId" : 18,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "947.4700134400000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T07:43:45.6510226Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Interest accrued [Month 5]"
+      },
+      "id" : "o_23",
+      "kind" : "OUTPUT",
+      "numericId" : 23,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "923.2598934937600"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T07:43:45.6510226Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Interest accrued [Month 6]"
+      },
+      "id" : "o_27",
+      "kind" : "OUTPUT",
+      "numericId" : 27,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "918.9529330677352"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T07:43:45.6510226Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Total interest accrued"
+      },
+      "id" : "o_31",
+      "kind" : "OUTPUT",
+      "numericId" : 31,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "6617.186200001495"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T07:43:45.6510226Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Total scheduled payments (6 months)"
+      },
+      "id" : "o_33",
+      "kind" : "OUTPUT",
+      "numericId" : 33,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "12000.00"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a+b0+...+bn)mc"
+        } ],
+        "name" : "addBulk"
+      },
+      "finishedAt" : "2026-09-14T07:43:45.6510226Z",
+      "id" : "op_20",
+      "numericId" : 20,
+      "startedAt" : "2026-09-14T07:43:45.6510226Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_6"
+    }, {
+      "key" : "b0",
+      "value" : "o_6"
+    }, {
+      "key" : "b1",
+      "value" : "o_10"
+    }, {
+      "key" : "b2",
+      "value" : "o_14"
+    }, {
+      "key" : "b3",
+      "value" : "o_18"
+    }, {
+      "key" : "b4",
+      "value" : "o_23"
+    }, {
+      "key" : "b5",
+      "value" : "o_27"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_31"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a+b0+...+bn)mc"
+        } ],
+        "name" : "addBulk"
+      },
+      "finishedAt" : "2026-09-14T07:43:45.6510226Z",
+      "id" : "op_22",
+      "numericId" : 22,
+      "startedAt" : "2026-09-14T07:43:45.6510226Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_2"
+    }, {
+      "key" : "b0",
+      "value" : "i_2"
+    }, {
+      "key" : "b1",
+      "value" : "i_2"
+    }, {
+      "key" : "b2",
+      "value" : "i_2"
+    }, {
+      "key" : "b3",
+      "value" : "i_2"
+    }, {
+      "key" : "b4",
+      "value" : "i_2"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_33"
+  } ]
+}

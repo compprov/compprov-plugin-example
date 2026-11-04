@@ -1,0 +1,40 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0078603Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Count of value 1"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0078603Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Count of value 2"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0078603Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Count of value 3"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4"
+} ]

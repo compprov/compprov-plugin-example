@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.002875Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Percentage of value 3"
+    },
+    "id" : "o_6",
+    "kind" : "OUTPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.5"
+} ]

@@ -1,0 +1,74 @@
+{
+  "version" : "1.0",
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "scaling operations set"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.983843Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Computation precision (DECIMAL64)"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 16,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.983843Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Absolute tolerance"
+      },
+      "id" : "i_3",
+      "kind" : "INPUT",
+      "numericId" : 3,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1E-9"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.983843Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Error scale"
+      },
+      "id" : "o_5",
+      "kind" : "OUTPUT",
+      "numericId" : 5,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1E-9"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(+a)mc"
+        } ],
+        "name" : "plus"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.983843Z",
+      "id" : "op_1",
+      "numericId" : 1,
+      "startedAt" : "2026-10-29T15:27:54.983843Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_3"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_5"
+  } ]
+}

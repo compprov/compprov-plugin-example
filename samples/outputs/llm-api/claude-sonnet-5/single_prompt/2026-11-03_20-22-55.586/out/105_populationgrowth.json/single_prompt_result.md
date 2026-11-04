@@ -1,0 +1,14 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 5.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud**: Score 5 — No omission, substitution, or double counting found; i_2 (N0) and i_3 (r) are legitimately shared parameters feeding three independent, equally-terminal branches (population at t1, t2, t3).
+- **Precision and Scale Tampering**: Score 8 — All MathContext-governed multiplications (op_1, op_3, op_4, op_6, op_7, op_9) replay exactly against the declared DECIMAL64 (precision 16, HALF_EVEN) context, including correct banker's rounding at the 16th significant digit for o_12 and o_15. Minor, non-material observation on precision-string length inconsistency in the uncontextualized Exp_double steps (see below).
+- **Semantic Type and Context Cast**: Score 0 — Business meaning (N0, r, t, exponent, growth factor, population) is preserved consistently end-to-end with no re-labeling or metadata suppression.
+
+#### Anomaly Localization (Precision and Scale Tampering — minor/non-material)
+Variables o_8 (`1.161834242728283`, 16 significant digits) versus o_11 (`1.3498588075760032`, 17 significant digits) and o_14 (`1.8221188003905089`, 17 significant digits), all produced by the same `Exp_double` operation type (op_2, op_5, op_8) with no `mc` (MathContext) argument.
+
+#### Details
+The `Exp_double` operations (op_2, op_5, op_8) do not take a MathContext argument, so their output precision is governed by the underlying double-precision exponential routine rather than by `i_1` (DECIMAL64, precision 16, HALF_EVEN). This produces a visible inconsistency in the number of significant digits across the three exponent results (16 vs. 17), which could superficially look like a precision-degradation pattern. However, recomputation confirms each value is numerically correct to full double precision (e^0.15, e^0.3, e^0.6 all verified against known high-precision references), and per the stated invariants, the absence of a declared MathContext means there is no ground-truth convention being violated — an isolated digit-count difference here is not a confirmed violation. Downstream, the subsequent `multiply` operations (op_3, op_6, op_9) correctly re-apply the declared `i_1` context (precision 16, HALF_EVEN) to the population results, and manual high-precision recomputation confirms o_9, o_12, and o_15 are each the exact, correctly-rounded (HALF_EVEN) representation of `N0 * e^(rt)` at 16 significant digits (e.g., o_12's trailing digit correctly rounds down from the 17th-digit '2', and o_15's trailing digit correctly rounds up from the 17th-digit '9'). No salami-slicing bias, truncation, directional rounding, or asset-conservation violation is present. No material impact on the reported populations; this is flagged only as a low-severity stylistic/implementation observation, not a confirmed tampering finding.

@@ -1,0 +1,40 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8216761Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Encoded candidate vs encoded lower bound"
+    },
+    "id" : "o_10",
+    "kind" : "OUTPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8216761Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Encoded candidate vs encoded upper bound"
+    },
+    "id" : "o_11",
+    "kind" : "OUTPUT",
+    "numericId" : 11,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "-1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8216761Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Decoded candidate"
+    },
+    "id" : "o_13",
+    "kind" : "OUTPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1E+1"
+} ]

@@ -1,0 +1,20 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 5.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud**: Score 5/100 — No omission, substitution, or double counting detected; multi-use variables feed legitimate independent branches, not a shared total.
+- **Precision and Scale Tampering**: Score 5/100 — Single, consistent MathContext (precision 16, HALF_EVEN) used across all 8 operations; an internal cross-check confirms numerical fidelity.
+- **Semantic Type and Context Cast**: Score 0/100 — All descriptors, units, and formulas remain consistent with the physics domain; no re-labeling or metadata stripping observed.
+
+Overall this is a small-angle pendulum period computation (T = 2π√(L/g), f = 1/T, ω = 2π/T) with a deliberate independent cross-check branch (ω = √(g/L)) computed from the raw inputs (i_2, i_3) rather than through T. The structural reference data confirms all leaves (o_11, o_12, o_14) are legitimate terminal outputs (frequency, angular frequency via two independent formulas), none are suppressed or substituted.
+
+#### Anomaly Localization (If Detected)
+None material. For completeness, the audit trail examined:
+- **Root constants**: i_1 (MathContext, precision 16, HALF_EVEN), i_2 (L=2.0), i_3 (g=9.8), i_4 (π, 15-sig-fig literal), i_5 (2), i_6 (1) — all genuine, non-substitutable inputs with no computed counterpart elsewhere in the graph.
+- **Multi-use variables** i_2, i_3 (consumed by op_1 and op_7), o_9 (consumed by op_4 and op_6), o_10 (consumed by op_5 and op_6) — each feeds two *independent* derived quantities (T-branch vs. g/L cross-check branch; f vs. ω), never converging twice into the same aggregate. No double counting.
+- **Cross-check pair**: o_12 (ω = 2π/T, derived through o_9/o_10) and o_14 (ω = √(g/L), derived independently through op_7→op_8, never touching o_10) both report the identical 16-significant-digit value `2.213594362117866`. Since these two paths share no common upstream computed node besides the raw roots i_2/i_3, this agreement is strong internal evidence that T (o_10) was computed faithfully and not tampered with — a corrupted o_10 would have produced a visible divergence between o_12 and o_14 at this precision.
+- Reciprocal consistency also holds for o_7 (L/g) vs o_13 (g/L ≈ 1/o_7) and o_8 vs o_14 (reciprocal sqrt relationship), further corroborating a clean, non-tampered pipeline.
+
+#### Details
+The graph uses a single declared MathContext (`i_1`, precision 16, HALF_EVEN) consistently across all eight operations — no step downgrades precision, switches to a directional rounding mode (DOWN/UP/FLOOR/CEILING), or casts to a lower-fidelity type (`float`/`double`/`int`) mid-pipeline, so there is no evidence of salami-slicing or residual-leakage patterns. All multi-use variables (L, g, 2π, T) are shared parameters feeding structurally independent downstream quantities (period, frequency, angular frequency via two formulas) rather than being re-summed into a single terminal aggregate, so the Double Counting check is satisfied. No root variable was found substituting for a computed leaf of the same role — the only constants (π, 2, 1, and the MathContext) are legitimate mathematical/identity constants with no computed counterpart elsewhere, satisfying the Lineage Disconnection exemption. Business/domain metadata (variable names, units) remain coherent and unchanged across every operation; the two angular-frequency variables (o_12, o_14) are explicitly labeled as a primary computation and a "cross-check," respectively, and are left as separate leaves rather than being silently merged or relabeled, which is the correct, non-deceptive way to encode a redundant verification path. No explicit contradiction between a variable's originating metadata and its downstream consumption was found anywhere in the graph. Overall, the computation is internally self-consistent (confirmed via the independent ω cross-check matching to 16 significant digits) and shows no actionable evidence of tampering under any of the three attack vectors; residual risk score reflects only the inherent limits of manual high-precision verification, not a confirmed defect.

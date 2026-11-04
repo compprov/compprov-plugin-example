@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0258656Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "L-infinity norm"
+    },
+    "id" : "o_20",
+    "kind" : "OUTPUT",
+    "numericId" : 20,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6"
+} ]

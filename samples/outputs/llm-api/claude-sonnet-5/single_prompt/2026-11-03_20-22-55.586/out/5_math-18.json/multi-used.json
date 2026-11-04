@@ -1,0 +1,40 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8216761Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Lower bound"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "-5E+16"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8216761Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Bound range, upper − lower"
+    },
+    "id" : "o_5",
+    "kind" : "OUTPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "5.000000000000002E+16"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8216761Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Encoded candidate"
+    },
+    "id" : "o_7",
+    "kind" : "OUTPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.9999999999999998"
+} ]

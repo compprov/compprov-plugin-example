@@ -1,0 +1,157 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] x"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "110.7178495"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] y"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "8906.8377"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Observations incl. this one, n + 1"
+    },
+    "id" : "i_10",
+    "kind" : "INPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Update factor, n / (n + 1)"
+    },
+    "id" : "o_11",
+    "kind" : "OUTPUT",
+    "numericId" : 11,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.5"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] x deviation from running mean"
+    },
+    "id" : "o_12",
+    "kind" : "OUTPUT",
+    "numericId" : 12,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.0086400"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7647093Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] y deviation from running mean"
+    },
+    "id" : "o_13",
+    "kind" : "OUTPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6.2077"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7657082Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Running x mean"
+    },
+    "id" : "o_24",
+    "kind" : "OUTPUT",
+    "numericId" : 24,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "110.7221695"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7662133Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Running y mean"
+    },
+    "id" : "o_26",
+    "kind" : "OUTPUT",
+    "numericId" : 26,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "8909.94155"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7662133Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Observations incl. this one, n + 1"
+    },
+    "id" : "i_30",
+    "kind" : "INPUT",
+    "numericId" : 30,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7662133Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Update factor, n / (n + 1)"
+    },
+    "id" : "o_31",
+    "kind" : "OUTPUT",
+    "numericId" : 31,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.6666666666666667"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7662133Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] x deviation from running mean"
+    },
+    "id" : "o_32",
+    "kind" : "OUTPUT",
+    "numericId" : 32,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.0129600"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7662133Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] y deviation from running mean"
+    },
+    "id" : "o_33",
+    "kind" : "OUTPUT",
+    "numericId" : 33,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "9.31155"
+} ]

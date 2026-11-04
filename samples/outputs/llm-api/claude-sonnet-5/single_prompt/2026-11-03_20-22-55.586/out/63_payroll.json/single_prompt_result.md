@@ -1,0 +1,39 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 88.0
+
+#### Per-Vector Verdict
+
+1. **Topological & Provenance Fraud — Lineage Disconnection and Context Substitution (with associated Calculation Omission)**: Score **88** — CONFIRMED. The fully-computed federal tax (o_16) is a dead-end leaf; the net-pay chain instead consumes an unverified root variable (i_17) with the identical name.
+2. **Precision and Scale Tampering**: Score **5** — Clean. All arithmetic replays exactly under the declared DECIMAL64/HALF_EVEN MathContext; no truncation, salami-slicing, or rounding-mode abuse detected.
+3. **Semantic Type and Context Cast**: Score **8** — No explicit label/business-meaning mismatch found; the substitution above is a provenance break rather than a relabeling of business meaning, so it is scored under Vector 1.
+
+Overall risk reflects the maximum across vectors: the confirmed Vector 1 lineage-substitution finding.
+
+---
+
+#### Anomaly Localization (Topological & Provenance Fraud)
+
+- **Computed (orphaned) chain**: `i_9`, `i_10`, `i_11`, `o_8` → `op_4` (`o_12`) → `op_5` (`o_13`) → `op_6` (`o_14`) → `op_7` (`o_15`) → `op_8` (`o_16`, "Federal tax withheld"). This chain fully and correctly reconstructs the progressive-bracket federal tax: `o_14=2000*0.10=200.0000`, `o_15=1650*0.22=363.0000`, `o_16=563.0000`.
+- **`o_16` is a leaf** (per structural reference data) — no downstream operation consumes it. The entire bracket-calculation subgraph (`op_4`–`op_8`, five operations, six variables) terminates without ever reaching the reported net pay `o_21`.
+- **Substitute root**: `i_17`, named identically "Federal tax withheld", value `563.00`, is a root variable (no producing operation, i.e., supplied directly rather than computed).
+- **Point of substitution**: `op_10` (`o_20 = o_8 - i_17`) consumes `i_17` instead of `o_16` to compute "After federal withholding", which then flows into `op_11` (`o_21 = o_20 - o_19`, Net pay), the graph's terminal output.
+- **Flagged explicitly in structural reference data**: "o_16 ('Federal tax withheld') shares its name with: [i_17]" — a duplicate-name leaf/root pair, the textbook signature this check is designed to surface.
+
+#### Details (Topological & Provenance Fraud)
+
+The graph performs a complete, auditable bracket-based federal withholding calculation (`op_4`–`op_8`), producing `o_16`. However, this computed value never participates in the terminal result. Instead, the pipeline silently substitutes an externally supplied root variable (`i_17`) bearing the exact same descriptor name into the position where `o_16` should be consumed by `op_10`.
+
+This is precisely the Lineage Disconnection / Context Substitution pattern: local replay of every step (including `op_8`'s computation of `o_16`) passes perfectly, creating the *appearance* of a verified bracket calculation feeding net pay, while the actual terminal computation (`op_10`/`op_11`) is wired to an unverified, independently injected figure. In this instance the numeric values happen to coincide (`i_17 = 563.00` vs. computed `o_16 = 563.0000`), but value proximity is explicitly not a mitigating factor — the structural defect is that nothing in the graph ties `i_17` to the bracket computation, so `i_17` could be altered (e.g., understated to reduce apparent withholding, or overstated to siphon employee pay) without the bracket-calculation subgraph reflecting or flagging the discrepancy. An auditor who only checks that `op_8`'s math is internally consistent — rather than tracing whether `o_16` actually reaches `o_21` — would be deceived into certifying the net-pay figure as fully derived from the visible, correct bracket logic, when it is not.
+
+This simultaneously constitutes **Calculation Omission**: the mandatory bracket-tax contributor (`o_16`) is computed but never incorporated into the terminal output `o_21`; the reported Net Pay is therefore not provably the result of the bracket calculation shown in the graph, only of a same-valued stand-in.
+
+**Consequence**: Net pay (`o_21 = 2904.5000`) is not cryptographically/structurally tied to the auditable progressive-tax computation. The bracket-tax subgraph is decorative — it can be changed, removed, or manipulated with zero effect on the reported result, and conversely `i_17` can be manipulated with zero trace back to a recomputation, making this an ideal vector for a targeted, hard-to-detect payroll tampering attack (e.g., under- or over-withholding).
+
+---
+
+#### Precision and Scale Tampering — No material findings
+All operations (`op_1`–`op_11`) were recomputed exactly against their declared `i_1` MathContext (precision 16, HALF_EVEN). Every result matches exactly (Δ=0) because all inputs are exact decimals under this precision — no truncation, no directional rounding mode, no premature scale reduction, no downcast to float/double/int. Trailing-zero scale differences (e.g., `200.0000` vs `200.00`) are cosmetic and do not represent precision loss. No salami-slicing pattern or asset-conservation violation detected.
+
+#### Semantic Type and Context Cast — No material findings
+All variables retain consistent `BigDecimal` typing and labels matching their computational role (Gross pay, Pretax deductions, Taxable income, Bracket portions/taxes, State/Federal withholding, Net pay). Taxable income (`o_8`) is consistently used as the base for both the bracket federal-tax calculation and the state-tax calculation, which is an internally consistent domain convention, not a contradiction. The only cross-domain concern (same-named `i_17`/`o_16`) is a provenance/lineage issue, already captured under Vector 1, not a relabeling of business meaning (both are explicitly "Federal tax withheld").

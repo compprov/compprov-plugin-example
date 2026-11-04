@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0645706Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Binomial coefficient C(48, 23)"
+    },
+    "id" : "o_94",
+    "kind" : "OUTPUT",
+    "numericId" : 94,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "30957699535776"
+} ]

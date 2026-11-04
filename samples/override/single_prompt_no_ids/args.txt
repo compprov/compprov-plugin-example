@@ -1,0 +1,5 @@
+Override flags for a run (system-message caching is always on in the plugin):
+Uses the bundled single prompt with the STRUCTURAL REFERENCE DATA block removed; the model derives the five sets itself.
+--llmTemplates=single_prompt
+--single_prompt_system=samples/override/single_prompt_no_ids/single_prompt_system.md
+--single_prompt_user=samples/override/single_prompt_no_ids/single_prompt_user.md

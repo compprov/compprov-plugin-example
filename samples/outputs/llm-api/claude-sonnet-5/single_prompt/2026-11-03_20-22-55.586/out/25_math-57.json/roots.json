@@ -1,0 +1,329 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "First centre"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Distance scale"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.001"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Initial sum, 0"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] Point"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Point"
+    },
+    "id" : "i_11",
+    "kind" : "INPUT",
+    "numericId" : 11,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Point"
+    },
+    "id" : "i_17",
+    "kind" : "INPUT",
+    "numericId" : 17,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[3] Point"
+    },
+    "id" : "i_23",
+    "kind" : "INPUT",
+    "numericId" : 23,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[4] Point"
+    },
+    "id" : "i_29",
+    "kind" : "INPUT",
+    "numericId" : 29,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[5] Point"
+    },
+    "id" : "i_35",
+    "kind" : "INPUT",
+    "numericId" : 35,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[6] Point"
+    },
+    "id" : "i_41",
+    "kind" : "INPUT",
+    "numericId" : 41,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[7] Point"
+    },
+    "id" : "i_47",
+    "kind" : "INPUT",
+    "numericId" : 47,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[8] Point"
+    },
+    "id" : "i_53",
+    "kind" : "INPUT",
+    "numericId" : 53,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Uniform random draw, u"
+    },
+    "id" : "i_59",
+    "kind" : "INPUT",
+    "numericId" : 59,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.73"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Zero"
+    },
+    "id" : "i_61",
+    "kind" : "INPUT",
+    "numericId" : 61,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "One"
+    },
+    "id" : "i_62",
+    "kind" : "INPUT",
+    "numericId" : 62,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] Point index"
+    },
+    "id" : "i_67",
+    "kind" : "INPUT",
+    "numericId" : 67,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Point index"
+    },
+    "id" : "i_74",
+    "kind" : "INPUT",
+    "numericId" : 74,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Point index"
+    },
+    "id" : "i_81",
+    "kind" : "INPUT",
+    "numericId" : 81,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[3] Point index"
+    },
+    "id" : "i_88",
+    "kind" : "INPUT",
+    "numericId" : 88,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[4] Point index"
+    },
+    "id" : "i_95",
+    "kind" : "INPUT",
+    "numericId" : 95,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[5] Point index"
+    },
+    "id" : "i_102",
+    "kind" : "INPUT",
+    "numericId" : 102,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "5"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[6] Point index"
+    },
+    "id" : "i_109",
+    "kind" : "INPUT",
+    "numericId" : 109,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "6"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[7] Point index"
+    },
+    "id" : "i_116",
+    "kind" : "INPUT",
+    "numericId" : 116,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "7"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[8] Point index"
+    },
+    "id" : "i_123",
+    "kind" : "INPUT",
+    "numericId" : 123,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "8"
+} ]

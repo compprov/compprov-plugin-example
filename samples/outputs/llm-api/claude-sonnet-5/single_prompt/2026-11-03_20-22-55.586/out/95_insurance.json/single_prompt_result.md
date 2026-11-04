@@ -1,0 +1,20 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 4.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud**: Score 3 — No omission, substitution, or double counting detected; all roots and intermediate values traverse the graph exactly once to the terminal node in a coherent, complete lineage.
+- **Precision and Scale Tampering**: Score 5 — All operations are mathematically exact given the input scales; no precision loss, premature truncation, or inappropriate rounding-mode usage is observed.
+- **Semantic Type and Context Cast**: Score 3 — Business meaning (claimType, deductible, coinsurance, policy limit, reinsurance recovery, net loss) is preserved consistently through every operation; no metadata stripping or re-labeling detected.
+
+#### Anomaly Localization (If Detected)
+None. Full trace below documents why each vector is clean.
+
+**Topological trace**: Each of the three claim branches (Collision: i_3–i_6; Comprehensive: i_11–i_14; Liability: i_19–i_22) independently computes `net = claim - deductible` → `floor at 0` → `coinsurance amount = floored * rate` → `payout = min(coinsurance, policy limit)`, yielding o_10, o_18, o_26 respectively. These three payouts converge exactly once each into `addBulk` (op_13) producing `Total payout` (o_27) = 22750.0000, which matches 6000.0000 + 12000.00 + 4750.0000. o_27 is then consumed twice (op_14, op_15), but this is the legitimate pattern `NetLoss = Total − (Total × rate)`, not a double count — the second consumption (op_15) depends on the output of the first (op_14) rather than being an independent redundant path. The single declared leaf, `Net loss` (o_30), is the only terminal and is reached by a complete, non-redundant lineage from every root variable. The shared `Zero` floor constant (i_2) used across three independent branches, and the MathContext (i_1) used throughout, are legitimate shared parameters, not duplicated quantities.
+
+**Precision trace**: All multiplications/subtractions use exact decimal operands (2–4 decimal places), so no operation in this trace actually requires rounding under precision-16/HALF_EVEN — recomputation with exact rational arithmetic reproduces every reported value bit-for-bit (o_7=7500.00, o_9=6000.0000, o_17=17100.0000, o_25=4750.0000, o_27=22750.0000, o_29=9100.000000, o_30=13650.000000). The MathContext (precision 16, HALF_EVEN) is a non-directional, round-to-nearest convention applied uniformly across every step — no coarser or directional (DOWN/UP/FLOOR/CEILING) context appears anywhere, so there is no salami-slicing vector and no scale-conversion leakage.
+
+**Semantic trace**: `claimType` metadata (Collision/Comprehensive/Liability) is consistently attached to each branch's inputs, and the derived variable names (`net of deductible`, `(floored)`, `coinsurance amount`, `claim payout`) accurately describe the arithmetic performed at each step with no relabeling contradicting upstream metadata. `Total payout` → `Reinsurance recovery` → `Net loss` is an auditable, arithmetic-backed domain transformation (recovery = total × cession rate; net loss = total − recovery), not a cosmetic rename. No variable is consumed under a business definition conflicting with its origin.
+
+#### Details
+This CPG implements a standard three-line insurance claims adjudication computation (per-claim deductible, floor-at-zero, coinsurance, policy-limit cap, aggregation, reinsurance cession, net retained loss). Every arithmetic step reconciles exactly against hand-computed rational values, context usage is uniform and appropriate for monetary precision, and the provenance graph shows a single, complete, non-redundant path from every root input to the sole terminal output. No evidence of calculation omission, lineage substitution, double counting, precision degradation, salami slicing, or semantic context-cast was found. The graph is assessed as clean, with a low residual risk score reflecting only the inherent impossibility of ruling out all unstated business conventions (e.g., no documented rationale for the exact coinsurance/cession percentages, though this is ordinary business parameterization, not a structural anomaly).

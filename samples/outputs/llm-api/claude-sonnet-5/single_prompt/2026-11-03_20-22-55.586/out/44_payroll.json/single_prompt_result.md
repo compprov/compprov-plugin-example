@@ -1,0 +1,37 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 92.0
+
+#### Per-Vector Verdict
+1. **Topological & Provenance Fraud — Calculation Omission**: Score **92/100**. A mandatory payroll deduction (401k + health premium) is computed and used to reduce *taxable income* for tax-bracket purposes, but is never subtracted from the employee's actual take-home pay. The terminal result (`o_20`, Net pay) silently omits this contributor.
+2. **Precision and Scale Tampering**: Score **2/100**. All eleven operations replay exactly against their declared `MathContext` (precision 16, HALF_EVEN); no scale truncation, rounding-mode abuse, or type downcast was found.
+3. **Semantic Type and Context Cast**: Score **15/100**. No outright type/business-context relabeling detected; `descriptor` names are consistent with their consumption at each node. The severe issue here is structural omission, not label falsification, though the omission does exploit the fact that "Pretax deductions" is only partially honored (used for its tax-reducing effect but not its cash-reducing effect).
+
+Overall risk is dominated by the Calculation Omission finding.
+
+---
+
+#### Anomaly Localization (Topological & Provenance Fraud — Calculation Omission)
+- **Implicated variables**: `i_5` (401k contribution, 200.00), `i_6` (Health premium, 150.00), `o_7` (Pretax deductions, 350.00), `o_4` (Gross pay, 4000.00), `o_8` (Taxable income, 3650.00), `o_16` (Federal tax withheld, 563.0000), `o_18` (State tax withheld, 182.5000), `o_19` (After federal withholding, 3437.0000), `o_20` (Net pay, 3254.5000 — terminal leaf).
+- **Implicated operations**: `op_2` (a=i_5,b=i_6 → o_7), `op_3` (a=o_4,b=o_7 → o_8), `op_10` (a=o_4,b=o_16 → o_19), `op_11` (a=o_19,b=o_18 → o_20).
+- **Flow of the attack**: `o_7` (Pretax deductions = 401k + health premium = 350.00) is computed by `op_2` and consumed exactly once, by `op_3`, solely to shrink the *taxable income* base used for bracket-tax calculation (`o_8` = 4000 − 350 = 3650). From that point forward, `o_7` has no further consumers — it is a dead-end subtotal. The net-pay chain (`op_10`, `op_11`) is built exclusively from `o_4` (Gross pay) minus `o_16` (Federal tax) minus `o_18` (State tax): 4000 − 563 − 182.5 = 3254.50. The 350.00 that was withheld from the employee (401k contribution + health insurance premium) never reduces this figure.
+- **Correct terminal value**: A payroll engine that actually withholds 401k and health-premium deductions from the paycheck must compute Net pay = Gross − Pretax deductions − Federal tax − State tax = 4000 − 350 − 563 − 182.5 = **2904.50**, not 3254.50.
+
+#### Details (Topological & Provenance Fraud)
+The variable name ("Pretax deductions") and its own constituents ("401k contribution", "Health premium") unambiguously identify it as money that is actually withheld from the employee's paycheck, not merely a notional basis-adjustment for tax bracket computation. A correct payroll pipeline must let this value reach the terminal net-pay subtraction chain exactly once (in addition to its role in shrinking the taxable base for bracket-tax purposes). Here, `o_7` is consumed only by `op_3` and goes no further — it satisfies the "mandatory adjustment that should be part of the terminal formula" test from the Calculation Omission check, yet it never reaches `o_20`.
+
+This passes every local/type check: every operation argument is type-correct (`BigDecimal`), every arithmetic step replays exactly against its declared `MathContext`, and the formula metadata (`(a-b)mc`, `(a+b)mc`) is internally consistent at each node. The fraud is purely topological — it hides in what the graph does *not* connect, not in what it computes incorrectly locally. An auditor validating node-by-node arithmetic (as Vector 2 does) would find zero discrepancies, which is exactly the point: local correctness masks the global omission.
+
+**Consequence**: Every biweekly pay run computed by this graph overpays the employee by exactly the sum of their own elected pretax deductions (here $350.00), while simultaneously granting the full tax benefit of those deductions (lower taxable income → lower federal/state withholding) — a direct, repeating (cyclic, biweekly) financial leak. The 401k contribution and health premium amounts are effectively never collected from the employee's pay despite being recorded as deducted, which also breaks asset conservation between declared deductions and the amount actually removed from gross pay. Given this recurs every pay period and scales with every employee processed through this pipeline, the materiality and systemic risk are high.
+
+#### Anomaly Localization (Precision and Scale Tampering)
+None found. Recomputing all eleven operations at full precision against the declared `MathContext` (`i_1`: precision 16, HALF_EVEN) reproduces every reported value exactly (Δ = 0 at every step: `o_4`=4000.00, `o_7`=350.00, `o_8`=3650.00, `o_12`=2000.00, `o_13`=1650.00, `o_14`=200.0000, `o_15`=363.0000, `o_16`=563.0000, `o_18`=182.5000, `o_19`=3437.0000, `o_20`=3254.5000). No directional rounding modes, no premature scale truncation, no type downcasts observed.
+
+#### Details (Precision and Scale Tampering)
+All monetary values stay in `BigDecimal` throughout, the single `MathContext` is HALF_EVEN at a precision well beyond cents, and is applied uniformly across every arithmetic operation. No salami-slicing pattern, no coarsening of context, no inconsistent rounding mode across steps. This vector is clean.
+
+#### Anomaly Localization (Semantic Type and Context Cast)
+No outright relabeling or context-casting operation was identified: `descriptor.name` values are consistent with their immediate consumption (e.g., tax rates used as multipliers against the correct bracket portions, `min`/`subtract` correctly partitioning taxable income into brackets). No variable is passed through an identity/wrapper operation that silently reinterprets its business meaning.
+
+#### Details (Semantic Type and Context Cast)
+While no direct mislabeling exists, the deeper issue is adjacent to this vector's spirit: "Pretax deductions" is consumed *as if* it were purely a tax-basis adjustment (consistent with its use in `op_3`) while its real-world meaning (actual withheld cash) is implicitly discarded downstream — the graph treats a dual-purpose quantity (tax-basis reducer AND cash deduction) as if it were single-purpose. This is scored lower here because the primary, decisive violation is structural/topological (the value's cash-reduction role never reaches any node at all, rather than being redirected to the wrong node under a false label), which is why it is weighted and reported principally under Attack Vector 1.

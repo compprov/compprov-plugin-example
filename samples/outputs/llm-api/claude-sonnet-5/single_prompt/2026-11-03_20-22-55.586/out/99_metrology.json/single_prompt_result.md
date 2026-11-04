@@ -1,0 +1,26 @@
+# Summary
+- **Verdict**: SUSPICIOUS LOGIC
+- **Risk score**: 35.0
+
+#### Per-Vector Verdict
+
+| Vector | Score | Verdict |
+|---|---|---|
+| Topological & Provenance Fraud | 5 | Clean — full lineage traced from every root to the sole terminal leaf `o_96`; no omission, substitution, or double counting found. |
+| Precision and Scale Tampering | 35 | One confirmed double-precision downcast (`op_9`, `Exp_double`) breaking the graph's otherwise uniform 34-digit `HALF_EVEN` MathContext discipline; materiality to the final reported value is negligible in this single, non-cyclic calibration run. |
+| Semantic Type and Context Cast | 5 | Clean — all domain transitions (°C→K, dry-air→moist-air, raw-length→thermally-corrected length, (×10⁻⁸)-scaled→absolute) are backed by explicit arithmetic consistent with declared metadata. |
+
+Overall risk is driven by the Precision/Scale finding (max across vectors).
+
+---
+
+#### Anomaly Localization (Precision and Scale Tampering)
+- **Operation:** `op_9` (`Exp_double`), consuming `o_23` (`ln(svp)`, 34-sig-fig BigDecimal, result of the Wexler/Sonntag polynomial chain `op_1`→`op_8`, all computed under `mc=i_1`, precision=34, HALF_EVEN).
+- **Result:** `o_24` (`svp: saturation vapor pressure`) = `2339.1632301967884` — exactly 17 significant digits, the canonical length of a Java `Double.toString()` round-trip representation, and *not* 34 digits as every other result in the graph carries.
+- **Downstream propagation:** `o_24` → `o_70` (`pv`, via `op_39` multiplyBulk with `i_9`, `o_69`) → `o_76`/`o_77` (Edlen water-vapor term, `op_42`/`op_43`) → `o_78` (`N_v`) → `o_79` (`N_total`) → `o_80`/`o_81` (`n`) → `o_82`/`o_83` (`lambda_air3`, half-wavelength) → `o_87` (`L_raw`) → `o_94` (`L_cal`) → **`o_96`**, the terminal `deltaL` output.
+- Unlike every other arithmetic node in the graph, `op_9` carries **no `mc` argument at all**, despite the uniform convention (confirmed by the structural data and manual replay of all 56 other operations) of attaching `mc=i_1` to every step. The operation's own name (`Exp_double`) self-documents that the exponential is evaluated via native `double` arithmetic rather than arbitrary-precision decimal arithmetic, producing a silent precision collapse from 34 to ~17 significant digits at this single step, before the result re-enters the 34-digit-precision pipeline and is treated identically to every other full-precision variable downstream.
+
+#### Details (Precision and Scale Tampering)
+- **Mechanism:** This is a textbook mid-pipeline downcast — a `java.math.BigDecimal`-typed variable (`o_23`) is silently converted to `double`, exponentiated in double precision, and converted back to `BigDecimal`, all while the `valueClass` and `wrapperClass` metadata remain unchanged (`java.math.BigDecimal` / `io.compprov.core.wrappers.WrappedBigDecimal`). Pure type/schema validation and local replay of `op_9` against its own (missing) context pass trivially, hiding the precision loss from naive structural checks — exactly the blind spot this attack vector targets.
+- **Quantified impact:** Recomputing the propagation, the double-rounding error in `o_24` is on the order of 2–3×10⁻¹³ absolute (Pa). Propagated through `pv`, the Edlen humidity term, `N_total`, `n`, and the final length chain, the resulting error in the terminal `deltaL` (`o_96`) is on the order of 10⁻²⁶–10⁻²⁷ nm — i.e., it corrupts only the last 1–2 digits of the 28-significant-digit value already reported, with zero practical/physical significance for a gauge-block calibration (real measurement uncertainty is at the nanometer-to-picometer level, many orders of magnitude larger).
+- **Why this is flagged rather than dismissed:** The graph is otherwise perfectly disciplined — one single, globally shared `MathContext` (`i_1`, precision 34, HALF_EVEN) is attached to all 55 other operations, including other transcendental-adjacent chained subtractions/divisions. `op_9` is the sole exception, both in omitting `mc` and in explicitly naming itself after the lower-precision code path. This is precisely the kind of surgical, isolated substitution the audit discipline warns against dismissing merely because it is 

@@ -1,0 +1,20 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 4.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud**: Score 3/100 — No omission, substitution, or double counting detected; the only leaf is the terminal output `o_15`, and the two multi-use variables (`i_2`, `o_12`) are legitimate shared parameters/branch reuses that do not inflate the total.
+- **Precision and Scale Tampering**: Score 5/100 — All seven operations recompute exactly to their reported values under a consistently-applied DECIMAL64/HALF_EVEN MathContext; no truncation, downcasting, or directional rounding bias is present.
+- **Semantic Type and Context Cast**: Score 3/100 — Business labels (hourly rate, overtime multiplier, differential, gross, tax, net) align consistently with their arithmetic roles throughout the lineage; no relabeling or metadata stripping that contradicts usage.
+
+#### Anomaly Localization (If Detected)
+None. Full trace of the payroll computation:
+- `i_3` (40 hrs) × `i_2` ($22.00) → `o_4` = 880.00 (Regular pay) — exact.
+- `i_2` × `i_6` (1.5) → `o_7` = 33.000 (Overtime rate) — exact.
+- `i_5` (6 hrs) × `o_7` → `o_8` = 198.000 (Overtime pay) — exact.
+- `i_9` (12 hrs) × `i_10` ($1.75) → `o_11` = 21.00 (Night-shift pay) — exact.
+- `addBulk(o_4, o_8, o_11)` → `o_12` = 1099.000 (Gross pay) — exact, scale correctly propagated to 3 (max of inputs).
+- `o_12` × `i_13` (0.18) → `o_14` = 197.82000 (Tax withholding) — exact.
+- `o_12` − `o_14` → `o_15` = 901.18000 (Net pay) — exact, matches terminal leaf.
+
+Each variable's `descriptor.name` and role (rate, hours, multiplier, differential, gross, tax, net) is consistent with how it is consumed; `o_12` (Gross pay) is used once to compute tax and once as the minuend for net pay — a single value legitimately feeding two downstream, non-overlapping purposes rather than being counted twice into the same total. `i_2` (Base hourly rate) legitimately feeds two independent branches (regular pay and overtime-rate calculation). No root variable is bypassed by a substitute, no mandatory component of a 

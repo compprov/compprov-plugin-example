@@ -1,0 +1,21 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 3.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud**: 0/100 — No omission, substitution, or double counting detected; all multi-use variables (i_2, i_5, i_8, i_14) feed legitimate independent branches whose outputs converge exactly once into the terminal result.
+- **Precision and Scale Tampering**: 3/100 — All arithmetic is exact under the declared MathContext (precision 16, HALF_EVEN); no residual leakage, salami slicing, or inappropriate rounding mode found.
+- **Semantic Type and Context Cast**: 0/100 — Business meaning (shares, price, cost, weighted-average cost, proceeds, gain) is preserved consistently end-to-end with no implicit re-labeling.
+
+#### Anomaly Localization (If Detected)
+None. Full trace below for completeness:
+- Lot costs: op_1 (i_2×i_3→o_4), op_2 (i_5×i_6→o_7), op_3 (i_8×i_9→o_10) — all exact (4250.00, 5737.50, 3825.00).
+- Aggregates: op_4 (i_2+i_5+i_8→o_11=325), op_5 (o_4+o_7+o_10→o_12=13812.50) — both exact sums, no truncation.
+- Weighted average: op_6 (o_12/o_11→o_13=42.50) — exact division (13812.50/325=42.5 precisely), well within the 16-digit precision context, no rounding-mode artifact since the result is exact.
+- Sale leg: op_7 (i_14×i_15→o_16=5730.00), op_8 (i_14×o_13→o_17=5100.00) — both exact multiplications using the correctly shared 'shares sold' root (i_14) and the correctly computed weighted-average (o_13), not a substituted root.
+- Final: op_9 (o_16−o_17→o_18=630.00) — exact, and o_18 is the sole leaf/terminal result, reached by every upstream contributor through a single, non-duplicated path.
+
+Multi-use variables i_2, i_5, i_8 (per-lot share counts) are each consumed once for their own lot-cost multiplication and once inside the shared-total addBulk (op_4) — a textbook legitimate 'shared parameter feeding independent branches' pattern (per-lot subtotal vs. total share count), with no reconvergence of the same value into the same aggregate twice. Variable i_14 (shares sold) is consumed once for proceeds (op_7) and once for cost basis (op_8) — two independent uses of the same input, not a double count of a single quantity into one total.
+
+#### Details
+This CPG models a standard three-lot weighted-average cost-basis calculation followed by a partial-sale gain/loss computation. Every root variable's provenance was traced to the terminal node o_18, and every intermediate computation was re-derived with exact rational arithmetic, matching the reported values to the cent with zero residual delta at every step (lot costs, total shares, total cost, weighted-average cost, sale proceeds, cost basis of shares sold, and realized gain). The single MathContext (i_1: precision 16, HALF_EVEN) is applied uniformly across all nine operations, is appropriately fine-grained for the dollar/cents quantities involved, and uses a standard round-to-nearest mode consistent throughout — no directional (DOWN/UP/FLOOR/CEILING) or coarser context appears anywhere to siphon or degrade precision. No root variable duplicates or bypasses a computed counterpart (no duplicate-name leaves, and the only leaf is the terminal output itself), and no operation exhibits disguised repeated-argument double-counting. Business semantics (shares, price-per-share, lot cost, total cost, weighted-average cost, shares sold, sale price, proceeds, cost basis, realized gain) remain coherent and correctly mapped from source to terminal result with no silent re-labeling or domain-context substitution. Overall, this is a clean, auditable computation with no material findings under any of the three attack vectors; the minimal residual score reflects baseline epistemic humility rather than any concrete evidence of tampering.
