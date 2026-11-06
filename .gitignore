@@ -22,6 +22,8 @@ desktop.ini
 *.env.local
 
 #samples
+samples/*.zip
+samples/*.jar
 samples/outputs/**
 !samples/outputs/**/
 !samples/outputs/llm-api/*/*/*/out/summary.md
