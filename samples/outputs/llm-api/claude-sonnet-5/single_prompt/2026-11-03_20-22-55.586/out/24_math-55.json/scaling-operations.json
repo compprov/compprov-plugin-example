@@ -1,0 +1,74 @@
+{
+  "version" : "1.0",
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "scaling operations set"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8659163Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Round to nearest integer (rint)"
+      },
+      "id" : "i_2",
+      "kind" : "INPUT",
+      "numericId" : 2,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 0,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8659163Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Scaled projection ratio"
+      },
+      "id" : "o_19",
+      "kind" : "OUTPUT",
+      "numericId" : 19,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "255.9999999435532"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8659163Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Rounded scaled ratio"
+      },
+      "id" : "o_20",
+      "kind" : "OUTPUT",
+      "numericId" : 20,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "256"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "setScale(a)mc"
+        } ],
+        "name" : "setScale"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.8659163Z",
+      "id" : "op_11",
+      "numericId" : 11,
+      "startedAt" : "2026-10-29T15:27:54.8659163Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_19"
+    }, {
+      "key" : "mc",
+      "value" : "i_2"
+    } ],
+    "resultId" : "o_20"
+  } ]
+}

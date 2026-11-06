@@ -1,0 +1,186 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7092032Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7122035Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] Expected count"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "485"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7122035Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] Observed count"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "500"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7122035Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Expected count"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "541"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7122035Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Observed count"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "623"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7122035Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Expected count"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "82"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7122035Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Observed count"
+    },
+    "id" : "i_7",
+    "kind" : "INPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "72"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7122035Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[3] Expected count"
+    },
+    "id" : "i_8",
+    "kind" : "INPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "61"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7122035Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[3] Observed count"
+    },
+    "id" : "i_9",
+    "kind" : "INPUT",
+    "numericId" : 9,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "70"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7122035Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[4] Expected count"
+    },
+    "id" : "i_10",
+    "kind" : "INPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "37"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7122035Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[4] Observed count"
+    },
+    "id" : "i_11",
+    "kind" : "INPUT",
+    "numericId" : 11,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "31"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7122035Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Rescaling tolerance"
+    },
+    "id" : "i_16",
+    "kind" : "INPUT",
+    "numericId" : 16,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.000010"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7122035Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Zero"
+    },
+    "id" : "i_17",
+    "kind" : "INPUT",
+    "numericId" : 17,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7122035Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "One"
+    },
+    "id" : "i_18",
+    "kind" : "INPUT",
+    "numericId" : 18,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+} ]

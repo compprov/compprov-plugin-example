@@ -1,0 +1,79 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0325331Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Initial maximum, 0"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0325331Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] Running maximum"
+    },
+    "id" : "o_6",
+    "kind" : "OUTPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "4"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0325331Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Running maximum"
+    },
+    "id" : "o_10",
+    "kind" : "OUTPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "8"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0325331Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Running maximum"
+    },
+    "id" : "o_14",
+    "kind" : "OUTPUT",
+    "numericId" : 14,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "16"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0325331Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[3] Running maximum"
+    },
+    "id" : "o_18",
+    "kind" : "OUTPUT",
+    "numericId" : 18,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "32"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0325331Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[4] Running maximum"
+    },
+    "id" : "o_22",
+    "kind" : "OUTPUT",
+    "numericId" : 22,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "64"
+} ]

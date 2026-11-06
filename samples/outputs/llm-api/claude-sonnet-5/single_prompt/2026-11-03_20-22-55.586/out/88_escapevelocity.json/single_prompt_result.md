@@ -1,0 +1,34 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 3.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud**: 0/100 — No omission, substitution, or double counting detected; shared roots (i_4, o_8) feed two legitimate, independent branches (surface vs. altitude escape velocity), not a single converging total.
+- **Precision and Scale Tampering**: 5/100 — All seven operations replay exactly against the declared MathContext (precision 16, HALF_EVEN) within expected rounding tolerance; rounding mode is a sensible round-to-nearest convention applied uniformly throughout, with no directional bias or precision degradation.
+- **Semantic Type and Context Cast**: 0/100 — All variable descriptors (G, M, r, altitude, GM, 2GM, escape velocities) remain internally consistent with their consuming operations' formulas; no relabeling, unit shift, or domain-context substitution detected.
+
+**Overall Verdict: Clean.** This is a straightforward, physically coherent two-part escape-velocity calculation (surface and at-altitude) with no structural, arithmetic, or semantic anomalies identified.
+
+---
+
+#### Anomaly Localization (If Detected)
+None. Full trace of both terminal outputs:
+- **Surface branch**: i_2 (G), i_3 (M) → op_1 (multiply) → o_7 (GM) → op_2 (multiply by i_6=2) → o_8 (2GM) → op_3 (divide by i_4=r) → o_9 (2GM/r) → op_4 (sqrt) → o_10 (escape velocity at surface). Leaf, correctly reached.
+- **Altitude branch**: i_4 (r), i_5 (altitude) → op_5 (add) → o_11 (r+altitude) → op_6 (divide o_8 by o_11) → o_12 (2GM/r_alt) → op_7 (sqrt) → o_13 (escape velocity at altitude). Leaf, correctly reached.
+
+Both i_4 and o_8 are consumed twice (multi-use set), but each reuse feeds a distinct, independent output (o_10 vs o_13) rather than converging twice into the same aggregate — this is the expected, legitimate pattern for "compute the same physical quantity at two different radii," not a double-count.
+
+#### Details
+**Topological & Provenance Fraud**: The two leaves (o_10, o_13) are both genuine, independently meaningful terminal results (escape velocity at the planet's surface and at a given altitude). No root variable is bypassed by a substitute: i_2, i_3, i_4, i_5, i_6 all flow through their expected operations into one or both leaves. No duplicate-name roots or orphaned roots exist. The multi-use of i_4 and o_8 is structurally necessary — radius and 2GM parameter are legitimately shared inputs to two parallel, independent sub-calculations whose outputs are never summed or merged, so no double counting occurs.
+
+**Precision and Scale Tampering**: Recomputing each step with exact rational arithmetic:
+- o_7 = 6.674E-11 × 5.972E24 = 398571280000000 exactly (matches).
+- o_8 = 2 × o_7 = 797142560000000 exactly (matches).
+- o_9 = o_8 / i_4 ≈ 125120477.162141... (matches reported 125120477.1621410 to the declared 16-digit precision).
+- o_10 = sqrt(o_9) ≈ 11185.726487... (matches reported 11185.72649237147).
+- o_11 = i_4 + i_5 = 6771000 exactly (matches).
+- o_12 = o_8 / o_11 ≈ 117728926.303352... (matches reported 117728926.3033525).
+- o_13 = sqrt(o_12) ≈ 10850.296139... (matches reported 10850.29613897024).
+All deltas are within single-ULP rounding noise at the declared 16-significant-digit, HALF_EVEN MathContext, which is applied uniformly to every operation in the graph (no directional DOWN/UP/FLOOR/CEILING steps, no precision-coarsening mid-pipeline, no type downcast to float/double/int). No salami-slicing pattern, no asset-conservation violation (this is a physics computation, not an asset ledger, but numerical continuity holds throughout).
+
+**Semantic Type and Context Cast**: Every variable's descriptor name and role stays consistent with its consumption: G and M multiply to form the standard gravitational parameter (correctly labeled); the constant 2 is explicitly named and used only to form 2GM; r and (r+altitude) are each divided into 2GM to form velocity-squared terms consistent with their labels ("at surface" vs "at altitude"); sqrt operations are applied to velocity² terms to yield velocity, consistently labeled. No metadata stripping, re-mapping, or type-preserving relabeling that contradicts an originating definition was found.

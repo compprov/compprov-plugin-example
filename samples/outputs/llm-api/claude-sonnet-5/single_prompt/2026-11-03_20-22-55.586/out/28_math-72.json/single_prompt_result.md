@@ -1,0 +1,23 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 5.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud**: Score 5 — No omission, substitution, or double counting found; selection logic is a correct, mutually-exclusive indicator-based branch select.
+- **Precision and Scale Tampering**: Score 5 — All operations replay exactly under the declared DECIMAL64/HALF_EVEN MathContext; no rounding-mode-dependent step is exercised, no salami-slicing pattern, no downcasting.
+- **Semantic Type and Context Cast**: Score 5 — Variable names/metadata remain consistent with their consumption; boolean/indicator arithmetic (0/1, compare/max/subtract) is used coherently to implement an if/elseif selector, with no relabeling of business meaning.
+
+#### Anomaly Localization (If Detected)
+None material. For completeness, the full causal trace was verified end-to-end:
+- op_1 (abs i_4→o_9), op_2 (compare o_9,i_6→o_10), op_3 (max o_10,i_7→o_11), op_4 (1-o_11→o_12 'Initial guess within accuracy') — correctly evaluates to 0 since |f(initial)|=0.35078… ≫ accuracy 1E-15.
+- op_5 (abs i_5→o_13), op_6 (compare o_13,i_6→o_14), op_7 (max o_14,i_7→o_15), op_8 (1-o_15→o_16 'Lower endpoint within accuracy') — correctly evaluates to 1 since |f(min)|=1.2246e-16 < 1E-15.
+- op_9 (o_12*i_3→o_17, 'Initial-guess branch value') = 0 since initial guess rejected.
+- op_10 (1-o_12→o_18 'Initial guess rejected') = 1.
+- op_11 (o_18*o_16→o_19 'Lower-endpoint branch taken') = 1 (initial rejected AND lower endpoint accurate).
+- op_12 (o_19*i_2→o_20) = 3.141592653589793.
+- op_13 (o_17+o_20→o_21 'Root') = 3.141592653589793 = i_2 exactly, the correct early-exit selection of the lower endpoint as the root.
+
+All intermediate BigDecimal roundings under MathContext(precision=16, HALF_EVEN) were independently recomputed: in both abs() truncations (i_4→o_9, i_5→o_13) the 17th significant digit dropped was <5 in both cases, so the result is invariant to rounding-mode choice (HALF_EVEN, HALF_UP, or DOWN would all yield the identical result) — this is not evidence of a directional-mode exploit. All other operations (multiply/subtract by 0 or 1, or exact-precision multiplication by 1) are exact with zero residual. No value is consumed under a conflicting business label; i_7 ('Zero') and i_8 ('One') are used consistently as generic boolean-logic constants across both symmetric branches, and the shared accuracy threshold i_6 is applied identically to both the initial-guess and lower-endpoint checks (legitimate shared parameter, not a double count). o_12 is referenced twice (op_9, op_10) but each use serves a distinct, non-overlapping role in the branch-selection arithmetic, and the final sum o_17+o_20 draws on mutually exclusive indicator paths, so no value reaches the terminal 'Root' more than once.
+
+#### Details
+The graph implements an arithmetic (indicator-multiplication) equivalent of an if/else-if branch: it first checks whether the initial guess's function value is within the declared accuracy; if not, it falls back to checking whether the lower bracket endpoint already satisfies the tolerance, and if so, returns that endpoint as the early-exit root. Every step was independently recomputed with exact rational arithmetic and matches the reported BigDecimal values under the declared MathContext (precision 16, HALF_EVEN), which is an appropriate, consistently-applied context for the double-precision-scale quantities involved (16–17 significant digits, consistent with DECIMAL64 inputs). No root variable is substituted for a computed counterpart, no leaf representing a mandatory adjustment is withheld from the terminal result (the leaf set contains only the terminal 'Root', and no other bracket/endpoint variable exists elsewhere in the graph to have been omitted), and no business-context relabeling occurs — descriptor names remain semantically aligned with their consumption throughout (accuracy flags, rejection flags, and branch values are used exactly as their names describe). One structural observation, not rising to a finding given this specific trace: the branch-select formula (o_17+o_20) would silently evaluate to 0 if neither the initial guess nor the lower endpoint were within tolerance (both indicator paths zero), which is a latent generic-case fragility in this particular early-exit design; however it is not exercised or evidenced in this execution trace (the lower endpoint is in fact within tolerance here), so it is noted only as a low-severity design observation rather than a confirmed violation in this specific provenance record.

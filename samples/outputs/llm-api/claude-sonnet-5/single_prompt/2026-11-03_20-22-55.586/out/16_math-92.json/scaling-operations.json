@@ -1,0 +1,74 @@
+{
+  "version" : "1.0",
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "scaling operations set"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:55.0725713Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Round down to integer (floor)"
+      },
+      "id" : "i_2",
+      "kind" : "INPUT",
+      "numericId" : 2,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 0,
+      "roundingMode" : "FLOOR"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:55.0735767Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "exp(log sum) + 0.5"
+      },
+      "id" : "o_153",
+      "kind" : "OUTPUT",
+      "numericId" : 153,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "30957699535775.96"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:55.0735767Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Binomial coefficient C(48, 23)"
+      },
+      "id" : "o_154",
+      "kind" : "OUTPUT",
+      "numericId" : 154,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "30957699535775"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "setScale(a)mc"
+        } ],
+        "name" : "setScale"
+      },
+      "finishedAt" : "2026-10-29T15:27:55.0735767Z",
+      "id" : "op_101",
+      "numericId" : 101,
+      "startedAt" : "2026-10-29T15:27:55.0735767Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_153"
+    }, {
+      "key" : "mc",
+      "value" : "i_2"
+    } ],
+    "resultId" : "o_154"
+  } ]
+}

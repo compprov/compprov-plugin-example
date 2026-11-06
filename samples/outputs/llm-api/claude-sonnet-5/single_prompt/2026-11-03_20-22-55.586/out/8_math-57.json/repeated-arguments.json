@@ -1,0 +1,493 @@
+{
+  "version" : "1.0",
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "operations consuming the same variable more than once"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Computation precision (DECIMAL64)"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 16,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[0] Distance to nearest centre"
+      },
+      "id" : "o_9",
+      "kind" : "OUTPUT",
+      "numericId" : 9,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[0] Squared distance"
+      },
+      "id" : "o_10",
+      "kind" : "OUTPUT",
+      "numericId" : 10,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[1] Distance to nearest centre"
+      },
+      "id" : "o_16",
+      "kind" : "OUTPUT",
+      "numericId" : 16,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[1] Squared distance"
+      },
+      "id" : "o_17",
+      "kind" : "OUTPUT",
+      "numericId" : 17,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[2] Distance to nearest centre"
+      },
+      "id" : "o_23",
+      "kind" : "OUTPUT",
+      "numericId" : 23,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[2] Squared distance"
+      },
+      "id" : "o_24",
+      "kind" : "OUTPUT",
+      "numericId" : 24,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[3] Distance to nearest centre"
+      },
+      "id" : "o_30",
+      "kind" : "OUTPUT",
+      "numericId" : 30,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[3] Squared distance"
+      },
+      "id" : "o_31",
+      "kind" : "OUTPUT",
+      "numericId" : 31,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[4] Distance to nearest centre"
+      },
+      "id" : "o_37",
+      "kind" : "OUTPUT",
+      "numericId" : 37,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[4] Squared distance"
+      },
+      "id" : "o_38",
+      "kind" : "OUTPUT",
+      "numericId" : 38,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[5] Distance to nearest centre"
+      },
+      "id" : "o_44",
+      "kind" : "OUTPUT",
+      "numericId" : 44,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[5] Squared distance"
+      },
+      "id" : "o_45",
+      "kind" : "OUTPUT",
+      "numericId" : 45,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[6] Distance to nearest centre"
+      },
+      "id" : "o_51",
+      "kind" : "OUTPUT",
+      "numericId" : 51,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[6] Squared distance"
+      },
+      "id" : "o_52",
+      "kind" : "OUTPUT",
+      "numericId" : 52,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[7] Distance to nearest centre"
+      },
+      "id" : "o_58",
+      "kind" : "OUTPUT",
+      "numericId" : 58,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[7] Squared distance"
+      },
+      "id" : "o_59",
+      "kind" : "OUTPUT",
+      "numericId" : 59,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000000"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[8] Distance to nearest centre"
+      },
+      "id" : "o_65",
+      "kind" : "OUTPUT",
+      "numericId" : 65,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.001"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.8914393Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "[8] Squared distance"
+      },
+      "id" : "o_66",
+      "kind" : "OUTPUT",
+      "numericId" : 66,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.000001"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.8914393Z",
+      "id" : "op_4",
+      "numericId" : 4,
+      "startedAt" : "2026-10-29T15:27:54.8914393Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_9"
+    }, {
+      "key" : "b",
+      "value" : "o_9"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_10"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.8914393Z",
+      "id" : "op_10",
+      "numericId" : 10,
+      "startedAt" : "2026-10-29T15:27:54.8914393Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_16"
+    }, {
+      "key" : "b",
+      "value" : "o_16"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_17"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.8914393Z",
+      "id" : "op_16",
+      "numericId" : 16,
+      "startedAt" : "2026-10-29T15:27:54.8914393Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_23"
+    }, {
+      "key" : "b",
+      "value" : "o_23"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_24"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.8914393Z",
+      "id" : "op_22",
+      "numericId" : 22,
+      "startedAt" : "2026-10-29T15:27:54.8914393Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_30"
+    }, {
+      "key" : "b",
+      "value" : "o_30"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_31"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.8914393Z",
+      "id" : "op_28",
+      "numericId" : 28,
+      "startedAt" : "2026-10-29T15:27:54.8914393Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_37"
+    }, {
+      "key" : "b",
+      "value" : "o_37"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_38"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.8914393Z",
+      "id" : "op_34",
+      "numericId" : 34,
+      "startedAt" : "2026-10-29T15:27:54.8914393Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_44"
+    }, {
+      "key" : "b",
+      "value" : "o_44"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_45"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.8914393Z",
+      "id" : "op_40",
+      "numericId" : 40,
+      "startedAt" : "2026-10-29T15:27:54.8914393Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_51"
+    }, {
+      "key" : "b",
+      "value" : "o_51"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_52"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.8914393Z",
+      "id" : "op_46",
+      "numericId" : 46,
+      "startedAt" : "2026-10-29T15:27:54.8914393Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_58"
+    }, {
+      "key" : "b",
+      "value" : "o_58"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_59"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.8914393Z",
+      "id" : "op_52",
+      "numericId" : 52,
+      "startedAt" : "2026-10-29T15:27:54.8914393Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_65"
+    }, {
+      "key" : "b",
+      "value" : "o_65"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_66"
+  } ]
+}

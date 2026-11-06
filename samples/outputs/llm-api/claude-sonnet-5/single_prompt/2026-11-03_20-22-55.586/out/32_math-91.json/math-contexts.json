@@ -1,0 +1,17 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:55.0449199Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Exact long arithmetic (DECIMAL128)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 34,
+    "roundingMode" : "HALF_EVEN"
+  }
+} ]

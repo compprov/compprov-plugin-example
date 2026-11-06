@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Index of the second centre"
+    },
+    "id" : "o_125",
+    "kind" : "OUTPUT",
+    "numericId" : 125,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "8"
+} ]

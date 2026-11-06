@@ -1,0 +1,4 @@
+Override flags for a run (system-message caching is always on in the plugin):
+Uses the bundled shared_system (CPG in the system message, identical across the 3 calls of a case, so it is cached) and the bundled precision/semantic prompts, which have no reference data.
+--llmTemplates=topological_fraud,precision_tampering,semantic_type_and_context_cast_attack
+--topological_fraud_user=samples/override/three_prompts_no_ids/topological_fraud_user.md

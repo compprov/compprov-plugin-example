@@ -1,0 +1,160 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8399007Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Computation precision (DECIMAL64)"
+    },
+    "id" : "i_1",
+    "kind" : "INPUT",
+    "numericId" : 1,
+    "valueClass" : "java.math.MathContext"
+  },
+  "value" : {
+    "precision" : 16,
+    "roundingMode" : "HALF_EVEN"
+  }
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8399007Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] Observation"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "12.5"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8399007Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] Weight"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.5"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8399007Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Observation"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "12.0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8399007Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Weight"
+    },
+    "id" : "i_5",
+    "kind" : "INPUT",
+    "numericId" : 5,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.8"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8399007Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Observation"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "11.8"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8399007Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Weight"
+    },
+    "id" : "i_7",
+    "kind" : "INPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.2"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8399007Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[3] Observation"
+    },
+    "id" : "i_8",
+    "kind" : "INPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "14.2"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8399007Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[3] Weight"
+    },
+    "id" : "i_9",
+    "kind" : "INPUT",
+    "numericId" : 9,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.4"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8399007Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[4] Observation"
+    },
+    "id" : "i_10",
+    "kind" : "INPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "14.9"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8399007Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[4] Weight"
+    },
+    "id" : "i_11",
+    "kind" : "INPUT",
+    "numericId" : 11,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.8"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8408995Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Bias correction, 1"
+    },
+    "id" : "i_46",
+    "kind" : "INPUT",
+    "numericId" : 46,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+} ]

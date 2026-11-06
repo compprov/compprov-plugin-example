@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.6870495Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Clamped value"
+    },
+    "id" : "o_8",
+    "kind" : "OUTPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.6880494Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Gray level, g"
+    },
+    "id" : "o_13",
+    "kind" : "OUTPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "-127"
+} ]

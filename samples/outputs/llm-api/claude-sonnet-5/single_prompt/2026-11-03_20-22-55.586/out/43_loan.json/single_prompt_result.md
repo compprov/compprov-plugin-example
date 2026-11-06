@@ -1,0 +1,19 @@
+# Summary
+- **Verdict**: SUSPICIOUS LOGIC
+- **Risk score**: 68.0
+
+#### Per-Vector Verdict
+1. **Topological & Provenance Fraud — Calculation Omission**: Score 68/100. A mandatory contributor (total escrow collected from the borrower) is computed but never reaches the terminal 'Total amount paid by borrower' output.
+2. **Precision and Scale Tampering**: Score 5/100. All operations correctly and consistently apply the declared MathContext(precision=16, HALF_EVEN); apparent 'shrinking' decimal scales across months are the expected, correct effect of a fixed 16-significant-digit precision constraint on growing integer parts, not truncation or rounding-mode abuse. Verified end-to-end against independent high-precision replay — deltas are zero at every step (o_29, o_31, o_27, o_28, o_25 all match exactly to 16 significant digits).
+3. **Semantic Type and Context Cast**: Score 5/100. Variable naming, valueClass, and business meaning remain consistent across the full lineage (interest, principal, balance, prepayment, escrow are each correctly and consistently labeled and consumed); no identity/wrapper re-mapping of business context was found.
+
+#### Anomaly Localization (Topological & Provenance Fraud — Calculation Omission)
+- Root escrow inputs: `i_9, i_13, i_17, i_22, i_26, i_30` ("Escrow collected [Month 1..6]", $400.00 each)
+- Aggregation operation: `op_21` (addBulk) → `o_32` ("Total escrow collected" = $2,400.00) — a **leaf** node, never consumed downstream by any other operation.
+- Parallel aggregation: `op_22` (addBulk of `i_2` ×6) → `o_33` ("Total scheduled payments (6 months)" = $12,000.00) → `op_23` (add `o_33 + i_4`) → `o_34` ("Total amount paid by borrower" = $17,000.00).
+- `o_34` is produced strictly from `o_33` (scheduled P&I payments) and `i_4` (the month-4 prepayment of $5,000.00). The escrow total `o_32` has no edge into `op_23` or any other consumer feeding `o_34`.
+
+#### Details (Calculation Omission)
+The pipeline explicitly computes a dedicated "Total escrow collected" subtotal ($2,400.00), which by its own name represents funds collected from (i.e., paid by) the borrower every month alongside the scheduled payment. The terminal variable `o_34`, named "Total amount paid by borrower" — not "Total principal and interest paid" or similarly scoped — is the natural terminal claim on *all* cash flows contributed by the borrower, yet it is reconstructed only from scheduled P&I payments (`o_33`) plus the lump-sum prepayment (`i_4`). The escrow aggregate, despite being fully computed and well-formed, dead-ends as an isolated leaf (`o_32`) that never merges into the claimed "total." Local replay of `op_21` and `op_23` each pass perfectly (arithmetic is internally correct), which is exactly why a schema/connectivity-only validator would miss this: the omission is not an arithmetic error inside any single operation but a structural failure to route a mandatory contributor into the terminal aggregate. Net effect: `o_34` understates the true total amount paid by the borrower by $2,400.00 (≈12.4% of the true $19,400.00 total), a material misrepresentation for any downstream reconciliation, audit, or disclosure process relying on `o_34` as authoritative. No metadata or explicit annotation in the graph justifies treating escrow as out-of-scope for this specific terminal variable; the name itself contradicts the omission, and the burden to show otherwise is not met by the graph's own content.
+
+No other findings were substantiated under Vector 1 (no double counting, no root/lineage substitution — all roots are consumed exactly once in their proper role; no duplicate-name leaf conflicts), under Vector 2 (precision/rounding is verified exact and consistent against independent deep-precision replay at every one of the 23 operations), or under Vector 3 (no semantic relabeling, domain-tag stripping, or cross-context reuse detected across the full root-to-leaf trace).

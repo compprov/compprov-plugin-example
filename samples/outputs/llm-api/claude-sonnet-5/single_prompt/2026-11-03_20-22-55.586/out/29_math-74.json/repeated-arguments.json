@@ -1,0 +1,303 @@
+{
+  "version" : "1.0",
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "operations consuming the same variable more than once"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9768428Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Computation precision (DECIMAL64)"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 16,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9768428Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Initial time, t0"
+      },
+      "id" : "i_8",
+      "kind" : "INPUT",
+      "numericId" : 8,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9778434Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "y'(t0): t⁵"
+      },
+      "id" : "o_11",
+      "kind" : "OUTPUT",
+      "numericId" : 11,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9778434Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "y0 / scale"
+      },
+      "id" : "o_14",
+      "kind" : "OUTPUT",
+      "numericId" : 14,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-997229916.8975069"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9778434Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "‖y0 / scale‖²"
+      },
+      "id" : "o_15",
+      "kind" : "OUTPUT",
+      "numericId" : 15,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "9.944675071554085E+17"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9778434Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "y'(t0) / scale"
+      },
+      "id" : "o_16",
+      "kind" : "OUTPUT",
+      "numericId" : 16,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "997229916.8975069"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9778434Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "‖y'(t0) / scale‖²"
+      },
+      "id" : "o_17",
+      "kind" : "OUTPUT",
+      "numericId" : 17,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "9.944675071554085E+17"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9778434Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Euler time, t1"
+      },
+      "id" : "o_23",
+      "kind" : "OUTPUT",
+      "numericId" : 23,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "0.01"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9778434Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "y'(t1): t⁵"
+      },
+      "id" : "o_24",
+      "kind" : "OUTPUT",
+      "numericId" : 24,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1E-10"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9778434Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Derivative change / scale"
+      },
+      "id" : "o_28",
+      "kind" : "OUTPUT",
+      "numericId" : 28,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "-9972299.168144044"
+  }, {
+    "track" : {
+      "createdAt" : "2026-10-29T15:27:54.9778434Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "‖Derivative change / scale‖²"
+      },
+      "id" : "o_29",
+      "kind" : "OUTPUT",
+      "numericId" : 29,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "99446750698966.39"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b0*...*bn)mc"
+        } ],
+        "name" : "multiplyBulk"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9778434Z",
+      "id" : "op_4",
+      "numericId" : 4,
+      "startedAt" : "2026-10-29T15:27:54.9778434Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_8"
+    }, {
+      "key" : "b0",
+      "value" : "i_8"
+    }, {
+      "key" : "b1",
+      "value" : "i_8"
+    }, {
+      "key" : "b2",
+      "value" : "i_8"
+    }, {
+      "key" : "b3",
+      "value" : "i_8"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_11"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9778434Z",
+      "id" : "op_8",
+      "numericId" : 8,
+      "startedAt" : "2026-10-29T15:27:54.9778434Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_14"
+    }, {
+      "key" : "b",
+      "value" : "o_14"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_15"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9778434Z",
+      "id" : "op_10",
+      "numericId" : 10,
+      "startedAt" : "2026-10-29T15:27:54.9778434Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_16"
+    }, {
+      "key" : "b",
+      "value" : "o_16"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_17"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b0*...*bn)mc"
+        } ],
+        "name" : "multiplyBulk"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9778434Z",
+      "id" : "op_17",
+      "numericId" : 17,
+      "startedAt" : "2026-10-29T15:27:54.9778434Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_23"
+    }, {
+      "key" : "b0",
+      "value" : "o_23"
+    }, {
+      "key" : "b1",
+      "value" : "o_23"
+    }, {
+      "key" : "b2",
+      "value" : "o_23"
+    }, {
+      "key" : "b3",
+      "value" : "o_23"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_24"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-10-29T15:27:54.9778434Z",
+      "id" : "op_22",
+      "numericId" : 22,
+      "startedAt" : "2026-10-29T15:27:54.9778434Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_28"
+    }, {
+      "key" : "b",
+      "value" : "o_28"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_29"
+  } ]
+}

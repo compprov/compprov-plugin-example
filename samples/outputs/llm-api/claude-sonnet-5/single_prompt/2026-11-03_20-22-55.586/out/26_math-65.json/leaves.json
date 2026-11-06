@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9139866Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "RMS"
+    },
+    "id" : "o_65",
+    "kind" : "OUTPUT",
+    "numericId" : 65,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.118347478363483"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9139866Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Parameter error scale, √(χ² / (n − p))"
+    },
+    "id" : "o_69",
+    "kind" : "OUTPUT",
+    "numericId" : 69,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.443780386324943"
+} ]

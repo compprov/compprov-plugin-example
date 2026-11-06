@@ -1,0 +1,105 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9768428Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Initial state, y0"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "-360.0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9768428Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Error scale"
+    },
+    "id" : "o_7",
+    "kind" : "OUTPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3.610E-7"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9768428Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Initial time, t0"
+    },
+    "id" : "i_8",
+    "kind" : "INPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9768428Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Coefficient, 3"
+    },
+    "id" : "i_9",
+    "kind" : "INPUT",
+    "numericId" : 9,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9768428Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Step fraction, 0.01"
+    },
+    "id" : "i_10",
+    "kind" : "INPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.01"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9778434Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "y'(t0)"
+    },
+    "id" : "o_13",
+    "kind" : "OUTPUT",
+    "numericId" : 13,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "360.0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9778434Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "‖y'(t0) / scale‖²"
+    },
+    "id" : "o_17",
+    "kind" : "OUTPUT",
+    "numericId" : 17,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "9.944675071554085E+17"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9778434Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Rough step guess"
+    },
+    "id" : "o_20",
+    "kind" : "OUTPUT",
+    "numericId" : 20,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.01"
+} ]

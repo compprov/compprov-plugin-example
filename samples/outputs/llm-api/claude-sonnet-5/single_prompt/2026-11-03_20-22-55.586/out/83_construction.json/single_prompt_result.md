@@ -1,0 +1,45 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 3.0
+
+#### Per-Vector Verdict
+
+| Attack Vector | Score | Verdict |
+|---|---|---|
+| Topological & Provenance Fraud | 3 | No omission, substitution, or double counting detected; multi-use of o_14 and o_17 reflects a legitimate cost-plus-markup formula. |
+| Precision and Scale Tampering | 2 | Single consistent MathContext (precision 16, HALF_EVEN) used throughout; all recomputed values match reported values exactly, no truncation or rounding-mode abuse. |
+| Semantic Type and Context Cast | 3 | All business labels (materials, labor, overhead, profit margin) align with their arithmetic roles; the "markup-on-cost-including-overhead" basis tag matches how the rate is actually applied. |
+
+**Overall risk_score: 3** (clean graph; no material findings)
+
+---
+
+#### Anomaly Localization (Topological & Provenance Fraud)
+No anomaly localized. Trace of the terminal result o_20:
+- o_6 (materials) = i_2+i_3+i_4+i_5 via op_1 — all four material root variables are included; sum verified (18500+9200+6300+4100=38100.00).
+- o_9 = i_7*i_8 (carpentry), o_12 = i_10*i_11 (electrical), o_13 = o_9+o_12 (total labor) — both labor streams included, no omission.
+- o_14 = o_6+o_13 (direct cost) — both materials and labor flow forward exactly once at this stage.
+- o_14 is then consumed twice: once as the multiplicand for overhead (op_6, o_14*i_15=o_16) and once as an addend together with that overhead (op_7, o_14+o_16=o_17). This is the standard "base + percentage-of-base" markup pattern, not a double count, since o_14 is added to the result exactly once and used as the rate base exactly once — the two uses are structurally independent roles (base, and base-plus-rate-times-base), and their sum correctly equals direct cost × (1+rate).
+- The identical pattern repeats for o_17 (cost incl. overhead) feeding op_8 (profit margin) and op_9 (total bid), explicitly tagged with meta `basis: markup-on-cost-including-overhead`, which matches the arithmetic exactly.
+- Only one leaf (o_20) exists in the graph, which is the intended terminal bid price; no other leaf exists that could represent an omitted mandatory contributor.
+- All 11 root variables are consumed somewhere in the computation chain; none are bypassed or replaced by an unconnected substitute.
+
+#### Details (Topological & Provenance Fraud)
+The multi-use entries for o_14 and o_17 flagged in the structural reference data are the textbook shape of a cost-plus pricing formula (Total = Base + Base×Rate), which is mathematically equivalent to Base×(1+Rate) and is not duplication because the base value is never added into the same aggregate twice — it is added once, and used once as a multiplicative factor whose product is added once. No calculation omission, lineage disconnection, or double counting is substantiated.
+
+#### Anomaly Localization (Precision and Scale Tampering)
+No anomaly localized. All nine operations (op_1–op_9) use the single declared MathContext i_1 (precision 16, HALF_EVEN), which is an appropriate round-to-nearest mode at a precision far exceeding the natural resolution (cents) of all quantities involved. Recomputation with exact rational arithmetic of every step (addBulk, multiply, add) reproduces the reported values bit-for-bit:
+- 18500.00+9200.00+6300.00+4100.00 = 38100.00 ✓
+- 180×55.00 = 9900.00 ✓; 60×75.00 = 4500.00 ✓; 9900.00+4500.00 = 14400.00 ✓
+- 38100.00+14400.00 = 52500.00 ✓
+- 52500.00×0.10 = 5250.0000 ✓; 52500.0000+5250.0000 = 57750.0000 ✓
+- 57750.0000×0.15 = 8662.500000 ✓; 57750.0000+8662.500000 = 66412.500000 ✓
+
+#### Details (Precision and Scale Tampering)
+No scale truncation, rounding-mode inconsistency, or downcasting is present. Scale growth across steps (e.g., 2→4→6 decimal digits) is the ordinary BigDecimal multiplication/addition scale-accumulation behavior, not precision loss, and the declared MathContext never needed to engage rounding since all exact products/sums fit within 16 significant digits. No cyclic or scalable operation population exists in this single bid computation, so no salami-slicing risk applies.
+
+#### Anomaly Localization (Semantic Type and Context Cast)
+No anomaly localized. Business meaning is preserved end-to-end: "Lumber/Concrete/Roofing/Electrical materials" → "Total materials cost"; "Carpentry/Electrical hours×rate" → respective labor costs → "Total labor cost"; materials+labor → "Direct cost"; direct cost×10% → "Overhead"; direct cost+overhead → "Cost including overhead"; cost-including-overhead×15% (explicitly tagged `basis: markup-on-cost-including-overhead`) → "Profit margin"; cost-including-overhead+profit margin → "Total bid price". Each descriptor name and the declared basis metadata is consistent with the arithmetic role the variable plays downstream.
+
+#### Details (Semantic Type and Context Cast)
+No variable is consumed under a business definition that conflicts with its originating metadata; no gross/net or currency/unit re-labeling occurs without a backing arithmetic transformation. The one explicit semantic annotation present (`basis: markup-on-cost-including-overhead` on i_18) is corroborated by the actual multiplication target (o_17), reinforcing rather than contradicting the computation.

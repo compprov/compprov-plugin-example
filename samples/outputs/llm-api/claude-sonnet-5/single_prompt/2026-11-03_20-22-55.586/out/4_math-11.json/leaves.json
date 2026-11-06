@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7903076Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Density, f(x)"
+    },
+    "id" : "o_25",
+    "kind" : "OUTPUT",
+    "numericId" : 25,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.3246524673583497"
+} ]

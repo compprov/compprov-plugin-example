@@ -1,0 +1,89 @@
+{
+  "version" : "1.0",
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "operations consuming the same variable more than once"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-09-14T07:43:36.8738718Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Computation precision (DECIMAL64)"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 16,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T07:43:36.8759274Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Monthly payment"
+      },
+      "id" : "i_2",
+      "kind" : "INPUT",
+      "numericId" : 2,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "2000.00"
+  }, {
+    "track" : {
+      "createdAt" : "2026-09-14T07:43:36.8813978Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Total scheduled payments (6 months)"
+      },
+      "id" : "o_35",
+      "kind" : "OUTPUT",
+      "numericId" : 35,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "12000.00"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a+b0+...+bn)mc"
+        } ],
+        "name" : "addBulk"
+      },
+      "finishedAt" : "2026-09-14T07:43:36.8813978Z",
+      "id" : "op_24",
+      "numericId" : 24,
+      "startedAt" : "2026-09-14T07:43:36.8813978Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_2"
+    }, {
+      "key" : "b0",
+      "value" : "i_2"
+    }, {
+      "key" : "b1",
+      "value" : "i_2"
+    }, {
+      "key" : "b2",
+      "value" : "i_2"
+    }, {
+      "key" : "b3",
+      "value" : "i_2"
+    }, {
+      "key" : "b4",
+      "value" : "i_2"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_35"
+  } ]
+}

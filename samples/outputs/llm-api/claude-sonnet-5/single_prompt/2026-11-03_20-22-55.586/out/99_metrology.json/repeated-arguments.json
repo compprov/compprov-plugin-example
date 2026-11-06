@@ -1,0 +1,181 @@
+{
+  "version" : "1.0",
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "operations consuming the same variable more than once"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-04-04T08:05:48.6362698Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "computation precision"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 34,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-04-04T08:05:48.6422693Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "T_air: air temperature, degC"
+      },
+      "id" : "i_7",
+      "kind" : "INPUT",
+      "numericId" : 7,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "20.00"
+  }, {
+    "track" : {
+      "createdAt" : "2026-04-04T08:05:48.6432683Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "T_K: air temperature, K"
+      },
+      "id" : "o_12",
+      "kind" : "OUTPUT",
+      "numericId" : 12,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "293.15"
+  }, {
+    "track" : {
+      "createdAt" : "2026-04-04T08:05:48.6442678Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "T_K^2, K^2"
+      },
+      "id" : "o_13",
+      "kind" : "OUTPUT",
+      "numericId" : 13,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "85936.9225"
+  }, {
+    "track" : {
+      "createdAt" : "2026-04-04T08:05:48.6452698Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "sigma: vacuum wavenumber, um^-1"
+      },
+      "id" : "o_27",
+      "kind" : "OUTPUT",
+      "numericId" : 27,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1.579801347999560697688035830958727"
+  }, {
+    "track" : {
+      "createdAt" : "2026-04-04T08:05:48.6452698Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "sigma^2, um^-2"
+      },
+      "id" : "o_28",
+      "kind" : "OUTPUT",
+      "numericId" : 28,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "2.495772299141229083230759171428315"
+  }, {
+    "track" : {
+      "createdAt" : "2026-04-04T08:05:48.6472681Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "T_air^2"
+      },
+      "id" : "o_65",
+      "kind" : "OUTPUT",
+      "numericId" : 65,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "400.0000"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-04-04T08:05:48.6442678Z",
+      "id" : "op_2",
+      "numericId" : 2,
+      "startedAt" : "2026-04-04T08:05:48.6442678Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_12"
+    }, {
+      "key" : "b",
+      "value" : "o_12"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_13"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-04-04T08:05:48.6452698Z",
+      "id" : "op_12",
+      "numericId" : 12,
+      "startedAt" : "2026-04-04T08:05:48.6452698Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_27"
+    }, {
+      "key" : "b",
+      "value" : "o_27"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_28"
+  }, {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-04-04T08:05:48.6472681Z",
+      "id" : "op_34",
+      "numericId" : 34,
+      "startedAt" : "2026-04-04T08:05:48.6472681Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "i_7"
+    }, {
+      "key" : "b",
+      "value" : "i_7"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_65"
+  } ]
+}

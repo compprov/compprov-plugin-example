@@ -1,0 +1,27 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.983843Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Relative tolerance"
+    },
+    "id" : "i_4",
+    "kind" : "INPUT",
+    "numericId" : 4,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1E-9"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9853473Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Initial step size"
+    },
+    "id" : "o_48",
+    "kind" : "OUTPUT",
+    "numericId" : 48,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.02020515504676624"
+} ]

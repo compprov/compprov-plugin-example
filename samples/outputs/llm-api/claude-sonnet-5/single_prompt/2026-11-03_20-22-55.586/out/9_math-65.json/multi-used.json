@@ -1,0 +1,196 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9219921Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Fitted centre x"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "96.07590211815305"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9219921Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Fitted centre y"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "48.13516790438953"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9219921Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] Distance to centre"
+    },
+    "id" : "o_11",
+    "kind" : "OUTPUT",
+    "numericId" : 11,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "68.99736513023189"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9219921Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Distance to centre"
+    },
+    "id" : "o_19",
+    "kind" : "OUTPUT",
+    "numericId" : 19,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "71.08871330976576"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9219921Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Distance to centre"
+    },
+    "id" : "o_27",
+    "kind" : "OUTPUT",
+    "numericId" : 27,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "69.54337931954851"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9219921Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[3] Distance to centre"
+    },
+    "id" : "o_35",
+    "kind" : "OUTPUT",
+    "numericId" : 35,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "69.48528744704377"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9229914Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[4] Distance to centre"
+    },
+    "id" : "o_43",
+    "kind" : "OUTPUT",
+    "numericId" : 43,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "70.68606363998036"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9229914Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Number of observations, n"
+    },
+    "id" : "i_44",
+    "kind" : "INPUT",
+    "numericId" : 44,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "5"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9229914Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Fitted radius (mean distance)"
+    },
+    "id" : "o_46",
+    "kind" : "OUTPUT",
+    "numericId" : 46,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "69.96016176931406"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9229914Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Observation weight, w"
+    },
+    "id" : "i_47",
+    "kind" : "INPUT",
+    "numericId" : 47,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "2.0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9229914Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] Squared residual"
+    },
+    "id" : "o_49",
+    "kind" : "OUTPUT",
+    "numericId" : 49,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.9269773682279223"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9229914Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Squared residual"
+    },
+    "id" : "o_53",
+    "kind" : "OUTPUT",
+    "numericId" : 53,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1.273628579455905"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9229914Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Squared residual"
+    },
+    "id" : "o_57",
+    "kind" : "OUTPUT",
+    "numericId" : 57,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.1737076104325732"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9229914Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[3] Squared residual"
+    },
+    "id" : "o_61",
+    "kind" : "OUTPUT",
+    "numericId" : 61,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.2255056219516672"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9229914Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[4] Squared residual"
+    },
+    "id" : "o_65",
+    "kind" : "OUTPUT",
+    "numericId" : 65,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.5269335258368337"
+} ]

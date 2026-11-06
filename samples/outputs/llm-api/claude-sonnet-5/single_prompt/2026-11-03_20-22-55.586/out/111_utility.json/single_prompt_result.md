@@ -1,0 +1,29 @@
+# Summary
+- **Verdict**: CLEAN
+- **Risk score**: 3.0
+
+#### Per-Vector Verdict
+1. **Topological & Provenance Fraud** — Score: 2/100. No omission, substitution, or double counting detected; the tiered-usage decomposition and final aggregation are fully traceable and conserve the input usage quantity.
+2. **Precision and Scale Tampering** — Score: 3/100. All intermediate and final BigDecimal computations replay exactly against the declared MathContext (precision 16, HALF_EVEN); no truncation, salami slicing, or scale conversion issues found.
+3. **Semantic Type and Context Cast** — Score: 2/100. All variable names, descriptors, and consuming operations are mutually consistent; no business-meaning remapping is present.
+
+**Overall Risk Score: 3/100 — Clean graph.**
+
+#### Anomaly Localization (If Detected)
+None. Full trace of the computation:
+- `i_3` (1180 kWh) feeds `op_1` (min with `i_4`=500) → `o_9` = 500 (Tier-1 usage).
+- `i_3` feeds `op_2` (min with `i_5`=1000) → `o_10` = 1000 (cumulative usage through Tier-2).
+- `op_3`: `o_10 - o_9` = 500 → `o_11` (Tier-2 portion), correctly isolating the band between 500 and 1000 kWh.
+- `op_4`: `i_3 - o_10` = 180 → `o_12` (uncapped Tier-3 portion); `op_5`: `max(o_12, i_2=0)` → `o_13` = 180, guarding against negative usage when total usage is below 1000 kWh (no-op here since 180 > 0, but a legitimate structural safeguard).
+- Tier costs: `op_6` 500×0.10=50.00 (`o_14`), `op_7` 500×0.14=70.00 (`o_15`), `op_8` 180×0.18=32.40 (`o_16`) — each multiplication is exact under the declared MathContext (precision 16, HALF_EVEN), with no rounding delta.
+- `op_9` (`addBulk`) sums all three tier costs → `o_17` = 152.40, matching 50.00+70.00+32.40 exactly.
+- `op_10` adds the service charge `i_18` (12.50) → `o_19` = 164.90, the sole leaf/terminal output.
+
+Usage conservation check: Tier-1 (500) + Tier-2 (500) + Tier-3 (180) = 1180 kWh = `i_3`, confirming the full usage quantity is accounted for exactly once across the tiers, with no leakage, duplication, or bypass.
+
+#### Details
+**Topological & Provenance Fraud:** The structural reference data shows a single leaf (`o_19`), which is the genuine terminal result — there is no secondary leaf output to evaluate for omission, and no duplicate-named roots or unconsumed roots exist that could indicate a substitution. The two multi-used variables (`i_3`, used by `op_1` and `op_2`; `o_9`/`o_10`, used in subtractions and as multiplicands) are legitimate: `i_3` is a shared parameter correctly feeding two independent tier-boundary calculations, and `o_9`/`o_10` are reused only to derive non-overlapping tier portions (a proportional split whose components sum to the whole, verified above). No repeated-argument operations or double counting exist.
+
+**Precision and Scale Tampering:** A single MathContext (`i_1`: precision 16, HALF_EVEN) is declared and consistently applied to every arithmetic operation that could introduce rounding (subtract, multiply, addBulk, add). HALF_EVEN at precision 16 is well in excess of the natural cent-level resolution required for currency, and all operands in this scenario combine to produce finite, exact decimal results (e.g., 500×0.10, 500×0.14, 180×0.18, and all additions), so there is no rounding discrepancy, Δ=0 at every step, and no evidence of salami slicing, premature truncation, or precision downcast.
+
+**Semantic Type and Context Cast:** Every variable's `descriptor.name` is consistent with its role in the tiered-billing formula and its consumption by downstream operations (e.g., "Tier 2 usage portion" is consumed only as the Tier-2 multiplicand; "Tier 3 usage portion (floored)" is consumed only as the Tier-3 multiplicand). The final `add` combining `o_17` (Total energy cost) and `i_18` (Monthly service charge) into `o_19` (Total bill) is a standard, domain-consistent aggregation with no relabeling, unit shift, or business-context contradiction. No findings.

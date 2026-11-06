@@ -1,0 +1,53 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9628344Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Function value accuracy"
+    },
+    "id" : "i_6",
+    "kind" : "INPUT",
+    "numericId" : 6,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1E-15"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9628344Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Zero"
+    },
+    "id" : "i_7",
+    "kind" : "INPUT",
+    "numericId" : 7,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9628344Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "One"
+    },
+    "id" : "i_8",
+    "kind" : "INPUT",
+    "numericId" : 8,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9628344Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Initial guess within accuracy, 1 = yes"
+    },
+    "id" : "o_12",
+    "kind" : "OUTPUT",
+    "numericId" : 12,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+} ]

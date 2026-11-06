@@ -1,0 +1,24 @@
+# Summary
+- **Verdict**: SUSPICIOUS LOGIC
+- **Risk score**: 58.0
+
+#### Per-Vector Verdict
+- **Topological & Provenance Fraud**: Score 10/100 — No multi-use roots, no repeated arguments, no duplicate-name leaves, single clean root→op→leaf chain; no mandatory contributor variable exists in the graph that is omitted from the terminal output. Clean.
+- **Precision and Scale Tampering**: Score 58/100 — Confirmed asset-conservation violation via integer-division truncation with no remainder-handling node; materiality is attenuated by a tiny absolute delta but amplified by the apparent cyclic/recurring nature of the process ("per-game" payout logic). Flagged as a residual-value-leakage / salami-slicing pattern.
+- **Semantic Type and Context Cast**: Score 5/100 — Names, units, and mathematical roles align end-to-end (pool ÷ winner count = per-winner payout); no business-context remapping detected.
+
+**Overall risk_score: 58** (maximum across vectors, driven by Precision and Scale Tampering).
+
+---
+
+#### Anomaly Localization (Precision and Scale Tampering)
+- **Variables**: `i_1` ("Total game interest (pool)" = 1000, `BigInteger`), `i_2` ("Winner count" = 3, `BigInteger`), `o_3` ("Per-winner payout" = 333, `BigInteger`, terminal leaf).
+- **Operation**: `op_1` (`divide`, formula `a/b`, `a=i_1`, `b=i_2`, `resultId=o_3`).
+- **Flow**: `i_1=1000` and `i_2=3` feed directly into `op_1`, a `BigInteger` division. `BigInteger.divide` performs truncating integer division with no remainder capture, no `MathContext`/rounding-mode argument, and no companion "remainder" or "carry" variable anywhere in the graph. The terminal output `o_3 = 333` is the sole reported result.
+
+#### Details
+Recomputing the exact quotient: `1000 / 3 = 333.333...`. The graph reports `333`, and this is the only value propagated onward. If `o_3` is paid to each of the 3 winners, the total actually distributed is `333 * 3 = 999`, while the declared pool was `1000`. One full unit of the "Total game interest (pool)" is silently dropped — it is neither distributed to winners nor retained in any visible ledger/remainder variable. Local replay of `op_1` passes perfectly (integer division is deterministic and the wrapper class enforces no stricter contract), so a naive schema/type check sees nothing wrong — the type (`BigInteger`), the formula (`a/b`), and the resultId linkage are all internally consistent. This is precisely the blind spot the attack vector targets: asset conservation (`sum of payouts == pool`) is violated even though every individual step is technically valid.
+
+Because the value class is `BigInteger` with no declared `MathContext`, the graph itself supplies no explicit rounding-mode ground truth, so a single 1-unit discrepancy in an isolated, non-repeating context would ordinarily be borderline. However, the descriptor name ("Game: winner interest payout") and the structural shape (pool / winner-count → per-winner share, with no remainder sink) strongly suggest this computation executes repeatedly across many games and winner groups — a scalable population where non-evenly-divisible pools will recur. Each execution directionally truncates downward (never up), consistently shaving a small residual away from winners with no accounting node to show where it goes (i.e., it implicitly reverts to whoever controls the pool, functioning as a passive beneficiary). This combination — consistent directional bias, a scalable/recurring operation population, and an unaccounted sink — is the classic signature of Salami Slicing / residual-value leakage described in the precision invariants, even though the magnitude in any single instance is small.
+
+**Impact**: Winners are systematically underpaid by the non-distributable remainder of the pool on every game in which the pool does not divide evenly by the winner count, with no transparency into where the shaved fraction ends up. Over many games this compounds into a material, unaccounted leakage from the payout pool.

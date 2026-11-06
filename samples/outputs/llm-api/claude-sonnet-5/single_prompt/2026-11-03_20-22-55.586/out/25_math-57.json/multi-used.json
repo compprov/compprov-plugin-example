@@ -1,0 +1,378 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "First centre"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Distance scale"
+    },
+    "id" : "i_3",
+    "kind" : "INPUT",
+    "numericId" : 3,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.001"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] Cumulative squared distance"
+    },
+    "id" : "o_10",
+    "kind" : "OUTPUT",
+    "numericId" : 10,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Cumulative squared distance"
+    },
+    "id" : "o_16",
+    "kind" : "OUTPUT",
+    "numericId" : 16,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Cumulative squared distance"
+    },
+    "id" : "o_22",
+    "kind" : "OUTPUT",
+    "numericId" : 22,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[3] Cumulative squared distance"
+    },
+    "id" : "o_28",
+    "kind" : "OUTPUT",
+    "numericId" : 28,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[4] Cumulative squared distance"
+    },
+    "id" : "o_34",
+    "kind" : "OUTPUT",
+    "numericId" : 34,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[5] Cumulative squared distance"
+    },
+    "id" : "o_40",
+    "kind" : "OUTPUT",
+    "numericId" : 40,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[6] Cumulative squared distance"
+    },
+    "id" : "o_46",
+    "kind" : "OUTPUT",
+    "numericId" : 46,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[7] Cumulative squared distance"
+    },
+    "id" : "o_52",
+    "kind" : "OUTPUT",
+    "numericId" : 52,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.000000"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[8] Cumulative squared distance"
+    },
+    "id" : "o_58",
+    "kind" : "OUTPUT",
+    "numericId" : 58,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0.000001"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Selection threshold, r"
+    },
+    "id" : "o_60",
+    "kind" : "OUTPUT",
+    "numericId" : 60,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "7.3E-7"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8809325Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Zero"
+    },
+    "id" : "i_61",
+    "kind" : "INPUT",
+    "numericId" : 61,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "One"
+    },
+    "id" : "i_62",
+    "kind" : "INPUT",
+    "numericId" : 62,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[0] Chosen, 1 = yes"
+    },
+    "id" : "o_66",
+    "kind" : "OUTPUT",
+    "numericId" : 66,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] No point chosen yet, 1 = yes"
+    },
+    "id" : "o_69",
+    "kind" : "OUTPUT",
+    "numericId" : 69,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[1] Chosen, 1 = yes"
+    },
+    "id" : "o_73",
+    "kind" : "OUTPUT",
+    "numericId" : 73,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] No point chosen yet, 1 = yes"
+    },
+    "id" : "o_76",
+    "kind" : "OUTPUT",
+    "numericId" : 76,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Chosen, 1 = yes"
+    },
+    "id" : "o_80",
+    "kind" : "OUTPUT",
+    "numericId" : 80,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[3] No point chosen yet, 1 = yes"
+    },
+    "id" : "o_83",
+    "kind" : "OUTPUT",
+    "numericId" : 83,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[3] Chosen, 1 = yes"
+    },
+    "id" : "o_87",
+    "kind" : "OUTPUT",
+    "numericId" : 87,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[4] No point chosen yet, 1 = yes"
+    },
+    "id" : "o_90",
+    "kind" : "OUTPUT",
+    "numericId" : 90,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[4] Chosen, 1 = yes"
+    },
+    "id" : "o_94",
+    "kind" : "OUTPUT",
+    "numericId" : 94,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[5] No point chosen yet, 1 = yes"
+    },
+    "id" : "o_97",
+    "kind" : "OUTPUT",
+    "numericId" : 97,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[5] Chosen, 1 = yes"
+    },
+    "id" : "o_101",
+    "kind" : "OUTPUT",
+    "numericId" : 101,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[6] No point chosen yet, 1 = yes"
+    },
+    "id" : "o_104",
+    "kind" : "OUTPUT",
+    "numericId" : 104,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[6] Chosen, 1 = yes"
+    },
+    "id" : "o_108",
+    "kind" : "OUTPUT",
+    "numericId" : 108,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[7] No point chosen yet, 1 = yes"
+    },
+    "id" : "o_111",
+    "kind" : "OUTPUT",
+    "numericId" : 111,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "1"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.8819304Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[7] Chosen, 1 = yes"
+    },
+    "id" : "o_115",
+    "kind" : "OUTPUT",
+    "numericId" : 115,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+} ]

@@ -1,0 +1,26 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 88.0
+
+#### Per-Vector Verdict
+1. **Topological & Provenance Fraud — Lineage Disconnection / Context Substitution**: Score 88 — Confirmed. The computed, up-to-date "Rate accumulator" (o_5) is produced but never consumed; the stale root "Rate accumulator" (i_2, prior period) is substituted in its place inside the reward computation.
+2. **Precision and Scale Tampering**: Score 8 — No MathContext present; all BigInteger operations replay exactly (537=500+37; 50,000,000=100,000×500; 5000=50,000,000/10,000 with zero remainder). No salami-slicing or precision-loss evidence in this trace, though undisclosed integer-division truncation remains a latent (not demonstrated) risk for non-exact future periods.
+3. **Semantic Type and Context Cast**: Score 80 — Confirmed. `op_2` consumes `i_2`, explicitly tagged `period:41`, to produce `o_6` tagged `period:42`, while the correctly period-42-tagged accumulator `o_5` (produced in the very same operation batch) is bypassed — an explicit metadata contradiction, not implicit re-labeling.
+
+#### Anomaly Localization
+- **i_2** ("Rate accumulator", period 41, value 500) — root variable.
+- **i_3** ("Interest accrued (bps)", period 42, value 37) — root variable.
+- **op_1** (`add`, a=i_2, b=i_3) → **o_5** ("Rate accumulator", period 42, value 537). This is the *correct, current-period* accumulator. Per the structural reference data, o_5 is a **leaf**: it is never consumed by any downstream operation.
+- **op_2** (`multiply`, a=i_1, b=i_2) → **o_6** ("Reward numerator", period 42, value 50,000,000). Note that `op_2` reuses the **stale pre-accrual** `i_2` (period 41, value 500) instead of the just-computed `o_5` (period 42, value 537), even though `o_6` is itself labeled period 42.
+- **op_3** (`divide`, a=o_6, b=i_4) → **o_7** ("Distributed reward", period 42, value 5000) — the terminal output.
+
+**Attack flow:** The pipeline advances the rate accumulator each period by adding the newly accrued interest (`i_2 + i_3 = o_5 = 537`), correctly reflecting the period-42 state. However, the reward numerator that actually feeds the terminal "Distributed reward" is computed from the *old* accumulator `i_2` (500), not `o_5` (537). The structural reference data independently flags this exact pair — `o_5 ("Rate accumulator") shares its name with: [i_2]` — precisely the signature of a root standing in for its own computed successor.
+
+Recomputing the terminal value using the graph's own freshly-computed accumulator: `i_1 * o_5 / i_4 = 100000 * 537 / 10000 = 5370`. The reported terminal value is `5000`. **Delta = 370 units (≈7.4%)** of the correctly-chained result — a material, non-rounding-scale discrepancy caused entirely by the substitution, not by any division/truncation artifact (both the actual and the corrected division are exact, remainder-free).
+
+#### Details
+**Why it passes casual review:** Every operation is locally valid — `op_1`'s arithmetic replays exactly as `add(i_2,i_3)`, `op_2`'s multiply replays exactly as `i_1*i_2`, and `op_3`'s divide is exact. Type-checking and per-step replay all succeed. The flaw only becomes visible when tracing *which* variable is the authoritative "current" accumulator at the moment `op_2` executes: `o_5` is the operation that was supposed to finalize period 42's rate before it is used for reward calculation, but the reward calculation branches off the stale input instead of the freshly produced one. Because `o_5` is topologically a leaf with full, legitimate-looking metadata (period 42, correctly named), it is exactly the kind of "computed value with no consumers" that the audit specification warns must not be dismissed as benign just because it looks complete.
+
+**Why it is not adequately explained as a benign "opening-balance" convention:** If this were intentional (reward paid on the opening balance, with the newly accrued interest deferred to the next period's opening balance), the correct downstream wiring would need `o_5` to subsequently become the next period's `i_2` — but this CPG neither contains nor references such a forward edge, and `o_5` is explicitly a terminal leaf with no consumer at all within the provided execution trace. The batch's own period tagging (i_3, o_5, o_6, o_7 all stamped `period:42`) signals that all four values were intended to be mutually consistent for period 42's close-out, making the silent reversion to the `period:41` accumulator inside `op_2` an internal contradiction rather than a documented accrual-lag design.
+
+**Consequence:** The distributed reward (`o_7` = 5000) understates the economically correct, fully-chained distribution (5370) by omitting the current period's accrued interest from the reward basis while still consuming BigInteger/BigDecimal-type-safe, mathematically "valid" operations. In a recurring staking-distribution context, this pattern — if structurally repeated every period — would permanently siphon one period's worth of interest away from the distributed pool every cycle, which is a materiality-overriding finding regardless of cyclicity per the audit's own invariant on large arithmetic errors.

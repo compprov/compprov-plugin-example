@@ -1,0 +1,35 @@
+# Summary
+- **Verdict**: ANOMALY DETECTED
+- **Risk score**: 90.0
+
+#### Per-Vector Verdict
+1. **Topological & Provenance Fraud** — Score: 12/100. No Calculation Omission, Lineage Disconnection, or Double Counting detected in the strict structural sense; however, the two terminal "verification" nodes are algebraically tautological (see Details below), which compounds the Vector 3 finding.
+2. **Precision and Scale Tampering** — Score: 5/100. All BigDecimal operations replay exactly against the declared MathContext (precision=16, HALF_EVEN); no truncation, salami-slicing, or premature-rounding pattern found.
+3. **Semantic Type and Context Cast** — Score: 90/100. A variable explicitly labeled "Temperature (C)" (Celsius) is consumed directly as the absolute temperature term in the Ideal Gas Law (PV = nRT), which mathematically requires Kelvin. No conversion node exists anywhere in the graph. This is a confirmed, material context-cast violation.
+
+---
+
+#### Anomaly Localization (Attack Vector 3 — Semantic Type and Context Cast)
+- **i_4** — `descriptor.name = "Temperature (C)"`, `valueClass = java.math.BigDecimal`, `value = "25"`. Root variable, explicitly scoped to the Celsius domain by its own name.
+- **op_2** (`multiply`, formula `(a*b)mc`) consumes `o_7` (n×R) and **i_4** directly to produce **o_8** ("n × R × T"). No intervening operation converts i_4 from Celsius to Kelvin (no `add(i_4, 273.15)` node, no Kelvin-labeled intermediate variable exists anywhere in the `variables` array).
+- Downstream propagation: **o_8** → **op_3** → **o_9** (P1) → **op_4** → **o_10** (P1×V1) → **op_5** → **o_11** (P2) → **op_6** → **o_12** (P2×V2) → **op_7/op_8** → **o_13/o_14** (terminal leaf outputs).
+- Every terminal value in the graph is downstream of the mis-typed i_4 consumption; the entire pressure/consistency computation is built on T = 25 instead of T = 298.15 K.
+
+#### Details (Attack Vector 3)
+The Ideal Gas Law `PV = nRT` requires an absolute temperature scale (Kelvin); the gas constant supplied (`i_3 = 0.0821 L·atm/(mol·K)`) is only valid when T is expressed in Kelvin. The graph's own descriptor for `i_4` discloses the value is in Celsius ("Temperature (C)"), creating an explicit, self-declared conflict with its consumption in `op_2` as the raw T term of `nRT`. Technically, `op_2` passes every structural and type check: both operands are `java.math.BigDecimal`, the MathContext is valid, and the formula metadata (`(a*b)mc`) is syntactically a correct multiplication — this is precisely the gap the attack vector is designed to catch: type and mathematical validity hold perfectly while the business/scientific meaning is silently wrong. The consequence is severe: the correct P1 should be `nR(T+273.15)/V1 ≈ 2.5×0.0821×298.15/10 ≈ 6.12 atm`, but the graph reports `o_9 = 0.513125 atm` — roughly a 12× underestimate. In any downstream engineering, safety, or regulatory use (vessel design, compressor sizing, etc.) this error is catastrophic, yet it is dressed up as a validated, internally-consistent calculation.
+
+#### Anomaly Localization (Attack Vector 1 — supporting observation, tautological verification)
+- **op_7** (`compare`, `o_10` vs `o_8`) → **o_13** ("PV cmp nRT"), and **op_8** (`compare`, `o_10` vs `o_12`) → **o_14** ("P1V1 cmp P2V2") are the graph's only terminal (leaf) outputs.
+
+#### Details (Attack Vector 1)
+Both terminal "checks" are mathematical identities by construction rather than independent validations: `o_9 = o_8 / i_5`, so `o_10 = o_9 * i_5` algebraically returns to `o_8` regardless of whether `o_8` was computed with correct physics; likewise `o_11 = o_10 / i_6`, so `o_12 = o_11 * i_6` algebraically returns to `o_10`. Both comparisons are therefore guaranteed to report "0 (equal)" independent of whether the underlying temperature term was correct, because they only verify round-trip division/multiplication precision, not the physical correctness of the inputs that fed `nRT` in the first place. This does not independently meet the Calculation Omission / Lineage Disconnection / Double Counting bar on its own, but it is material context for Vector 3: the graph presents itself as "self-validated" (both leaf outputs show `0 - equal`), which gives a false sense of assurance that masks the underlying Celsius/Kelvin semantic error — a textbook case of validation tooling checking node connectivity and arithmetic replay while being blind to the actual business/physical meaning of the computation.
+
+#### Precision and Scale Tampering — confirmation of clean result
+Recomputing each operation with exact rational arithmetic:
+- op_1: 2.5×0.0821 = 0.20525 (exact, matches o_7)
+- op_2: 0.20525×25 = 5.13125 (exact, matches o_8)
+- op_3: 5.13125/10 = 0.513125 (exact, matches o_9)
+- op_4: 0.513125×10 = 5.13125 (matches o_10, trailing zero is cosmetic)
+- op_5: 5.13125/4 = 1.2828125 (exact, matches o_11)
+- op_6: 1.2828125×4 = 5.1312500 (exact, matches o_12)
+All deltas are zero; MathContext precision (16, HALF_EVEN) is more than sufficient for these terminating decimals, and no directional rounding mode, downcast, or premature scale reduction is present. No Vector 2 finding.

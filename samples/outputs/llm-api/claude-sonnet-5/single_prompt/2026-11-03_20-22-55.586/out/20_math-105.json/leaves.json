@@ -1,0 +1,40 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7532403Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Running x mean"
+    },
+    "id" : "o_44",
+    "kind" : "OUTPUT",
+    "numericId" : 44,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "110.7264895"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7532403Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "[2] Running y mean"
+    },
+    "id" : "o_46",
+    "kind" : "OUTPUT",
+    "numericId" : 46,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "8913.04540"
+}, {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.7532403Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Sum of squared errors"
+    },
+    "id" : "o_51",
+    "kind" : "OUTPUT",
+    "numericId" : 51,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "0"
+} ]

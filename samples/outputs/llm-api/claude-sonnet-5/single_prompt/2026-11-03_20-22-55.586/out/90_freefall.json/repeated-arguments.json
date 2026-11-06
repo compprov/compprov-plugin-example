@@ -1,0 +1,77 @@
+{
+  "version" : "1.0",
+  "descriptor" : {
+    "meta" : [ ],
+    "name" : "operations consuming the same variable more than once"
+  },
+  "variables" : [ {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8978018Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Computation precision (DECIMAL64)"
+      },
+      "id" : "i_1",
+      "kind" : "INPUT",
+      "numericId" : 1,
+      "valueClass" : "java.math.MathContext"
+    },
+    "value" : {
+      "precision" : 16,
+      "roundingMode" : "HALF_EVEN"
+    }
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8978018Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "Impact velocity, v (m/s)"
+      },
+      "id" : "o_11",
+      "kind" : "OUTPUT",
+      "numericId" : 11,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "44.27188724235731"
+  }, {
+    "track" : {
+      "createdAt" : "2026-08-05T08:19:32.8978018Z",
+      "descriptor" : {
+        "meta" : [ ],
+        "name" : "v² (m²/s²)"
+      },
+      "id" : "o_13",
+      "kind" : "OUTPUT",
+      "numericId" : 13,
+      "valueClass" : "java.math.BigDecimal"
+    },
+    "value" : "1960.000000000000"
+  } ],
+  "operations" : [ {
+    "track" : {
+      "descriptor" : {
+        "meta" : [ {
+          "key" : "formula",
+          "value" : "(a*b)mc"
+        } ],
+        "name" : "multiply"
+      },
+      "finishedAt" : "2026-08-05T08:19:32.8978018Z",
+      "id" : "op_7",
+      "numericId" : 7,
+      "startedAt" : "2026-08-05T08:19:32.8978018Z",
+      "wrapperClass" : "io.compprov.core.wrappers.WrappedBigDecimal"
+    },
+    "arguments" : [ {
+      "key" : "a",
+      "value" : "o_11"
+    }, {
+      "key" : "b",
+      "value" : "o_11"
+    }, {
+      "key" : "mc",
+      "value" : "i_1"
+    } ],
+    "resultId" : "o_13"
+  } ]
+}

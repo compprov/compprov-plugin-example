@@ -1,0 +1,14 @@
+[ {
+  "track" : {
+    "createdAt" : "2026-10-29T15:27:54.9698382Z",
+    "descriptor" : {
+      "meta" : [ ],
+      "name" : "Lower endpoint, min"
+    },
+    "id" : "i_2",
+    "kind" : "INPUT",
+    "numericId" : 2,
+    "valueClass" : "java.math.BigDecimal"
+  },
+  "value" : "3.141592653589793"
+} ]

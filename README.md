@@ -17,7 +17,7 @@ If you're looking for the core provenance-tracking framework itself, see
 - [Building](#building)
 - [Using the plugin](#using-the-plugin)
 - [Test snapshots](#test-snapshots)
-- [Sample analysis run](#sample-analysis-run)
+- [Sample analysis runs](#sample-analysis-runs)
 - [Project layout](#project-layout)
 - [License](#license)
 
@@ -26,13 +26,14 @@ If you're looking for the core provenance-tracking framework itself, see
 ## How plugins work
 
 `compprov-analytics` accepts one or more `--plugin=<path-to-jar>` command-line arguments. For
-each plugin jar, it opens a `URLClassLoader` over the jar and asks `ServiceLoader` for two kinds
+each plugin jar, it opens a `URLClassLoader` over the jar and asks `ServiceLoader` for three kinds
 of providers declared under `META-INF/services`:
 
 | Service interface | Purpose |
 |---|---|
 | `io.compprov.core.EnvironmentCustomizer` | Given the shared `ComputationEnvironment`, register additional type wrappers, serializers, etc. |
-| `dev.langchain4j.model.chat.ChatModel` | Supplies the LLM used for prompt-based analysis of a CPG. |
+| `dev.langchain4j.model.chat.ChatModel` | Supplies the LLM used for prompt-based analysis of a CPG in `PROCESS_SYNC` mode. |
+| `dev.langchain4j.model.chat.BatchChatModel` | Supplies the LLM used in the batch modes (`EXECUTE_ASYNC`, `PROCESS_ASYNC`, `CONTINUE_ASYNC`). |
 
 Any provider found is applied automatically — no other wiring is required. `compprov-core` and
 `langchain4j-open-ai` are declared with `provided` scope in [`pom.xml`](pom.xml) because they're
@@ -87,33 +88,41 @@ ties it together — it's the `EnvironmentCustomizer` that registers all three w
 shared `ComputationEnvironment`, and it's the class named in
 [`META-INF/services/io.compprov.core.EnvironmentCustomizer`](src/main/resources/META-INF/services/io.compprov.core.EnvironmentCustomizer).
 
-### Env var configured chat model
+### Env var configured chat models
 
 [`EnvVarConfiguredChatModel`](src/main/java/io/compprov/plugin/example/nav/EnvVarConfiguredChatModel.java)
-is a langchain4j `ChatModel` created using environment variables — `CHATMODEL_URL`,
-`CHATMODEL_API_KEY`, `CHATMODEL_NAME` — and it's the class named in
-[`META-INF/services/dev.langchain4j.model.chat.ChatModel`](src/main/resources/META-INF/services/dev.langchain4j.model.chat.ChatModel).
-It builds one of two underlying clients depending on `CHATMODEL_URL`:
+(a langchain4j `ChatModel`) and
+[`EnvVarConfiguredBatchedChatModel`](src/main/java/io/compprov/plugin/example/nav/EnvVarConfiguredBatchedChatModel.java)
+(a `BatchChatModel`) are configured from environment variables and named in
+[`META-INF/services`](src/main/resources/META-INF/services). Each builds one of two clients
+depending on `CHATMODEL_URL`:
 
-| If `CHATMODEL_URL` contains `"anthropic"` | Otherwise |
-|---|---|
-| Uses langchain4j's native `AnthropicChatModel` against the real Claude Messages API. | Uses `OpenAiChatModel` against an OpenAI-compatible chat completions endpoint. |
-| Real JSON-schema-enforced structured output (`risk_score`/`markdown_report`), server-side system-message caching (`cacheSystemMessages(true)`), a 5-minute request timeout, a 100k output token budget. | Requests `"json_object"` mode (a generic JSON object, not a schema-enforced one) and the same token/timeout settings. |
+| | `CHATMODEL_URL` contains `"anthropic"` | Otherwise (OpenAI-compatible endpoint) |
+|---|---|---|
+| Sync (`PROCESS_SYNC`) | langchain4j's native `AnthropicChatModel` | `OpenAiChatModel` |
+| Batch | `AnthropicBatchChatModel` (Message Batches API) | [`OpenAiBatchChatModel`](src/main/java/io/compprov/plugin/example/nav/OpenAiBatchChatModel.java) (OpenAI Files + Batches API; langchain4j-open-ai has no batch model) |
+| Caching | System-message caching on | Automatic prompt caching |
 
-For Claude, this means pointing the three env vars at Anthropic's native API — **not** its
-OpenAI-compatibility endpoint:
+Both request JSON-schema structured output (`risk_score` / `markdown_report`, the format
+compprov-analytics expects) and use a 5-minute request timeout.
 
-| Env var | Value |
-|---|---|
-| `CHATMODEL_URL` | `https://api.anthropic.com/v1/` |
-| `CHATMODEL_API_KEY` | your Claude API key |
-| `CHATMODEL_NAME` | a Claude model ID, e.g. `claude-sonnet-5`, `claude-opus-5`, `claude-haiku-4-5` |
+| Env var | Required | Description |
+|---|---|---|
+| `CHATMODEL_URL` | To call a model | Base URL, e.g. `https://api.anthropic.com/v1/` or `https://api.openai.com/v1/` |
+| `CHATMODEL_API_KEY` | To call a model | API key |
+| `CHATMODEL_NAME` | To call a model | Model ID, e.g. `claude-sonnet-5`, `claude-haiku-5-5`, `gpt-6-luna` |
+| `CHATMODEL_MAXTOKENS` | No, default `100000` | Output token limit per request |
+| `CHATMODEL_EFFORT` | No | OpenAI `reasoning_effort`, e.g. `medium`; ignored for Claude |
+| `CHATMODEL_CACHE_TTL` | No, default `5m` | Claude batch only: system-message cache TTL, `5m` or `1h`. Batch requests run in no particular order, so `1h` can raise cache hits on long batches |
 
-Anthropic's OpenAI-compatibility endpoint (same base URL, but built for the OpenAI SDK) is
-deliberately *not* used here: it's meant for evaluating model capabilities rather than
-production use, and it silently ignores `response_format` and prompt caching — exactly the two
-things this plugin relies on. Going through langchain4j's native `AnthropicChatModel` instead
-gets both for real.
+The clients are built on first use, not when the plugin loads. In `GENERATE_MARKDOWN` mode no
+model is called, so none of these variables is needed; in the other modes the first call fails
+with a clear message if `CHATMODEL_URL` is missing.
+
+For Claude, point `CHATMODEL_URL` at Anthropic's native API, **not** its OpenAI-compatibility
+endpoint: that endpoint is meant for evaluating capabilities rather than production use, and it
+silently ignores `response_format` and prompt caching — exactly the two things this plugin
+relies on.
 
 ## Building
 
@@ -140,27 +149,47 @@ them at runtime; see the `maven-shade-plugin` configuration in [`pom.xml`](pom.x
 
 ## Using the plugin
 
-Pass the built jar to `compprov-analytics` on the command line:
+Pass the built jar to `compprov-analytics` on the command line.
+
+Deterministic checks and markdown prompts only (no model, no env vars needed):
 
 ```bash
-export CHATMODEL_URL=https://api.anthropic.com/v1/   # required by EnvVarConfiguredChatModel
-export CHATMODEL_API_KEY=your-claude-api-key          # required by EnvVarConfiguredChatModel
-export CHATMODEL_NAME=claude-sonnet-5                 # required by EnvVarConfiguredChatModel
-
 java -jar compprov-analytics.jar \
-  --cpgpath=path/to/snapshot.json \
+  --cpgfolder=samples/snapshots \
   --plugin=target/compprov-plugin-example-0.1.0.jar
 ```
 
+Sending the prompts to Claude (the configuration recommended by the
+[compprov-analytics evaluation](https://github.com/compprov/compprov-analytics#evaluation)):
+
+```bash
+export CHATMODEL_URL=https://api.anthropic.com/v1/
+export CHATMODEL_API_KEY=your-claude-api-key
+export CHATMODEL_NAME=claude-sonnet-5
+
+java -jar compprov-analytics.jar \
+  --cpgfolder=samples/snapshots \
+  --plugin=target/compprov-plugin-example-0.1.0.jar \
+  --promptProcessingMode=PROCESS_SYNC \
+  --llmTemplates=single_prompt \
+  --threads=4
+```
+
+Use `--promptProcessingMode=PROCESS_ASYNC` instead to send everything as one batch at the
+providers' batch discount, or `EXECUTE_ASYNC` and later `CONTINUE_ASYNC --workDir=<run>/out` to
+submit now and collect the results in another session.
+
 `compprov-analytics` logs each discovered provider (`Applying customizer: ...`,
-`Using chat model`) on startup. From then on, any CPG snapshot containing `Amount`, `Rate`, or
-`OptionPosition` input values deserializes and replays correctly, and prompt-based analysis uses
-the model at `CHATMODEL_URL`/`CHATMODEL_NAME` — Claude, in the example above.
+`Using chat model`, `Using batch chat model`) on startup. From then on, any CPG snapshot
+containing `Amount`, `Rate`, or `OptionPosition` input values deserializes and replays
+correctly.
 
 ## Test snapshots
 
-`samples/snapshots/` holds the CPG fixtures used to exercise compprov-analytics' fraud-pattern
-prompts, split into `normal/` (should audit clean) and `malicious/` (should trigger a detection).
+`samples/snapshots/` holds the 116 CPG fixtures used to evaluate compprov-analytics:
+`normal/` (33, should audit clean), `malicious/` (39, should trigger a detection), `gptscan/` (5)
+and `numscout/` (5) with patterns from published smart-contract auditing tools, and `defects4j/`
+(17 real bugs in `buggy/`, their 17 fixes in `fixed/`).
 
 Every fixture is generated by an `@Test`-annotated class under `src/test/java/io/compprov/examples/`
 — these aren't real assertions-based unit tests, they're snapshot generators: each one builds a
@@ -221,12 +250,15 @@ reimplementing attack patterns from a published smart-contract auditing tool as 
   `src/test/java/io/compprov/examples/gptscan/`. Named after
   [GPTScan](https://arxiv.org/abs/2308.03314), a logic-bug-detection tool for smart contracts;
   each fixture reproduces one of its bug patterns, e.g. `CollateralValuationCalculatorSemanticTypeAttack`
-  pricing collateral off raw, single-block AMM pool reserves instead of a verified oracle.
-- [`numscout/`](samples/snapshots/numscout) — six AMM/staking scenarios generated by classes
-  under `src/test/java/io/compprov/examples/numscout/`: one correct baseline
-  (`GameWinnerPayoutCalculator`) plus five `*PrecisionTampering` variants (AMM taker fee,
-  liquidity pool join, staking reward fee, token sale threshold, and a tampered variant of the
-  baseline itself). Named after the [NumScout](https://arxiv.org/abs/2503.10041) paper's
+  pricing collateral off raw, single-block AMM pool reserves instead of a verified oracle. The
+  same folder also has prototype generators for three more patterns (`ApprovalNotCleared*`,
+  `FrontRunning*`, `Slippage*`); they don't model those mechanics faithfully enough, so their
+  output is not part of the fixture set.
+- [`numscout/`](samples/snapshots/numscout) — five AMM/staking/game scenarios, each a
+  `*PrecisionTampering` class under `src/test/java/io/compprov/examples/numscout/` (AMM taker
+  fee, game winner payout, liquidity pool join, staking reward fee, token sale threshold). The
+  same folder holds a correct `GameWinnerPayoutCalculator` baseline, which is not part of the
+  fixture set. Named after the [NumScout](https://arxiv.org/abs/2503.10041) paper's
   precision-loss taxonomy — each fixture injects one specific rounding-direction defect (e.g.
   floor division where the protocol requires ceiling division) at `BigInteger` wei-scale rather
   than the `BigDecimal` scale the other fixtures use.
@@ -235,39 +267,62 @@ These use `DefaultComputationContext`/`BigInteger` wrapping directly rather than
 domain types, so they don't exercise the plugin's `EnvironmentCustomizer` — they're here as
 additional fraud-pattern coverage for `compprov-analytics` itself.
 
-## Sample analysis run
+### `defects4j/`
 
-`samples/outputs/llm-api/sonnet-5/` holds `compprov-analytics --executePrompts=true` runs (Claude
-Sonnet 5), one subtree per fixture category — `normal/`, `malicious/`, `gptscan/`, `numscout/` —
-each under its own `<timestamp>/out/`, with one subfolder per input file plus a top-level
-`summary.md`. `samples/outputs/llm-manual/` holds one additional run spanning the entire combined
-83-file fixture set (`normal/` + `malicious/` + `gptscan/` + `numscout/`) in prompt-dump mode:
-instead of calling the configured chat model, `compprov-analytics` writes each prompt to a
-`*_prompt.md` file for pasting into a chat UI by hand, so its `summary.md` has no verdicts (`—` in
-every alarm column) — a way to exercise this plugin without needing `CHATMODEL_API_KEY` set.
+Naturally occurring defects: real numerical bugs from the [Defects4J](https://github.com/rjust/defects4j)
+benchmark (Apache Commons Math and JFreeChart), each rebuilt as a CPG pair — `fixed/` (the patched
+computation) and `buggy/` (the original defect), same filename in both. Generated by classes under
+`src/test/java/io/compprov/examples/defects4j/`, named `<Project><id>*Calculator` / `*CalculatorBuggy`
+and fed the bug's own Defects4J test data, so each pair reproduces the test's expected and buggy
+values. Where a defect sits inside a larger algorithm (an optimizer, solver or integrator), the CPG
+covers the step the fix changed; where the test's exact input doesn't trigger the defect under
+DECIMAL64, the data provider's Javadoc says what was used instead.
 
-Run under the three-prompt default (`topological_fraud`, `precision_tampering`,
-`semantic_type_and_context_cast_attack`):
+| File | Defects4J / issue | Defect |
+|---|---|---|
+| `math-11.json` | Math-11 / [MATH-929](https://issues.apache.org/jira/browse/MATH-929) | Multivariate normal density's (2π)^(−k/2) exponent uses integer division, truncating −1/2 to 0 for k = 1 (0.12952 → 0.32465) |
+| `math-18.json` | Math-18 / [MATH-867](https://issues.apache.org/jira/browse/MATH-867) | CMA-ES bound encoding shifts by the lower bound, (x − lo)/(hi − lo); with lo = −5e16 the shift swallows the candidate's digits (11.1 → 10) |
+| `math-41.json` | Math-41 / [MATH-704](https://issues.apache.org/jira/browse/MATH-704) | Weighted variance sums Σw over the whole weights array instead of the evaluated segment (1.66445 → 0.31909) |
+| `math-55.json` | Math-55 / [MATH-554](https://issues.apache.org/jira/browse/MATH-554) | Cross product of nearly parallel vectors computed without preconditioning; the z component cancels (1 → 0) |
+| `math-57.json` | Math-57 / [MATH-546](https://issues.apache.org/jira/browse/MATH-546) | k-means++ seeding keeps ΣD(x)² in an `int`, so small distances truncate to 0 and the first point is always chosen (point 8 → point 0) |
+| `math-65.json` | Math-65 / [MATH-377](https://issues.apache.org/jira/browse/MATH-377) | Weighted χ² divides r² by the weight instead of multiplying, so the parameter-error scale is off by a factor of w (1.44378 → 0.72189) |
+| `math-69.json` | Math-69 / [MATH-371](https://issues.apache.org/jira/browse/MATH-371) | Pearson p-value 2·(1 − CDF(t)) cancels to 0 once CDF(t) rounds to 1; fix uses 2·CDF(−t) (4.8958E-18 → 0) |
+| `math-72.json` | Math-72 / [MATH-344](https://issues.apache.org/jira/browse/MATH-344) | Brent solver's endpoint early exit returns f(min) instead of min (π → 1.2246E-16) |
+| `math-74.json` | Math-74 / [MATH-338](https://issues.apache.org/jira/browse/MATH-338) | Runge-Kutta error scale drops the relTol·\|y\| term, halving the initial step size (0.04218 → 0.02021) |
+| `math-75.json` | Math-75 / [MATH-329](https://issues.apache.org/jira/browse/MATH-329) | `Frequency.getPct(v)` returns the cumulative percentage of values ≤ v instead of the share equal to v (0.5 → 1) |
+| `math-77.json` | Math-77 / [MATH-326](https://issues.apache.org/jira/browse/MATH-326) | L∞ norm accumulates the running maximum with `+=` instead of replacing it (6 → 128) |
+| `math-91.json` | Math-91 / [MATH-252](https://issues.apache.org/jira/browse/MATH-252) | `Fraction.compareTo` compares rounded double values instead of exact cross products, so two different π approximations compare equal (−1 → 0) |
+| `math-92.json` | Math-92 / [MATH-241](https://issues.apache.org/jira/browse/MATH-241) | Binomial coefficient via floor(exp(Σ ln) + 0.5) rounds to the wrong integer (C(48, 23): 30957699535776 → 30957699535775) |
+| `math-93.json` | Math-93 / [MATH-240](https://issues.apache.org/jira/browse/MATH-240) | Factorial via floor(exp(Σ ln i) + 0.5) is off in the last digits (17!: 355687428096000 → 355687428096003) |
+| `math-102.json` | Math-102 / [MATH-175](https://issues.apache.org/jira/browse/MATH-175) | χ² statistic doesn't rescale expected counts when their total differs from the observed total (9.02331 → 16.41311) |
+| `math-105.json` | Math-105 / [MATH-85](https://issues.apache.org/jira/browse/MATH-85) | Regression SSE = Syy − Sxy²/Sxx isn't clamped at 0, so cancellation on collinear data goes negative (0 → −3E-14) |
+| `chart-24.json` | Chart-24 (JFreeChart) | `GrayPaintScale` clamps the lookup value but computes the gray level from the raw one (g = 0 → −127, so `java.awt.Color` throws) |
 
-- **`normal/`** (33 fixtures) — 32 come back fully `CLEAN`. The one exception is
-  **`metrology.json`**, flagged by precision tampering (`SUSPICIOUS LOGIC`, risk score 32): of its
-  56 operations, 55 explicitly thread a shared 34-digit `MathContext` — the one exception is a
-  saturation-vapor-pressure exponentiation (`Exp_double`) that has no arbitrary-precision `exp()`
-  available and so drops to native `double`. The model correctly spots this as the only operation
-  missing the `mc` argument, but also recomputes that the resulting error is many orders of
-  magnitude below both the final result's precision and the input measurements' own uncertainty —
-  a real, technically-necessary gap rather than an injected defect.
-- **`malicious/`** (39 fixtures) — 38 trip at least one of the three prompts (not always the alarm
-  matching their own category, e.g. a `lineage_disconnection/` fixture caught by
-  `topological_fraud` instead). The one miss, `legacy/broken-chronology.json`, comes back `CLEAN`
-  on all three prompts — it's only caught by compprov-analytics' separate chronology-validity
-  check, not by the LLM prompts.
-- **`gptscan/`** (5 fixtures, `semantic_type_and_context_cast_attack` only) — all 5 flagged,
-  `ANOMALY DETECTED` at risk scores 74–88, reimplementing bug patterns from
-  [GPTScan](https://arxiv.org/abs/2308.03314).
-- **`numscout/`** (5 fixtures, `precision_tampering` only) — all 5 flagged (2 `ANOMALY DETECTED`,
-  3 lower-confidence `SUSPICIOUS LOGIC`), reimplementing defect patterns from the
-  [NumScout](https://arxiv.org/abs/2503.10041) taxonomy. No misses in this run.
+## Sample analysis runs
+
+The fixture set was run through compprov-analytics with 9 models and several prompt
+configurations: 40 runs, 7,191 model calls. The results, what the tool finds well and which
+models work best are summarized in the
+[compprov-analytics evaluation](https://github.com/compprov/compprov-analytics#evaluation).
+
+Runs are stored as `samples/outputs/llm-api/<model>_<effort>/<configuration>/<timestamp>/out/`,
+where the configuration is `single_prompt`, `three_prompts`, `single_prompt_no_ids` or
+`single_prompt_minified`. Each `out/` has a top-level `summary.md` with the verdicts and one
+subfolder per fixture holding the check outputs, the prompts sent, the raw and rendered model
+response, and `*_call_details.json` with token usage and timing.
+
+This repository keeps:
+
+- one complete run, `claude-sonnet-5/single_prompt/2026-11-03_20-22-55.586` (single prompt, the
+  best-scoring run: 64 of 66 positives flagged, 4 of 50 negatives);
+- the top-level `summary.md` of every other run.
+
+The complete outputs of all runs are archived on Zenodo: *TODO: DOI*. The prompts and check
+outputs left out here are regenerated byte for byte by running the same compprov-analytics
+version with the same flags on `samples/snapshots`.
+
+`samples/override/` holds the prompt overrides used for the `*_no_ids` runs, each folder with an
+`args.txt` listing the flags.
 
 ## Project layout
 
@@ -278,12 +333,23 @@ src/main/java/io/compprov/examples/nav/
                           AmountWrapper, RateWrapper, OptionPositionWrapper, AmountDeserializer
 
 src/main/java/io/compprov/plugin/example/nav/
-├── NavEnvironmentCustomizer.java    EnvironmentCustomizer SPI provider
-└── EnvVarConfiguredChatModel.java   ChatModel SPI provider
+├── NavEnvironmentCustomizer.java           EnvironmentCustomizer SPI provider
+├── EnvVarConfiguredChatModel.java          ChatModel SPI provider
+├── EnvVarConfiguredBatchedChatModel.java   BatchChatModel SPI provider
+├── OpenAiBatchChatModel.java               OpenAI Batch API client used by the batch provider
+└── ChatModelSettings.java                  CHATMODEL_* environment variables
 
 src/main/resources/META-INF/services/
 ├── io.compprov.core.EnvironmentCustomizer
-└── dev.langchain4j.model.chat.ChatModel
+├── dev.langchain4j.model.chat.ChatModel
+└── dev.langchain4j.model.chat.BatchChatModel
+
+src/test/java/io/compprov/examples/       Fixture generators, see Test snapshots
+
+samples/
+├── snapshots/                            The 116 CPG fixtures
+├── outputs/                              Analysis runs, see Sample analysis runs
+└── override/                             Prompt overrides used by some runs
 ```
 
 ## License
