@@ -22,8 +22,7 @@ desktop.ini
 *.env.local
 
 #samples
-samples/*.zip
-samples/*.jar
+samples/zenodo/
 samples/outputs/**
 !samples/outputs/**/
 !samples/outputs/llm-api/*/*/*/out/summary.md
